@@ -1,25 +1,9 @@
-package com.example.planer.meat
+package com.example.planer.tasks
 
 import java.util.Date
 
-
-//v.1
-/*
-class Habit {
-    var habits: ArrayList<Field>? = null
-
-    class Field{
-        var task: Task? = null
-        var number: Int = 0
-        var timescale: Int = 0
-    }
-
-    //timescale: enum
-    //number x timescale
-}*/
-
-//v.2
-class Habit(
+//klasa dziedzicząca z Taska, która rozszerza zadania o parametry służące do tego, by zadanie pojawiało się co określony czas
+class Cyclical(
     _number: Int,
     _timescale: Int,
     _title: String,
