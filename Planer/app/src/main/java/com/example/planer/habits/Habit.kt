@@ -9,3 +9,7 @@ class Habit {
     var color : String = "#FFFFFF"
     var amount_per_day : Int = 0
 }
+
+fun main(args: Array<String>){
+    print("hello")
+}
