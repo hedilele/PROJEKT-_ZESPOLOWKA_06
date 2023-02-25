@@ -25,13 +25,16 @@ class MainActivity : AppCompatActivity() {
         //Tworzenie instancji tego
         db = AppDatabase.getDatabase(this)
 
+        /*
         val addUserBtn = findViewById(R.id.button) as Button
         addUserBtn.setOnClickListener{
             addUser()
         }
+         */
     }
 
     //Testowa funkcja do insertowania
+    /*
     fun addUser()
     {
         val habits = Habits(null, 1, 10)
@@ -40,4 +43,5 @@ class MainActivity : AppCompatActivity() {
             db.habitsDAO().insert(habits)
         }
     }
+     */
 }
