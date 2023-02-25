@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey
 data class Habits(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
-    val id: Int,
+    val id: Int?,
     @ColumnInfo(name = "number")
     val number: Int,
     @ColumnInfo(name = "timescale")
