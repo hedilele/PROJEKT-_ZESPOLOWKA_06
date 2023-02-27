@@ -10,6 +10,10 @@ interface HabitsDAO
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(habits: Habits)
 
+    //Updatowanie danych
+    @Update
+    suspend fun update(habits: Habits)
+
     //Pobieranie listy habitsow z bazy
     @Query("SELECT * FROM habits")
     suspend fun getAllHabits(): List<Habits>
