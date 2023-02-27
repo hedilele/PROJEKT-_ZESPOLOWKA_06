@@ -33,6 +33,7 @@ class MainActivity : AppCompatActivity() {
          */
     }
 
+    //Operacje rozne na bazie, zapis, update itp odpalamy w innym watku, nie glownym
     //Testowa funkcja do insertowania
     /*
     fun addUser()

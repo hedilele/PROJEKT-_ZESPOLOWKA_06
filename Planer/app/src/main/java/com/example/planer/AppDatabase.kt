@@ -7,12 +7,14 @@ import androidx.room.RoomDatabase
 import com.example.planer.DAOs.HabitsDAO
 import com.example.planer.entities.Habits
 
+//Update wersji + 11, jesli zmienimy baze danych, dodamy jakies itp
 @Database(entities = [Habits::class], version = 1)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun habitsDAO() : HabitsDAO
 
     //TESTOWO
 
+    //Singleton dla naszej bazy
     companion object {
 
         @Volatile
@@ -20,6 +22,8 @@ abstract class AppDatabase : RoomDatabase() {
 
         fun getDatabase(context: Context): AppDatabase {
 
+            //Mozemy stworzyc tylko jeden taki obiekt - Patrz filmik - mozliwe,ze lepiej zrobione
+            //Poprawic, zastanowic sie
             val tempInstance = INSTANCE
             if (tempInstance != null) {
                 return tempInstance
