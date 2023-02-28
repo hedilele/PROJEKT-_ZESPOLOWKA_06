@@ -28,3 +28,5 @@ data class Notes(
     val photo: Bitmap?
 
 )
+
+//komentarz
