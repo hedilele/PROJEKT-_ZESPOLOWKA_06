@@ -5,12 +5,15 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.planer.DAOs.HabitsDAO
+import com.example.planer.DAOs.TasksDAO
 import com.example.planer.entities.Habits
+import com.example.planer.entities.Tasks
 
 //Update wersji + 11, jesli zmienimy baze danych, dodamy jakies itp
-@Database(entities = [Habits::class], version = 1)
+@Database(entities = [Habits::class, Tasks::class], version = 3)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun habitsDAO() : HabitsDAO
+    abstract fun tasksDAO() : TasksDAO
 
     //TESTOWO
 
@@ -33,7 +36,7 @@ abstract class AppDatabase : RoomDatabase() {
                     context.applicationContext,
                     AppDatabase::class.java,
                     "TOP.sqlite"
-                ).build()
+                ).fallbackToDestructiveMigration().build()
                 INSTANCE = instance
                 return instance
             }
