@@ -34,7 +34,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:padding="5dp"
-                android:text="Priorytet: "
+                android:text="Ważne: "
                 android:textSize="25dp" />
 
             <LinearLayout
@@ -78,6 +78,65 @@
                 android:src="@drawable/radio_unchecked"
                 app:tint="@color/hard_red"
                 />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+
+            <TextView
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:padding="5dp"
+                android:text="Pilne: "
+                android:textSize="25dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center"
+                >
+                <ImageView
+                    android:id="@+id/urgent0"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:src="@drawable/radio_checked"
+                    app:tint="@color/neutral_blue"
+                    />
+
+                <ImageView
+                    android:id="@+id/urgent1"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:src="@drawable/radio_unchecked"
+                    app:tint="@color/easy_green"
+                    />
+
+                <ImageView
+                    android:id="@+id/urgent2"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:src="@drawable/radio_unchecked"
+                    app:tint="@color/medium_yellow"
+                    />
+
+                <ImageView
+                    android:id="@+id/urgent3"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:src="@drawable/radio_unchecked"
+                    app:tint="@color/hard_red"
+                    />
 
             </LinearLayout>
 

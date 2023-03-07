@@ -37,6 +37,11 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
     private var priority2: ImageView? = null
     private var priority3: ImageView? = null
 
+    private var urgent0: ImageView? = null
+    private var urgent1: ImageView? = null
+    private var urgent2: ImageView? = null
+    private var urgent3: ImageView? = null
+
     private var deadline_day: EditText? = null
     private var deadline_month: EditText? = null
     private var deadline_year: EditText? = null
@@ -64,6 +69,7 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
 
     //global
     var priority: Int = 0
+    var urgent: Int = 0
     var type: Int = 0
     var duration: Int = 0
     var periodicity: Int = 0
@@ -96,6 +102,11 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
         priority1 = findViewById(R.id.priority1)
         priority2 = findViewById(R.id.priority2)
         priority3 = findViewById(R.id.priority3)
+
+        urgent0 = findViewById(R.id.urgent0)
+        urgent1 = findViewById(R.id.urgent1)
+        urgent2 = findViewById(R.id.urgent2)
+        urgent3 = findViewById(R.id.urgent3)
 
         deadline_day = findViewById(R.id.tv_deadline_d)
         deadline_month = findViewById(R.id.tv_deadline_m)
@@ -236,6 +247,10 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
                     tasksDAO.insert(Tasks(
                         title=title?.text.toString(),
                         priority = priority,
+
+                        /*TODO uwzględnienie pilności w bazie (nieobowiązkowe)*/
+                        //urgent = urgent,
+
                         deadline = setUpDate(day.toInt(), month.toInt(), year.toInt()) + "  " + setUpTime(hour.toInt(), minute.toInt()),
                         timeToFinish = 1,
                         isActive = false,
@@ -264,26 +279,52 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
 //                val priority_col_0 = (priority0?.getBackground() as GradientDrawable).mutate()
 //                (priority_col_0 as GradientDrawable).setColor(Color.argb(90,0,0,0))
 
-                priority0?.setImageResource(R.drawable.radio_checked);
+                priority0?.setImageResource(R.drawable.radio_checked)
                 priority = 0
 
             }
             R.id.priority1 -> {
                 uncheckPriority()
-                priority1?.setImageResource(R.drawable.radio_checked);
+                priority1?.setImageResource(R.drawable.radio_checked)
                 priority = 1
             }
 
             R.id.priority2 -> {
                 uncheckPriority()
-                priority2?.setImageResource(R.drawable.radio_checked);
+                priority2?.setImageResource(R.drawable.radio_checked)
                 priority = 2
                 }
             R.id.priority3 -> {
                 uncheckPriority()
-                priority3?.setImageResource(R.drawable.radio_checked);
+                priority3?.setImageResource(R.drawable.radio_checked)
                 priority = 3
                 }
+
+            R.id.urgent0 -> {
+                uncheckUrgent()
+                urgent0?.setImageResource(R.drawable.radio_checked)
+                urgent = 0
+            }
+
+            R.id.urgent1 -> {
+                uncheckUrgent()
+                urgent1?.setImageResource(R.drawable.radio_checked)
+                urgent = 1
+            }
+
+            R.id.urgent2 -> {
+                uncheckUrgent()
+                urgent2?.setImageResource(R.drawable.radio_checked)
+                urgent = 2
+            }
+
+            R.id.urgent3 -> {
+                uncheckUrgent()
+                urgent3?.setImageResource(R.drawable.radio_checked)
+                urgent = 3
+            }
+
+
 
                 R.id.btn_deadline -> {
                     val dpd = DatePickerDialog(
@@ -523,6 +564,22 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
             1 -> { priority1?.setImageResource(R.drawable.radio_unchecked) }
             2 -> { priority2?.setImageResource(R.drawable.radio_unchecked) }
             3 -> { priority3?.setImageResource(R.drawable.radio_unchecked) }
+        }
+    }
+
+    fun uncheckUrgent()
+    {
+        when(urgent)
+        {
+            0 -> {
+                //val gradientDrawable = (priority0?.getBackground() as GradientDrawable).mutate()
+                //(gradientDrawable as GradientDrawable).setColor(Color.argb(0,0,0,0))
+
+                urgent0?.setImageResource(R.drawable.radio_unchecked)
+            }
+            1 -> { urgent1?.setImageResource(R.drawable.radio_unchecked) }
+            2 -> { urgent2?.setImageResource(R.drawable.radio_unchecked) }
+            3 -> { urgent3?.setImageResource(R.drawable.radio_unchecked) }
         }
     }
 
