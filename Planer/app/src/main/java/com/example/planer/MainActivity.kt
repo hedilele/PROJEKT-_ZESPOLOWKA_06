@@ -3,7 +3,10 @@ package com.example.planer
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
+import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.lifecycle.lifecycleScope
 
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -21,6 +24,8 @@ import kotlinx.coroutines.launch
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+    lateinit var toggle: ActionBarDrawerToggle
+
     private lateinit var db : AppDatabase
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,6 +34,31 @@ class MainActivity : AppCompatActivity() {
         //setContentView(R.layout.activity_main)
         setContentView(binding?.root)
 
+// menu boczne
+        binding.apply {
+            toggle = ActionBarDrawerToggle(this@MainActivity, drawerLayout, R.string.open, R.string.close)
+            drawerLayout.addDrawerListener(toggle)
+            toggle.syncState()
+
+            supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+            binding?.navigation?.setNavigationItemSelectedListener {
+                when(it.itemId) {
+                    R.id.item1 -> {
+                        Toast.makeText(this@MainActivity, "111", Toast.LENGTH_SHORT).show()
+                    }
+                    R.id.item2 -> {
+                        Toast.makeText(this@MainActivity, "222", Toast.LENGTH_SHORT).show()
+                    }
+                    R.id.item3 -> {
+                        Toast.makeText(this@MainActivity, "333", Toast.LENGTH_SHORT).show()
+                    }
+                }
+                true
+            }
+        }
+
+// baza danych
         val tasksDao = (application as DatabaseApp).db.tasksDAO()
 
         binding?.btnAdd?.setOnClickListener{
@@ -46,6 +76,14 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if(toggle.onOptionsItemSelected(item)){
+            true
+        }
+
+        return super.onOptionsItemSelected(item)
+    }
     private fun setupListOfDataIntoRecyclerView(taskList:ArrayList<Tasks>, tasksDAO: TasksDAO) {
 
         if(taskList.isNotEmpty()){

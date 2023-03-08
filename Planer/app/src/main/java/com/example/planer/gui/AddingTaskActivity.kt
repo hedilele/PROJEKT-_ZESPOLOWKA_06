@@ -7,12 +7,10 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.KeyEvent
-import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnFocusChangeListener
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import com.example.planer.DatabaseApp
 import com.example.planer.MainActivity
@@ -32,15 +30,15 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var binding: ActivityAddingTaskBinding
 
     private var title: EditText? = null
-    private var priority0: ImageView? = null
-    private var priority1: ImageView? = null
-    private var priority2: ImageView? = null
-    private var priority3: ImageView? = null
-
-    private var urgent0: ImageView? = null
-    private var urgent1: ImageView? = null
-    private var urgent2: ImageView? = null
-    private var urgent3: ImageView? = null
+//    private var priority0: ImageView? = null
+//    private var priority1: ImageView? = null
+//    private var priority2: ImageView? = null
+//    private var priority3: ImageView? = null
+//
+//    private var urgent0: ImageView? = null
+//    private var urgent1: ImageView? = null
+//    private var urgent2: ImageView? = null
+//    private var urgent3: ImageView? = null
 
     private var deadline_day: EditText? = null
     private var deadline_month: EditText? = null
@@ -68,7 +66,7 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
     var time: String = ""
 
     //global
-    var priority: Int = 0
+    var important: Int = 0
     var urgent: Int = 0
     var type: Int = 0
     var duration: Int = 0
@@ -98,22 +96,22 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
 
 
         title = findViewById(R.id.task_title)
-        priority0 = findViewById(R.id.priority0)
-        priority1 = findViewById(R.id.priority1)
-        priority2 = findViewById(R.id.priority2)
-        priority3 = findViewById(R.id.priority3)
+//        priority0 = findViewById(R.id.priority0)
+//        priority1 = findViewById(R.id.priority1)
+//        priority2 = findViewById(R.id.priority2)
+//        priority3 = findViewById(R.id.priority3)
 
-        urgent0 = findViewById(R.id.urgent0)
-        urgent1 = findViewById(R.id.urgent1)
-        urgent2 = findViewById(R.id.urgent2)
-        urgent3 = findViewById(R.id.urgent3)
+//        urgent0 = findViewById(R.id.urgent0)
+//        urgent1 = findViewById(R.id.urgent1)
+//        urgent2 = findViewById(R.id.urgent2)
+//        urgent3 = findViewById(R.id.urgent3)
 
         deadline_day = findViewById(R.id.tv_deadline_d)
         deadline_month = findViewById(R.id.tv_deadline_m)
         deadline_year = findViewById(R.id.tv_deadline_y)
 
         deadline_hour = findViewById(R.id.tv_deadline_h)
-        deadline_minutes= findViewById(R.id.tv_deadline_min)
+        deadline_minutes = findViewById(R.id.tv_deadline_min)
 
         deadline_picker = findViewById(R.id.btn_deadline)
         deadline_time_picker = findViewById(R.id.btn_deadline_time)
@@ -129,10 +127,20 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
         deadline_picker?.setOnClickListener(this)
         deadline_time_picker?.setOnClickListener(this)
 
-        priority0?.setOnClickListener(this)
-        priority1?.setOnClickListener(this)
-        priority2?.setOnClickListener(this)
-        priority3?.setOnClickListener(this)
+//        priority0?.setOnClickListener(this)
+//        priority1?.setOnClickListener(this)
+//        priority2?.setOnClickListener(this)
+//        priority3?.setOnClickListener(this)
+
+        binding.important0.setOnClickListener(this)
+        binding.important1.setOnClickListener(this)
+        binding.important2.setOnClickListener(this)
+        binding.important3.setOnClickListener(this)
+
+        binding.urgent0.setOnClickListener(this)
+        binding.urgent1.setOnClickListener(this)
+        binding.urgent2.setOnClickListener(this)
+        binding.urgent3.setOnClickListener(this)
 
         deadline_day?.setOnClickListener(this)
         deadline_month?.setOnClickListener(this)
@@ -226,37 +234,54 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
                 //val intent = Intent(this, MainActivity::class.java)
 
                 var day: String = deadline_day?.text.toString()
-                if(day == "") {day = today_day.toString()}       //????????????????? komunikat ze puste?
+                if (day == "") {
+                    day = today_day.toString()
+                }       //????????????????? komunikat ze puste?
 
                 var month: String = deadline_month?.text.toString()
-                if(month == "") {month = today_month.toString()}
+                if (month == "") {
+                    month = today_month.toString()
+                }
 
                 var year: String = deadline_year?.text.toString()
-                if(year == "") {year = today_year.toString()}
+                if (year == "") {
+                    year = today_year.toString()
+                }
 
                 var hour: String = deadline_hour?.text.toString()
-                if(hour == "") {hour = today_hour.toString()}
+                if (hour == "") {
+                    hour = today_hour.toString()
+                }
 
                 var minute: String = deadline_day?.text.toString()
-                if(minute == "") {minute = today_minute.toString()}
+                if (minute == "") {
+                    minute = today_minute.toString()
+                }
 
                 //?????????????? jak to zrobic
 
 
-                lifecycleScope.launch{
-                    tasksDAO.insert(Tasks(
-                        title=title?.text.toString(),
-                        priority = priority,
+                lifecycleScope.launch {
+                    tasksDAO.insert(
+                        Tasks(
+                            title = title?.text.toString(),
+                            priority = 0,           //???????????????
 
-                        /*TODO uwzględnienie pilności w bazie (nieobowiązkowe)*/
-                        //urgent = urgent,
+                            /*TODO uwzględnienie pilności w bazie (nieobowiązkowe)*/
+                            //urgent = urgent,
 
-                        deadline = setUpDate(day.toInt(), month.toInt(), year.toInt()) + "  " + setUpTime(hour.toInt(), minute.toInt()),
-                        timeToFinish = 1,
-                        isActive = false,
-                        typeId = 0,
-                        isCalendar = false,
-                        habitId = 0))
+                            deadline = setUpDate(
+                                day.toInt(),
+                                month.toInt(),
+                                year.toInt()
+                            ) + "  " + setUpTime(hour.toInt(), minute.toInt()),
+                            timeToFinish = 1,
+                            isActive = false,
+                            typeId = 0,
+                            isCalendar = false,
+                            habitId = 0
+                        )
+                    )
                     Toast.makeText(applicationContext, "record saved", Toast.LENGTH_SHORT).show()
                 }
 
@@ -273,77 +298,76 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
             }
 
 
-            R.id.priority0 -> {
-                uncheckPriority()
+            R.id.important0 -> {
+                uncheckImportant()
 
 //                val priority_col_0 = (priority0?.getBackground() as GradientDrawable).mutate()
 //                (priority_col_0 as GradientDrawable).setColor(Color.argb(90,0,0,0))
 
-                priority0?.setImageResource(R.drawable.radio_checked)
-                priority = 0
+                binding.important0?.setImageResource(R.drawable.radio_checked)
+                important = 0
 
             }
-            R.id.priority1 -> {
-                uncheckPriority()
-                priority1?.setImageResource(R.drawable.radio_checked)
-                priority = 1
+            R.id.important1 -> {
+                uncheckImportant()
+                binding.important1?.setImageResource(R.drawable.radio_checked)
+                important = 1
             }
 
-            R.id.priority2 -> {
-                uncheckPriority()
-                priority2?.setImageResource(R.drawable.radio_checked)
-                priority = 2
-                }
-            R.id.priority3 -> {
-                uncheckPriority()
-                priority3?.setImageResource(R.drawable.radio_checked)
-                priority = 3
-                }
+            R.id.important2 -> {
+                uncheckImportant()
+                binding.important2?.setImageResource(R.drawable.radio_checked)
+                important = 2
+            }
+            R.id.important3 -> {
+                uncheckImportant()
+                binding.important3?.setImageResource(R.drawable.radio_checked)
+                important = 3
+            }
 
             R.id.urgent0 -> {
                 uncheckUrgent()
-                urgent0?.setImageResource(R.drawable.radio_checked)
+                binding.urgent0?.setImageResource(R.drawable.radio_checked)
                 urgent = 0
             }
 
             R.id.urgent1 -> {
                 uncheckUrgent()
-                urgent1?.setImageResource(R.drawable.radio_checked)
+                binding.urgent1?.setImageResource(R.drawable.radio_checked)
                 urgent = 1
             }
 
             R.id.urgent2 -> {
                 uncheckUrgent()
-                urgent2?.setImageResource(R.drawable.radio_checked)
+                binding.urgent2?.setImageResource(R.drawable.radio_checked)
                 urgent = 2
             }
 
             R.id.urgent3 -> {
                 uncheckUrgent()
-                urgent3?.setImageResource(R.drawable.radio_checked)
+                binding.urgent3?.setImageResource(R.drawable.radio_checked)
                 urgent = 3
             }
 
 
+            R.id.btn_deadline -> {
+                val dpd = DatePickerDialog(
+                    this,
+                    DatePickerDialog.OnDateSetListener { view, sel_year, sel_month, sel_day ->
 
-                R.id.btn_deadline -> {
-                    val dpd = DatePickerDialog(
-                        this,
-                        DatePickerDialog.OnDateSetListener { view, sel_year, sel_month, sel_day ->
+                        date = setUpDate(sel_day, sel_month, sel_year)
+                        setDateBlocks(date)
 
-                            date = setUpDate(sel_day, sel_month, sel_year)
-                            setDateBlocks(date)
+                    }, today_year, today_month, today_day
+                )
 
-                        }, today_year, today_month, today_day
-                    )
-
-                    dpd.show()
-                }
+                dpd.show()
+            }
 
             R.id.btn_deadline_time -> {
                 var tpd = TimePickerDialog(
                     this,
-                    TimePickerDialog.OnTimeSetListener{view, sel_hour, sel_minutes ->
+                    TimePickerDialog.OnTimeSetListener { view, sel_hour, sel_minutes ->
 
                         time = setUpTime(sel_hour, sel_minutes)
                         setTimeBlocks(time)
@@ -353,50 +377,45 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
                 )
                 tpd.show()
             }
-            }
         }
+    }
 
 
-    fun setUpDate(d:Int, m:Int, y:Int): String
-    {
+    fun setUpDate(d: Int, m: Int, y: Int): String {
         var month = m.toString()
         var day = d.toString()
 
-        month.takeIf { m+1 < 10 }?.let {month="0"+(m+1)}
-        day.takeIf { d < 10 }?.let {day="0"+d}
+        month.takeIf { m + 1 < 10 }?.let { month = "0" + (m + 1) }
+        day.takeIf { d < 10 }?.let { day = "0" + d }
 
         return "$day.$month.$y"
     }
 
-    fun setDateBlocks(date: String)
-    {
+    fun setDateBlocks(date: String) {
         val table = date.split('.')
         deadline_day?.setText(table[0])
         deadline_month?.setText(table[1])
         deadline_year?.setText(table[2])
     }
 
-    fun setUpTime(h:Int, m:Int): String
-    {
+    fun setUpTime(h: Int, m: Int): String {
         var hour = h.toString()
         var minutes = m.toString()
 
-        hour.takeIf { h < 10 }?.let {hour="0"+(h)}
-        minutes.takeIf { m < 10 }?.let {minutes="0"+m}
+        hour.takeIf { h < 10 }?.let { hour = "0" + (h) }
+        minutes.takeIf { m < 10 }?.let { minutes = "0" + m }
 
         return "$hour:$minutes"
     }
 
-    fun setTimeBlocks(date: String)
-    {
+    fun setTimeBlocks(date: String) {
         val table = date.split(':')
         deadline_hour?.setText(table[0])
         deadline_minutes?.setText(table[1])
     }
 
 
-    fun setEverything()
-    {
+    fun setEverything() {
 
         deadline_day?.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -405,8 +424,7 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                if(s?.length!! > 1)
-                {
+                if (s?.length!! > 1) {
 
                     deadline_month?.requestFocus()
                 }
@@ -425,8 +443,7 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
 
 
-                if(s?.length!! > 1)
-                {
+                if (s?.length!! > 1) {
                     deadline_year?.requestFocus()
                 }
             }
@@ -444,9 +461,7 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
 
 
-
-                if(s?.length!! >= 4)
-                {
+                if (s?.length!! >= 4) {
                     deadline_year?.clearFocus()
                 }
             }
@@ -464,8 +479,7 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
 
-                if(s?.length!! > 1)
-                {
+                if (s?.length!! > 1) {
                     deadline_minutes?.requestFocus()
                 }
             }
@@ -484,11 +498,11 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
 
 
-                if(s?.length!! > 1)
-                {
+                if (s?.length!! > 1) {
                     deadline_minutes?.clearFocus()
                 }
             }
+
             override fun afterTextChanged(s: Editable?) {
 
             }
@@ -507,10 +521,8 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
 
     }
 
-    fun uncheckType()
-    {
-        when(type)
-        {
+    fun uncheckType() {
+        when (type) {
             0 -> {
                 binding.type1.setColorFilter(getResources().getColor(R.color.green1));
             }
@@ -529,10 +541,8 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-    fun uncheckDuration()
-    {
-        when(duration)
-        {
+    fun uncheckDuration() {
+        when (duration) {
             0 -> {
                 binding.duration1.setColorFilter(getResources().getColor(R.color.green1));
             }
@@ -551,42 +561,49 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-    fun uncheckPriority()
-    {
-        when(priority)
-        {
+    fun uncheckImportant() {
+        when (important) {
             0 -> {
                 //val gradientDrawable = (priority0?.getBackground() as GradientDrawable).mutate()
                 //(gradientDrawable as GradientDrawable).setColor(Color.argb(0,0,0,0))
 
-                priority0?.setImageResource(R.drawable.radio_unchecked)
+                binding.important0?.setImageResource(R.drawable.radio_unchecked)
             }
-            1 -> { priority1?.setImageResource(R.drawable.radio_unchecked) }
-            2 -> { priority2?.setImageResource(R.drawable.radio_unchecked) }
-            3 -> { priority3?.setImageResource(R.drawable.radio_unchecked) }
+            1 -> {
+                binding.important1?.setImageResource(R.drawable.radio_unchecked)
+            }
+            2 -> {
+                binding.important2?.setImageResource(R.drawable.radio_unchecked)
+            }
+            3 -> {
+                binding.important3?.setImageResource(R.drawable.radio_unchecked)
+            }
         }
     }
 
-    fun uncheckUrgent()
-    {
-        when(urgent)
-        {
+    fun uncheckUrgent() {
+        when (urgent) {
             0 -> {
                 //val gradientDrawable = (priority0?.getBackground() as GradientDrawable).mutate()
                 //(gradientDrawable as GradientDrawable).setColor(Color.argb(0,0,0,0))
 
-                urgent0?.setImageResource(R.drawable.radio_unchecked)
+                binding.urgent0?.setImageResource(R.drawable.radio_unchecked)
             }
-            1 -> { urgent1?.setImageResource(R.drawable.radio_unchecked) }
-            2 -> { urgent2?.setImageResource(R.drawable.radio_unchecked) }
-            3 -> { urgent3?.setImageResource(R.drawable.radio_unchecked) }
+            1 -> {
+                binding.urgent1?.setImageResource(R.drawable.radio_unchecked)
+            }
+            2 -> {
+                binding.urgent2?.setImageResource(R.drawable.radio_unchecked)
+            }
+            3 -> {
+                binding.urgent3?.setImageResource(R.drawable.radio_unchecked)
+            }
         }
     }
 
-    fun setOnEnterKey()
-    {
+    fun setOnEnterKey() {
         // ustawienie limitu dlugosci wprowadzanych liczb
-        deadline_day?. setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
+        deadline_day?.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
             if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
 
                 deadline_day?.clearFocus()
@@ -630,7 +647,7 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
             false
         })
 
-        deadline_hour?. setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
+        deadline_hour?.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
             if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
 
                 deadline_hour?.clearFocus()
@@ -640,7 +657,7 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
             false
         })
 
-        deadline_minutes?. setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
+        deadline_minutes?.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
             if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
 
                 deadline_minutes?.clearFocus()
@@ -660,26 +677,24 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
 //        })
     }
 
-    fun setOnFocusChange()
-    {
+    fun setOnFocusChange() {
         // czyszczenie pola po nacisnieciu na nie
         deadline_day?.setOnFocusChangeListener(OnFocusChangeListener { v, hasFocus ->
-            if (hasFocus)
-            {
+            if (hasFocus) {
                 deadline_day?.text?.clear()
-            }
-            else
-            {
+            } else {
                 var tmp = deadline_day?.text.toString()
-                if(tmp != "")
-                {
-                    if(tmp.toInt() >= 0 && tmp.toInt() < 10)
-                    {
+                if (tmp != "") {
+                    if (tmp.toInt() >= 0 && tmp.toInt() < 10) {
                         deadline_day?.setText("0" + tmp.toInt())
-                    }
-                    else if(tmp.toInt() > 31)
-                    {
-                        deadline_day?.setText(setUpDate(today_day, today_month, today_year).substring(0, 2))
+                    } else if (tmp.toInt() > 31) {
+                        deadline_day?.setText(
+                            setUpDate(
+                                today_day,
+                                today_month,
+                                today_year
+                            ).substring(0, 2)
+                        )
 
                     }
                 }
@@ -691,22 +706,21 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
         })
 
         deadline_month?.setOnFocusChangeListener(OnFocusChangeListener { v, hasFocus ->
-            if (hasFocus)
-            {
+            if (hasFocus) {
                 deadline_month?.text?.clear()
-            }
-            else
-            {
+            } else {
                 var tmp = deadline_month?.text.toString()
-                if(tmp != "")
-                {
-                    if(tmp.toInt() >= 0 && tmp.toInt() < 10)
-                    {
+                if (tmp != "") {
+                    if (tmp.toInt() >= 0 && tmp.toInt() < 10) {
                         deadline_month?.setText("0" + tmp.toInt())
-                    }
-                    else if(tmp.toInt() > 12)
-                    {
-                        deadline_month?.setText(setUpDate(today_day, today_month, today_year).substring(3, 5))
+                    } else if (tmp.toInt() > 12) {
+                        deadline_month?.setText(
+                            setUpDate(
+                                today_day,
+                                today_month,
+                                today_year
+                            ).substring(3, 5)
+                        )
 
                     }
 
@@ -719,19 +733,21 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
         })
 
         deadline_year?.setOnFocusChangeListener(OnFocusChangeListener { v, hasFocus ->
-            if (hasFocus)
-            {
+            if (hasFocus) {
                 deadline_year?.text?.clear()
-            }
-            else
-            {
+            } else {
 
                 var tmp = deadline_year?.text.toString()
-                if(tmp != "")
-                {
-                   if(tmp.toInt() < today_year - 2)       //????????????
+                if (tmp != "") {
+                    if (tmp.toInt() < today_year - 2)       //????????????
                     {
-                        deadline_year?.setText(setUpDate(today_day, today_month, today_year).substring(6, 10))
+                        deadline_year?.setText(
+                            setUpDate(
+                                today_day,
+                                today_month,
+                                today_year
+                            ).substring(6, 10)
+                        )
 
                     }
 
@@ -744,23 +760,22 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
         })
 
         deadline_hour?.setOnFocusChangeListener(OnFocusChangeListener { v, hasFocus ->
-            if (hasFocus)
-            {
+            if (hasFocus) {
                 deadline_hour?.text?.clear()
-            }
-            else
-            {
+            } else {
 
                 var tmp = deadline_hour?.text.toString()
-                if(tmp != "")
-                {
-                    if(tmp.toInt() >= 0 && tmp.toInt() < 10)
-                    {
+                if (tmp != "") {
+                    if (tmp.toInt() >= 0 && tmp.toInt() < 10) {
                         deadline_hour?.setText("0" + tmp.toInt())
-                    }
-                    else if(tmp.toInt() > 23)       //????????????
+                    } else if (tmp.toInt() > 23)       //????????????
                     {
-                        deadline_hour?.setText(setUpTime(today_hour, today_minute).substring(0,2))  //??????????
+                        deadline_hour?.setText(
+                            setUpTime(today_hour, today_minute).substring(
+                                0,
+                                2
+                            )
+                        )  //??????????
 
                     }
 
@@ -774,22 +789,21 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
         })
 
         deadline_minutes?.setOnFocusChangeListener(OnFocusChangeListener { v, hasFocus ->
-            if (hasFocus)
-            {
+            if (hasFocus) {
                 deadline_minutes?.text?.clear()
-            }
-            else
-            {
+            } else {
                 var tmp = deadline_minutes?.text.toString()
-                if(tmp != "")
-                {
-                    if(tmp.toInt() >= 0 && tmp.toInt() < 10)
-                    {
+                if (tmp != "") {
+                    if (tmp.toInt() >= 0 && tmp.toInt() < 10) {
                         deadline_minutes?.setText("0" + tmp.toInt())
-                    }
-                    else if(tmp.toInt() > 59)       //????????????
+                    } else if (tmp.toInt() > 59)       //????????????
                     {
-                        deadline_minutes?.setText(setUpTime(today_hour, today_minute).substring(3,5))  //????????
+                        deadline_minutes?.setText(
+                            setUpTime(today_hour, today_minute).substring(
+                                3,
+                                5
+                            )
+                        )  //????????
                     }
 
                 }

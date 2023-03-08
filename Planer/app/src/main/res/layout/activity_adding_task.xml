@@ -44,7 +44,7 @@
                 android:gravity="center"
                 >
             <ImageView
-                android:id="@+id/priority0"
+                android:id="@+id/important0"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -53,7 +53,7 @@
                 />
 
             <ImageView
-                android:id="@+id/priority1"
+                android:id="@+id/important1"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -62,7 +62,7 @@
                 />
 
             <ImageView
-                android:id="@+id/priority2"
+                android:id="@+id/important2"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -71,7 +71,7 @@
                 />
 
             <ImageView
-                android:id="@+id/priority3"
+                android:id="@+id/important3"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
