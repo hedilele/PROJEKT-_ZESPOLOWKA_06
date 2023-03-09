@@ -265,7 +265,7 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
                     tasksDAO.insert(
                         Tasks(
                             title = title?.text.toString(),
-                            priority = 0,           //???????????????
+                            importance = 0,           //???????????????
 
                             /*TODO uwzględnienie pilności w bazie (nieobowiązkowe)*/
                             //urgent = urgent,
@@ -276,10 +276,10 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
                                 year.toInt()
                             ) + "  " + setUpTime(hour.toInt(), minute.toInt()),
                             timeToFinish = 1,
-                            isActive = false,
+                            isActive = 0,
                             typeId = 0,
-                            isCalendar = false,
-                            habitId = 0
+                            noteId = 0,
+                            urgency = 0
                         )
                     )
                     Toast.makeText(applicationContext, "record saved", Toast.LENGTH_SHORT).show()

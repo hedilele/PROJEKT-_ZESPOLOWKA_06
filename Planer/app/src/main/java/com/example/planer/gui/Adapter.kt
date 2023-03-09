@@ -19,7 +19,9 @@ class Adapter(
 
     class ViewHolder(binding: SingleTaskBinding) : RecyclerView.ViewHolder(binding.root) {
         val title = binding.taskTitle
-        val priority = binding.taskBox
+        //val priority = binding.taskBox
+        //TODO ZMIENIAM
+        val importance = binding.taskBox
         val deadline = binding.taskDate
         val trash = binding.taskBox2
 
@@ -42,26 +44,26 @@ class Adapter(
         holder.title.text = item.title
         holder.deadline.text = item.deadline
 
-        when (item.priority) {
-            0 -> holder.priority?.setBackgroundColor(
+        when (item.importance) {
+            0 -> holder.importance?.setBackgroundColor(
                 ContextCompat.getColor(
                     holder.itemView.context,
                     R.color.neutral_blue
                 )
             )
-            1 -> holder.priority?.setBackgroundColor(
+            1 -> holder.importance?.setBackgroundColor(
                 ContextCompat.getColor(
                     holder.itemView.context,
                     R.color.easy_green
                 )
             )
-            2 -> holder.priority?.setBackgroundColor(
+            2 -> holder.importance?.setBackgroundColor(
                 ContextCompat.getColor(
                     holder.itemView.context,
                     R.color.medium_yellow
                 )
             )
-            3 -> holder.priority?.setBackgroundColor(
+            3 -> holder.importance?.setBackgroundColor(
                 ContextCompat.getColor(
                     holder.itemView.context,
                     R.color.hard_red

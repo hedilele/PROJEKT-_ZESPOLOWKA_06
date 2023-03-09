@@ -11,18 +11,19 @@ data class Tasks(
     val id: Int=0,
     @ColumnInfo(name = "title")
     val title: String,
-    @ColumnInfo("priority")
-    val priority: Int,
+    @ColumnInfo(name = "importance")
+    val importance: Int,
+    @ColumnInfo(name = "urgency")
+    val urgency: Int,
     @ColumnInfo(name = "deadline")
     val deadline: String,
     @ColumnInfo(name = "time_to_finish")
     val timeToFinish: Int,
     @ColumnInfo(name = "is_active")
-    val isActive: Boolean,
+    val isActive: Int,
     @ColumnInfo(name = "type_id")
     val typeId: Int,
-    @ColumnInfo(name = "is_calendar")
-    val isCalendar: Boolean,
-    @ColumnInfo(name = "habit_id")
-    val habitId: Int
+    @ColumnInfo(name = "note_id")
+    val noteId: Int
+
 )

@@ -4,7 +4,6 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.util.Date
-
 @Entity(tableName = "finished")
 data class Finished(
     @PrimaryKey(autoGenerate = true)
@@ -13,5 +12,5 @@ data class Finished(
     @ColumnInfo(name = "task_id")
     val taskId: Int,
     @ColumnInfo(name = "date")
-    val date: Date //Tutaj trzeba pomyslec
+    val date: String //Tutaj trzeba pomyslec
 )

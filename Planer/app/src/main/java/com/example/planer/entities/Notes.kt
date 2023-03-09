@@ -13,10 +13,8 @@ import androidx.room.PrimaryKey
 data class Notes(
     //Mozliwe jakies nulle ? - doda sie po uzgodnieniu
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "note_id")
+    @ColumnInfo(name = "id")
     val noteId: Int,
-    @ColumnInfo(name = "task_id")
-    val taskId: Int,
     @ColumnInfo(name = "note_title")
     val noteTitle: String,
     @ColumnInfo(name = "note_content")

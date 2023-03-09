@@ -6,11 +6,13 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.planer.DAOs.HabitsDAO
 import com.example.planer.DAOs.TasksDAO
+import com.example.planer.entities.Finished
 import com.example.planer.entities.Habits
+import com.example.planer.entities.Subtasks
 import com.example.planer.entities.Tasks
 
 //Update wersji + 11, jesli zmienimy baze danych, dodamy jakies itp
-@Database(entities = [Habits::class, Tasks::class], version = 3)
+@Database(entities = [Habits::class, Tasks::class, Finished::class, Subtasks::class,], version = 4)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun habitsDAO() : HabitsDAO
     abstract fun tasksDAO() : TasksDAO

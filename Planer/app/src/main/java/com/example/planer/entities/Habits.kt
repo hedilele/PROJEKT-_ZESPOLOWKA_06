@@ -4,13 +4,13 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "habits")
+@Entity(tableName = "Habits")
 data class Habits(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
     val id: Int?,
-    @ColumnInfo(name = "number")
-    val number: Int,
-    @ColumnInfo(name = "timescale")
-    val timescale: Int
+    @ColumnInfo(name = "name")
+    val name: String,
+    @ColumnInfo(name = "is_active")
+    val isActive: Int
 )
