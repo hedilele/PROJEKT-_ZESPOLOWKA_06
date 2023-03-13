@@ -1,5 +1,6 @@
 package com.example.planer.DAOs
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.example.planer.entities.Finished
 import com.example.planer.entities.Subtasks
@@ -29,6 +30,9 @@ interface TasksDAO
 
     @Query("SELECT * FROM `tasks`")
     fun fetchAll(): Flow<List<Tasks>>
+
+    @Query("SELECT * FROM Tasks ORDER BY id ASC")
+    fun readAllData(): LiveData<List<Tasks>>
 
     @Query("SELECT * FROM `tasks` WHERE id=:id")
     fun findTaskById(id:Int):Flow<Tasks>
