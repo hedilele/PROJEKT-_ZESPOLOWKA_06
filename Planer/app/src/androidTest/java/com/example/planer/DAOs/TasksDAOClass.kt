@@ -48,7 +48,7 @@ class TasksDAOClass {
         database.close()
     }
 
-    /*
+
     @Test
     fun insertTask() = runTest{
         val task = Tasks(0, "common_task", 2, 1,  "15-03-2023", 1, 1, 1, 1)
@@ -57,15 +57,8 @@ class TasksDAOClass {
         var tas = Tasks(-1, "", -1, -1,  "=", -1, -1, -1, -1)
 
         //var lifecycleScope: CoroutineScope
-        val scope: CoroutineScope? = null
-        scope?.launch {
-           dao.findTaskById(0).collect { t ->
 
-               tas = t
-            }
-        }
-        scope?.cancel()
 
         assertThat(tas).isEqualTo(task)
-    }*/
+    }
 }
