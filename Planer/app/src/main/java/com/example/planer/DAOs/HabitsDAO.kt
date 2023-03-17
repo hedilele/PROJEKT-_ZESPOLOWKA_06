@@ -20,7 +20,7 @@ interface HabitsDAO
 
     //Pobieranie Habitsa po id
     @Query("SELECT * FROM habits WHERE id = :habitId")
-    suspend fun getHabitById(habitId: IntArray): List<Habits>
+    suspend fun getHabitById(habitId: Int): Int //TODO - zwracac ma liste czy pojedynczy
 
     //Usuwanie po parametrach
     @Delete
