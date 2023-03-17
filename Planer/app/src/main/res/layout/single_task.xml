@@ -54,7 +54,7 @@
             >
 
             <ImageView
-                android:id="@+id/task_box"
+                android:id="@+id/priority"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:gravity="center"
@@ -64,7 +64,7 @@
             </ImageView>
 
             <ImageView
-                android:id="@+id/task_box2"
+                android:id="@+id/trash"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:gravity="center"

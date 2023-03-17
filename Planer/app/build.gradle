@@ -4,6 +4,9 @@ plugins {
     id 'kotlin-kapt'
 }
 
+apply plugin: 'kotlin-android-extensions'
+
+
 android {
     namespace 'com.example.planer'
     compileSdk 33

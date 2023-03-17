@@ -10,7 +10,6 @@ import com.example.planer.databinding.SingleTaskBinding
 import com.example.planer.entities.Tasks
 
 
-
 class Adapter(
     private val items: ArrayList<Tasks>,
     private val updateListener: (id: Int) -> Unit,
@@ -21,9 +20,9 @@ class Adapter(
         val title = binding.taskTitle
         //val priority = binding.taskBox
         //TODO ZMIENIAM
-        val importance = binding.taskBox
+        val importance = binding.priority
         val deadline = binding.taskDate
-        val trash = binding.taskBox2
+        val trash = binding.trash
 
     }
 

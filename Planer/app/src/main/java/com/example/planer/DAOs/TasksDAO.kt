@@ -35,7 +35,7 @@ interface TasksDAO
     fun readAllData(): LiveData<List<Tasks>>
 
     @Query("SELECT * FROM `tasks` WHERE id=:id")
-    fun findTaskById(id:Int):Flow<Tasks>
+    fun findTaskById(id:Int): List<Tasks>
 
     @Transaction
     @Query("SELECT * FROM Tasks WHERE id = :id")

@@ -1,26 +1,123 @@
 package com.example.planer
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.MenuItem
-import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.GravityCompat
 import androidx.lifecycle.lifecycleScope
-
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.planer.DAOs.HabitsDAO
-import com.example.planer.DAOs.TasksDAO
+import androidx.room.Room
 import com.example.planer.databinding.ActivityMainBinding
-import com.example.planer.entities.Habits
-import com.example.planer.entities.Tasks
-import com.example.planer.gui.Adapter
 import com.example.planer.gui.AddingTaskActivity
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.first
+import com.example.planer.gui.pages.HomeFragment
+import com.example.planer.gui.pages.CalendarFragment
+import com.example.planer.gui.pages.DrawerFragment
 import kotlinx.coroutines.launch
 
+
+class MainActivity : AppCompatActivity() {
+
+    private lateinit var binding: ActivityMainBinding
+    lateinit var toggle: ActionBarDrawerToggle
+
+    private lateinit var db : AppDatabase
+
+
+    private lateinit var pagerAdapters: PagerAdapters
+
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding?.root)
+
+
+        //val db = Room.databaseBuilder(applicationContext, AppDatabase::class.java, "TOP.sqlite")
+
+        // dodanie fragmentów do listy
+        pagerAdapters = PagerAdapters(supportFragmentManager)
+        pagerAdapters.addFragment(HomeFragment())
+        pagerAdapters.addFragment(DrawerFragment())
+        pagerAdapters.addFragment(CalendarFragment())
+
+        // przypisanie adaptera zajmującego się fragmentami do adaptera pagerView
+        binding.pagerView.adapter = pagerAdapters
+
+
+        // nawigacja - po kliknięciu na odpowiednią ikonę przenosi nas do danego fragmentu
+        // strona główna (z recyclerView)
+        binding.buttonHome.setOnClickListener{
+            binding.pagerView.setCurrentItem(0)
+        }
+
+        // menu boczne - wysuwanie
+        binding.buttonMenu.setOnClickListener{
+            //binding.myPagerView.setCurrentItem(1)
+            binding.drawerLayout.openDrawer(GravityCompat.START);
+        }
+
+        // kalendarz
+        binding.buttonCalendar.setOnClickListener{
+            binding.pagerView.setCurrentItem(2)
+        }
+
+        // dodanie tasków - przekierowanie do nowej aktywności
+        binding.buttonAdd.setOnClickListener{
+            //binding.myPagerView.setCurrentItem(3)
+            lifecycleScope.launch {
+                val intent = Intent(applicationContext, AddingTaskActivity::class.java)
+                startActivity(intent)
+            }
+
+        }
+
+
+//        binding.buttonHome.setOnFocusChangeListener { v, hasFocus ->
+//            if (hasFocus)
+//                binding.buttonHome.setColorFilter(R.color.green1)
+//        }
+
+
+
+        // menu boczne - mechanizm odpowiedzialny za wysuwanie
+        binding.apply {
+            toggle = ActionBarDrawerToggle(
+                this@MainActivity,
+                drawerLayout,
+                R.string.open,
+                R.string.close
+            )
+            drawerLayout.addDrawerListener(toggle)
+            toggle.syncState()
+
+            supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+            binding?.navigation?.setNavigationItemSelectedListener {
+                when (it.itemId) {
+                    R.id.item1 -> {
+                        Toast.makeText(this@MainActivity, "111", Toast.LENGTH_SHORT).show()
+                    }
+                    R.id.item2 -> {
+                        Toast.makeText(this@MainActivity, "222", Toast.LENGTH_SHORT).show()
+                    }
+                    R.id.item3 -> {
+                        Toast.makeText(this@MainActivity, "333", Toast.LENGTH_SHORT).show()
+                    }
+                }
+                true
+            }
+        }
+
+    }
+
+
+}
+
+
+
+// może mi się jeszcze przydać
+/*
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
@@ -133,3 +230,5 @@ class MainActivity : AppCompatActivity() {
     }
 
 }
+
+ */

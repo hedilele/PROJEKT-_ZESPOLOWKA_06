@@ -11,7 +11,7 @@ import kotlinx.coroutines.launch
 //Referencja do aplikacji
 class UserViewModel(application: Application): AndroidViewModel(application)
 {
-    private val readAllData: LiveData<List<Tasks>>
+    val readAllData: LiveData<List<Tasks>>
     private val repository: TaskRepository
 
     //To zawsze pierwsze bedzie sie wykonywalo kiedy callujemy UserViewModel
@@ -30,4 +30,5 @@ class UserViewModel(application: Application): AndroidViewModel(application)
             repository.addTask(tasks)
         }
     }
+
 }

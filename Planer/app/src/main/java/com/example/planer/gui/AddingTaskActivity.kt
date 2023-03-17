@@ -11,15 +11,13 @@ import android.view.View
 import android.view.View.OnFocusChangeListener
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
-import com.example.planer.DatabaseApp
+import androidx.lifecycle.ViewModelProvider
 import com.example.planer.MainActivity
 import com.example.planer.R
+import com.example.planer.UserViewModel
 import com.example.planer.databinding.ActivityAddingTaskBinding
 
 import com.example.planer.entities.Tasks
-import com.example.planer.habits.Habit
-import kotlinx.coroutines.launch
 import java.util.*
 
 
@@ -28,63 +26,28 @@ import java.util.*
 class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var binding: ActivityAddingTaskBinding
-
-    private var title: EditText? = null
-//    private var priority0: ImageView? = null
-//    private var priority1: ImageView? = null
-//    private var priority2: ImageView? = null
-//    private var priority3: ImageView? = null
-//
-//    private var urgent0: ImageView? = null
-//    private var urgent1: ImageView? = null
-//    private var urgent2: ImageView? = null
-//    private var urgent3: ImageView? = null
-
-    private var deadline_day: EditText? = null
-    private var deadline_month: EditText? = null
-    private var deadline_year: EditText? = null
-
-    private var deadline_hour: EditText? = null
-    private var deadline_minutes: EditText? = null
-
-    private var deadline_picker: ImageButton? = null
-    private var deadline_time_picker: ImageButton? = null
+    private lateinit var userViewModel: UserViewModel
 
 
-    private var note: EditText? = null
-    private var create: Button? = null
-    private var cancel: Button? = null
-
-    //calendar
-    val calendar = Calendar.getInstance()
-    val today_year = calendar.get(Calendar.YEAR)
-    val today_month = calendar.get(Calendar.MONTH)
-    val today_day = calendar.get(Calendar.DAY_OF_MONTH)
-    val today_hour = calendar.get(Calendar.HOUR_OF_DAY)
-    val today_minute = calendar.get((Calendar.MINUTE))
-    var date: String = ""
-    var time: String = ""
-
-    //global
+    // zmienne do stworzenia nowego tasku
     var important: Int = 0
     var urgent: Int = 0
     var type: Int = 0
     var duration: Int = 0
     var periodicity: Int = 0
     var note_txt: Int = 0
+    var date: String = ""
+    var time: String = ""
 
-    var tasksList: ArrayList<Habit>? = null
 
+    //calendar - pobranie aktualnego czasu
+    val calendar = Calendar.getInstance()
+    val today_year = calendar.get(Calendar.YEAR)
+    val today_month = calendar.get(Calendar.MONTH)
+    val today_day = calendar.get(Calendar.DAY_OF_MONTH)
+    val today_hour = calendar.get(Calendar.HOUR_OF_DAY)
+    val today_minute = calendar.get((Calendar.MINUTE))
 
-    lateinit var duration1: ImageView
-    lateinit var duration2: ImageView
-    lateinit var duration3: ImageView
-    lateinit var duration4: ImageView
-
-    lateinit var type1: ImageView
-    lateinit var type2: ImageView
-    lateinit var type3: ImageView
-    lateinit var type4: ImageView
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -95,42 +58,12 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
         setContentView(binding?.root)
 
 
-        title = findViewById(R.id.task_title)
-//        priority0 = findViewById(R.id.priority0)
-//        priority1 = findViewById(R.id.priority1)
-//        priority2 = findViewById(R.id.priority2)
-//        priority3 = findViewById(R.id.priority3)
+        // aktywowanie możliwości 'klikania' na obiekty
+        binding.btnCreate.setOnClickListener(this)
+        binding.btnCancel.setOnClickListener(this)
+        binding.btnDeadline.setOnClickListener(this)
+        binding.btnDeadlineTime.setOnClickListener(this)
 
-//        urgent0 = findViewById(R.id.urgent0)
-//        urgent1 = findViewById(R.id.urgent1)
-//        urgent2 = findViewById(R.id.urgent2)
-//        urgent3 = findViewById(R.id.urgent3)
-
-        deadline_day = findViewById(R.id.tv_deadline_d)
-        deadline_month = findViewById(R.id.tv_deadline_m)
-        deadline_year = findViewById(R.id.tv_deadline_y)
-
-        deadline_hour = findViewById(R.id.tv_deadline_h)
-        deadline_minutes = findViewById(R.id.tv_deadline_min)
-
-        deadline_picker = findViewById(R.id.btn_deadline)
-        deadline_time_picker = findViewById(R.id.btn_deadline_time)
-
-
-        note = findViewById(R.id.note)
-        create = findViewById(R.id.btn_create)
-        cancel = findViewById(R.id.btn_cancel)
-
-
-        create?.setOnClickListener(this)
-        cancel?.setOnClickListener(this)
-        deadline_picker?.setOnClickListener(this)
-        deadline_time_picker?.setOnClickListener(this)
-
-//        priority0?.setOnClickListener(this)
-//        priority1?.setOnClickListener(this)
-//        priority2?.setOnClickListener(this)
-//        priority3?.setOnClickListener(this)
 
         binding.important0.setOnClickListener(this)
         binding.important1.setOnClickListener(this)
@@ -142,30 +75,19 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
         binding.urgent2.setOnClickListener(this)
         binding.urgent3.setOnClickListener(this)
 
-        deadline_day?.setOnClickListener(this)
-        deadline_month?.setOnClickListener(this)
-        deadline_year?.setOnClickListener(this)
+        binding.tvDeadlineD.setOnClickListener(this)
+        binding.tvDeadlineM.setOnClickListener(this)
+        binding.tvDeadlineY.setOnClickListener(this)
 
-        duration1 = binding.duration1
-        duration2 = binding.duration2
-        duration3 = binding.duration3
-        duration4 = binding.duration4
+        binding.duration1.setOnClickListener(this)
+        binding.duration2.setOnClickListener(this)
+        binding.duration3.setOnClickListener(this)
+        binding.duration4.setOnClickListener(this)
 
-        duration1.setOnClickListener(this)
-        duration2.setOnClickListener(this)
-        duration3.setOnClickListener(this)
-        duration4.setOnClickListener(this)
-
-
-        type1 = binding.type1
-        type2 = binding.type2
-        type3 = binding.type3
-        type4 = binding.type4
-
-        type1.setOnClickListener(this)
-        type2.setOnClickListener(this)
-        type3.setOnClickListener(this)
-        type4.setOnClickListener(this)
+        binding.type1.setOnClickListener(this)
+        binding.type2.setOnClickListener(this)
+        binding.type3.setOnClickListener(this)
+        binding.type4.setOnClickListener(this)
 
         setDateBlocks(setUpDate(today_day, today_month, today_year))
         setTimeBlocks(setUpTime(today_hour, today_minute))
@@ -178,93 +100,93 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
 
         when (v?.id) {
 
+            // zmiana koloru przy wyborze
             R.id.duration1 -> {
                 uncheckDuration()
-                duration1.setColorFilter(getResources().getColor(R.color.hard_red));
+                binding.duration1.setColorFilter(getResources().getColor(R.color.hard_red));
                 duration = 0
             }
 
             R.id.duration2 -> {
                 uncheckDuration()
-                duration2.setColorFilter(getResources().getColor(R.color.hard_red));
+                binding.duration2.setColorFilter(getResources().getColor(R.color.hard_red));
                 duration = 1
             }
 
             R.id.duration3 -> {
                 uncheckDuration()
-                duration3.setColorFilter(getResources().getColor(R.color.hard_red));
+                binding.duration3.setColorFilter(getResources().getColor(R.color.hard_red));
                 duration = 2
             }
 
             R.id.duration4 -> {
                 uncheckDuration()
-                duration4.setColorFilter(getResources().getColor(R.color.hard_red));
+                binding.duration4.setColorFilter(getResources().getColor(R.color.hard_red));
                 duration = 3
             }
 
 
             R.id.type1 -> {
                 uncheckType()
-                type1.setColorFilter(getResources().getColor(R.color.hard_red));
+                binding.type1.setColorFilter(getResources().getColor(R.color.hard_red));
                 type = 0
             }
 
             R.id.type2 -> {
                 uncheckType()
-                type2.setColorFilter(getResources().getColor(R.color.hard_red));
+                binding.type2.setColorFilter(getResources().getColor(R.color.hard_red));
                 type = 1
             }
 
             R.id.type3 -> {
                 uncheckType()
-                type3.setColorFilter(getResources().getColor(R.color.hard_red));
+                binding.type3.setColorFilter(getResources().getColor(R.color.hard_red));
                 type = 2
             }
 
             R.id.type4 -> {
                 uncheckType()
-                type4.setColorFilter(getResources().getColor(R.color.hard_red));
+                binding.type4.setColorFilter(getResources().getColor(R.color.hard_red));
                 type = 3
             }
 
 
+            // pobieranie danych do stworzenia taska
             R.id.btn_create -> {
 
-                val tasksDAO = (application as DatabaseApp).db.tasksDAO()
+                //val tasksDAO = (application as DatabaseApp).db.tasksDAO()
                 //val intent = Intent(this, MainActivity::class.java)
 
-                var day: String = deadline_day?.text.toString()
+                var day: String = binding.tvDeadlineD.text.toString()
                 if (day == "") {
                     day = today_day.toString()
                 }       //????????????????? komunikat ze puste?
 
-                var month: String = deadline_month?.text.toString()
+                var month: String = binding.tvDeadlineM.text.toString()
                 if (month == "") {
                     month = today_month.toString()
                 }
 
-                var year: String = deadline_year?.text.toString()
+                var year: String = binding.tvDeadlineY.text.toString()
                 if (year == "") {
                     year = today_year.toString()
                 }
 
-                var hour: String = deadline_hour?.text.toString()
+                var hour: String = binding.tvDeadlineH.text.toString()
                 if (hour == "") {
                     hour = today_hour.toString()
                 }
 
-                var minute: String = deadline_day?.text.toString()
+                var minute: String = binding.tvDeadlineMin.text.toString()
                 if (minute == "") {
                     minute = today_minute.toString()
                 }
 
-                //?????????????? jak to zrobic
-
-
-                lifecycleScope.launch {
-                    tasksDAO.insert(
-                        Tasks(
-                            title = title?.text.toString(),
+                // podłączenie się do bazy i dodanie do niej taska
+                userViewModel = ViewModelProvider(this).get(UserViewModel::class.java)
+                userViewModel.addTask(
+                    Tasks(
+                            title = binding.taskTitle.text.toString(),
                             importance = 0,           //???????????????
 
                             /*TODO uwzględnienie pilności w bazie (nieobowiązkowe)*/
@@ -282,9 +204,7 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
                             urgency = 0
                         )
                     )
-                    Toast.makeText(applicationContext, "record saved", Toast.LENGTH_SHORT).show()
-                }
-
+                Toast.makeText(applicationContext, "record saved", Toast.LENGTH_SHORT).show()
 
                 //startActivity(intent)
                 finish()
@@ -380,7 +300,7 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-
+    // formatowanie daty
     fun setUpDate(d: Int, m: Int, y: Int): String {
         var month = m.toString()
         var day = d.toString()
@@ -391,13 +311,15 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
         return "$day.$month.$y"
     }
 
+    // wpisanie aktualnej daty do pól w tworzeniu tasków - takie ustalenie domyślej daty przy tworzeniu
     fun setDateBlocks(date: String) {
         val table = date.split('.')
-        deadline_day?.setText(table[0])
-        deadline_month?.setText(table[1])
-        deadline_year?.setText(table[2])
+        binding.tvDeadlineD.setText(table[0])
+        binding.tvDeadlineM.setText(table[1])
+        binding.tvDeadlineY.setText(table[2])
     }
 
+    // formatowanie godziny
     fun setUpTime(h: Int, m: Int): String {
         var hour = h.toString()
         var minutes = m.toString()
@@ -408,25 +330,28 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
         return "$hour:$minutes"
     }
 
+
+    // wpisanie aktualnej godziny do pól w tworzeniu tasków - takie ustalenie domyślej godziny przy tworzeniu
     fun setTimeBlocks(date: String) {
         val table = date.split(':')
-        deadline_hour?.setText(table[0])
-        deadline_minutes?.setText(table[1])
+        binding.tvDeadlineH.setText(table[0])
+        binding.tvDeadlineMin.setText(table[1])
     }
 
 
+    // funkcja gromadząca większość ustawień (np. enterów)
     fun setEverything() {
 
-        deadline_day?.addTextChangedListener(object : TextWatcher {
+        binding.tvDeadlineD.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                deadline_minutes?.clearFocus()
-                deadline_hour?.clearFocus()
+                binding.tvDeadlineMin.clearFocus()
+                binding.tvDeadlineH.clearFocus()
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 if (s?.length!! > 1) {
 
-                    deadline_month?.requestFocus()
+                    binding.tvDeadlineM.requestFocus()
                 }
             }
 
@@ -434,17 +359,17 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
             }
         })
 
-        deadline_month?.addTextChangedListener(object : TextWatcher {
+        binding.tvDeadlineM.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                deadline_minutes?.clearFocus()
-                deadline_hour?.clearFocus()
+                binding.tvDeadlineMin.clearFocus()
+                binding.tvDeadlineH.clearFocus()
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
 
 
                 if (s?.length!! > 1) {
-                    deadline_year?.requestFocus()
+                    binding.tvDeadlineY.requestFocus()
                 }
             }
 
@@ -452,17 +377,16 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
             }
         })
 
-        deadline_year?.addTextChangedListener(object : TextWatcher {
+        binding.tvDeadlineY.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                deadline_minutes?.clearFocus()
-                deadline_hour?.clearFocus()
+                binding.tvDeadlineMin.clearFocus()
+                binding.tvDeadlineH.clearFocus()
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-
 
                 if (s?.length!! >= 4) {
-                    deadline_year?.clearFocus()
+                    binding.tvDeadlineY.clearFocus()
                 }
             }
 
@@ -470,17 +394,17 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
             }
         })
 
-        deadline_hour?.addTextChangedListener(object : TextWatcher {
+        binding.tvDeadlineH.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                deadline_year?.clearFocus()
-                deadline_month?.clearFocus()
-                deadline_day?.clearFocus()
+                binding.tvDeadlineY.clearFocus()
+                binding.tvDeadlineM.clearFocus()
+                binding.tvDeadlineD.clearFocus()
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
 
                 if (s?.length!! > 1) {
-                    deadline_minutes?.requestFocus()
+                    binding.tvDeadlineMin.requestFocus()
                 }
             }
 
@@ -488,18 +412,18 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
             }
         })
 
-        deadline_minutes?.addTextChangedListener(object : TextWatcher {
+        binding.tvDeadlineMin.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                deadline_year?.clearFocus()
-                deadline_month?.clearFocus()
-                deadline_day?.clearFocus()
+                binding.tvDeadlineY.clearFocus()
+                binding.tvDeadlineM.clearFocus()
+                binding.tvDeadlineD.clearFocus()
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
 
 
                 if (s?.length!! > 1) {
-                    deadline_minutes?.clearFocus()
+                    binding.tvDeadlineMin.clearFocus()
                 }
             }
 
@@ -603,92 +527,70 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
 
     fun setOnEnterKey() {
         // ustawienie limitu dlugosci wprowadzanych liczb
-        deadline_day?.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
+        binding.tvDeadlineD.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
             if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
 
-                deadline_day?.clearFocus()
-                deadline_month?.requestFocus()
-
-//                var d = deadline_day?.text.toString()
-//                if(d.trim().length > 0 && d.trim().length < 10)
-//                {
-//                    deadline_day?.setText("0$d")
-//                }
-//                else if(d.trim().length > 9 && d.trim().length < 32)
-//                {
-//                    deadline_day?.setText(d)
-//                }
-//                else
-//                {
-//                    deadline_day?.setText("01")
-//                }
+                binding.tvDeadlineD.clearFocus()
+                binding.tvDeadlineM.requestFocus()
 
                 return@OnKeyListener true
             }
             false
         })
 
-        deadline_month?.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
+        binding.tvDeadlineM.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
             if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
-                deadline_month?.clearFocus()
-                deadline_year?.requestFocus()
+                binding.tvDeadlineM.clearFocus()
+                binding.tvDeadlineY.requestFocus()
 
                 return@OnKeyListener true
             }
             false
         })
 
-        deadline_year?.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
+        binding.tvDeadlineY.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
             if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
 
-                deadline_year?.clearFocus()
+                binding.tvDeadlineY.clearFocus()
                 return@OnKeyListener true
             }
             false
         })
 
-        deadline_hour?.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
+        binding.tvDeadlineH.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
             if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
 
-                deadline_hour?.clearFocus()
-                deadline_minutes?.requestFocus()
+                binding.tvDeadlineH.clearFocus()
+                binding.tvDeadlineMin.requestFocus()
                 return@OnKeyListener true
             }
             false
         })
 
-        deadline_minutes?.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
+        binding.tvDeadlineMin.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
             if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
 
-                deadline_minutes?.clearFocus()
+                binding.tvDeadlineMin.clearFocus()
 
                 return@OnKeyListener true
             }
             false
         })
 
-//
-//        Listener(View.OnKeyListener { v, keyCode, event ->
-//            if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
-//                title?.clearFocus()
-//                return@OnKeyListener true
-//            }
-//            false
-//        })
     }
 
     fun setOnFocusChange() {
         // czyszczenie pola po nacisnieciu na nie
-        deadline_day?.setOnFocusChangeListener(OnFocusChangeListener { v, hasFocus ->
+        binding.tvDeadlineD.setOnFocusChangeListener(OnFocusChangeListener { v, hasFocus ->
             if (hasFocus) {
-                deadline_day?.text?.clear()
+                binding.tvDeadlineD.text?.clear()
             } else {
-                var tmp = deadline_day?.text.toString()
+                var tmp = binding.tvDeadlineD.text.toString()
                 if (tmp != "") {
                     if (tmp.toInt() >= 0 && tmp.toInt() < 10) {
-                        deadline_day?.setText("0" + tmp.toInt())
+                        binding.tvDeadlineD.setText("0" + tmp.toInt())
                     } else if (tmp.toInt() > 31) {
-                        deadline_day?.setText(
+                        binding.tvDeadlineD.setText(
                             setUpDate(
                                 today_day,
                                 today_month,
@@ -705,16 +607,16 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
             }
         })
 
-        deadline_month?.setOnFocusChangeListener(OnFocusChangeListener { v, hasFocus ->
+        binding.tvDeadlineM.setOnFocusChangeListener(OnFocusChangeListener { v, hasFocus ->
             if (hasFocus) {
-                deadline_month?.text?.clear()
+                binding.tvDeadlineM.text?.clear()
             } else {
-                var tmp = deadline_month?.text.toString()
+                var tmp = binding.tvDeadlineM.text.toString()
                 if (tmp != "") {
                     if (tmp.toInt() >= 0 && tmp.toInt() < 10) {
-                        deadline_month?.setText("0" + tmp.toInt())
+                        binding.tvDeadlineM.setText("0" + tmp.toInt())
                     } else if (tmp.toInt() > 12) {
-                        deadline_month?.setText(
+                        binding.tvDeadlineM.setText(
                             setUpDate(
                                 today_day,
                                 today_month,
@@ -725,23 +627,20 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
                     }
 
                 }
-//                else
-//                {
-//                    deadline_month?.setText(setUpDate(today_day, today_month, today_year).substring(3, 5))
-//                }
+
             }
         })
 
-        deadline_year?.setOnFocusChangeListener(OnFocusChangeListener { v, hasFocus ->
+        binding.tvDeadlineY.setOnFocusChangeListener(OnFocusChangeListener { v, hasFocus ->
             if (hasFocus) {
-                deadline_year?.text?.clear()
+                binding.tvDeadlineY.text?.clear()
             } else {
 
-                var tmp = deadline_year?.text.toString()
+                var tmp = binding.tvDeadlineY.text.toString()
                 if (tmp != "") {
                     if (tmp.toInt() < today_year - 2)       //????????????
                     {
-                        deadline_year?.setText(
+                        binding.tvDeadlineY.setText(
                             setUpDate(
                                 today_day,
                                 today_month,
@@ -752,25 +651,21 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
                     }
 
                 }
-//                else
-//                {
-//                    deadline_year?.setText(setUpDate(today_day, today_month, today_year).substring(6, 10))
-//                }
             }
         })
 
-        deadline_hour?.setOnFocusChangeListener(OnFocusChangeListener { v, hasFocus ->
+        binding.tvDeadlineH.setOnFocusChangeListener(OnFocusChangeListener { v, hasFocus ->
             if (hasFocus) {
-                deadline_hour?.text?.clear()
+                binding.tvDeadlineH.text?.clear()
             } else {
 
-                var tmp = deadline_hour?.text.toString()
+                var tmp = binding.tvDeadlineH.text.toString()
                 if (tmp != "") {
                     if (tmp.toInt() >= 0 && tmp.toInt() < 10) {
-                        deadline_hour?.setText("0" + tmp.toInt())
+                        binding.tvDeadlineH.setText("0" + tmp.toInt())
                     } else if (tmp.toInt() > 23)       //????????????
                     {
-                        deadline_hour?.setText(
+                        binding.tvDeadlineH.setText(
                             setUpTime(today_hour, today_minute).substring(
                                 0,
                                 2
@@ -780,25 +675,22 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
                     }
 
                 }
-//                else
-//                {
-//                    deadline_hour?.setText(setUpTime(today_hour, today_minute).substring(0,2))
-//                }
+
             }
 
         })
 
-        deadline_minutes?.setOnFocusChangeListener(OnFocusChangeListener { v, hasFocus ->
+        binding.tvDeadlineMin.setOnFocusChangeListener(OnFocusChangeListener { v, hasFocus ->
             if (hasFocus) {
-                deadline_minutes?.text?.clear()
+                binding.tvDeadlineMin.text?.clear()
             } else {
-                var tmp = deadline_minutes?.text.toString()
+                var tmp = binding.tvDeadlineMin.text.toString()
                 if (tmp != "") {
                     if (tmp.toInt() >= 0 && tmp.toInt() < 10) {
-                        deadline_minutes?.setText("0" + tmp.toInt())
+                        binding.tvDeadlineMin.setText("0" + tmp.toInt())
                     } else if (tmp.toInt() > 59)       //????????????
                     {
-                        deadline_minutes?.setText(
+                        binding.tvDeadlineMin.setText(
                             setUpTime(today_hour, today_minute).substring(
                                 3,
                                 5
@@ -807,15 +699,10 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
                     }
 
                 }
-//                else
-//                {
-//                    deadline_minutes?.setText(setUpTime(today_hour, today_minute).substring(3,5))
-//                }
+
             }
         })
 
 
     }
 }
-
-// Toast.makeText(this, "nic", Toast.LENGTH_SHORT).show()
