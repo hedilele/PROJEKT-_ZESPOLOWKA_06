@@ -20,7 +20,7 @@ class Adapter(
         val title = binding.taskTitle
         //val priority = binding.taskBox
         //TODO ZMIENIAM
-        val importance = binding.priority
+        //val importance = binding.priority
         val deadline = binding.taskDate
         val trash = binding.trash
 
@@ -43,6 +43,7 @@ class Adapter(
         holder.title.text = item.title
         holder.deadline.text = item.deadline
 
+        /*
         when (item.importance) {
             0 -> holder.importance?.setBackgroundColor(
                 ContextCompat.getColor(
@@ -69,6 +70,8 @@ class Adapter(
                 )
             )
         }
+
+         */
 
 
         holder.trash.setOnClickListener {

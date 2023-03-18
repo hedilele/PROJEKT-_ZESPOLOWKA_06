@@ -14,4 +14,14 @@ class TaskRepository(private val tasksDAO: TasksDAO)
         tasksDAO.insert(tasks)
     }
 
+    suspend fun deleteTask(tasks: Tasks)
+    {
+        tasksDAO.delete(tasks)
+    }
+
+    suspend fun deleteTaskById(id: Int)
+    {
+        tasksDAO.delete(tasksDAO.findTaskById(id)[0])
+
+    }
 }

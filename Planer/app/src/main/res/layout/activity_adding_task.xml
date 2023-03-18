@@ -167,7 +167,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:src="@drawable/check_box_outline_blank_24"
+                    android:src="@drawable/icon_checkbox_empty"
                     app:tint="@color/green1"
                     />
 
@@ -176,7 +176,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:src="@drawable/check_box_outline_blank_24"
+                    android:src="@drawable/icon_checkbox_empty"
                     app:tint="@color/green1"
                     />
 
@@ -185,7 +185,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:src="@drawable/check_box_outline_blank_24"
+                    android:src="@drawable/icon_checkbox_empty"
                     app:tint="@color/green1"
                     />
 
@@ -194,7 +194,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:src="@drawable/check_box_outline_blank_24"
+                    android:src="@drawable/icon_checkbox_empty"
                     app:tint="@color/green1"
                     />
 
@@ -222,7 +222,7 @@
                 android:layout_height="wrap_content"
                 android:scaleY="2"
                 android:scaleX="2"
-                android:background="@drawable/calendar"
+                android:background="@drawable/icon_calendar"
                 android:backgroundTint="@color/black"
                 android:layout_gravity="center"
                 android:layout_margin = "5dp"
@@ -308,7 +308,7 @@
                 android:layout_height="wrap_content"
                 android:scaleY="2"
                 android:scaleX="2"
-                android:background="@drawable/clock"
+                android:background="@drawable/icon_clock"
                 android:backgroundTint="@color/black"
                 android:layout_gravity="center"
                 android:layout_margin = "5dp"
@@ -382,7 +382,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:src="@drawable/check_box_outline_blank_24"
+                    android:src="@drawable/icon_checkbox_empty"
                     app:tint="@color/green1" />
 
                 <ImageView
@@ -390,7 +390,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:src="@drawable/check_box_outline_blank_24"
+                    android:src="@drawable/icon_checkbox_empty"
                     app:tint="@color/green1" />
 
                 <ImageView
@@ -398,7 +398,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:src="@drawable/check_box_outline_blank_24"
+                    android:src="@drawable/icon_checkbox_empty"
                     app:tint="@color/green1" />
 
                 <ImageView
@@ -406,7 +406,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:src="@drawable/check_box_outline_blank_24"
+                    android:src="@drawable/icon_checkbox_empty"
                     app:tint="@color/green1" />
 
             </LinearLayout>

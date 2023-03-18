@@ -2,9 +2,8 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
+    id 'kotlin-android-extensions'
 }
-
-apply plugin: 'kotlin-android-extensions'
 
 
 android {
@@ -77,6 +76,7 @@ dependencies {
     implementation "androidx.room:room-ktx:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
 
+<<<<<<< HEAD
     implementation "org.jetbrains.kotlin:kotlin-stdlib:1.7.21"
 
     //Retrofit
@@ -127,4 +127,6 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
     androidTestImplementation "org.mockito:mockito-core:2.25.0"
+=======
+>>>>>>> 6cf5f6c (Dodanie sekcji na stronie głównej. Dodanie możliwości wybrania opcji w tasku.)
 }

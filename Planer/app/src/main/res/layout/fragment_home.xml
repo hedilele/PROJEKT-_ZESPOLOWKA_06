@@ -1,24 +1,96 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".gui.pages.HomeFragment"
     tools:ignore="MissingDefaultResource">
 
-        <LinearLayout
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/lista">
+            android:id="@+id/lista"
+            android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
 
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/task_list"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:listitem="@layout/single_task"
-            />
+                        <TextView
+                            android:id="@+id/today_title"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="30dp"
+                            android:text="DZIŚ"/>
 
-        </LinearLayout>
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/today_task_list"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            tools:listitem="@layout/single_task"
+                            />
 
-</FrameLayout>
+                        <TextView
+                            android:id="@+id/tomorrow_title"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="30dp"
+                            android:text="JUTRO"/>
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/tomorrow_task_list"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            tools:listitem="@layout/single_task"
+                            />
+
+                        <TextView
+                            android:id="@+id/week_title"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="30dp"
+                            android:text="DO KOŃCA TYGODNIA"/>
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/week_task_list"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            tools:listitem="@layout/single_task"
+                            />
+
+                        <TextView
+                            android:id="@+id/month_title"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="30dp"
+                            android:text="DO KOŃCA MIESIĄCA"/>
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/month_task_list"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            tools:listitem="@layout/single_task"
+                            />
+
+                        <TextView
+                            android:id="@+id/rest_title"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="30dp"
+                            android:text="CAŁA RESZTA"/>
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rest_task_list"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            tools:listitem="@layout/single_task"
+                            />
+
+                </LinearLayout>
+
+        </FrameLayout>
+
+</ScrollView>

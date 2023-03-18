@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/single_task"
+    android:layout_width="match_parent"
+    android:layout_height="90dp"
+    app:cardCornerRadius="10dp"
+    android:layout_margin="10dp"
+    android:orientation="vertical"
+    >
+    <LinearLayout
+        android:id="@+id/task_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:background="#e7cfbc"
+        >
+
+        <ImageView
+            android:id="@+id/trash"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:gravity="center"
+            android:layout_marginLeft="5dp"
+            android:background="@drawable/icon_checkbox_empty"
+            android:backgroundTint="#c38e70"
+            >
+        </ImageView>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_marginVertical="10dp"
+            android:layout_marginHorizontal="5dp"
+            >
+            <TextView
+                android:id="@+id/task_title"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.7"
+                android:background="#d69f7e"
+                android:gravity="center|left"
+                android:text="Przykladowy tytul"
+                >
+            </TextView>
+
+            <TextView
+                android:id="@+id/task_date"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.3"
+                android:background="#c38e70"
+                android:textSize="10dp"
+                android:text="przykladowa data 21.11.12"
+                android:gravity="bottom"
+                >
+            </TextView>
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="40dp"
+            android:layout_height="55dp"
+            android:textSize="40dp"
+            android:text="⋮"
+
+            android:textAlignment="center">
+
+        </TextView>
+
+    </LinearLayout>
+
+
+
+</androidx.cardview.widget.CardView>

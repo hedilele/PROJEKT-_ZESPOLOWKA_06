@@ -31,4 +31,20 @@ class UserViewModel(application: Application): AndroidViewModel(application)
         }
     }
 
+    fun deleteTask(tasks: Tasks)
+    {
+        viewModelScope.launch(Dispatchers.IO) //Odpali sie w oddzielnym watku w tle
+        {
+            repository.deleteTask(tasks)
+        }
+    }
+
+    fun deleteTaskById(id: Int)
+    {
+        viewModelScope.launch(Dispatchers.IO) //Odpali sie w oddzielnym watku w tle
+        {
+            repository.deleteTaskById(id)
+        }
+    }
+
 }
