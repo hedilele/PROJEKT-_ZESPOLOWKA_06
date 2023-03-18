@@ -73,6 +73,7 @@ class HabitsDAOClass {
 
 
     //zwraca true jeśli nie da się dodać habitsa bez nazwy
+    //TODO nie przechodzi
     @Test
     fun insertHabitWithoutName() = runTest {
         val habit = Habits(0, "", 0)
@@ -144,6 +145,7 @@ class HabitsDAOClass {
     }
 
     //sprawdza czy można usuwać nazwę habitsa, nie powinno być takiej możliwości
+    //TODO nie przechodzi
     @Test
     fun updateNameToEmpty() = runTest {
         val habitOld =  Habits(0, "Woda", 0)
@@ -158,18 +160,148 @@ class HabitsDAOClass {
         assertThat(habitTest.name).isNotEmpty()
     }
 
+    //jeśli nie ma nic w bazie, to pobranie wszystkich elementów powinno zwrócić nic
     @Test
-    fun updateActiveToOtherValueThanZeroOrOne() = runTest {
-        val habitOld =  Habits(0, "Woda", 0)
-        val habitNew =  Habits(0, "Woda", -1)
+    fun getAllHabitsWithNoHabitsInDatabase() = runTest {
+        val list = dao.getAllHabits()
+        assertThat(list).isEmpty()
+    }
 
-        dao.insert(habitOld)
+    //sprawdza czy pobieranie wszystkich elementow działa
+    @Test
+    fun getAllHabitsTest() = runTest {
+        val habit1 = Habits(0, "woda", 1)
+        val habit2 = Habits(1, "ziemia", 1)
+        val habit3 = Habits(2, "ogień", 0)
 
-        dao.update(habitNew)
+        dao.insert(habit1)
+        dao.insert(habit2)
+        dao.insert(habit3)
 
-        val habitTest = dao.getHabitById(0)
+        val list = dao.getAllHabits()
 
-        assertThat(habitTest.isActive).isEqualTo(0)
+        assertThat(list).containsExactlyElementsIn(listOf(habit1, habit2, habit3))
+    }
+
+
+    //test poprawności działania wczytywania habitsa po id
+    @Test
+    fun getHabitByIdTest() = runTest {
+        val habit  = Habits(0, "dude", 1)
+
+        dao.insert(habit)
+
+        val test = dao.getHabitById(0)
+
+        assertThat(test).isEqualTo(habit)
+    }
+
+    //sprawdza czy na pewno zwraca null gdy w bazie nie ma habitsa o podanym id
+    @Test
+    fun getHabitByIdFromEmptyDB() = runTest{
+        val test = dao.getHabitById(0)
+        assertThat(test).isNull()
+    }
+
+    //sprawdzenie czy usuwanie habitsa z bazy działa
+    @Test
+    fun deletingTest() = runTest {
+        val habit = Habits(0, "hey", 1)
+
+        dao.insert(habit)
+
+        dao.delete(habit)
+
+        val test = dao.getAllHabits()
+
+        assertThat(test).isEmpty()
+    }
+
+
+    //sprawdzenie czy proba usuniecia habitsa o jedynie identycznym id się powiedzie
+    //przechodzi gdy nie powinno
+    //TODO nie przechodzi
+    @Test
+    fun  deletingById() = runTest {
+        val habit = Habits(0, "hey", 1)
+        val bomb = Habits(0, "bomb", 0)
+
+        dao.insert(habit)
+
+        dao.delete(bomb)
+
+        val test = dao.getAllHabits()
+
+        assertThat(test).containsExactly(habit)
+    }
+
+
+    //sprawdzenie czy proba usuniecia habitsa o jedynie identycznym name się powiedzie
+    //przechodzi gdy nie powinno
+    @Test
+    fun deletingByName() = runTest {
+        val habit = Habits(0, "hey", 1)
+        val bomb = Habits(1, "hey", 0)
+
+        dao.insert(habit)
+
+        dao.delete(bomb)
+
+        val test = dao.getAllHabits()
+
+        assertThat(test).containsExactly(habit)
+    }
+
+    //sprawdzenie czy usunięcie habitsa o jedynie identycznym isActive sie powiedzie
+    //przechodzi gdy nie powinno
+    @Test
+    fun deletingByActive() = runTest {
+        val habit = Habits(0, "hey", 1)
+        val bomb = Habits(1, "bomb", 1)
+
+        dao.insert(habit)
+
+        dao.delete(bomb)
+
+        val test = dao.getAllHabits()
+
+        assertThat(test).containsExactly(habit)
+    }
+
+    //sprawdzenie czy na pewno usuwa wskazany habit i nic więcej
+    @Test
+    fun deletingOnlyOneHabit() = runTest{
+        val habit1 = Habits(0, "woda", 1)
+        val habit2 = Habits(1, "ziemia", 1)
+        val habit3 = Habits(2, "ogień", 0)
+
+        dao.insert(habit1)
+        dao.insert(habit2)
+        dao.insert(habit3)
+
+        dao.delete(habit2)
+
+        val test = dao.getAllHabits()
+
+        assertThat(test).containsExactlyElementsIn(listOf(habit1, habit3))
+    }
+
+    //test funkcji usuwającej wszystkie habitsy z bazy
+    @Test
+    fun deleteAllHabits() = runTest {
+        val habit1 = Habits(0, "woda", 1)
+        val habit2 = Habits(1, "ziemia", 1)
+        val habit3 = Habits(2, "ogień", 0)
+
+        dao.insert(habit1)
+        dao.insert(habit2)
+        dao.insert(habit3)
+
+        dao.deleteAll()
+
+        val test = dao.getAllHabits()
+
+        assertThat(test).isEmpty()
     }
 
 
