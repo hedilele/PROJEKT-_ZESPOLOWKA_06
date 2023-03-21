@@ -69,6 +69,20 @@ class TasksDAOClass {
         assertThat(result).isEqualTo(dbFlow)
     }
 
+    //Odczytywanie deadlinow z taskow
+    @Test
+    fun checkDeadlines() = runTest{
+        val task1 = Tasks(1, "common_task", 2, 2, "27-03-2023",  1, 1, 1, 1)
+        val task2 = Tasks(2, "common_task2", 2, 2, "30-03-2023",  1, 1, 1, 1)
+
+        dao.insert(task1)
+        dao.insert(task2)
+
+        val result = dao.readAllDeadlines()
+        var lista = listOf<String>("27-03-2023","30-03-2023")
+        assertThat(result).isEqualTo(lista)
+    }
+
 
     /*
 

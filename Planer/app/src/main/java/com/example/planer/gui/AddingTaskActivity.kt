@@ -14,7 +14,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.example.planer.MainActivity
 import com.example.planer.R
-import com.example.planer.UserViewModel
+import com.example.planer.TaskViewModel
 import com.example.planer.databinding.ActivityAddingTaskBinding
 
 import com.example.planer.entities.Tasks
@@ -26,7 +26,7 @@ import java.util.*
 class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var binding: ActivityAddingTaskBinding
-    private lateinit var userViewModel: UserViewModel
+    private lateinit var taskViewModel: TaskViewModel
 
 
     // zmienne do stworzenia nowego tasku
@@ -183,8 +183,8 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
                 }
 
                 // podłączenie się do bazy i dodanie do niej taska
-                userViewModel = ViewModelProvider(this).get(UserViewModel::class.java)
-                userViewModel.addTask(
+                taskViewModel = ViewModelProvider(this).get(TaskViewModel::class.java)
+                taskViewModel.addTask(
                     Tasks(
                             title = binding.taskTitle.text.toString(),
                             importance = 0,           //???????????????
@@ -202,6 +202,7 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
                             typeId = 0,
                             noteId = 0,
                             urgency = 0
+                            //date = ""
                         )
                     )
                 Toast.makeText(applicationContext, "record saved", Toast.LENGTH_SHORT).show()

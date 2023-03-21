@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey
 data class Calendar (
             @PrimaryKey(autoGenerate = true)
             @ColumnInfo(name = "id")
-            val id: Int,
+            val id: Long, //TODO poprawic Inty na Longi - w kazdej Entity
             @ColumnInfo("start_date")
             val startDate: String,
             @ColumnInfo("end_date")

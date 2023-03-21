@@ -2,18 +2,15 @@ package com.example.planer.gui.pages
 
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.planer.DAOs.TasksDAO
 import com.example.planer.R
-import com.example.planer.UserViewModel
+import com.example.planer.TaskViewModel
 import com.example.planer.databinding.FragmentHomeBinding
 import com.example.planer.entities.Tasks
 import com.example.planer.gui.AdapterTasks
@@ -26,7 +23,7 @@ class HomeFragment : Fragment() {
     // połączenie z xml
     private lateinit var binding: FragmentHomeBinding
 
-    private lateinit var userViewModel: UserViewModel
+    private lateinit var userViewModel: TaskViewModel
 
     // lista tasków do recyclerView
     var list = emptyList<Tasks>()
@@ -39,7 +36,7 @@ class HomeFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_home, container, false)
         binding = FragmentHomeBinding.inflate(layoutInflater)
 
-        userViewModel = ViewModelProvider(this).get(UserViewModel::class.java)
+        userViewModel = ViewModelProvider(this).get(TaskViewModel::class.java)
 
 
         // pobieranie danych z bazy i umieszczanie ich w recyclerView
@@ -63,7 +60,7 @@ class HomeFragment : Fragment() {
         rv2.layoutManager = LinearLayoutManager(requireContext())
 
 
-        userViewModel = ViewModelProvider(this).get(UserViewModel::class.java)
+        userViewModel = ViewModelProvider(this).get(TaskViewModel::class.java)
         userViewModel.readAllData.observe(viewLifecycleOwner, Observer {
             adapter.setData(it)
             adapter2.setData(it)

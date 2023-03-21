@@ -37,6 +37,9 @@ interface TasksDAO
     @Query("SELECT * FROM `tasks` WHERE id=:id")
     fun findTaskById(id:Int): List<Tasks>
 
+    @Query("SELECT datetime(deadline) FROM Tasks")
+    fun readAllDeadlines(): List<String> //Zeby zwracac pojedyncze kolumny to musimy uzyc typu prostego
+
     @Transaction
     @Query("SELECT * FROM Tasks WHERE id = :id")
     suspend fun getTaskAndFinished(id: Int) : List<TaskAndFinished>

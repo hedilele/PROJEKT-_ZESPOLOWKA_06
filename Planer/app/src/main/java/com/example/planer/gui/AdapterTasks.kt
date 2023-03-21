@@ -7,14 +7,10 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.AnimationUtils
 import androidx.cardview.widget.CardView
-import androidx.core.content.ContextCompat
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelStoreOwner
 import androidx.recyclerview.widget.RecyclerView
 import com.example.planer.R
-import com.example.planer.UserViewModel
+import com.example.planer.TaskViewModel
 import com.example.planer.entities.Tasks
 import kotlinx.android.synthetic.main.single_task.view.*
 
@@ -26,7 +22,7 @@ class AdapterTasks(
     ): RecyclerView.Adapter<AdapterTasks.ViewHolder>() {
 
     //var list = emptyList<Tasks>()
-    private lateinit var userViewModel: UserViewModel
+    private lateinit var userViewModel: TaskViewModel
 
     var pos: Tasks? = null
 

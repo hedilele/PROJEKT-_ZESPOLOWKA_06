@@ -5,19 +5,19 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import com.example.planer.DAOs.CalendarDAO
 import com.example.planer.DAOs.HabitsDAO
 import com.example.planer.DAOs.TasksDAO
-import com.example.planer.entities.Finished
-import com.example.planer.entities.Habits
-import com.example.planer.entities.Subtasks
-import com.example.planer.entities.Tasks
+import com.example.planer.entities.*
 
 //Update wersji + 11, jesli zmienimy baze danych, dodamy jakies itp
-@Database(entities = [Habits::class, Tasks::class, Finished::class, Subtasks::class,], version = 4)
-@TypeConverters(Converter::class)
+@Database(entities = [Habits::class, Tasks::class, Finished::class, Subtasks::class, Calendar::class], version = 5)
+@TypeConverters(DateConverter::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun habitsDAO() : HabitsDAO
     abstract fun tasksDAO() : TasksDAO
+
+    abstract fun calendarDAO() : CalendarDAO
 
     //TESTOWO
 

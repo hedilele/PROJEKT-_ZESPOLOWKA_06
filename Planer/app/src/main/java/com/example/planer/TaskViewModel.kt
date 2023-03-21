@@ -9,7 +9,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 //Referencja do aplikacji
-class UserViewModel(application: Application): AndroidViewModel(application)
+class TaskViewModel(application: Application): AndroidViewModel(application)
 {
     val readAllData: LiveData<List<Tasks>>
     private val repository: TaskRepository
@@ -44,6 +44,14 @@ class UserViewModel(application: Application): AndroidViewModel(application)
         viewModelScope.launch(Dispatchers.IO) //Odpali sie w oddzielnym watku w tle
         {
             repository.deleteTaskById(id)
+        }
+    }
+
+    fun readDeadlines()
+    {
+        viewModelScope.launch(Dispatchers.IO) //Odpali sie w oddzielnym watku w tle
+        {
+            repository.readAllDeadlines()
         }
     }
 

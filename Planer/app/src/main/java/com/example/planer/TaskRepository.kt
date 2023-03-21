@@ -24,4 +24,9 @@ class TaskRepository(private val tasksDAO: TasksDAO)
         tasksDAO.delete(tasksDAO.findTaskById(id)[0])
 
     }
+
+    fun readAllDeadlines()
+    {
+        tasksDAO.readAllDeadlines()
+    }
 }
