@@ -2,7 +2,7 @@ package com.example.planer.DAOs
 
 import androidx.room.*
 import com.example.planer.entities.Calendar
-
+@Dao
 interface CalendarDAO
 {
     //Insertowanie do kalendarza wszystkich rzeczy
