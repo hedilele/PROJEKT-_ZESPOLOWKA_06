@@ -20,7 +20,7 @@ class DrawerFragmentTest{
 
         //funkcja odpala fragment
         launchFragmentInContainer<DrawerFragment>()
-        
+
         //onView(withId(R.id.)).check(matches(withText("drawer chyba")))
     }
 
