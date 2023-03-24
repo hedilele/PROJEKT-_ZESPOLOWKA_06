@@ -1,11 +1,13 @@
 package com.example.planer.DAOs
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
 import com.example.planer.AppDatabase
+import com.example.planer.entities.Finished
 import com.example.planer.entities.Habits
 import com.example.planer.entities.Tasks
 import com.example.planer.tasks.Task
@@ -14,11 +16,13 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.plus
 import kotlinx.coroutines.test.runTest
 import org.junit.After
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -54,19 +58,31 @@ class TasksDAOClass {
 
 
 
-    //jeżeli test przechodzi, to znaczy, że habit jest poprawnie dodawany i odczytywany z bazy
+    //jeżeli test przechodzi, to znaczy, że task jest poprawnie dodawany i odczytywany z bazy
     @Test
     fun insertTaskTest() = runTest{
 
-        val task = Tasks(1, "common_task", 2, 2, "27-03-2023",  1, 1, 1, 1)
+        val task = Tasks(1, "common_task", 1, 1, "27-03-2023",  1, 1, 1, 1)
 
         dao.insert(task)
 
-        val dbFlow = flowOf(listOf(task))
+        val result = dao.fetchAll().first()
+        assertEquals(1, result.size)
+        assertEquals(task, result[0])
+    }
 
-        val result = dao.fetchAll()
+    //przechodzi, jeśli nie da się insertować dwa razy tego samego taska
+    @Test
+    fun insertSameTaskTwice() = runTest {
+        val task = Tasks(1, "common_task", 1, 1, "27-03-2023",  1, 1, 1, 1)
 
-        assertThat(result).isEqualTo(dbFlow)
+        dao.insert(task)
+        dao.insert(task)
+
+
+        val result = dao.fetchAll().first()
+        assertEquals(1, result.size)
+        assertEquals(task, result[0])
     }
 
     //Odczytywanie deadlinow z taskow
@@ -79,293 +95,312 @@ class TasksDAOClass {
         dao.insert(task2)
 
         val result = dao.readAllDeadlines()
-        var lista = listOf<String>("27-03-2023","30-03-2023")
+        var lista = listOf("27-03-2023","30-03-2023")
         assertThat(result).isEqualTo(lista)
     }
 
 
-    /*
-
-    //sprawdzanie czy można dodać dwa habitsy o tym samym id
-    //przechodzi, jeśli nie można
+    //przechodzi, jeśli updatowanie Tasków działa
     @Test
-    fun insertSameIdTwice() = runTest {
-        val habit1 = Habits(0, "common_habit", 1)
-        val habit2 = Habits(0, "unusual_habit", 1)
-        val testList = listOf(habit1, habit2)
+    fun updateTask() = runTest {
+        val task = Tasks(1, "string", 0, 0, "24-03-2023", 1, 1, 1, 1)
 
-        dao.insert(habit1)
-        dao.insert(habit2)
+        dao.insert(task)
 
-        val trueList = dao.getAllHabits()
+        val task2 = Tasks(1, "real name", 1, 1, "30-03-2023", 0, 0, 0, 0)
 
-        assertThat(trueList).isNotEqualTo(testList)
+        dao.update(task2)
+
+        val task3 = Tasks(1, "fake name", 0, 1, "29-03-2023", 0, 0, 0, 0)
+
+        dao.update(task3)
+
+        val task4 = Tasks(1, "true task", 1, 0, "27-03-2023", 0, 0, 0, 0)
+
+        dao.update(task4)
+
+        val result = dao.fetchAll().first()
+
+        assertEquals(1, result.size)
+        assertEquals(task4, result[0])
     }
-     */
 
-    /*
 
-    //zwraca true jeśli nie da się dodać habitsa bez nazwy
+    //przechodzi, jeśli update się nie dokonał
     @Test
-    fun insertHabitWithoutName() = runTest {
-        val habit = Habits(0, "", 0)
+    fun updateNotExistingTask() = runTest {
+        val task = Tasks(1, "string", 0, 0, "24-03-2023", 1, 1, 1, 1)
 
-        dao.insert(habit)
+        dao.insert(task)
 
-        val test = dao.getHabitById(0)
+        val task4 = Tasks(2, "true task", 1, 0, "27-03-2023", 0, 0, 0, 0)
 
-        assertThat(habit).isNotEqualTo(test)
+        dao.update(task4)
+
+        val result = dao.fetchAll().first()
+
+        assertEquals(1, result.size)
+        assertEquals(task, result[0])
     }
-        */
-    /*
 
-    //sprawdza czy dao poprawnie updatuje habitsa
-    //test przechodzi gdy pobrany po id habit jest taki jaki powinien byc po zaktualizowaniu
+    //przechodzi, jeśli usuwanie tasków działa
     @Test
-    fun updateFirstTest() = runTest {
-        val habitOld =  Habits(0, "Woda", 0)
-        val habitNew =  Habits(0, "Ziemia", 1)
+    fun deleteTest() = runTest {
 
-        dao.insert(habitOld)
+        val task = Tasks(1, "string", 0, 0, "24-03-2023", 1, 1, 1, 1)
 
-        dao.update(habitNew)
+        dao.insert(task)
 
-        val habitTest = dao.getHabitById(0)
+        dao.delete(task)
 
-        assertThat(habitTest).isEqualTo(habitNew)
+        val result = dao.fetchAll().first()
+
+        assertEquals(0, result.size)
     }
-        */
-    /*
 
-    //sprawdza czy na pewno habit jest updatowany, czy nie dodaje drugiego o takim samym id
+
+    //sprawdzenie, czy rzeczywiście delete usuwa taska, który został podany w argumencie funkcji...
+    //...czy tylko patrzy na ID
+    //nie przechodzi, jeśli delete usuwa po samym ID (mimo podawania całego Taska)
+    //TODO nie przechodzi
     @Test
-    fun updateSecondTest() = runTest {
-        val habitOld =  Habits(0, "Woda", 0)
-        val habitNew =  Habits(0, "Ziemia", 1)
+    fun deleteByID() = runTest {
+        val task = Tasks(1, "string", 0, 0, "24-03-2023", 1, 1, 1, 1)
 
-        dao.insert(habitOld)
+        dao.insert(task)
 
-        dao.update(habitNew)
+        val taskD = Tasks(1, "integer", 1, 1, "23-02-2022", 0, 0, 0, 0)
 
-        val list = dao.getAllHabits()
+        dao.delete(taskD)
 
-        assertThat(list).containsExactly(habitNew)
+        val result = dao.fetchAll().first()
+
+        assertEquals(1, result.size)
+        assertEquals(task, result[0])
     }
-        */
-    /*
 
-    //test przechodzi, gdy updatowanie habita, który nie istnieje nic nie zmienia
+    //sprawdzenie, czy rzeczywiście delete usuwa taska, który został podany w argumencie funkcji...
+    //...czy tylko patrzy na Title
+    //nie przechodzi, jeśli delete usuwa po samym Title (mimo podawania całego Taska)
     @Test
-    fun updateDoesNotExitingHabit() = runTest {
-        val habitOld =  Habits(0, "Woda", 0)
-        val habitNew =  Habits(1, "Ziemia", 1)
+    fun deleteByTitle() = runTest {
+        val task = Tasks(1, "string", 0, 0, "24-03-2023", 1, 1, 1, 1)
 
-        dao.insert(habitOld)
+        dao.insert(task)
 
-        dao.update(habitNew)
+        val taskD = Tasks(2, "string", 1, 1, "23-02-2022", 0, 0, 0, 0)
 
-        val habitTest = dao.getHabitById(1)
+        dao.delete(taskD)
 
-        assertThat(habitTest).isNull()
+        val result = dao.fetchAll().first()
+
+        assertEquals(1, result.size)
+        assertEquals(task, result[0])
     }
-        */
-    /*
 
-    //test przechodzi, gdy updatowanie habita, który nie istnieje nic nie zmienia
-    //i w tym czasie baza jest pusta
+    //sprawdzenie, czy rzeczywiście delete usuwa taska, który został podany w argumencie funkcji...
+    //...czy tylko patrzy na Importance
+    //nie przechodzi, jeśli delete usuwa po samym Importance (mimo podawania całego Taska)
     @Test
-    fun updateDoesNotExitingHabitWithEmptyDB() = runTest {
-        val habitNew =  Habits(0, "Ziemia", 1)
+    fun deleteByImportance() = runTest {
+        val task = Tasks(1, "string", 0, 0, "24-03-2023", 1, 1, 1, 1)
 
-        dao.update(habitNew)
+        dao.insert(task)
 
-        val habitTest = dao.getHabitById(0)
+        val taskD = Tasks(2, "integer", 0, 1, "23-02-2022", 0, 0, 0, 0)
 
-        assertThat(habitTest).isNull()
+        dao.delete(taskD)
+
+        val result = dao.fetchAll().first()
+
+        assertEquals(1, result.size)
+        assertEquals(task, result[0])
     }
-        */
-    /*
 
-    //sprawdza czy można usuwać nazwę habitsa, nie powinno być takiej możliwości
+    //sprawdzenie, czy rzeczywiście delete usuwa taska, który został podany w argumencie funkcji...
+    //...czy tylko patrzy na Urgency
+    //nie przechodzi, jeśli delete usuwa po samym Urgency (mimo podawania całego Taska)
     @Test
-    fun updateNameToEmpty() = runTest {
-        val habitOld =  Habits(0, "Woda", 0)
-        val habitNew =  Habits(0, "", 0)
+    fun deleteByUrgency() = runTest {
+        val task = Tasks(1, "string", 0, 0, "24-03-2023", 1, 1, 1, 1)
 
-        dao.insert(habitOld)
+        dao.insert(task)
 
-        dao.update(habitNew)
+        val taskD = Tasks(2, "integer", 1, 0, "23-02-2022", 0, 0, 0, 0)
 
-        val habitTest = dao.getHabitById(0)
+        dao.delete(taskD)
 
-        assertThat(habitTest.name).isNotEmpty()
+        val result = dao.fetchAll().first()
+
+        assertEquals(1, result.size)
+        assertEquals(task, result[0])
     }
-        */
-    /*
 
-    //jeśli nie ma nic w bazie, to pobranie wszystkich elementów powinno zwrócić nic
+    //sprawdzenie, czy rzeczywiście delete usuwa taska, który został podany w argumencie funkcji...
+    //...czy tylko patrzy na Deadline
+    //nie przechodzi, jeśli delete usuwa po samym Deadline (mimo podawania całego Taska)
     @Test
-    fun getAllHabitsWithNoHabitsInDatabase() = runTest {
-        val list = dao.getAllHabits()
-        assertThat(list).isEmpty()
-    }
-        */
-    /*
+    fun deleteByDeadline() = runTest {
+        val task = Tasks(1, "string", 0, 0, "24-03-2023", 1, 1, 1, 1)
 
-    //sprawdza czy pobieranie wszystkich elementow działa
+        dao.insert(task)
+
+        val taskD = Tasks(2, "integer", 1, 1, "24-03-2023", 0, 0, 0, 0)
+
+        dao.delete(taskD)
+
+        val result = dao.fetchAll().first()
+
+        assertEquals(1, result.size)
+        assertEquals(task, result[0])
+    }
+
+    //sprawdzenie, czy rzeczywiście delete usuwa taska, który został podany w argumencie funkcji...
+    //...czy tylko patrzy na TimeToFinish
+    //nie przechodzi, jeśli delete usuwa po samym TimeToFinish (mimo podawania całego Taska)
     @Test
-    fun getAllHabitsTest() = runTest {
-        val habit1 = Habits(0, "woda", 1)
-        val habit2 = Habits(1, "ziemia", 1)
-        val habit3 = Habits(2, "ogień", 0)
+    fun deleteByTimeToFinish() = runTest {
+        val task = Tasks(1, "string", 0, 0, "24-03-2023", 1, 1, 1, 1)
 
-        dao.insert(habit1)
-        dao.insert(habit2)
-        dao.insert(habit3)
+        dao.insert(task)
 
-        val list = dao.getAllHabits()
+        val taskD = Tasks(2, "dude", 1, 1, "23-02-2022", 1, 0, 0, 0)
 
-        assertThat(list).containsExactlyElementsIn(listOf(habit1, habit2, habit3))
+        dao.delete(taskD)
+
+        val result = dao.fetchAll().first()
+
+        assertEquals(1, result.size)
+        assertEquals(task, result[0])
     }
-        */
 
-    /*
-
-    //test poprawności działania wczytywania habitsa po id
+    //sprawdzenie, czy rzeczywiście delete usuwa taska, który został podany w argumencie funkcji...
+    //...czy tylko patrzy na IsActive
+    //nie przechodzi, jeśli delete usuwa po samym IsActive (mimo podawania całego Taska)
     @Test
-    fun getHabitByIdTest() = runTest {
-        val habit  = Habits(0, "dude", 1)
+    fun deleteByIsActive() = runTest {
+        val task = Tasks(1, "string", 0, 0, "24-03-2023", 1, 1, 1, 1)
 
-        dao.insert(habit)
+        dao.insert(task)
 
-        val test = dao.getHabitById(0)
+        val taskD = Tasks(2, "integer", 1, 1, "23-02-2022", 0, 1, 0, 0)
 
-        assertThat(test).isEqualTo(habit)
+        dao.delete(taskD)
+
+        val result = dao.fetchAll().first()
+
+        assertEquals(1, result.size)
+        assertEquals(task, result[0])
     }
-        */
-    /*
 
-    //sprawdza czy na pewno zwraca null gdy w bazie nie ma habitsa o podanym id
+    //sprawdzenie, czy rzeczywiście delete usuwa taska, który został podany w argumencie funkcji...
+    //...czy tylko patrzy na TypeID
+    //nie przechodzi, jeśli delete usuwa po samym TypeID (mimo podawania całego Taska)
     @Test
-    fun getHabitByIdFromEmptyDB() = runTest{
-        val test = dao.getHabitById(0)
-        assertThat(test).isNull()
-    }
-        */
-    /*
+    fun deleteByTypeId() = runTest {
+        val task = Tasks(1, "string", 0, 0, "24-03-2023", 1, 1, 1, 1)
 
-    //sprawdzenie czy usuwanie habitsa z bazy działa
+        dao.insert(task)
+
+        val taskD = Tasks(2, "title", 1, 1, "23-02-2022", 0, 0, 1, 0)
+
+        dao.delete(taskD)
+
+        val result = dao.fetchAll().first()
+
+        assertEquals(1, result.size)
+        assertEquals(task, result[0])
+    }
+
+    //sprawdzenie, czy rzeczywiście delete usuwa taska, który został podany w argumencie funkcji...
+    //...czy tylko patrzy na NoteID
+    //nie przechodzi, jeśli delete usuwa po samym NoteID (mimo podawania całego Taska)
     @Test
-    fun deletingTest() = runTest {
-        val habit = Habits(0, "hey", 1)
+    fun deleteByNoteId() = runTest {
+        val task = Tasks(1, "string", 0, 0, "24-03-2023", 1, 1, 1, 1)
 
-        dao.insert(habit)
+        dao.insert(task)
 
-        dao.delete(habit)
+        val taskD = Tasks(2, "title", 1, 1, "23-02-2022", 0, 0, 0, 1)
 
-        val test = dao.getAllHabits()
+        dao.delete(taskD)
 
-        assertThat(test).isEmpty()
+        val result = dao.fetchAll().first()
+
+        assertEquals(1, result.size)
+        assertEquals(task, result[0])
     }
-        */
 
-    /*
 
-    //sprawdzenie czy proba usuniecia habitsa o jedynie identycznym id się powiedzie
-    //przechodzi gdy nie powinno
+    //sprawdzenie czy działa odczytywanie wielu danych przy pomocy fetchAll()
     @Test
-    fun  deletingById() = runTest {
-        val habit = Habits(0, "hey", 1)
-        val bomb = Habits(0, "bomb", 0)
+    fun fetchAllTest() = runTest {
+        val task = Tasks(1, "string", 0, 0, "24-03-2023", 1, 1, 1, 1)
+        val task1 = Tasks(2, "string2", 0, 0, "24-03-2023", 1, 1, 1, 1)
+        val task2 = Tasks(3, "string3", 0, 0, "24-03-2023", 1, 1, 1, 1)
 
-        dao.insert(habit)
+        dao.insert(task)
+        dao.insert(task1)
+        dao.insert(task2)
 
-        dao.delete(bomb)
+        val result = dao.fetchAll().first()
 
-        val test = dao.getAllHabits()
-
-        assertThat(test).containsExactly(habit)
+        assertEquals(3, result.size)
+        assertEquals(task, result[0])
+        assertEquals(task1, result[1])
+        assertEquals(task2, result[2])
     }
-        */
 
-    /*
-
-    //sprawdzenie czy proba usuniecia habitsa o jedynie identycznym name się powiedzie
-    //przechodzi gdy nie powinno
+    //sprawdzenie czy działa odczytywanie wielu danych przy pomocy readAllData()
     @Test
-    fun deletingByName() = runTest {
-        val habit = Habits(0, "hey", 1)
-        val bomb = Habits(1, "hey", 0)
+    fun readAllDataTest() = runTest {
+        val task = Tasks(1, "string", 0, 0, "24-03-2023", 1, 1, 1, 1)
+        val task1 = Tasks(2, "string2", 0, 0, "24-03-2023", 1, 1, 1, 1)
+        val task2 = Tasks(3, "string3", 0, 0, "24-03-2023", 1, 1, 1, 1)
 
-        dao.insert(habit)
+        dao.insert(task)
+        dao.insert(task1)
+        dao.insert(task2)
 
-        dao.delete(bomb)
+        val tasksLiveData = dao.readAllData()
 
-        val test = dao.getAllHabits()
-
-        assertThat(test).containsExactly(habit)
+        val observer = Observer<List<Tasks>> { tasks ->
+            assertEquals(3, tasks.size)
+            assertEquals(task, tasks[0])
+            assertEquals(task1, tasks[1])
+            assertEquals(task2, tasks[2])
+        }
     }
-        */
-    /*
 
-    //sprawdzenie czy usunięcie habitsa o jedynie identycznym isActive sie powiedzie
-    //przechodzi gdy nie powinno
+    //przechodzi, jeśli istniejący task o podanym id został pobrany z bazy
     @Test
-    fun deletingByActive() = runTest {
-        val habit = Habits(0, "hey", 1)
-        val bomb = Habits(1, "bomb", 1)
+    fun findByTaskID_taskExists() = runTest {
+        val task = Tasks(1, "string", 0, 0, "24-03-2023", 1, 1, 1, 1)
+        val task1 = Tasks(2, "string2", 0, 0, "24-03-2023", 1, 1, 1, 1)
+        val task2 = Tasks(3, "string3", 0, 0, "24-03-2023", 1, 1, 1, 1)
 
-        dao.insert(habit)
+        dao.insert(task)
+        dao.insert(task1)
+        dao.insert(task2)
 
-        dao.delete(bomb)
+        val result = dao.findTaskById(2).last()
 
-        val test = dao.getAllHabits()
-
-        assertThat(test).containsExactly(habit)
+        assertThat(result).isEqualTo(task1)
     }
-        */
-    /*
 
-    //sprawdzenie czy na pewno usuwa wskazany habit i nic więcej
+    //przechodzi, jeśli żaden task nie został pobrany z bazy
     @Test
-    fun deletingOnlyOneHabit() = runTest{
-        val habit1 = Habits(0, "woda", 1)
-        val habit2 = Habits(1, "ziemia", 1)
-        val habit3 = Habits(2, "ogień", 0)
+    fun findByTaskID_taskNotExists() = runTest {
+        val task = Tasks(1, "string", 0, 0, "24-03-2023", 1, 1, 1, 1)
+        val task2 = Tasks(3, "string3", 0, 0, "24-03-2023", 1, 1, 1, 1)
 
-        dao.insert(habit1)
-        dao.insert(habit2)
-        dao.insert(habit3)
+        dao.insert(task)
+        dao.insert(task2)
 
-        dao.delete(habit2)
+        val result = dao.findTaskById(2)
 
-        val test = dao.getAllHabits()
-
-        assertThat(test).containsExactlyElementsIn(listOf(habit1, habit3))
+        assertThat(result).isEmpty()
     }
-        */
-    /*
-
-    //test funkcji usuwającej wszystkie habitsy z bazy
-    @Test
-    fun deleteAllHabits() = runTest {
-        val habit1 = Habits(0, "woda", 1)
-        val habit2 = Habits(1, "ziemia", 1)
-        val habit3 = Habits(2, "ogień", 0)
-
-        dao.insert(habit1)
-        dao.insert(habit2)
-        dao.insert(habit3)
-
-        dao.deleteAll()
-
-        val test = dao.getAllHabits()
-
-        assertThat(test).isEmpty()
-    }
-        */
-
-
 
 
 }
