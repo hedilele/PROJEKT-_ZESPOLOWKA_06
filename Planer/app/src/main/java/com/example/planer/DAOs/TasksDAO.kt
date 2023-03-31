@@ -28,11 +28,23 @@ interface TasksDAO
     @Delete
     suspend fun delete(tasks: Tasks)
 
+    //usuwanie taska po id
+    @Query("DELETE FROM Tasks WHERE id=:id")
+    suspend fun deleteById(id: Long)
+
+    //@Query("SELECT * FROM Tasks WHERE strftime('%d-%m-%Y', deadline) = strftime('%d-%m-%Y', 'now')")
+    @Query("SELECT * FROM Tasks WHERE deadline = '31-03-2023'")
+    suspend fun getCurrentDays(): List<Tasks>
+
+
     @Query("SELECT * FROM `tasks`")
     fun fetchAll(): Flow<List<Tasks>>
 
     @Query("SELECT * FROM Tasks ORDER BY id ASC")
     fun readAllData(): LiveData<List<Tasks>>
+
+    @Query("SELECT * FROM Tasks ORDER BY title DESC")
+    fun readAllDataWithFilter(): List<Tasks>
 
     @Query("SELECT * FROM `tasks` WHERE id=:id")
     fun findTaskById(id:Int): List<Tasks>

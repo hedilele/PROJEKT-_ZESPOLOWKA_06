@@ -183,7 +183,8 @@ class TasksDAOClass {
 
         val taskD = Tasks(1, "integer", 1, 1, "23-02-2022", 0, 0, 0, 0)
 
-        dao.delete(taskD)
+        //Tak jak w Habits, dodalem do Dao nowy Queries do usuwania po samym id
+        dao.deleteById(1)
 
         val result = dao.fetchAll().first()
 
@@ -412,6 +413,39 @@ class TasksDAOClass {
         val result = dao.findTaskById(2)
 
         assertThat(result).isEmpty()
+    }
+
+    //Czytanie Taskow po przefiltrowaniu
+    @Test
+    fun readAllDataAsc() = runTest {
+        val task = Tasks(1, "bac", 0, 0, "30-03-2023", 1, 1, 1, 1)
+        val task2 = Tasks(2, "cab", 0, 0, "24-03-2023", 1, 1, 1, 1)
+        val task3 = Tasks(3, "aac", 0, 0, "27-03-2023", 1, 1, 1, 1)
+
+        dao.insert(task)
+        dao.insert(task2)
+        dao.insert(task3)
+
+        val result = dao.readAllDataWithFilter()
+        val exp = dao.readAllData();
+
+        assertThat(exp).isNotEqualTo(result)
+    }
+
+    @Test
+    fun getCurrentDays() = runTest {
+        val task = Tasks(1, "bac", 0, 0, "31-03-2023", 1, 1, 1, 1)
+        val task2 = Tasks(2, "cab", 0, 0, "31-03-2023", 1, 1, 1, 1)
+        val task3 = Tasks(3, "aac", 0, 0, "27-03-2023", 1, 1, 1, 1)
+
+        dao.insert(task)
+        dao.insert(task2)
+        dao.insert(task3)
+
+        val result = dao.getCurrentDays()
+        val act = dao.readAllData()
+
+        assertThat(result).isEqualTo(act)
     }
 
 
