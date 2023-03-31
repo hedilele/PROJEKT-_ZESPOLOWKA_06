@@ -3,6 +3,7 @@ package com.example.planer.gui
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -38,6 +39,7 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
     var note_txt: Int = 0
     var date: String = ""
     var time: String = ""
+    var specyficDate: Int = 0   //0 - deadline, 1 - konkretyny dzien
 
 
     //calendar - pobranie aktualnego czasu
@@ -75,6 +77,9 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
         binding.tvDeadlineD.setOnClickListener(this)
         binding.tvDeadlineM.setOnClickListener(this)
         binding.tvDeadlineY.setOnClickListener(this)
+
+        binding.atThisDay.setOnClickListener(this)
+        binding.toThisDay.setOnClickListener(this)
 
         binding.duration1.setOnClickListener(this)
         binding.duration2.setOnClickListener(this)
@@ -171,6 +176,20 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
             }
 
 
+            R.id.at_this_day -> {
+                binding.toThisDay.setBackgroundColor(Color.TRANSPARENT)
+                binding.atThisDay.setBackgroundColor(getResources().getColor(R.color.green1))
+                specyficDate = 1
+            }
+
+            R.id.to_this_day -> {
+                binding.atThisDay.setBackgroundColor(Color.TRANSPARENT)
+                binding.toThisDay.setBackgroundColor(getResources().getColor(R.color.green1))
+
+                specyficDate = 0
+            }
+
+
             // pobieranie danych do stworzenia taska
             R.id.btn_create -> {
 
@@ -206,26 +225,26 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
                 taskViewModel = ViewModelProvider(this).get(TaskViewModel::class.java)
                 taskViewModel.addTask(
                     Tasks(
-                            title = binding.taskTitle.text.toString(),
-                            importance = 0,           //???????????????
+                        title = binding.taskTitle.text.toString(),
+                        importance = 0,           //???????????????
 
-                            /*TODO uwzględnienie pilności w bazie (nieobowiązkowe)*/
-                            //urgent = urgent,
+                        /*TODO uwzględnienie pilności w bazie (nieobowiązkowe)*/
+                        //urgent = urgent,
 
-                            deadline = setUpDate(
-                                day.toInt(),
-                                month.toInt(),
-                                year.toInt()
-                            ) + "  " + setUpTime(hour.toInt(), minute.toInt()),
-                            timeToFinish = 1,
-                            isActive = 0,
-                            typeId = 0,
-                            noteId = 0,
-                            urgency = 0
-                            //date = Calendar.getInstance().time //Ustawianie czasu na domyslny
-                            //date = null
-                        )
+                        deadline = setUpDate(
+                            day.toInt(),
+                            month.toInt(),
+                            year.toInt()
+                        ) + "  " + setUpTime(hour.toInt(), minute.toInt()),
+                        timeToFinish = 1,
+                        isActive = 0,
+                        typeId = 0,
+                        noteId = 0,
+                        urgency = 0
+                        //date = Calendar.getInstance().time //Ustawianie czasu na domyslny
+                        //date = null
                     )
+                )
                 Toast.makeText(applicationContext, "record saved", Toast.LENGTH_SHORT).show()
 
                 //startActivity(intent)
