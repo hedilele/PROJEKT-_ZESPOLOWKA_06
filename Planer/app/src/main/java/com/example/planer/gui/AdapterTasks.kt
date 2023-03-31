@@ -3,14 +3,16 @@ package com.example.planer.gui
 import android.transition.Slide
 import android.transition.Transition
 import android.transition.TransitionManager
-import android.view.Gravity
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import android.view.animation.AnimationUtils
+import android.widget.PopupMenu
 import androidx.cardview.widget.CardView
+import androidx.core.content.ContextCompat
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelStoreOwner
 import androidx.recyclerview.widget.RecyclerView
 import com.example.planer.R
-import com.example.planer.TaskViewModel
+import com.example.planer.UserViewModel
 import com.example.planer.entities.Tasks
 import kotlinx.android.synthetic.main.single_task.view.*
 
@@ -19,10 +21,10 @@ class AdapterTasks(
     var list: List<Tasks>,
     private val deleteListener: (id: Int) -> Unit,
     private val updateListener: (id: Int) -> Unit
-    ): RecyclerView.Adapter<AdapterTasks.ViewHolder>() {
+): RecyclerView.Adapter<AdapterTasks.ViewHolder>() {
 
     //var list = emptyList<Tasks>()
-    private lateinit var userViewModel: TaskViewModel
+    private lateinit var userViewModel: UserViewModel
 
     var pos: Tasks? = null
 
@@ -90,19 +92,20 @@ class AdapterTasks(
 
 
 
+/*
+        val popupMenu = PopupMenu(holder.itemView.context, holder.itemView.more_open)
 
-//        val popupMenu = PopupMenu(holder.itemView.context, holder.itemView.priority)
-//
-//        popupMenu.menu.add(Menu.NONE,0, 0, "edit")
-//        popupMenu.menu.add(Menu.NONE,1, 1, "add")
-//
-//
-//        holder.itemView.priority.setOnClickListener {
-//            popupMenu.show()
-//        }
+        popupMenu.menu.add(Menu.NONE,0, 0, "edit")
+        popupMenu.menu.add(Menu.NONE,1, 1, "add")
 
+
+        holder.itemView.more_open.setOnClickListener {
+            popupMenu.show()
+        }
+*/
 
         holder.itemView.name2.visibility = View.GONE
+
 
         holder.itemView.more_open.setOnClickListener {
 
