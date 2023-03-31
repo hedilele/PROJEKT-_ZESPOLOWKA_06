@@ -99,6 +99,18 @@ class TasksDAOClass {
         assertThat(result).isEqualTo(lista)
     }
 
+    /*
+    @Test
+    fun dateConversion() = runTest{
+        val task = Tasks(1,"task132",2,2,"10-04-2023",1,1,1,1)
+
+        dao.insert(task)
+
+
+        val
+    }
+     */
+
 
     //przechodzi, jeśli updatowanie Tasków działa
     @Test

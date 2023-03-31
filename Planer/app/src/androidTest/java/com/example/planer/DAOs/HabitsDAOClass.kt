@@ -82,7 +82,7 @@ class HabitsDAOClass {
 
         val test = dao.getHabitById(0)
 
-        assertThat(habit).isNotEqualTo(test)
+        assertThat(habit).isEqualTo(test);
     }
 
     //sprawdza czy dao poprawnie updatuje habitsa
@@ -224,15 +224,18 @@ class HabitsDAOClass {
     @Test
     fun  deletingById() = runTest {
         val habit = Habits(0, "hey", 1)
-        val bomb = Habits(0, "bomb", 0)
+        val bomb = Habits(1, "bomb", 0)
 
         dao.insert(habit)
 
-        dao.delete(bomb)
+        //dao.delete(bomb)
+        dao.insert(bomb)
+        dao.deleteById(1)
 
         val test = dao.getAllHabits()
 
         assertThat(test).containsExactly(habit)
+        //Dodalem osobna funkcje do Habits usuwajaca po samym id
     }
 
 

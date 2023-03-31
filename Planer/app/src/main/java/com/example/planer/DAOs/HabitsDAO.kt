@@ -26,6 +26,9 @@ interface HabitsDAO
     @Delete
     suspend fun delete(habits: Habits)
 
+    @Query("DELETE FROM Habits WHERE id=:id")
+    suspend fun deleteById(id: Long)
+
     //Usuwanie wszystkiego
     @Query("DELETE FROM habits")
     suspend fun deleteAll()
