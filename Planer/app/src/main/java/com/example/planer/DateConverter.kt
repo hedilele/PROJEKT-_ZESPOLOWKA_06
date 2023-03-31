@@ -1,20 +1,25 @@
 package com.example.planer
 
 import androidx.room.TypeConverter
-import java.util.Date
+import java.text.SimpleDateFormat
+import java.util.*
 
 class DateConverter
 {
     //Oficjalka z dokumentacji lekko przerobiona
     @TypeConverter
-    fun fromTimestamp(value: Long?): Date?
+    fun fromStringToDate(value: String?): Date?
     {
-        return value?.let { Date(it) }
+        return value?.let{
+            SimpleDateFormat("yyyy-mm-dd", Locale.getDefault()).parse(it)
+        }
     }
 
     @TypeConverter
-    fun dateToTimestamp(date: Date?): Long?
+    fun fromDateToString(date: Date?): String?
     {
-        return date?.time?.toLong()
+        return date?.let {
+            SimpleDateFormat("yyyy-mm-dd", Locale.getDefault()).format(it)
+        }
     }
 }

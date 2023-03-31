@@ -10,7 +10,7 @@ data class Habits(
     @ColumnInfo(name = "id")
     val id: Int?,
     @ColumnInfo(name = "name")
-    val name: String,
+    val name: String?,
     @ColumnInfo(name = "is_active")
     val isActive: Int //Boolean na Int przyjmuje 0 lub 1
 )
