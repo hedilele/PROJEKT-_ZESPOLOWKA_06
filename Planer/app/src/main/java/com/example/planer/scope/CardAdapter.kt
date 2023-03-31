@@ -13,7 +13,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
 import androidx.recyclerview.widget.RecyclerView
 import com.example.planer.R
-import com.example.planer.UserViewModel
+import com.example.planer.TaskViewModel
 import com.example.planer.entities.Tasks
 
 class CardAdapter(private val dataSet: LiveData<List<Tasks>>) :
