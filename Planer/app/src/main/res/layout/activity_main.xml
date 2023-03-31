@@ -19,7 +19,29 @@
             android:orientation="vertical">
 
 
-            <androidx.viewpager.widget.ViewPager
+            <LinearLayout
+                android:id="@+id/ll_ftagments"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="7"
+                >
+
+                <androidx.viewpager.widget.ViewPager
+                    android:id="@+id/pagerView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/appBarLa"
+                    >
+
+                </androidx.viewpager.widget.ViewPager>
+
+            </LinearLayout>
+
+<!--
+            <com.example.planer.gui.LockableViewPager
                 android:id="@+id/pagerView"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
@@ -29,8 +51,8 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/appBarLa"
                 >
-
-            </androidx.viewpager.widget.ViewPager>
+            </com.example.planer.gui.LockableViewPager>
+            -->
 
             <LinearLayout
                 android:layout_width="match_parent"

@@ -67,13 +67,10 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
 
         binding.important0.setOnClickListener(this)
         binding.important1.setOnClickListener(this)
-        binding.important2.setOnClickListener(this)
-        binding.important3.setOnClickListener(this)
+
 
         binding.urgent0.setOnClickListener(this)
         binding.urgent1.setOnClickListener(this)
-        binding.urgent2.setOnClickListener(this)
-        binding.urgent3.setOnClickListener(this)
 
         binding.tvDeadlineD.setOnClickListener(this)
         binding.tvDeadlineM.setOnClickListener(this)
@@ -83,6 +80,8 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
         binding.duration2.setOnClickListener(this)
         binding.duration3.setOnClickListener(this)
         binding.duration4.setOnClickListener(this)
+        binding.duration5.setOnClickListener(this)
+        binding.duration6.setOnClickListener(this)
 
         binding.type1.setOnClickListener(this)
         binding.type2.setOnClickListener(this)
@@ -103,50 +102,71 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
             // zmiana koloru przy wyborze
             R.id.duration1 -> {
                 uncheckDuration()
-                binding.duration1.setColorFilter(getResources().getColor(R.color.hard_red));
+                //binding.duration1.setColorFilter(getResources().getColor(R.color.hard_red));
+                binding.duration1.getBackground().setTint((getResources().getColor(R.color.hard_red)))
+
                 duration = 0
             }
 
             R.id.duration2 -> {
                 uncheckDuration()
-                binding.duration2.setColorFilter(getResources().getColor(R.color.hard_red));
+                //binding.duration2.setColorFilter(getResources().getColor(R.color.hard_red));
+                binding.duration2.getBackground().setTint((getResources().getColor(R.color.hard_red)))
+
                 duration = 1
             }
 
             R.id.duration3 -> {
                 uncheckDuration()
-                binding.duration3.setColorFilter(getResources().getColor(R.color.hard_red));
+                //binding.duration3.setColorFilter(getResources().getColor(R.color.hard_red));
+                binding.duration3.getBackground().setTint((getResources().getColor(R.color.hard_red)))
+
                 duration = 2
             }
 
             R.id.duration4 -> {
                 uncheckDuration()
-                binding.duration4.setColorFilter(getResources().getColor(R.color.hard_red));
+                //binding.duration4.setColorFilter(getResources().getColor(R.color.hard_red));
+                binding.duration4.getBackground().setTint((getResources().getColor(R.color.hard_red)))
+
                 duration = 3
             }
+
+            R.id.duration5 -> {
+                uncheckDuration()
+                binding.duration5.getBackground().setTint((getResources().getColor(R.color.hard_red)))
+                duration = 4
+            }
+
+            R.id.duration6 -> {
+                uncheckDuration()
+                binding.duration6.getBackground().setTint((getResources().getColor(R.color.hard_red)))
+                duration = 5
+            }
+
 
 
             R.id.type1 -> {
                 uncheckType()
-                binding.type1.setColorFilter(getResources().getColor(R.color.hard_red));
+                binding.type1.setColorFilter(getResources().getColor(R.color.hard_red))
                 type = 0
             }
 
             R.id.type2 -> {
                 uncheckType()
-                binding.type2.setColorFilter(getResources().getColor(R.color.hard_red));
+                binding.type2.setColorFilter(getResources().getColor(R.color.hard_red))
                 type = 1
             }
 
             R.id.type3 -> {
                 uncheckType()
-                binding.type3.setColorFilter(getResources().getColor(R.color.hard_red));
+                binding.type3.setColorFilter(getResources().getColor(R.color.hard_red))
                 type = 2
             }
 
             R.id.type4 -> {
                 uncheckType()
-                binding.type4.setColorFilter(getResources().getColor(R.color.hard_red));
+                binding.type4.setColorFilter(getResources().getColor(R.color.hard_red))
                 type = 3
             }
 
@@ -226,50 +246,29 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
 //                val priority_col_0 = (priority0?.getBackground() as GradientDrawable).mutate()
 //                (priority_col_0 as GradientDrawable).setColor(Color.argb(90,0,0,0))
 
-                binding.important0?.setImageResource(R.drawable.radio_checked)
+                binding.important0.setBackgroundColor(getResources().getColor(R.color.hard_red));
                 important = 0
 
             }
             R.id.important1 -> {
                 uncheckImportant()
-                binding.important1?.setImageResource(R.drawable.radio_checked)
+                binding.important1.setBackgroundColor(getResources().getColor(R.color.hard_red));
                 important = 1
             }
 
-            R.id.important2 -> {
-                uncheckImportant()
-                binding.important2?.setImageResource(R.drawable.radio_checked)
-                important = 2
-            }
-            R.id.important3 -> {
-                uncheckImportant()
-                binding.important3?.setImageResource(R.drawable.radio_checked)
-                important = 3
-            }
 
             R.id.urgent0 -> {
                 uncheckUrgent()
-                binding.urgent0?.setImageResource(R.drawable.radio_checked)
+                binding.urgent0.setBackgroundColor(getResources().getColor(R.color.hard_red));
                 urgent = 0
             }
 
             R.id.urgent1 -> {
                 uncheckUrgent()
-                binding.urgent1?.setImageResource(R.drawable.radio_checked)
+                binding.urgent1.setBackgroundColor(getResources().getColor(R.color.hard_red));
                 urgent = 1
             }
 
-            R.id.urgent2 -> {
-                uncheckUrgent()
-                binding.urgent2?.setImageResource(R.drawable.radio_checked)
-                urgent = 2
-            }
-
-            R.id.urgent3 -> {
-                uncheckUrgent()
-                binding.urgent3?.setImageResource(R.drawable.radio_checked)
-                urgent = 3
-            }
 
 
             R.id.btn_deadline -> {
@@ -470,19 +469,28 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
     fun uncheckDuration() {
         when (duration) {
             0 -> {
-                binding.duration1.setColorFilter(getResources().getColor(R.color.green1));
+                binding.duration1.getBackground().setTint((getResources().getColor(R.color.green1)))
             }
 
             1 -> {
-                binding.duration2.setColorFilter(getResources().getColor(R.color.green1));
+                binding.duration2.getBackground().setTint((getResources().getColor(R.color.green1)))
             }
 
             2 -> {
-                binding.duration3.setColorFilter(getResources().getColor(R.color.green1));
+                binding.duration3.getBackground().setTint((getResources().getColor(R.color.green1)))
             }
 
             3 -> {
-                binding.duration4.setColorFilter(getResources().getColor(R.color.green1));
+                binding.duration4.getBackground().setTint((getResources().getColor(R.color.green1)))
+            }
+
+            4 -> {
+                binding.duration5.getBackground().setTint((getResources().getColor(R.color.green1)))
+
+            }
+
+            5 -> {
+                binding.duration6.getBackground().setTint((getResources().getColor(R.color.green1)))
             }
         }
     }
@@ -493,16 +501,10 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
                 //val gradientDrawable = (priority0?.getBackground() as GradientDrawable).mutate()
                 //(gradientDrawable as GradientDrawable).setColor(Color.argb(0,0,0,0))
 
-                binding.important0?.setImageResource(R.drawable.radio_unchecked)
+                binding.important0.setBackgroundColor(getResources().getColor(R.color.easy_green))
             }
             1 -> {
-                binding.important1?.setImageResource(R.drawable.radio_unchecked)
-            }
-            2 -> {
-                binding.important2?.setImageResource(R.drawable.radio_unchecked)
-            }
-            3 -> {
-                binding.important3?.setImageResource(R.drawable.radio_unchecked)
+                binding.important1.setBackgroundColor(getResources().getColor(R.color.neutral_blue))
             }
         }
     }
@@ -513,17 +515,12 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
                 //val gradientDrawable = (priority0?.getBackground() as GradientDrawable).mutate()
                 //(gradientDrawable as GradientDrawable).setColor(Color.argb(0,0,0,0))
 
-                binding.urgent0?.setImageResource(R.drawable.radio_unchecked)
+                binding.urgent0.setBackgroundColor(getResources().getColor(R.color.easy_green));
             }
             1 -> {
-                binding.urgent1?.setImageResource(R.drawable.radio_unchecked)
+                binding.urgent1.setBackgroundColor(getResources().getColor(R.color.neutral_blue))
             }
-            2 -> {
-                binding.urgent2?.setImageResource(R.drawable.radio_unchecked)
-            }
-            3 -> {
-                binding.urgent3?.setImageResource(R.drawable.radio_unchecked)
-            }
+
         }
     }
 

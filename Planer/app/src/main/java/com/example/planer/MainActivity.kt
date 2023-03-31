@@ -1,20 +1,20 @@
 package com.example.planer
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.MenuItem
-import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.lifecycle.lifecycleScope
-import androidx.room.Room
+import androidx.viewpager.widget.ViewPager
 import com.example.planer.databinding.ActivityMainBinding
 import com.example.planer.gui.AddingTaskActivity
-import com.example.planer.gui.pages.HomeFragment
+import com.example.planer.gui.HideNextPage
 import com.example.planer.gui.pages.CalendarFragment
 import com.example.planer.gui.pages.DrawerFragment
+import com.example.planer.gui.pages.FilterFragment
+import com.example.planer.gui.pages.HomeFragment
 import kotlinx.coroutines.launch
 
 
@@ -25,48 +25,65 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var db : AppDatabase
 
-
     private lateinit var pagerAdapters: PagerAdapters
 
+    var byDrawer = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding?.root)
 
-
         //val db = Room.databaseBuilder(applicationContext, AppDatabase::class.java, "TOP.sqlite")
 
         // dodanie fragmentów do listy
         pagerAdapters = PagerAdapters(supportFragmentManager)
         pagerAdapters.addFragment(HomeFragment())
-        pagerAdapters.addFragment(DrawerFragment())
+        //pagerAdapters.addFragment(DrawerFragment())
         pagerAdapters.addFragment(CalendarFragment())
+        pagerAdapters.addFragment(FilterFragment())
 
         // przypisanie adaptera zajmującego się fragmentami do adaptera pagerView
         binding.pagerView.adapter = pagerAdapters
+
+
 
 
         // nawigacja - po kliknięciu na odpowiednią ikonę przenosi nas do danego fragmentu
         // strona główna (z recyclerView)
         binding.buttonHome.setOnClickListener{
             binding.pagerView.setCurrentItem(0)
+            byDrawer = 0
+            //możliwosc scrollowania wlaczona
+            binding.pagerView.setOnTouchListener { arg0, arg1 -> false }
+
         }
 
         // menu boczne - wysuwanie
         binding.buttonMenu.setOnClickListener{
             //binding.myPagerView.setCurrentItem(1)
             binding.drawerLayout.openDrawer(GravityCompat.START);
+            //byDrawer = 0
         }
 
         // kalendarz
         binding.buttonCalendar.setOnClickListener{
             binding.pagerView.setCurrentItem(2)
+
+            //możliwosc scrollowania wlaczona
+            binding.pagerView.setOnTouchListener { arg0, arg1 -> false }
+            byDrawer = 0
         }
 
         // dodanie tasków - przekierowanie do nowej aktywności
         binding.buttonAdd.setOnClickListener{
             //binding.myPagerView.setCurrentItem(3)
+
+            byDrawer = 0
+
+            //możliwosc scrollowania wlaczona
+            binding.pagerView.setOnTouchListener { arg0, arg1 -> false }
+
             lifecycleScope.launch {
                 val intent = Intent(applicationContext, AddingTaskActivity::class.java)
                 startActivity(intent)
@@ -79,6 +96,40 @@ class MainActivity : AppCompatActivity() {
 //            if (hasFocus)
 //                binding.buttonHome.setColorFilter(R.color.green1)
 //        }
+
+
+//
+//        val listener = LimitedViewPagerOnPageChangeListener(binding.pagerView)
+//        binding.pagerView.addOnPageChangeListener(listener)
+
+
+        //val viewPager = findViewById<ViewPager>(R.id.pagerView)
+
+       binding.pagerView.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+           override fun onPageScrollStateChanged(state: Int) {
+               // This method will be invoked when the scroll state changes.
+           }
+
+           override fun onPageScrolled(
+               position: Int,
+               positionOffset: Float,
+               positionOffsetPixels: Int
+           ) {
+               // This method will be invoked when the current page is scrolled.
+               if (position == 1 && byDrawer == 0) {
+                   binding.pagerView.setCurrentItem(1)
+                   binding.pagerView.setPageTransformer(false, HideNextPage())
+                   return
+               }
+           }
+
+           override fun onPageSelected(position: Int) {
+               // This method will be invoked when a new page becomes selected.
+
+           }
+       })
+
+
 
 
 
@@ -99,6 +150,16 @@ class MainActivity : AppCompatActivity() {
                 when (it.itemId) {
                     R.id.item1 -> {
                         Toast.makeText(this@MainActivity, "111", Toast.LENGTH_SHORT).show()
+                        binding.pagerView.setCurrentItem(3)
+
+                        //możliwosc scrollowania wylaczona
+                        binding.pagerView.setOnTouchListener { arg0, arg1 -> true }
+
+                        byDrawer = 1
+
+                        //supportFragmentManager.beginTransaction().replace(R.id.ll_ftagments, FilterFragment()).commitAllowingStateLoss()
+
+                        binding.drawerLayout.closeDrawer(GravityCompat.START);
                     }
                     R.id.item2 -> {
                         Toast.makeText(this@MainActivity, "222", Toast.LENGTH_SHORT).show()
@@ -111,9 +172,8 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-    }
 
-
+}
 }
 
 
