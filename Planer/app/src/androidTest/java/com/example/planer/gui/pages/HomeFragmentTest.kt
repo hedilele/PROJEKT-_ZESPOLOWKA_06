@@ -1,32 +1,19 @@
 package com.example.planer.gui.pages
 
 import androidx.fragment.app.testing.launchFragmentInContainer
-import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.RecyclerView
-import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import org.junit.Assert.*
 import org.junit.Test
 import org.junit.runner.RunWith
 import com.example.planer.R
 import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.accessibility.AccessibilityChecks
-import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.isClickable
-import androidx.test.espresso.matcher.ViewMatchers.isCompletelyDisplayed
-import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.isFocusable
 import androidx.test.filters.LargeTest
-import com.example.planer.TaskViewModel
-import com.example.planer.entities.Tasks
-import com.example.planer.gui.AdapterTasks
-import kotlinx.android.synthetic.main.fragment_home.view.today_task_list
-import kotlinx.coroutines.test.runTest
 import org.junit.Before
-import org.junit.Rule
 
 @RunWith(AndroidJUnit4::class)
 @LargeTest

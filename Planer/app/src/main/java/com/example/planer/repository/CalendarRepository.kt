@@ -1,4 +1,4 @@
-package com.example.planer
+package com.example.planer.repository
 
 import androidx.lifecycle.LiveData
 import com.example.planer.DAOs.CalendarDAO

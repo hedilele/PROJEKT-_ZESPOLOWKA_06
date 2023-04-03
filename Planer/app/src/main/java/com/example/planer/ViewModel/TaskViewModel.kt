@@ -1,9 +1,11 @@
-package com.example.planer
+package com.example.planer.ViewModel
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
+import com.example.planer.AppDatabase
+import com.example.planer.repository.TaskRepository
 import com.example.planer.entities.Tasks
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
