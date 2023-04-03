@@ -15,7 +15,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.example.planer.MainActivity
 import com.example.planer.R
-import com.example.planer.TaskViewModel
+import com.example.planer.ViewModel.TaskViewModel
 import com.example.planer.databinding.ActivityAddingTaskBinding
 
 import com.example.planer.entities.Tasks

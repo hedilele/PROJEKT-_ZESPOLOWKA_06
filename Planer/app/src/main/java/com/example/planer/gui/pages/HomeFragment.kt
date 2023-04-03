@@ -10,13 +10,12 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.planer.R
-import com.example.planer.TaskViewModel
+import com.example.planer.ViewModel.TaskViewModel
 import com.example.planer.algorithm.BlockListTask
 import com.example.planer.databinding.FragmentHomeBinding
 import com.example.planer.entities.Tasks
 import com.example.planer.gui.AdapterTasks
 import kotlinx.android.synthetic.main.fragment_home.view.*
-import kotlinx.android.synthetic.main.single_task.view.*
 
 
 class HomeFragment : Fragment() {
