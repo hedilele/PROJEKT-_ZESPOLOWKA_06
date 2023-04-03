@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.planer.R
 import com.example.planer.TaskViewModel
+import com.example.planer.algorithm.BlockListTask
 import com.example.planer.databinding.FragmentHomeBinding
 import com.example.planer.entities.Tasks
 import com.example.planer.gui.AdapterTasks
@@ -26,7 +27,7 @@ class HomeFragment : Fragment() {
     private lateinit var userViewModel: TaskViewModel
 
     // lista tasków do recyclerView
-    var list = emptyList<Tasks>()
+    var list = mutableListOf<Tasks>()
 
 
     override fun onCreateView(
@@ -39,7 +40,9 @@ class HomeFragment : Fragment() {
         userViewModel = ViewModelProvider(this).get(TaskViewModel::class.java)
 
 
-        // pobieranie danych z bazy i umieszczanie ich w recyclerView
+        /*
+        5 rv i adapterów do wyświetlania list tasków pobranych z bazy
+         */
         val rv = view.today_task_list
         val adapter = AdapterTasks(
             list,
@@ -59,11 +62,43 @@ class HomeFragment : Fragment() {
         rv2.adapter = adapter2
         rv2.layoutManager = LinearLayoutManager(requireContext())
 
+        val rv3 = view.week_task_list
+        val adapter3 = AdapterTasks(
+            list,
+            {deleteId -> userViewModel.deleteTaskById(deleteId) },
+            {updateId -> }
+        )
+        rv3.adapter = adapter3
+        rv3.layoutManager = LinearLayoutManager(requireContext())
 
-        userViewModel = ViewModelProvider(this).get(TaskViewModel::class.java)
+        val rv4 = view.month_task_list
+        val adapter4 = AdapterTasks(
+            list,
+            {deleteId -> userViewModel.deleteTaskById(deleteId) },
+            {updateId -> }
+        )
+        rv4.adapter = adapter4
+        rv4.layoutManager = LinearLayoutManager(requireContext())
+
+        val rv5 = view.rest_task_list
+        val adapter5 = AdapterTasks(
+            list,
+            {deleteId -> userViewModel.deleteTaskById(deleteId) },
+            {updateId -> }
+        )
+        rv5.adapter = adapter5
+        rv5.layoutManager = LinearLayoutManager(requireContext())
+
+
+        userViewModel = ViewModelProvider(this)[TaskViewModel::class.java]
         userViewModel.readAllData.observe(viewLifecycleOwner, Observer {
-            adapter.setData(it)
-            adapter2.setData(it)
+            val blockListTask = BlockListTask(it)
+            blockListTask.planner()
+            adapter.setData(blockListTask.today_list)
+            adapter2.setData(blockListTask.tomorrow_list)
+            adapter3.setData(blockListTask.week_list)
+            adapter4.setData(blockListTask.month_list)
+            adapter5.setData(blockListTask.rest_list)
         })
 
 

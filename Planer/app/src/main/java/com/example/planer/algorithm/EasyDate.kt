@@ -7,15 +7,22 @@ import java.util.Date
 /**
  * Klasa przechowuje daty jako inty
  * Posiada wiele konstruktorów, aby dało się różne typy dat sprowadzić to obiektów tej klasy
- *
  * @param date - data jako int
  */
+// TODO brakuje obsługi błędów i przykładów ekstremalnych
 class EasyDate {
 
-    public var date : Int = 0
+    var date : Int = 0
 
+    /**
+    Konstruktory
+     */
     constructor(dateI : Int){
         date = dateI
+    }
+
+    constructor(day : Int, month: Int, year : Int){
+        date += (day * 1000000) + (month * 10000) + year
     }
 
     constructor(dateD : Date){
@@ -32,26 +39,161 @@ class EasyDate {
         date = convert(dateS)
     }
 
+
+
+    /**
+    przeciążony getter
+     */
     operator fun get(date2: EasyDate): EasyDate{
         return EasyDate(date2.date)
     }
 
-    operator fun plus(number : Int): EasyDate{
-        return EasyDate(date + number)
-
+    /**
+    gettery od dnia, miesiąca i roku
+     */
+    fun getDay() : Int{
+        return date / 1000000
     }
 
+    fun getMonth() : Int{
+        return (date / 10000) % 100
+    }
+
+    fun getYear() : Int{
+        return date % 10000
+    }
+
+
+
+    /**
+     * Algorytm dodawania dowolnej ilości dni
+     */
+    operator fun plus(number : Int): EasyDate{
+        var flag = 0
+        var day = getDay()
+        var month = getMonth()
+        var year = getYear()
+        var x = number
+
+        if(day != 1){
+            x += day-1
+            day = 1
+        }
+
+        do{
+            if(month < 8){
+                if(month == 2){
+                    if(year % 4 == 0){
+                        if(x >= 29){
+                            month += 1
+                            x -= 29
+                        }
+                        else{
+                            day += x
+                            flag = 1
+                        }
+                    }
+                    else{
+                        if(x >= 28){
+                            month += 1
+                            x -= 28
+                        }
+                        else{
+                            day += x
+                            flag = 1
+                        }
+                    }
+                }
+                else if(month % 2 == 1){
+                    if(x >= 31){
+                        month += 1
+                        x -= 31
+                    }
+                    else{
+                        day += x
+                        flag = 1
+                    }
+                }
+                else if(month % 2 == 0){
+                    if(x >= 30){
+                        month += 1
+                        x -= 30
+                    }
+                    else{
+                        day += x
+                        flag = 1
+                    }
+                }
+            }
+            else{
+                if(month == 12){
+                    if(x >= 31){
+                        year += 1
+                        month = 1
+                        x -= 31
+                    }
+                    else{
+                        day += x
+                        flag = 1
+                    }
+                }
+                else if(month % 2 == 0){
+                    if(x >= 31){
+                        month += 1
+                        x -= 31
+                    }
+                    else{
+                        day += x
+                        flag = 1
+                    }
+                }
+                else if(month % 2 == 1){
+                    if(x >= 30){
+                        month += 1
+                        x -= 30
+                    }
+                    else{
+                        day += x
+                        flag = 1
+                    }
+                }
+            }
+            if(flag == 1)
+                break
+        }while (flag == 0);
+
+        return EasyDate(day, month, year)
+    }
 
 
     /**
      *  Konwertuje na int za pomocą funkcji convert, która koduje datę następująco:
      *       rok + miesiąc*10000 + dzień*1000000
      */
-    private fun convert(str: String): Int {
+    //TODO uwzględnić jeszcze inne przypadki np z godziną
+    fun convert(str: String): Int {
         var x = 0
-        val day = str.substring(8).toInt()
-        val month = str.substring(5, 7).toInt()
-        val year = str.substring(0, 4).toInt()
+        val day : Int
+        val month : Int
+        val year : Int
+        val test = str[2]
+        if(str.length == 10){
+            if(test == '-'){
+                day = str.substring(0, 2).toInt()
+                month = str.substring(3, 5).toInt()
+                year = str.substring(6).toInt()
+            }
+            else{
+                day = str.substring(8).toInt()
+                month = str.substring(5, 7).toInt()
+                year = str.substring(0, 4).toInt()
+            }
+        }
+        else{
+            day = 1
+            month = 1
+            year = 2023
+        }
 
         x += (day*1000000)
         x += (month*10000)
