@@ -18,7 +18,7 @@ import kotlinx.android.synthetic.main.single_task.view.*
 
 // klasa odpowiedzialna za umieszczanie pojedynczych tasków w recyclerView
 class AdapterTasks(
-    var list: List<Tasks>,
+    var list: MutableList<Tasks>,
     private val deleteListener: (id: Int) -> Unit,
     private val updateListener: (id: Int) -> Unit
 ): RecyclerView.Adapter<AdapterTasks.ViewHolder>() {
@@ -135,7 +135,7 @@ class AdapterTasks(
     }
 
 
-    fun setData(task: List<Tasks>){
+    fun setData(task: MutableList<Tasks>){
         this.list = task
         notifyDataSetChanged()
     }
