@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.planer.R
 import com.example.planer.ViewModel.TaskViewModel
 import com.example.planer.algorithm.BlockListTask
@@ -50,6 +51,7 @@ class HomeFragment : Fragment() {
         )
         rv.adapter = adapter
         rv.layoutManager = LinearLayoutManager(requireContext())
+
 
 
         val rv2 = view.tomorrow_task_list

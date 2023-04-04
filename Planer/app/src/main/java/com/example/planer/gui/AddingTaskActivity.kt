@@ -108,7 +108,7 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
             R.id.duration1 -> {
                 uncheckDuration()
                 //binding.duration1.setColorFilter(getResources().getColor(R.color.hard_red));
-                binding.duration1.getBackground().setTint((getResources().getColor(R.color.hard_red)))
+                binding.duration1.getBackground().setTint((getResources().getColor(R.color.brown_important_urgent_on)))
 
                 duration = 0
             }
@@ -116,7 +116,7 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
             R.id.duration2 -> {
                 uncheckDuration()
                 //binding.duration2.setColorFilter(getResources().getColor(R.color.hard_red));
-                binding.duration2.getBackground().setTint((getResources().getColor(R.color.hard_red)))
+                binding.duration2.getBackground().setTint((getResources().getColor(R.color.brown_important_urgent_on)))
 
                 duration = 1
             }
@@ -124,7 +124,7 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
             R.id.duration3 -> {
                 uncheckDuration()
                 //binding.duration3.setColorFilter(getResources().getColor(R.color.hard_red));
-                binding.duration3.getBackground().setTint((getResources().getColor(R.color.hard_red)))
+                binding.duration3.getBackground().setTint((getResources().getColor(R.color.brown_important_urgent_on)))
 
                 duration = 2
             }
@@ -132,20 +132,20 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
             R.id.duration4 -> {
                 uncheckDuration()
                 //binding.duration4.setColorFilter(getResources().getColor(R.color.hard_red));
-                binding.duration4.getBackground().setTint((getResources().getColor(R.color.hard_red)))
+                binding.duration4.getBackground().setTint((getResources().getColor(R.color.brown_important_urgent_on)))
 
                 duration = 3
             }
 
             R.id.duration5 -> {
                 uncheckDuration()
-                binding.duration5.getBackground().setTint((getResources().getColor(R.color.hard_red)))
+                binding.duration5.getBackground().setTint((getResources().getColor(R.color.brown_important_urgent_on)))
                 duration = 4
             }
 
             R.id.duration6 -> {
                 uncheckDuration()
-                binding.duration6.getBackground().setTint((getResources().getColor(R.color.hard_red)))
+                binding.duration6.getBackground().setTint((getResources().getColor(R.color.brown_important_urgent_on)))
                 duration = 5
             }
 
@@ -153,38 +153,38 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
 
             R.id.type1 -> {
                 uncheckType()
-                binding.type1.setColorFilter(getResources().getColor(R.color.hard_red))
+                binding.type1.getBackground().setTint((getResources().getColor(R.color.brown_important_urgent_on)))
                 type = 0
             }
 
             R.id.type2 -> {
                 uncheckType()
-                binding.type2.setColorFilter(getResources().getColor(R.color.hard_red))
+                binding.type2.getBackground().setTint((getResources().getColor(R.color.brown_important_urgent_on)))
                 type = 1
             }
 
             R.id.type3 -> {
                 uncheckType()
-                binding.type3.setColorFilter(getResources().getColor(R.color.hard_red))
+                binding.type3.getBackground().setTint((getResources().getColor(R.color.brown_important_urgent_on)))
                 type = 2
             }
 
             R.id.type4 -> {
                 uncheckType()
-                binding.type4.setColorFilter(getResources().getColor(R.color.hard_red))
+                binding.type4.getBackground().setTint((getResources().getColor(R.color.brown_important_urgent_on)))
                 type = 3
             }
 
 
             R.id.at_this_day -> {
-                binding.toThisDay.setBackgroundColor(Color.TRANSPARENT)
-                binding.atThisDay.setBackgroundColor(getResources().getColor(R.color.green1))
+                binding.toThisDay.setTextColor(getResources().getColor(R.color.deadline_not_chosen))
+                binding.atThisDay.setTextColor(getResources().getColor(R.color.brown_important_urgent_on))
                 specyficDate = 1
             }
 
             R.id.to_this_day -> {
-                binding.atThisDay.setBackgroundColor(Color.TRANSPARENT)
-                binding.toThisDay.setBackgroundColor(getResources().getColor(R.color.green1))
+                binding.atThisDay.setTextColor(getResources().getColor(R.color.deadline_not_chosen))
+                binding.toThisDay.setTextColor(getResources().getColor(R.color.brown_important_urgent_on))
 
                 specyficDate = 0
             }
@@ -254,7 +254,7 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
 
             R.id.btn_cancel -> {
                 val intent = Intent(this, MainActivity::class.java)
-                startActivity(intent)
+                //startActivity(intent)
                 finish()
             }
 
@@ -265,26 +265,26 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
 //                val priority_col_0 = (priority0?.getBackground() as GradientDrawable).mutate()
 //                (priority_col_0 as GradientDrawable).setColor(Color.argb(90,0,0,0))
 
-                binding.important0.setBackgroundColor(getResources().getColor(R.color.hard_red));
+                binding.important0.setBackgroundColor(getResources().getColor(R.color.brown_important_urgent_on));
                 important = 0
 
             }
             R.id.important1 -> {
                 uncheckImportant()
-                binding.important1.setBackgroundColor(getResources().getColor(R.color.hard_red));
+                binding.important1.setBackgroundColor(getResources().getColor(R.color.brown_important_urgent_on));
                 important = 1
             }
 
 
             R.id.urgent0 -> {
                 uncheckUrgent()
-                binding.urgent0.setBackgroundColor(getResources().getColor(R.color.hard_red));
+                binding.urgent0.setBackgroundColor(getResources().getColor(R.color.brown_important_urgent_on));
                 urgent = 0
             }
 
             R.id.urgent1 -> {
                 uncheckUrgent()
-                binding.urgent1.setBackgroundColor(getResources().getColor(R.color.hard_red));
+                binding.urgent1.setBackgroundColor(getResources().getColor(R.color.brown_important_urgent_on));
                 urgent = 1
             }
 
@@ -468,19 +468,19 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
     fun uncheckType() {
         when (type) {
             0 -> {
-                binding.type1.setColorFilter(getResources().getColor(R.color.green1));
+                binding.type1.getBackground().setTint((getResources().getColor(R.color.brown_important_urgent_off)))
             }
 
             1 -> {
-                binding.type2.setColorFilter(getResources().getColor(R.color.green1));
+                binding.type2.getBackground().setTint((getResources().getColor(R.color.brown_important_urgent_off)))
             }
 
             2 -> {
-                binding.type3.setColorFilter(getResources().getColor(R.color.green1));
+                binding.type3.getBackground().setTint((getResources().getColor(R.color.brown_important_urgent_off)))
             }
 
             3 -> {
-                binding.type4.setColorFilter(getResources().getColor(R.color.green1));
+                binding.type4.getBackground().setTint((getResources().getColor(R.color.brown_important_urgent_off)))
             }
         }
     }
@@ -488,28 +488,28 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
     fun uncheckDuration() {
         when (duration) {
             0 -> {
-                binding.duration1.getBackground().setTint((getResources().getColor(R.color.green1)))
+                binding.duration1.getBackground().setTint((getResources().getColor(R.color.brown_important_urgent_off)))
             }
 
             1 -> {
-                binding.duration2.getBackground().setTint((getResources().getColor(R.color.green1)))
+                binding.duration2.getBackground().setTint((getResources().getColor(R.color.brown_important_urgent_off)))
             }
 
             2 -> {
-                binding.duration3.getBackground().setTint((getResources().getColor(R.color.green1)))
+                binding.duration3.getBackground().setTint((getResources().getColor(R.color.brown_important_urgent_off)))
             }
 
             3 -> {
-                binding.duration4.getBackground().setTint((getResources().getColor(R.color.green1)))
+                binding.duration4.getBackground().setTint((getResources().getColor(R.color.brown_important_urgent_off)))
             }
 
             4 -> {
-                binding.duration5.getBackground().setTint((getResources().getColor(R.color.green1)))
+                binding.duration5.getBackground().setTint((getResources().getColor(R.color.brown_important_urgent_off)))
 
             }
 
             5 -> {
-                binding.duration6.getBackground().setTint((getResources().getColor(R.color.green1)))
+                binding.duration6.getBackground().setTint((getResources().getColor(R.color.brown_important_urgent_off)))
             }
         }
     }
@@ -520,10 +520,10 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
                 //val gradientDrawable = (priority0?.getBackground() as GradientDrawable).mutate()
                 //(gradientDrawable as GradientDrawable).setColor(Color.argb(0,0,0,0))
 
-                binding.important0.setBackgroundColor(getResources().getColor(R.color.easy_green))
+                binding.important0.setBackgroundColor(getResources().getColor(R.color.brown_important_urgent_off))
             }
             1 -> {
-                binding.important1.setBackgroundColor(getResources().getColor(R.color.neutral_blue))
+                binding.important1.setBackgroundColor(getResources().getColor(R.color.brown_important_urgent_off))
             }
         }
     }
@@ -534,10 +534,10 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
                 //val gradientDrawable = (priority0?.getBackground() as GradientDrawable).mutate()
                 //(gradientDrawable as GradientDrawable).setColor(Color.argb(0,0,0,0))
 
-                binding.urgent0.setBackgroundColor(getResources().getColor(R.color.easy_green));
+                binding.urgent0.setBackgroundColor(getResources().getColor(R.color.brown_important_urgent_off));
             }
             1 -> {
-                binding.urgent1.setBackgroundColor(getResources().getColor(R.color.neutral_blue))
+                binding.urgent1.setBackgroundColor(getResources().getColor(R.color.brown_important_urgent_off))
             }
 
         }

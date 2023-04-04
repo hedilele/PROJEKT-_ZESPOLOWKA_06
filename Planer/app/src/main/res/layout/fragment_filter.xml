@@ -6,22 +6,42 @@
     tools:context=".gui.pages.FilterFragment">
 
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <Button
+        <LinearLayout
+            android:id="@+id/ll_filters"
             android:layout_width="match_parent"
-            android:layout_height="100dp">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-        </Button>
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_margin="5dp"
+                android:background="@drawable/icon_filter_24"/>
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/search"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:hint="Szukaj"
+                android:layout_margin="5dp"
+                android:singleLine="true"
+                android:textColor="#99000000"
+                android:textSize="25dp" />
+
+        </LinearLayout>
 
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/today_task_list"
+            android:id="@+id/rv_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:listitem="@layout/single_task" />
-    </LinearLayout>
+            tools:listitem="@layout/single_task"
+            android:layout_below="@+id/ll_filters"/>
+
+    </RelativeLayout>
+
 </FrameLayout>

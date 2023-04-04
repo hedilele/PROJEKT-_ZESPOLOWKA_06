@@ -22,7 +22,7 @@
             tools:ignore="MissingConstraints">
 
             <ImageView
-                android:id="@+id/trash"
+                android:id="@+id/done"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_gravity="center"

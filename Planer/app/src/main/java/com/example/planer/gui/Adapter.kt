@@ -22,7 +22,7 @@ class Adapter(
         //TODO ZMIENIAM
         //val importance = binding.priority
         val deadline = binding.taskDate
-        val trash = binding.trash
+        val trash = binding.done
 
     }
 

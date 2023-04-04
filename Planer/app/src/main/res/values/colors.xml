@@ -18,4 +18,16 @@
 
     <color name="purple1">#cdb4db</color>
     <color name="green1">#588157</color>
+
+
+    <color name="home_background">#80F3DEBA</color>
+    <color name="home_background3">#80F4EFCB</color>
+    <color name="home_background2">#80F5FFDC</color>
+    <color name="home_background4">#F5FFDC</color>
+
+    <color name="brown_important_urgent_on">#b98c65</color>
+    <color name="brown_important_urgent_off">#e8cba8</color>
+
+    <color name="deadline_not_chosen">#66000000</color>
+
 </resources>

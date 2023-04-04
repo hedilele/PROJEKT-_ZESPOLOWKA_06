@@ -4,16 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/single_task"
     android:layout_width="match_parent"
-    android:layout_height="90dp"
+    android:layout_height="60dp"
     android:layout_margin="10dp"
     android:orientation="vertical"
-    app:cardCornerRadius="10dp">
+    app:cardCornerRadius="15dp"
+    >
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/task_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#e7cfbc">
+        android:background="#99F3DEBA">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -22,13 +23,13 @@
             tools:ignore="MissingConstraints">
 
             <ImageView
-                android:id="@+id/trash"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:id="@+id/done"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:layout_gravity="center"
                 android:layout_marginLeft="5dp"
                 android:background="@drawable/icon_checkbox_empty"
-                android:backgroundTint="#c38e70"
+                android:backgroundTint="#66A66A2C"
                 android:gravity="center"
                 tools:ignore="MissingConstraints"></ImageView>
 
@@ -36,7 +37,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginHorizontal="5dp"
-                android:layout_marginVertical="10dp"
+                android:layout_marginVertical="5dp"
                 android:layout_weight="6"
                 android:orientation="vertical">
 
@@ -45,27 +46,30 @@
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="0.7"
-                    android:background="#d69f7e"
+                    android:background="#33D5AA72"
                     android:gravity="center|left"
-                    android:text="Przykladowy tytul"></TextView>
+                    android:paddingHorizontal="5dp"
+                    android:text="Przykladowy tytul"
+                    android:textSize="18dp" />
 
                 <TextView
                     android:id="@+id/task_date"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="0.3"
-                    android:background="#c38e70"
                     android:gravity="bottom"
+                    android:paddingHorizontal="5dp"
                     android:text="przykladowa data 21.11.12"
-                    android:textSize="10dp"></TextView>
+                    android:textSize="12dp"
+                    android:textStyle="bold" />
 
 
             </LinearLayout>
+
             <View
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
-                />
+                android:layout_weight="1" />
 
         </LinearLayout>
 
@@ -81,14 +85,15 @@
                 android:layout_height="match_parent"
                 android:gravity="right|center">
 
-            <TextView
-                android:id="@+id/more_open"
-                android:layout_width="30dp"
-                android:layout_height="55dp"
-                android:text="⋮"
-                android:textSize="40dp">
+                <TextView
+                    android:id="@+id/more_open"
+                    android:layout_width="30dp"
+                    android:layout_height="55dp"
+                    android:text="⋮"
+                    android:textColor="#B3A66A2C"
+                    android:textSize="40dp">
 
-            </TextView>
+                </TextView>
             </LinearLayout>
 
 
@@ -97,45 +102,105 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/shape_navigartion_button2"
-                android:backgroundTint="@color/hard_red2"
-                android:orientation="horizontal"
-                android:gravity="center">
+                android:backgroundTint="#F2D5B2"
+                android:gravity="center"
+                android:orientation="horizontal">
+
 
                 <TextView
                     android:id="@+id/more_close"
                     android:layout_width="0dp"
-                    android:layout_weight="1"
                     android:layout_height="55dp"
-                    android:textSize="40dp"
-                    android:text="⋮" />
+                    android:layout_weight="1"
+                    android:text="⋮"
+                    android:textColor="#B3A66A2C"
+                    android:textSize="40dp" />
 
                 <LinearLayout
                     android:layout_width="0dp"
-                    android:layout_weight="3"
                     android:layout_height="match_parent"
-                    android:orientation="vertical"
+                    android:layout_weight="3"
                     android:gravity="center"
-                    >
+                    android:orientation="horizontal">
+
+                    <!--
                     <TextView
-                        android:layout_width="match_parent"
+                        android:layout_width="60dp"
                         android:layout_height="wrap_content"
-                        android:textSize="15dp"
                         android:layout_margin="3dp"
                         android:text="Edytuj"
-                        android:background="@color/hard_red"
-                        />
+                        android:shadowColor="#D3AC69"
+                        android:textAlignment="center"
+                        android:textSize="15dp"
+                        android:textStyle="bold" />
 
                     <TextView
-                        android:layout_width="match_parent"
+                        android:layout_width="60dp"
                         android:layout_height="wrap_content"
-                        android:textSize="15dp"
                         android:layout_margin="3dp"
-                        android:text="Zrobię dziś"
-                        android:background="@color/hard_red"/>
+                        android:background="#59D3AC69"
+                        android:textAlignment="center"
+                        android:text="Usuń"
+                        android:textSize="15dp"
+                        android:textStyle="bold" />
+
+                        -->
+
+
+                    <LinearLayout
+                        android:id="@+id/btn_edit"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="5dp">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:src="@drawable/icon_edit"
+                            app:tint="#B3A66A2C" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Edytuj"
+                            android:textSize="10dp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/btn_delete"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="5dp">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:src="@drawable/icon_delete" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Usuń"
+                            android:textSize="10dp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+
                 </LinearLayout>
 
 
             </LinearLayout>
+
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 

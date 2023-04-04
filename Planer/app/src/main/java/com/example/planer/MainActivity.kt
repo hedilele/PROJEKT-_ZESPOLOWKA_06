@@ -38,10 +38,9 @@ class MainActivity : AppCompatActivity() {
 
         // dodanie fragmentów do listy
         pagerAdapters = PagerAdapters(supportFragmentManager)
-        pagerAdapters.addFragment(HomeFragment())
-        //pagerAdapters.addFragment(DrawerFragment())
-        pagerAdapters.addFragment(CalendarFragment())
-        pagerAdapters.addFragment(FilterFragment())
+        pagerAdapters.addFragment(HomeFragment())       // 1
+        pagerAdapters.addFragment(CalendarFragment())   // 2
+        pagerAdapters.addFragment(FilterFragment())     // 3
 
         // przypisanie adaptera zajmującego się fragmentami do adaptera pagerView
         binding.pagerView.adapter = pagerAdapters
@@ -52,10 +51,13 @@ class MainActivity : AppCompatActivity() {
         // nawigacja - po kliknięciu na odpowiednią ikonę przenosi nas do danego fragmentu
         // strona główna (z recyclerView)
         binding.buttonHome.setOnClickListener{
-            binding.pagerView.setCurrentItem(0)
             byDrawer = 0
+
             //możliwosc scrollowania wlaczona
             binding.pagerView.setOnTouchListener { arg0, arg1 -> false }
+
+            binding.pagerView.setCurrentItem(0)
+
 
         }
 
@@ -68,7 +70,7 @@ class MainActivity : AppCompatActivity() {
 
         // kalendarz
         binding.buttonCalendar.setOnClickListener{
-            binding.pagerView.setCurrentItem(2)
+            binding.pagerView.setCurrentItem(1)
 
             //możliwosc scrollowania wlaczona
             binding.pagerView.setOnTouchListener { arg0, arg1 -> false }
@@ -92,19 +94,6 @@ class MainActivity : AppCompatActivity() {
         }
 
 
-//        binding.buttonHome.setOnFocusChangeListener { v, hasFocus ->
-//            if (hasFocus)
-//                binding.buttonHome.setColorFilter(R.color.green1)
-//        }
-
-
-//
-//        val listener = LimitedViewPagerOnPageChangeListener(binding.pagerView)
-//        binding.pagerView.addOnPageChangeListener(listener)
-
-
-        //val viewPager = findViewById<ViewPager>(R.id.pagerView)
-
        binding.pagerView.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
            override fun onPageScrollStateChanged(state: Int) {
                // This method will be invoked when the scroll state changes.
@@ -116,7 +105,8 @@ class MainActivity : AppCompatActivity() {
                positionOffsetPixels: Int
            ) {
                // This method will be invoked when the current page is scrolled.
-               if (position == 1 && byDrawer == 0) {
+               if (position == 1 && byDrawer == 0)
+               {
                    binding.pagerView.setCurrentItem(1)
                    binding.pagerView.setPageTransformer(false, HideNextPage())
                    return

@@ -1,15 +1,17 @@
 package com.example.planer.gui
 
+import android.annotation.SuppressLint
 import android.transition.Slide
 import android.transition.Transition
 import android.transition.TransitionManager
 import android.view.*
-import android.view.animation.AnimationUtils
-import android.widget.PopupMenu
+import android.widget.Button
+import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatEditText
 import androidx.cardview.widget.CardView
-import androidx.core.content.ContextCompat
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelStoreOwner
 import androidx.recyclerview.widget.RecyclerView
 import com.example.planer.R
 import com.example.planer.UserViewModel
@@ -41,6 +43,7 @@ class AdapterTasks(
     }
 
     // ustawianie wyglądu i zachowań tasków
+    @SuppressLint("ResourceAsColor")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = list[position]
 
@@ -80,12 +83,60 @@ class AdapterTasks(
 
          */
 
-        holder.itemView.trash.setOnClickListener {
+        holder.itemView.done.setOnClickListener {
             deleteListener(item.id)
+
+            //TODO wypisac komunikat z zapytaniem
         }
 
-        holder.itemView.setOnClickListener{
+        holder.itemView.btn_delete.setOnClickListener {
+            deleteListener(item.id)
+
+            //TODO uruchomic algo?
         }
+
+        holder.itemView.btn_edit.setOnClickListener {
+            //var dialog = EditDialogFragment()
+            val builder = AlertDialog.Builder(holder.itemView.context)
+            //builder.setView(R.layout.activity_adding_task)
+
+            val inflater = LayoutInflater.from(holder.itemView.context)
+            val dialogView = inflater.inflate(R.layout.activity_adding_task, null)
+            val textView = dialogView.findViewById<AppCompatEditText>(R.id.task_title)
+
+            val btn_important0 = dialogView.findViewById<Button>(R.id.important0)
+            val btn_important1 = dialogView.findViewById<Button>(R.id.important1)
+            val btn_urgent0 = dialogView.findViewById<Button>(R.id.urgent0)
+            val btn_urgent1 = dialogView.findViewById<Button>(R.id.urgent1)
+            val btn_update = dialogView.findViewById<Button>(R.id.btn_create)
+
+            builder.setView(dialogView)
+
+
+            btn_important0.setOnClickListener {
+                // Do something when the button is clicked, for example:
+                //Toast.makeText(holder.itemView.context, "button clicked", Toast.LENGTH_SHORT)
+                btn_urgent1.setTextColor(R.color.hard_red)
+            }
+
+
+            val alertDialog = builder.create()
+            alertDialog.show()
+
+
+//            //builder.setTitle("Dialog Title")
+//            //builder.setMessage("Dialog Message for position $position")
+//            builder.setPositiveButton("OK") { dialog, which ->
+//                // Positive button click action
+//            }
+//            builder.setNegativeButton("Cancel") { dialog, which ->
+//                // Negative button click action
+//            }
+            //builder.show()
+        }
+
+
+
 
 
         //holder.itemView.findViewById<CardView>(R.id.task_list).startAnimation(AnimationUtils.loadAnimation(holder.itemView.context, R.anim.animation_recyclerview_load))
