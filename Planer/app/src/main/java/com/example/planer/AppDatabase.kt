@@ -7,15 +7,18 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.example.planer.DAOs.CalendarDAO
 import com.example.planer.DAOs.HabitsDAO
+import com.example.planer.DAOs.NotesDAO
 import com.example.planer.DAOs.TasksDAO
 import com.example.planer.entities.*
 
 //Update wersji + 11, jesli zmienimy baze danych, dodamy jakies itp
-@Database(entities = [Habits::class, Tasks::class, Finished::class, Subtasks::class, Calendar::class], version = 7)
+@Database(entities = [Habits::class, Tasks::class, Finished::class, Subtasks::class, Calendar::class, Notes::class], version = 7)
 @TypeConverters(DateConverter::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun habitsDAO() : HabitsDAO
     abstract fun tasksDAO() : TasksDAO
+
+    abstract fun notesDAO() : NotesDAO
 
     abstract fun calendarDAO() : CalendarDAO
 

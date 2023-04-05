@@ -22,7 +22,7 @@ data class Notes(
     //@ColumnInfo(typeAffinity = ColumnInfo.BLOB)
     //val photo: String
     //Albo tak do zdjecia - jeszcze nie wiem
-    @Ignore
-    val photo: Bitmap?
+    @ColumnInfo(name = "photo")
+    val photo: String?
 
 )
