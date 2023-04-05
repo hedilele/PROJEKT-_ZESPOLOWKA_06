@@ -36,6 +36,6 @@ interface CalendarDAO
 
     //Podaje date w string i wypluwa wydarzenia z tej daty
     @Query("SELECT * FROM Calendar WHERE date(start_date) = :query_date")
-    suspend fun getCalendarsFromDate(query_date: String): LiveData<List<Calendar>>
+    fun getCalendarsFromDate(query_date: String): LiveData<List<Calendar>>
 
 }
