@@ -97,7 +97,7 @@ class AdapterTasks(
 
         holder.itemView.btn_edit.setOnClickListener {
             //var dialog = EditDialogFragment()
-            val builder = AlertDialog.Builder(holder.itemView.context)
+            val builder = AlertDialog.Builder(holder.itemView.context) //TODO
             //builder.setView(R.layout.activity_adding_task)
 
             val inflater = LayoutInflater.from(holder.itemView.context)
@@ -110,7 +110,7 @@ class AdapterTasks(
             val btn_urgent1 = dialogView.findViewById<Button>(R.id.urgent1)
             val btn_update = dialogView.findViewById<Button>(R.id.btn_create)
 
-            builder.setView(dialogView)
+            builder.setView(dialogView) //Podlaczanie xmla
 
 
             btn_important0.setOnClickListener {
