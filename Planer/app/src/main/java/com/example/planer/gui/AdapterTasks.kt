@@ -111,7 +111,6 @@ class AdapterTasks(
 
         holder.itemView.btn_edit.setOnClickListener {
 
-
             var title: String
             var importance: Int = item.importance
             var urgency: Int = item.urgency
@@ -127,13 +126,23 @@ class AdapterTasks(
 
 
 
-            var dialog = EditDialogFragment()
-            val builder = AlertDialog.Builder(holder.itemView.context)
+    
+            //var dialog = EditDialogFragment()
+            val builder = AlertDialog.Builder(holder.itemView.context) //TODO
             //builder.setView(R.layout.activity_adding_task)
 
             val inflater = LayoutInflater.from(holder.itemView.context)
             val dialogView = inflater.inflate(R.layout.activity_adding_task, null)
             builder.setView(dialogView)
+            val textView = dialogView.findViewById<AppCompatEditText>(R.id.task_title)
+
+            val btn_important0 = dialogView.findViewById<Button>(R.id.important0)
+            val btn_important1 = dialogView.findViewById<Button>(R.id.important1)
+            val btn_urgent0 = dialogView.findViewById<Button>(R.id.urgent0)
+            val btn_urgent1 = dialogView.findViewById<Button>(R.id.urgent1)
+            val btn_update = dialogView.findViewById<Button>(R.id.btn_create)
+
+            builder.setView(dialogView) //Podlaczanie xmla
 
 
             val important0 = dialogView.findViewById<Button>(R.id.important0)

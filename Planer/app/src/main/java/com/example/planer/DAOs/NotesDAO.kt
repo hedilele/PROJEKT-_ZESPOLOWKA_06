@@ -1,5 +1,6 @@
 package com.example.planer.DAOs
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.example.planer.entities.Calendar
 import com.example.planer.entities.Notes
@@ -20,10 +21,14 @@ interface NotesDAO
     suspend fun insertCalendar(calendar: Calendar)
 
     @Transaction
-    @Query("SELECT * FROM Note WHERE id = :id")
+    @Query("SELECT * FROM Notes WHERE id = :id")
     suspend fun getNoteAndTaskWithId(id: Int) : List<NoteAndTask>
 
     @Transaction
-    @Query("SELECT * FROM Note WHERE id = :id")
+    @Query("SELECT * FROM Notes WHERE id = :id")
+    fun getNoteById(id: Int) : LiveData<List<Notes>>
+
+    @Transaction
+    @Query("SELECT * FROM Notes WHERE id = :id")
     suspend fun getNoteAndCalendar(id: Int) : List<NoteAndCalendar>
 }

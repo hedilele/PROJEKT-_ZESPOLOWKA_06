@@ -1,5 +1,6 @@
 package com.example.planer.DAOs
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.example.planer.entities.Calendar
 @Dao
@@ -33,5 +34,8 @@ interface CalendarDAO
     @Query("SELECT * FROM Calendar")
     suspend fun getAllDates(): List<Calendar>
 
+    //Podaje date w string i wypluwa wydarzenia z tej daty
+    @Query("SELECT * FROM Calendar WHERE date(start_date) = :query_date")
+    fun getCalendarsFromDate(query_date: String): LiveData<List<Calendar>>
 
 }
