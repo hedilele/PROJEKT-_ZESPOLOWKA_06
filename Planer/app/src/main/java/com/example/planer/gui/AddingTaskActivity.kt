@@ -11,7 +11,9 @@ import android.view.KeyEvent
 import android.view.View
 import android.view.View.OnFocusChangeListener
 import android.widget.*
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.get
 import androidx.lifecycle.ViewModelProvider
 import com.example.planer.MainActivity
 import com.example.planer.R
@@ -50,6 +52,8 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
     val today_hour = calendar.get(Calendar.HOUR_OF_DAY)
     val today_minute = calendar.get((Calendar.MINUTE))
 
+    var chosenItems = mutableListOf<String>()
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -65,6 +69,8 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
         binding.btnCancel.setOnClickListener(this)
         binding.btnDeadline.setOnClickListener(this)
         binding.btnDeadlineTime.setOnClickListener(this)
+
+        binding.btnPeriodicity.setOnClickListener(this)
 
 
         binding.important0.setOnClickListener(this)
@@ -95,6 +101,8 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
 
         setDateBlocks(setUpDate(today_day, today_month, today_year))
         setTimeBlocks(setUpTime(today_hour, today_minute))
+
+        chosenItems.add("kliknij aby usunąć")
 
         setEverything()
 
@@ -226,21 +234,16 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
                 taskViewModel.addTask(
                     Tasks(
                         title = binding.taskTitle.text.toString(),
-                        importance = 0,           //???????????????
+                        importance = important,           //???????????????
 
                         /*TODO uwzględnienie pilności w bazie (nieobowiązkowe)*/
-                        //urgent = urgent,
-
-                        deadline = setUpDate(
-                            day.toInt(),
-                            month.toInt(),
-                            year.toInt()
-                        ) + "  " + setUpTime(hour.toInt(), minute.toInt()),
+                        urgency = urgent,
+                        deadline = setUpDate(day.toInt(),month.toInt()-1, year.toInt()) + "  " +
+                                setUpTime(hour.toInt(), minute.toInt()),
                         timeToFinish = 1,
                         isActive = 0,
-                        typeId = 0,
+                        typeId = type,
                         noteId = 0,
-                        urgency = 0
                         //date = Calendar.getInstance().time //Ustawianie czasu na domyslny
                         //date = null
                     )
@@ -317,6 +320,44 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
                 )
                 tpd.show()
             }
+
+            R.id.btn_periodicity -> {
+
+                val dpd = DatePickerDialog(
+                    this,
+                    DatePickerDialog.OnDateSetListener { view, sel_year, sel_month, sel_day ->
+
+                        //date = setUpDate(sel_day, sel_month, sel_year)
+                        //setDateBlocks(date)
+
+                        chosenItems.add(setUpDate(sel_day, sel_month, sel_year))
+
+                    }, today_year, today_month, today_day
+                )
+
+                dpd.show()
+
+                val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, chosenItems)
+                binding.spinner.adapter = adapter
+                binding.spinner.setSelection(0)
+                binding.spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                    override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
+                        // remove the selected item from the spinner's adapter
+                        if(!adapter.getItem(position).equals("kliknij aby usunąć"))
+                        {
+                            adapter.remove(adapter.getItem(position))
+                            binding.spinner.setSelection(0)
+                            // notify the adapter that the data set has changed
+                            adapter.notifyDataSetChanged()
+                        }
+
+                    }
+
+                    override fun onNothingSelected(parent: AdapterView<*>) {
+                        binding.spinner.setSelection(0)
+                    }
+                }
+            }
         }
     }
 
@@ -328,15 +369,15 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
         month.takeIf { m + 1 < 10 }?.let { month = "0" + (m + 1) }
         day.takeIf { d < 10 }?.let { day = "0" + d }
 
-        return "$day.$month.$y"
+        return "$y-$month-$day"
     }
 
     // wpisanie aktualnej daty do pól w tworzeniu tasków - takie ustalenie domyślej daty przy tworzeniu
     fun setDateBlocks(date: String) {
-        val table = date.split('.')
-        binding.tvDeadlineD.setText(table[0])
+        val table = date.split('-')
+        binding.tvDeadlineY.setText(table[0])
         binding.tvDeadlineM.setText(table[1])
-        binding.tvDeadlineY.setText(table[2])
+        binding.tvDeadlineD.setText(table[2])
     }
 
     // formatowanie godziny
@@ -362,6 +403,7 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
     // funkcja gromadząca większość ustawień (np. enterów)
     fun setEverything() {
 
+        /*
         binding.tvDeadlineD.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
                 binding.tvDeadlineMin.clearFocus()
@@ -452,6 +494,8 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
             }
         })
 
+         */
+
         //ustawianie filtrów
 //        deadline_minutes?.filters = arrayOf<InputFilter>(InputFilter.LengthFilter(2))
 //        deadline_hour?.filters = arrayOf<InputFilter>(InputFilter.LengthFilter(2))
@@ -460,7 +504,7 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
 //        deadline_year?.filters = arrayOf<InputFilter>(InputFilter.LengthFilter(4))
 
 
-        setOnEnterKey()
+        //setOnEnterKey()
         setOnFocusChange()
 
     }
@@ -543,7 +587,9 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
+    /*
     fun setOnEnterKey() {
+
         // ustawienie limitu dlugosci wprowadzanych liczb
         binding.tvDeadlineD.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
             if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
@@ -597,6 +643,8 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
 
     }
 
+   */
+
     fun setOnFocusChange() {
         // czyszczenie pola po nacisnieciu na nie
         binding.tvDeadlineD.setOnFocusChangeListener(OnFocusChangeListener { v, hasFocus ->
@@ -613,16 +661,24 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
                                 today_day,
                                 today_month,
                                 today_year
-                            ).substring(0, 2)
+                            ).substring(8, 10)
                         )
+
+                        // 0123456789012345
+                        // yyyy-mm-dd hh:mm
 
                     }
                 }
+
+                //binding.tvDeadlineD.clearFocus()
 //                else
 //                {
 //                    deadline_day?.setText(setUpDate(today_day, today_month, today_year).substring(0, 2))
 //                }
             }
+
+            binding.tvDeadlineD.clearFocus()
+
         })
 
         binding.tvDeadlineM.setOnFocusChangeListener(OnFocusChangeListener { v, hasFocus ->
@@ -639,14 +695,18 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
                                 today_day,
                                 today_month,
                                 today_year
-                            ).substring(3, 5)
+                            ).substring(5, 7)
                         )
+                        // 0123456789012345
+                        // yyyy-mm-dd hh:mm
 
                     }
 
                 }
 
             }
+            binding.tvDeadlineM.clearFocus()
+
         })
 
         binding.tvDeadlineY.setOnFocusChangeListener(OnFocusChangeListener { v, hasFocus ->
@@ -663,13 +723,16 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
                                 today_day,
                                 today_month,
                                 today_year
-                            ).substring(6, 10)
+                            ).substring(0, 4)
                         )
-
+                        // 0123456789012345
+                        // yyyy-mm-dd hh:mm
                     }
 
                 }
             }
+            binding.tvDeadlineY.clearFocus()
+
         })
 
         binding.tvDeadlineH.setOnFocusChangeListener(OnFocusChangeListener { v, hasFocus ->
@@ -684,10 +747,8 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
                     } else if (tmp.toInt() > 23)       //????????????
                     {
                         binding.tvDeadlineH.setText(
-                            setUpTime(today_hour, today_minute).substring(
-                                0,
-                                2
-                            )
+                            setUpTime(today_hour, today_minute)
+                                .substring(0, 2)
                         )  //??????????
 
                     }
@@ -695,6 +756,8 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
                 }
 
             }
+            binding.tvDeadlineH.clearFocus()
+
 
         })
 
@@ -709,18 +772,18 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
                     } else if (tmp.toInt() > 59)       //????????????
                     {
                         binding.tvDeadlineMin.setText(
-                            setUpTime(today_hour, today_minute).substring(
-                                3,
-                                5
-                            )
+                            setUpTime(today_hour, today_minute).substring(3, 5)
                         )  //????????
                     }
 
                 }
 
             }
+            binding.tvDeadlineMin.clearFocus()
+
         })
 
 
     }
+
 }

@@ -47,7 +47,7 @@ class HomeFragment : Fragment() {
         val adapter = AdapterTasks(
             list,
             {deleteId -> userViewModel.deleteTaskById(deleteId) },
-            {updateId -> }
+            {updateTask, note -> userViewModel.updateTask(updateTask) }
         )
         rv.adapter = adapter
         rv.layoutManager = LinearLayoutManager(requireContext())
@@ -58,7 +58,7 @@ class HomeFragment : Fragment() {
         val adapter2 = AdapterTasks(
             list,
             {deleteId -> userViewModel.deleteTaskById(deleteId) },
-            {updateId -> }
+            {updateTask, note -> userViewModel.updateTask(updateTask) }
         )
         rv2.adapter = adapter2
         rv2.layoutManager = LinearLayoutManager(requireContext())
@@ -67,7 +67,7 @@ class HomeFragment : Fragment() {
         val adapter3 = AdapterTasks(
             list,
             {deleteId -> userViewModel.deleteTaskById(deleteId) },
-            {updateId -> }
+            {updateTask, note -> userViewModel.updateTask(updateTask) }
         )
         rv3.adapter = adapter3
         rv3.layoutManager = LinearLayoutManager(requireContext())
@@ -76,7 +76,7 @@ class HomeFragment : Fragment() {
         val adapter4 = AdapterTasks(
             list,
             {deleteId -> userViewModel.deleteTaskById(deleteId) },
-            {updateId -> }
+            {updateTask, note -> userViewModel.updateTask(updateTask) }
         )
         rv4.adapter = adapter4
         rv4.layoutManager = LinearLayoutManager(requireContext())
@@ -85,7 +85,7 @@ class HomeFragment : Fragment() {
         val adapter5 = AdapterTasks(
             list,
             {deleteId -> userViewModel.deleteTaskById(deleteId) },
-            {updateId -> }
+            {updateTask, note -> userViewModel.updateTask(updateTask) }
         )
         rv5.adapter = adapter5
         rv5.layoutManager = LinearLayoutManager(requireContext())

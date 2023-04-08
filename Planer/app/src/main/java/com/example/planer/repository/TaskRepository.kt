@@ -29,4 +29,9 @@ class TaskRepository(private val tasksDAO: TasksDAO)
     {
         tasksDAO.readAllDeadlines()
     }
+
+    suspend fun updateTask(task: Tasks)
+    {
+        tasksDAO.update(task)
+    }
 }

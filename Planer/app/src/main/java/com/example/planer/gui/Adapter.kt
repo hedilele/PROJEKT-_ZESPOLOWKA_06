@@ -9,7 +9,7 @@ import com.example.planer.R
 import com.example.planer.databinding.SingleTaskBinding
 import com.example.planer.entities.Tasks
 
-
+// Dominika usunie
 class Adapter(
     private val items: ArrayList<Tasks>,
     private val updateListener: (id: Int) -> Unit,

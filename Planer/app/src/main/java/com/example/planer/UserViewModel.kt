@@ -48,4 +48,12 @@ class UserViewModel(application: Application): AndroidViewModel(application)
         }
     }
 
+    fun updateTask(task: Tasks)
+    {
+        viewModelScope.launch(Dispatchers.IO) //Odpali sie w oddzielnym watku w tle
+        {
+            repository.updateTask(task)
+        }
+    }
+
 }
