@@ -3,7 +3,7 @@ package com.example.planer.scope
 import androidx.recyclerview.widget.DiffUtil
 import com.example.planer.entities.relations.NoteAndTask
 
-class TaskDiffCallback(private val oldTasks: List<NoteAndTask>, private val newTasks: List<NoteAndTask>) : DiffUtil.Callback() {
+class NoteAndTaskDiffCallback(private val oldTasks: List<NoteAndTask>, private val newTasks: List<NoteAndTask>) : DiffUtil.Callback() {
 
     override fun getOldListSize(): Int {
         return oldTasks.size

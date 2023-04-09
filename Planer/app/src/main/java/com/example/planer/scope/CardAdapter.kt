@@ -4,14 +4,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.planer.R
 import com.example.planer.entities.relations.NoteAndTask
-import timber.log.Timber
 
 class CardAdapter(dataSet: List<NoteAndTask>) :
     RecyclerView.Adapter<CardAdapter.ViewHolder>() {
@@ -47,7 +43,7 @@ class CardAdapter(dataSet: List<NoteAndTask>) :
     override fun getItemCount(): Int = tasks.size
 
     fun updateList(newTasks: List<NoteAndTask>) {
-        val diffResult = DiffUtil.calculateDiff(TaskDiffCallback(tasks, newTasks))
+        val diffResult = DiffUtil.calculateDiff(NoteAndTaskDiffCallback(tasks, newTasks))
         tasks = newTasks
         diffResult.dispatchUpdatesTo(this)
     }
