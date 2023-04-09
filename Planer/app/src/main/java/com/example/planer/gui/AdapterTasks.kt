@@ -3,6 +3,7 @@ package com.example.planer.gui
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.graphics.PorterDuff
 import android.os.Handler
 import android.transition.Slide
 import android.transition.Transition
@@ -72,35 +73,36 @@ class AdapterTasks(
 
             var clicked = 0
 
-            holder.itemView.visibility = View.GONE
+            //holder.itemView.visibility = View.GONE
+            //holder.itemView.done.setImageDrawable(ContextCompat.getDrawable(holder.itemView.context, R.drawable.icon_checkbox_filled))
 
             //TODO wypisac komunikat z zapytaniem
             val snackbar = Snackbar.make(holder.itemView, "Czy chcesz cofnąc usunięcie?", Snackbar.LENGTH_LONG)
-            //snackbar.duration = 3000
+            snackbar.duration = 2000
             snackbar.setAction("cofnij") {
                 clicked = 1
-                holder.itemView.visibility = View.VISIBLE
+                //holder.itemView.visibility = View.VISIBLE
+                //holder.itemView.done.setImageDrawable(ContextCompat.getDrawable(holder.itemView.context, R.drawable.icon_checkbox_empty))
+
 
             }
 
             snackbar.show()
-
+            holder.itemView.done.setImageDrawable(ContextCompat.getDrawable(holder.itemView.context, R.drawable.icon_checkbox_filled))
+            holder.itemView.done.setColorFilter(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_off), PorterDuff.Mode.SRC_ATOP)
 
             Handler().postDelayed({
                 if(clicked == 0)
                 {
                     deleteListener(item.id)
                 }
-            }, 1000) // opóźnienie wynosi 5000 milisekund, czyli 5 sekund
+                holder.itemView.done.setImageDrawable(ContextCompat.getDrawable(holder.itemView.context, R.drawable.icon_checkbox_empty))
+                //holder.itemView.done.setColorFilter(R.color.brown_important_urgent_off)
+                holder.itemView.done.setColorFilter(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_off), PorterDuff.Mode.SRC_ATOP)
 
-
-
+            }, 2000) // opóźnienie wynosi 5000 milisekund, czyli 5 sekund
 
         }
-
-
-
-
 
 
         holder.itemView.btn_delete.setOnClickListener {
@@ -126,13 +128,13 @@ class AdapterTasks(
 
 
 
-    
+
             //var dialog = EditDialogFragment()
             val builder = AlertDialog.Builder(holder.itemView.context) //TODO
             //builder.setView(R.layout.activity_adding_task)
 
             val inflater = LayoutInflater.from(holder.itemView.context)
-            val dialogView = inflater.inflate(R.layout.activity_adding_task, null)
+            val dialogView = inflater.inflate(R.layout.activity_editing_task, null)
             builder.setView(dialogView)
             val textView = dialogView.findViewById<AppCompatEditText>(R.id.task_title)
 

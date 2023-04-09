@@ -10,7 +10,7 @@
         android:orientation="vertical"
         android:gravity="top"
         tools:context=".MainActivity"
-        android:background="@color/home_background3"
+        android:background="@color/white"
         >
 
         <LinearLayout

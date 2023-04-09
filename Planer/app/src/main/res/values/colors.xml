@@ -30,4 +30,12 @@
 
     <color name="deadline_not_chosen">#66000000</color>
 
+
+    <color name="pr1_brown_dark">#543C38</color>
+    <color name="pr1_brown_warm">#B3A66A2C</color>
+    <color name="pr1_brown_light">#66A66A2C</color>
+    <color name="pr1_beige_background">#99F3DEBA</color>
+    <color name="pr1_green_text">#4f904c</color>
+
+
 </resources>

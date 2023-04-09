@@ -63,6 +63,7 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
         binding = ActivityAddingTaskBinding.inflate(layoutInflater)
         setContentView(binding?.root)
 
+        binding.taskTitle.requestFocus()
 
         // aktywowanie możliwości 'klikania' na obiekty
         binding.btnCreate.setOnClickListener(this)
@@ -403,7 +404,7 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
     // funkcja gromadząca większość ustawień (np. enterów)
     fun setEverything() {
 
-        /*
+/*
         binding.tvDeadlineD.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
                 binding.tvDeadlineMin.clearFocus()
@@ -494,7 +495,8 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
             }
         })
 
-         */
+
+ */
 
         //ustawianie filtrów
 //        deadline_minutes?.filters = arrayOf<InputFilter>(InputFilter.LengthFilter(2))
@@ -504,7 +506,7 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
 //        deadline_year?.filters = arrayOf<InputFilter>(InputFilter.LengthFilter(4))
 
 
-        //setOnEnterKey()
+        setOnEnterKey()
         setOnFocusChange()
 
     }
@@ -587,7 +589,7 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-    /*
+
     fun setOnEnterKey() {
 
         // ustawienie limitu dlugosci wprowadzanych liczb
@@ -595,7 +597,7 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
             if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
 
                 binding.tvDeadlineD.clearFocus()
-                binding.tvDeadlineM.requestFocus()
+                //binding.tvDeadlineM.requestFocus()
 
                 return@OnKeyListener true
             }
@@ -605,7 +607,7 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
         binding.tvDeadlineM.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
             if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
                 binding.tvDeadlineM.clearFocus()
-                binding.tvDeadlineY.requestFocus()
+               // binding.tvDeadlineY.requestFocus()
 
                 return@OnKeyListener true
             }
@@ -625,7 +627,7 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
             if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
 
                 binding.tvDeadlineH.clearFocus()
-                binding.tvDeadlineMin.requestFocus()
+                //binding.tvDeadlineMin.requestFocus()
                 return@OnKeyListener true
             }
             false
@@ -643,7 +645,7 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
 
     }
 
-   */
+
 
     fun setOnFocusChange() {
         // czyszczenie pola po nacisnieciu na nie
@@ -666,6 +668,7 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
 
                         // 0123456789012345
                         // yyyy-mm-dd hh:mm
+                        binding.tvDeadlineD.clearFocus()
 
                     }
                 }
@@ -677,7 +680,7 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
 //                }
             }
 
-            binding.tvDeadlineD.clearFocus()
+            //binding.tvDeadlineD.clearFocus()
 
         })
 
@@ -699,13 +702,13 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
                         )
                         // 0123456789012345
                         // yyyy-mm-dd hh:mm
+                        binding.tvDeadlineM.clearFocus()
 
                     }
 
                 }
 
             }
-            binding.tvDeadlineM.clearFocus()
 
         })
 
@@ -727,11 +730,11 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
                         )
                         // 0123456789012345
                         // yyyy-mm-dd hh:mm
+                    //binding.tvDeadlineY.clearFocus()
                     }
 
                 }
             }
-            binding.tvDeadlineY.clearFocus()
 
         })
 
@@ -750,13 +753,13 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
                             setUpTime(today_hour, today_minute)
                                 .substring(0, 2)
                         )  //??????????
+                        binding.tvDeadlineH.clearFocus()
 
                     }
 
                 }
 
             }
-            binding.tvDeadlineH.clearFocus()
 
 
         })
@@ -774,12 +777,13 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
                         binding.tvDeadlineMin.setText(
                             setUpTime(today_hour, today_minute).substring(3, 5)
                         )  //????????
+                        binding.tvDeadlineMin.clearFocus()
+
                     }
 
                 }
 
             }
-            binding.tvDeadlineMin.clearFocus()
 
         })
 

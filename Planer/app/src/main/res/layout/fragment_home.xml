@@ -11,28 +11,42 @@
             android:id="@+id/lista"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            >
 
                 <RelativeLayout
 
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:layout_marginTop="20dp">
 
 
                         <TextView
                             android:id="@+id/today_title"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:paddingHorizontal="10dp"
                             android:text="Dziś"
-                            android:textSize="30dp" />
+                            android:textColor="#543C38"
+                            android:textSize="25dp" />
+
+                        <TextView
+                            android:id="@+id/line1"
+                            android:layout_width="match_parent"
+                            android:layout_height="2dp"
+                            android:layout_below="@+id/today_title"
+                            android:layout_marginHorizontal="10dp"
+                            android:layout_marginBottom="5dp"
+                            android:background="#4DA66A2C" />
 
 
                         <androidx.recyclerview.widget.RecyclerView
+                            android:paddingHorizontal="10dp"
                             android:id="@+id/today_task_list"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_below="@+id/today_title"
+                            android:layout_below="@+id/line1"
                             tools:listitem="@layout/single_task" />
 
                         <TextView
@@ -40,14 +54,28 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/today_task_list"
+                            android:paddingHorizontal="10dp"
                             android:text="Jutro"
-                            android:textSize="30dp" />
+                            android:textSize="25dp"
+                            android:textColor="#543C38"/>
+
+                        <TextView
+                            android:id="@+id/line2"
+                            android:layout_width="match_parent"
+                            android:layout_height="2dp"
+                            android:layout_marginHorizontal="10dp"
+                            android:layout_marginBottom="5dp"
+                            android:background="#4DA66A2C"
+                            android:layout_below="@+id/tomorrow_title"/>
+
+
 
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/tomorrow_task_list"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:layout_below="@+id/tomorrow_title"
+                            android:layout_below="@+id/line2"
+                            android:paddingHorizontal="10dp"
                             tools:listitem="@layout/single_task" />
 
 
@@ -56,14 +84,27 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/tomorrow_task_list"
+                            android:paddingHorizontal="10dp"
+
                             android:text="Do końca tygodnia"
-                            android:textSize="30dp" />
+                            android:textSize="25dp"
+                            android:textColor="#543C38"/>
+
+                        <TextView
+                            android:id="@+id/line3"
+                            android:layout_width="match_parent"
+                            android:layout_height="2dp"
+                            android:layout_marginHorizontal="10dp"
+                            android:layout_marginBottom="5dp"
+                            android:background="#4DA66A2C"
+                            android:layout_below="@+id/week_title"/>
 
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/week_task_list"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_below="@+id/week_title"
+                            android:layout_below="@+id/line3"
+                            android:paddingHorizontal="10dp"
                             tools:listitem="@layout/single_task" />
 
                         <TextView
@@ -71,29 +112,55 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/week_task_list"
+                            android:paddingHorizontal="10dp"
+
                             android:text="Do końca miesiąca"
-                            android:textSize="30dp" />
+                            android:textSize="25dp"
+                            android:textColor="#543C38"/>
+
+                        <TextView
+                            android:id="@+id/line4"
+                            android:layout_width="match_parent"
+                            android:layout_height="2dp"
+                            android:layout_marginHorizontal="10dp"
+                            android:layout_marginBottom="5dp"
+                            android:background="#4DA66A2C"
+                            android:layout_below="@+id/month_title"/>
 
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/month_task_list"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_below="@+id/month_title"
+                            android:layout_below="@+id/line4"
+                            android:paddingHorizontal="10dp"
                             tools:listitem="@layout/single_task" />
 
                         <TextView
                             android:id="@+id/rest_title"
                             android:layout_width="match_parent"
+                            android:paddingHorizontal="10dp"
+
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/month_task_list"
                             android:text="Reszta"
-                            android:textSize="30dp" />
+                            android:textSize="25dp"
+                            android:textColor="#543C38"/>
+
+                        <TextView
+                            android:id="@+id/line5"
+                            android:layout_width="match_parent"
+                            android:layout_height="2dp"
+                            android:layout_marginHorizontal="10dp"
+                            android:layout_marginBottom="5dp"
+                            android:background="#4DA66A2C"
+                            android:layout_below="@+id/rest_title"/>
 
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/rest_task_list"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_below="@+id/rest_title"
+                            android:layout_below="@+id/line5"
+                            android:paddingHorizontal="10dp"
                             tools:listitem="@layout/single_task" />
 
                 </RelativeLayout>
