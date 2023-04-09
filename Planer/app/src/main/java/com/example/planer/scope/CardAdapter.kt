@@ -4,13 +4,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.planer.R
 import com.example.planer.entities.relations.NoteAndTask
+import timber.log.Timber
 
-class CardAdapter(private val dataSet: LiveData<List<NoteAndTask>>) :
+class CardAdapter(dataSet: List<NoteAndTask>) :
     RecyclerView.Adapter<CardAdapter.ViewHolder>() {
+
+    private var tasks: List<NoteAndTask> = dataSet
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val titleText: TextView
@@ -27,17 +33,22 @@ class CardAdapter(private val dataSet: LiveData<List<NoteAndTask>>) :
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(viewGroup.context)
             .inflate(R.layout.card, viewGroup, false)
-
         return ViewHolder(view)
     }
 
-    override fun getItemCount(): Int = dataSet.value?.size ?: 0
-
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
-        val item = dataSet.value?.get(position)
+        val item = tasks[position]
 
-        viewHolder.titleText.text = item?.tasks?.title
-        viewHolder.deadlineText.text = item?.tasks?.deadline
-        viewHolder.noteText.text = item?.notes?.noteContent
+        viewHolder.titleText.text = item.tasks.title
+        viewHolder.deadlineText.text = item.tasks.deadline
+        viewHolder.noteText.text = item.notes.noteContent
+    }
+
+    override fun getItemCount(): Int = tasks.size
+
+    fun updateList(newTasks: List<NoteAndTask>) {
+        val diffResult = DiffUtil.calculateDiff(TaskDiffCallback(tasks, newTasks))
+        tasks = newTasks
+        diffResult.dispatchUpdatesTo(this)
     }
 }

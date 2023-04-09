@@ -56,6 +56,9 @@ interface TasksDAO
     @Query("SELECT * FROM Tasks t JOIN Notes n ON t.note_id=n.id WHERE strftime('%s', t.deadline) < strftime('%s', 'now')")
     fun readOverdueTasksWithNotes(): LiveData<List<NoteAndTask>>
 
+    @Query("SELECT * FROM Tasks t JOIN Notes n ON t.note_id=n.id ORDER BY id ASC")
+    fun readAllDataWithNotes(): LiveData<List<NoteAndTask>>
+
     @Transaction
     @Query("SELECT * FROM Tasks WHERE id = :id")
     suspend fun getTaskAndFinished(id: Int) : List<TaskAndFinished>

@@ -10,14 +10,15 @@ import com.example.planer.repository.ScopeRepository
 
 class ScopeViewModel(application: Application): AndroidViewModel(application)
 {
-    val overdueTasks: LiveData<List<NoteAndTask>>
+    private val taskDAO = AppDatabase.getDatabase(application).tasksDAO()
+    private val scopeRepository: ScopeRepository = ScopeRepository(taskDAO)
 
-    init
-    {
-        val taskDAO = AppDatabase.getDatabase(application).tasksDAO()
-        val scopeRepository = ScopeRepository(taskDAO)
-        overdueTasks = scopeRepository.getOverdueTasks()
+    fun getAllTasksDebug(): LiveData<List<NoteAndTask>> {
+        return scopeRepository.getAllTasks()
+    }
 
+    fun getOverdueTasks(): LiveData<List<NoteAndTask>> {
+        return scopeRepository.getOverdueTasks()
     }
 
 }

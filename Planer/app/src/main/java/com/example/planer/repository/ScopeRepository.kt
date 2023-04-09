@@ -10,4 +10,8 @@ class ScopeRepository(private val tasksDAO: TasksDAO)
         return tasksDAO.readOverdueTasksWithNotes()
     }
 
+    fun getAllTasks(): LiveData<List<NoteAndTask>> {
+        return tasksDAO.readAllDataWithNotes()
+    }
+
 }
