@@ -48,6 +48,6 @@ class BlockListTask (
 
             log += "  |   ${d.date}\n"
         }
-        throw Exception(log)
+       // throw Exception(log)
     }
 }
