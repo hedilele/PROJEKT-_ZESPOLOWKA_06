@@ -3,7 +3,6 @@ package com.example.planer.entities
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import java.util.*
 
 @Entity(tableName = "tasks")
 data class Tasks(
@@ -25,7 +24,7 @@ data class Tasks(
     @ColumnInfo(name = "type_id")
     val typeId: Int,
     @ColumnInfo(name = "note_id")
-    val noteId: Int,
+    val noteId: Int?,
     //@ColumnInfo(name = "date")
     //val date: Date?
 
