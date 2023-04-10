@@ -22,6 +22,7 @@ import com.example.planer.UserViewModel
 import com.example.planer.entities.Tasks
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_adding_task.view.*
+import kotlinx.android.synthetic.main.dialog_task_info.view.*
 import kotlinx.android.synthetic.main.fragment_home.view.*
 import kotlinx.android.synthetic.main.single_task.view.*
 import kotlinx.android.synthetic.main.single_task.view.task_title
@@ -552,6 +553,37 @@ class AdapterTasks(
             popupMenu.show()
         }
 */
+
+        holder.itemView.setOnClickListener{
+
+            val builder = AlertDialog.Builder(holder.itemView.context) //TODO
+            //builder.setView(R.layout.activity_adding_task)
+
+            val inflater = LayoutInflater.from(holder.itemView.context)
+            val dialogView = inflater.inflate(R.layout.dialog_task_info, null)
+            builder.setView(dialogView)
+
+            val title = dialogView.findViewById<TextView>(R.id.title)
+            val date = dialogView.findViewById<TextView>(R.id.date)
+            val important = dialogView.findViewById<TextView>(R.id.important)
+            val urgent = dialogView.findViewById<TextView>(R.id.urgent)
+            val type = dialogView.findViewById<TextView>(R.id.type)
+            val duration = dialogView.findViewById<TextView>(R.id.duration)
+            val note = dialogView.findViewById<TextView>(R.id.note_content)
+
+
+            builder.setView(dialogView) //Podlaczanie xmla
+
+            title.setText(holder.itemView.task_title.text.toString())
+            date.setText(holder.itemView.task_date.text.toString())
+            //important.setText(holder.itemView.important.text.toString())
+
+            val alertDialog = builder.create()
+            alertDialog.show()
+
+        }
+
+
 
         holder.itemView.name2.visibility = View.GONE
 
