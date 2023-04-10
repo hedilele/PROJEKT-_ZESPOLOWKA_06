@@ -23,6 +23,7 @@ class EasyDate {
 
     constructor(day : Int, month: Int, year : Int){
         date += (day * 1000000) + (month * 10000) + year
+        //date += (year * 10000) + (month * 100) + day
     }
 
     constructor(dateD : Date){

@@ -22,23 +22,32 @@ class BlockListTask (
      */
     fun planner(){
         val today = EasyDate(LocalDate.now())
+        var log  = ""
         for (i in tasks){
             val d = EasyDate(i.deadline)
             if(d.date == today.date){
+                log += "${today.date} "
                 today_list.add(i)
             }
             else if(d.date == (today+1).date){
+                log += "${(today+1).date} "
                 tomorrow_list.add(i)
             }
             else if(d.date <= (today+7).date){
+                log += "${(today+7).date} "
                 week_list.add(i)
             }
             else if(d.date <= (today+31).date){
+                log += "${(today+31).date} "
                 month_list.add(i)
             }
             else{
+                log += "${today.date} "
                 rest_list.add(i)
             }
+
+            log += "  |   ${d.date}\n"
         }
+        throw Exception(log)
     }
 }
