@@ -1,16 +1,20 @@
 package com.example.planer
 
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.planer.ViewModel.ScopeViewModel
 import com.example.planer.databinding.ActivityScopeModeBinding
+import com.example.planer.entities.Tasks
 import com.example.planer.scope.CardAdapter
+import kotlinx.coroutines.coroutineScope
 
 
-class ScopeMode : AppCompatActivity() {
+class ScopeMode : AppCompatActivity(), CardAdapter.OnButtonClickListener {
 
     private lateinit var adapter: CardAdapter
     private val viewModel: ScopeViewModel by viewModels()
@@ -23,6 +27,8 @@ class ScopeMode : AppCompatActivity() {
         setContentView(binding.root)
 
         adapter = CardAdapter(emptyMap())
+        adapter.setOnItemClickListener(this)
+
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
 
@@ -36,6 +42,20 @@ class ScopeMode : AppCompatActivity() {
 
         viewModel.getOverdueTasks().observe(this) { tasks ->
             adapter.updateList(tasks)
+        }
+    }
+
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    override suspend fun onLaterButtonClick(item: Tasks) {
+        coroutineScope {
+            viewModel.postponeTaskTommorow(item)
+        }
+    }
+
+    override suspend fun onDoneButtonClick(item: Tasks) {
+        coroutineScope {
+            viewModel.setTaskAsDone(item)
         }
     }
 }

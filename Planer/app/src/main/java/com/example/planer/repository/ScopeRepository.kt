@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import com.example.planer.DAOs.TasksDAO
 import com.example.planer.entities.Notes
 import com.example.planer.entities.Tasks
-import com.example.planer.entities.relations.NoteAndTask
 
 class ScopeRepository(private val tasksDAO: TasksDAO)
 {
@@ -12,8 +11,8 @@ class ScopeRepository(private val tasksDAO: TasksDAO)
         return tasksDAO.readOverdueTasksWithNotes()
     }
 
-    fun getAllTasks(): LiveData<List<NoteAndTask>> {
-        return tasksDAO.readAllDataWithNotes()
+    suspend fun updateTask(task: Tasks) {
+        tasksDAO.update(task)
     }
 
 }

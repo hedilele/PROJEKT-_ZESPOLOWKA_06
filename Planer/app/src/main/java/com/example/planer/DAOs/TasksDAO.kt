@@ -6,7 +6,6 @@ import com.example.planer.entities.Finished
 import com.example.planer.entities.Notes
 import com.example.planer.entities.Subtasks
 import com.example.planer.entities.Tasks
-import com.example.planer.entities.relations.NoteAndTask
 import com.example.planer.entities.relations.TaskAndFinished
 import com.example.planer.entities.relations.TaskAndSubtasks
 import kotlinx.coroutines.flow.Flow
@@ -55,11 +54,8 @@ interface TasksDAO
     // Pobiera łączone typy Tasks i Notes do przekazania scope mode aka deadline minął
     @Transaction
     @RewriteQueriesToDropUnusedColumns
-    @Query("SELECT * FROM Tasks t LEFT JOIN Notes n ON t.note_id=n.id WHERE strftime('%s', t.deadline) < strftime('%s', 'now')")
+    @Query("SELECT * FROM Tasks t LEFT JOIN Notes n ON t.note_id=n.id WHERE strftime('%s', t.deadline) < strftime('%s', 'now') AND t.is_active = 1")
     fun readOverdueTasksWithNotes(): LiveData<Map<Tasks, List<Notes>>>
-
-    @Query("SELECT * FROM Tasks t JOIN Notes n ON t.note_id=n.id ORDER BY id ASC")
-    fun readAllDataWithNotes(): LiveData<List<NoteAndTask>>
 
     @Transaction
     @Query("SELECT * FROM Tasks WHERE id = :id")

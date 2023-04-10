@@ -16,11 +16,11 @@ data class Tasks(
     @ColumnInfo(name = "urgency")
     val urgency: Int,
     @ColumnInfo(name = "deadline")
-    val deadline: String,
+    var deadline: String,
     @ColumnInfo(name = "time_to_finish")
     val timeToFinish: Int,
     @ColumnInfo(name = "is_active")
-    val isActive: Int,
+    var isActive: Int,
     @ColumnInfo(name = "type_id")
     val typeId: Int,
     @ColumnInfo(name = "note_id")
