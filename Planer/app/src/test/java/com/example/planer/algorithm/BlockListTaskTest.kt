@@ -5,6 +5,7 @@ import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
+import java.time.LocalDate
 
 @ExperimentalCoroutinesApi
 class BlockListTaskTest{
@@ -23,8 +24,15 @@ class BlockListTaskTest{
 
     @Test
     fun plannerTest() = runTest {
-        var blt = BlockListTask(listOf(Tasks(1, "string", 0, 0, "24-04-2023", 1, 1, 1, 1), Tasks(2, "string", 0, 0, "24-03-2023", 1, 1, 1, 1)))
-
+        val today = EasyDate(LocalDate.now())
+        val easy = EasyDate("07.04.2023  15:05")
+        throw Exception(
+            "${today.date}\n" +
+                    "${(today+1).date}\n" +
+                "${(today+7).date}\n"+
+            "${(today+31).date}\n" +
+            "${easy.date}\n"
+        )
     }
 
     @Test

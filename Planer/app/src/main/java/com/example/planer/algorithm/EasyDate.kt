@@ -178,7 +178,7 @@ class EasyDate {
         val year : Int
         val test = str[2]
         if(str.length == 10){
-            if(test == '-'){
+            if(test == '-' || test == '.'){
                 day = str.substring(0, 2).toInt()
                 month = str.substring(3, 5).toInt()
                 year = str.substring(6).toInt()
@@ -189,10 +189,17 @@ class EasyDate {
                 year = str.substring(0, 4).toInt()
             }
         }
-        else if(str.length == 17){  //DD.MM.YYYY  HH:mm
-            day = str.substring(0, 2).toInt()
-            month = str.substring(3, 5).toInt()
-            year = str.substring(6, 10).toInt()
+        else if(str.length == 17){
+            if(test == '-' || test == '.'){  //DD.MM.YYYY  HH:mm
+                day = str.substring(0, 2).toInt()
+                month = str.substring(3, 5).toInt()
+                year = str.substring(6, 10).toInt()
+            }
+            else{  //YYYY.MM.DD  HH:mm
+                year = str.substring(0, 4).toInt()
+                month = str.substring(5, 7).toInt()
+                day = str.substring(8, 10).toInt()
+            }
         }
         else{
             throw Exception("\n \nunknown format: $str \n length: ${str.length}")
