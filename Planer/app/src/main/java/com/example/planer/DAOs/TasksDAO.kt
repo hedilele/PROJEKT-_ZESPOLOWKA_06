@@ -3,6 +3,7 @@ package com.example.planer.DAOs
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.example.planer.entities.Finished
+import com.example.planer.entities.Notes
 import com.example.planer.entities.Subtasks
 import com.example.planer.entities.Tasks
 import com.example.planer.entities.relations.NoteAndTask
@@ -53,8 +54,9 @@ interface TasksDAO
 
     // Pobiera łączone typy Tasks i Notes do przekazania scope mode aka deadline minął
     @Transaction
-    @Query("SELECT * FROM Tasks t JOIN Notes n ON t.note_id=n.id WHERE strftime('%s', t.deadline) < strftime('%s', 'now')")
-    fun readOverdueTasksWithNotes(): LiveData<List<NoteAndTask>>
+    @RewriteQueriesToDropUnusedColumns
+    @Query("SELECT * FROM Tasks t LEFT JOIN Notes n ON t.note_id=n.id WHERE strftime('%s', t.deadline) < strftime('%s', 'now')")
+    fun readOverdueTasksWithNotes(): LiveData<Map<Tasks, List<Notes>>>
 
     @Query("SELECT * FROM Tasks t JOIN Notes n ON t.note_id=n.id ORDER BY id ASC")
     fun readAllDataWithNotes(): LiveData<List<NoteAndTask>>

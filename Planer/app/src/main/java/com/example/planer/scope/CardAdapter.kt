@@ -3,26 +3,30 @@ package com.example.planer.scope
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.planer.R
-import com.example.planer.entities.relations.NoteAndTask
+import com.example.planer.entities.Notes
+import com.example.planer.entities.Tasks
 
-class CardAdapter(dataSet: List<NoteAndTask>) :
+class CardAdapter(taskList: Map<Tasks, List<Notes>>) :
     RecyclerView.Adapter<CardAdapter.ViewHolder>() {
 
-    private var tasks: List<NoteAndTask> = dataSet
+    private var tasks: Map<Tasks, List<Notes>> = taskList
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val titleText: TextView
         val deadlineText: TextView
         val noteText: TextView
+        val laterButton: Button
 
         init {
             titleText = view.findViewById(R.id.titleTextView)
             deadlineText = view.findViewById(R.id.deadlineTextView)
             noteText = view.findViewById(R.id.noteTextView)
+            laterButton = view.findViewById(R.id.postponeButton)
         }
     }
 
@@ -33,17 +37,18 @@ class CardAdapter(dataSet: List<NoteAndTask>) :
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
-        val item = tasks[position]
+        val oneTask = tasks.keys.elementAt(position)
+        val oneNote: Notes? = tasks[oneTask]?.firstOrNull()
 
-        viewHolder.titleText.text = item.tasks.title
-        viewHolder.deadlineText.text = item.tasks.deadline
-        viewHolder.noteText.text = item.notes.noteContent
+        viewHolder.titleText.text = oneTask.title
+        viewHolder.deadlineText.text = oneTask.deadline
+        viewHolder.noteText.text = oneNote?.noteContent ?: ""
     }
 
     override fun getItemCount(): Int = tasks.size
 
-    fun updateList(newTasks: List<NoteAndTask>) {
-        val diffResult = DiffUtil.calculateDiff(NoteAndTaskDiffCallback(tasks, newTasks))
+    fun updateList(newTasks: Map<Tasks, List<Notes>>) {
+        val diffResult = DiffUtil.calculateDiff(TaskDiffCallback(tasks, newTasks))
         tasks = newTasks
         diffResult.dispatchUpdatesTo(this)
     }
