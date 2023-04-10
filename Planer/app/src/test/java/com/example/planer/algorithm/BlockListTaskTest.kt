@@ -11,10 +11,10 @@ class BlockListTaskTest{
 
     @Test
     fun funTest() = runTest {
-        val blt = BlockListTask(listOf(Tasks(1, "string", 0, 0, "24-03-2020", 1, 1, 1, 1), Tasks(1, "string", 0, 0, "24-03-2020", 1, 1, 1, 1)))
+        val blt = BlockListTask(listOf(Tasks(1, "string", 0, 0, "07.04.2023  15:05", 1, 1, 1, 1), Tasks(1, "string", 0, 0, "24-03-2020", 1, 1, 1, 1)))
         println(blt.list)
         blt.planner()
-        assertThat(blt.today_list).isEmpty()
+        assertThat(blt.today_list).isNotEmpty()
         assertThat(blt.tomorrow_list).isEmpty()
         assertThat(blt.week_list).isEmpty()
         assertThat(blt.month_list).isEmpty()

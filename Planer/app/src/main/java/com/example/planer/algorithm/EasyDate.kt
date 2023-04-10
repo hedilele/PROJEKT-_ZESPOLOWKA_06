@@ -189,10 +189,13 @@ class EasyDate {
                 year = str.substring(0, 4).toInt()
             }
         }
+        else if(str.length == 17){  //DD.MM.YYYY  HH:mm
+            day = str.substring(0, 2).toInt()
+            month = str.substring(3, 5).toInt()
+            year = str.substring(6, 10).toInt()
+        }
         else{
-            day = 1
-            month = 1
-            year = 2023
+            throw Exception("\n \nunknown format: $str \n length: ${str.length}")
         }
 
         x += (day*1000000)
