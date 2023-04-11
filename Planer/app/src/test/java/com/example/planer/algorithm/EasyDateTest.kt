@@ -92,13 +92,13 @@ class EasyDateTest{
     fun convertTestWithReverseDate() = runTest {
         val d = EasyDate("13-01-2020")
         val i = d.convert("01-01-2020")
-        assertThat(i).isEqualTo(1012020)
+        assertThat(i).isEqualTo(20200101)
     }
 
     @Test
     fun to_StringTest() = runTest {
         val d = EasyDate(LocalDate.now())
-        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+        val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
         val date = LocalDate.now().format(formatter)
         assertThat(d.to_String()).isEqualTo(date)
     }

@@ -10,6 +10,8 @@ import java.util.Date
  * @param date - data jako int
  */
 // TODO brakuje obsługi błędów i przykładów ekstremalnych
+//(day * 1000000) + (month * 10000) + year          11042023
+//day + (month * 100) + (year * 10000)    20230411
 class EasyDate {
 
     var date : Int = 0
@@ -22,8 +24,7 @@ class EasyDate {
     }
 
     constructor(day : Int, month: Int, year : Int){
-        date += (day * 1000000) + (month * 10000) + year
-        //date += (year * 10000) + (month * 100) + day
+        date += (year * 10000) + (month * 100) + day
     }
 
     constructor(dateD : Date){
@@ -53,15 +54,15 @@ class EasyDate {
     gettery od dnia, miesiąca i roku
      */
     fun getDay() : Int{
-        return date / 1000000
+        return date % 100
     }
 
     fun getMonth() : Int{
-        return (date / 10000) % 100
+        return (date / 100) % 100
     }
 
     fun getYear() : Int{
-        return date % 10000
+        return date / 10000
     }
 
 
@@ -206,9 +207,9 @@ class EasyDate {
             throw Exception("\n \nunknown format: $str \n length: ${str.length}")
         }
 
-        x += (day*1000000)
-        x += (month*10000)
-        x += year
+        x += day
+        x += (month*100)
+        x += (year*10000)
 
         return x
     }
@@ -220,10 +221,12 @@ class EasyDate {
         var temp = date
         var str = ""
 
-        var r = temp % 10000
+        var r = temp % 100
+        if(r < 10)
+            str += "0"
         str += r.toString()
 
-        temp /= 10000
+        temp /= 100
         str += "-"
 
         r = temp % 100
@@ -235,8 +238,6 @@ class EasyDate {
         str += "-"
 
         r = temp
-        if(r < 10)
-            str += "0"
         str += r.toString()
 
         return str
