@@ -85,7 +85,7 @@ class EasyDateTest{
     fun convertTest() = runTest {
         val d = EasyDate("2020-01-13")
         val i = d.convert("2020-01-01")
-        assertThat(i).isEqualTo(1012020)
+        assertThat(i).isEqualTo(20200101)
     }
 
     @Test

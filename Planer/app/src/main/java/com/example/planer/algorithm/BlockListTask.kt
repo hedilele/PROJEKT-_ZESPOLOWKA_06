@@ -24,22 +24,19 @@ class BlockListTask (
         val today = EasyDate(LocalDate.now())
         for (i in tasks){
             val d = EasyDate(i.deadline)
-            if(d.date == today.date){
-                today_list.add(i)
+            when{
+                d.date == today.date -> today_list.add(i)
+                d.date == (today+1).date -> tomorrow_list.add(i)
+                d.date <= (today+7).date -> week_list.add(i)
+                d.date <= (today+31).date -> month_list.add(i)
+                else -> rest_list.add(i)
             }
-            else if(d.date == (today+1).date){
-                tomorrow_list.add(i)
-            }
-            else if(d.date <= (today+7).date){
-                week_list.add(i)
-            }
-            else if(d.date <= (today+31).date){
-                month_list.add(i)
-            }
-            else{
-                rest_list.add(i)
-            }
-
         }
+        today_list.sortedWith(compareBy({it.importance}, {it.urgency}, {it.timeToFinish}))
+        tomorrow_list.sortedWith(compareBy({it.importance}, {it.urgency}, {it.timeToFinish}))
+        week_list.sortedWith(compareBy({it.importance}, {it.urgency}, {it.timeToFinish}))
+        month_list.sortedWith(compareBy({it.importance}, {it.urgency}, {it.timeToFinish}))
+        rest_list.sortedWith(compareBy({it.importance}, {it.urgency}, {it.timeToFinish}))
     }
+
 }

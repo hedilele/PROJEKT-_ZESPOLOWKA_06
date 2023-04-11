@@ -241,7 +241,7 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
                         urgency = urgent,
                         deadline = setUpDate(day.toInt(),month.toInt()-1, year.toInt()) + "  " +
                                 setUpTime(hour.toInt(), minute.toInt()),
-                        timeToFinish = 1,
+                        timeToFinish = duration,
                         isActive = 0,
                         typeId = type,
                         noteId = 0,
