@@ -7,8 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.planer.AppDatabase
 import com.example.planer.repository.TaskRepository
 import com.example.planer.entities.Tasks
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 
 //Referencja do aplikacji
 class TaskViewModel(application: Application): AndroidViewModel(application)
@@ -73,11 +72,19 @@ class TaskViewModel(application: Application): AndroidViewModel(application)
         }
     }
 
-    fun readTasksWithTypes(typeId: Int)
+    suspend fun readTasksWithTypes(): LiveData<List<Tasks>>
     {
+        /*
         viewModelScope.launch(Dispatchers.IO)
         {
-            repository.readTaskWithTypes(typeId)
+            //repository.readTaskWithTypes(typeId)
+            //val readP: LiveData<List<Tasks>>
+            repository.readP
+        }
+         */
+        return withContext(Dispatchers.IO)
+        {
+            repository.readP
         }
     }
 

@@ -61,7 +61,10 @@ interface TasksDAO
     //Mozna to ograc takimi zapytaniami SELECT * FROM Tasks WHERE type_id IN (3,1) AND time_to_finish IN(1)
     //PROBLEM - Jak w zasadzie polaczyc te typy,
     @Query("SELECT * FROM Tasks WHERE type_id IN (:typeId)") //Czysto przykladowo
-    fun readTasksWithTypes(typeId: Int): List<Tasks>
+    fun readTasksWithTypes(typeId: Int): LiveData<List<Tasks>>
+
+    @Query("SELECT * FROM Tasks WHERE type_id = 0")
+    fun readP(): LiveData<List<Tasks>>
 
     // Pobiera łączone typy Tasks i Notes do przekazania scope mode aka deadline minął
     @Transaction

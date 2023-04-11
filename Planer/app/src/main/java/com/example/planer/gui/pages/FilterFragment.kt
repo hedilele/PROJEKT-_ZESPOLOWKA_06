@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
-import androidx.compose.ui.graphics.Color
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -20,10 +19,13 @@ import com.example.planer.entities.Tasks
 import com.example.planer.gui.AdapterTasks
 import kotlinx.android.synthetic.main.dialog_task_info.*
 import kotlinx.android.synthetic.main.fragment_filter.view.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class FilterFragment : Fragment(){
 
-    var flaga = false
+    private var flaga = 0
     //Podlaczanie xmla dialog_filter
     private lateinit var userViewModel: TaskViewModel
     // lista tasków do recyclerView
@@ -152,13 +154,9 @@ class FilterFragment : Fragment(){
 
             //Sortowanie po kliknieciu w przycisk
             sortButton.setOnClickListener{
-                if(typ == null && trwanie == null)
+                if(typ == 0)
                 {
-                    userViewModel.readAllData()
-                }
-                else if(typ == 0)
-                {
-                    flaga = true
+                    flaga = 1
                 }
                 alertDialog.dismiss()
             }
@@ -182,13 +180,18 @@ class FilterFragment : Fragment(){
             adapter.setData((blockListTask.today_list + blockListTask.tomorrow_list
                     + blockListTask.week_list + blockListTask.month_list +
                     blockListTask.rest_list).toMutableList())
-            /*
-            if(flaga)
+            if(flaga == 1)
             {
-                userViewModel.readTasksWithTypes(0)
-                adapter?.notifyDataSetChanged()
+                CoroutineScope(Dispatchers.Main).launch{
+                    userViewModel.readTasksWithTypes().observe(viewLifecycleOwner, Observer {
+                        val blockListTask = BlockListTask(it)
+                        blockListTask.planner()
+                        adapter.setData((blockListTask.today_list + blockListTask.tomorrow_list
+                                + blockListTask.week_list + blockListTask.month_list +
+                                blockListTask.rest_list).toMutableList())
+                    })
+                }
             }
-             */
 
         })
         return view

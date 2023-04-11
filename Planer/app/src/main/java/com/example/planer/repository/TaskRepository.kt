@@ -8,6 +8,8 @@ class TaskRepository(private val tasksDAO: TasksDAO)
 {
 
     val readAllData: LiveData<List<Tasks>> = tasksDAO.readAllData()
+    //val readDataWithTasks: LiveData<List<Tasks>> = tasksDAO.readTasksWithTypes(typeId = Int)
+    val readP: LiveData<List<Tasks>> = tasksDAO.readP()
 
     suspend fun addTask(tasks: Tasks)
     {
@@ -40,8 +42,10 @@ class TaskRepository(private val tasksDAO: TasksDAO)
         tasksDAO.readAllDataa()
     }
 
+    /*
     suspend fun readTaskWithTypes(typeId: Int)
     {
         tasksDAO.readTasksWithTypes(typeId)
     }
+     */
 }
