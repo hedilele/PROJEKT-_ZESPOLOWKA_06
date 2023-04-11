@@ -58,7 +58,6 @@ class MainActivity : AppCompatActivity() {
 
             binding.pagerView.setCurrentItem(0)
 
-
         }
 
         // menu boczne - wysuwanie

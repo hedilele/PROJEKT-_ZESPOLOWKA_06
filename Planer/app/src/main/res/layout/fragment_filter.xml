@@ -17,10 +17,11 @@
             android:orientation="horizontal">
 
             <ImageView
+                android:id="@+id/searchView"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_margin="5dp"
-                android:background="@drawable/icon_filter_24"/>
+                android:background="@drawable/icon_filter_24" />
 
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/search"

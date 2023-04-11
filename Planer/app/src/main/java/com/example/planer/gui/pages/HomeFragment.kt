@@ -38,7 +38,7 @@ class HomeFragment : Fragment() {
 
         userViewModel = ViewModelProvider(this).get(TaskViewModel::class.java)
 
-
+        //TODO - podlaczanie taskow pod wyswietlanie
         /*
         5 rv i adapterów do wyświetlania list tasków pobranych z bazy
          */

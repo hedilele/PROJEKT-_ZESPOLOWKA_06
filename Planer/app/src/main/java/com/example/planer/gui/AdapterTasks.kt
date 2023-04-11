@@ -12,13 +12,16 @@ import android.view.*
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.planer.R
 import com.example.planer.UserViewModel
+import com.example.planer.databinding.ActivityMainBinding
 import com.example.planer.entities.Tasks
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_adding_task.view.*
