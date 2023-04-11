@@ -42,6 +42,9 @@ interface TasksDAO
     @Query("SELECT * FROM Tasks ORDER BY id ASC")
     fun readAllData(): LiveData<List<Tasks>>
 
+    @Query("SELECT * FROM Tasks")
+    fun readAllDataa(): LiveData<List<Tasks>>
+
     @Query("SELECT * FROM Tasks ORDER BY title DESC")
     fun readAllDataWithFilter(): List<Tasks>
 
@@ -58,7 +61,7 @@ interface TasksDAO
     //Mozna to ograc takimi zapytaniami SELECT * FROM Tasks WHERE type_id IN (3,1) AND time_to_finish IN(1)
     //PROBLEM - Jak w zasadzie polaczyc te typy,
     @Query("SELECT * FROM Tasks WHERE type_id IN (:typeId)") //Czysto przykladowo
-    fun readTasksWithDeadline(typeId: List<Int>): List<Tasks>
+    fun readTasksWithTypes(typeId: Int): List<Tasks>
 
     // Pobiera łączone typy Tasks i Notes do przekazania scope mode aka deadline minął
     @Transaction

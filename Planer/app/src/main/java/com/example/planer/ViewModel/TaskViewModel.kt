@@ -65,4 +65,20 @@ class TaskViewModel(application: Application): AndroidViewModel(application)
         }
     }
 
+    fun readAllData()
+    {
+        viewModelScope.launch (Dispatchers.IO )
+        {
+            repository.readAllDataa()
+        }
+    }
+
+    fun readTasksWithTypes(typeId: Int)
+    {
+        viewModelScope.launch(Dispatchers.IO)
+        {
+            repository.readTaskWithTypes(typeId)
+        }
+    }
+
 }

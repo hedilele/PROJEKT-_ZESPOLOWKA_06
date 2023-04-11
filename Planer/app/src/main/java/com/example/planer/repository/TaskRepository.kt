@@ -34,4 +34,14 @@ class TaskRepository(private val tasksDAO: TasksDAO)
     {
         tasksDAO.update(task)
     }
+
+    suspend fun readAllDataa()
+    {
+        tasksDAO.readAllDataa()
+    }
+
+    suspend fun readTaskWithTypes(typeId: Int)
+    {
+        tasksDAO.readTasksWithTypes(typeId)
+    }
 }
