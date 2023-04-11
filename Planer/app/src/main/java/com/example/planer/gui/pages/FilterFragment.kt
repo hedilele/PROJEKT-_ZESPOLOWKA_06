@@ -179,16 +179,17 @@ class FilterFragment : Fragment(){
         userViewModel.readAllData.observe(viewLifecycleOwner, Observer {
             val blockListTask = BlockListTask(it)
             blockListTask.planner()
-            adapter.setData(blockListTask.today_list)
+            adapter.setData((blockListTask.today_list + blockListTask.tomorrow_list
+                    + blockListTask.week_list + blockListTask.month_list +
+                    blockListTask.rest_list).toMutableList())
+            /*
             if(flaga)
             {
                 userViewModel.readTasksWithTypes(0)
+                adapter?.notifyDataSetChanged()
             }
-            //TODO Wyswietlanie wszystkich taskow, a nie tylko z danego dnia itp
-            //adapter.setData(blockListTask.tomorrow_list)
-            //adapter.setData(blockListTask.week_list)
-            //adapter.setData(blockListTask.month_list)
-            //adapter.setData(blockListTask.rest_list)
+             */
+
         })
         return view
     }

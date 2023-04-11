@@ -23,6 +23,7 @@ import com.example.planer.R
 import com.example.planer.UserViewModel
 import com.example.planer.databinding.ActivityMainBinding
 import com.example.planer.entities.Tasks
+import com.example.planer.tasks.Task
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_adding_task.view.*
 import kotlinx.android.synthetic.main.dialog_task_info.view.*
