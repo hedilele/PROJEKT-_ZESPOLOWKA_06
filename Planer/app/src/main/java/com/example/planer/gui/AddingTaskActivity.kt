@@ -119,7 +119,7 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
                 //binding.duration1.setColorFilter(getResources().getColor(R.color.hard_red));
                 binding.duration1.getBackground().setTint((getResources().getColor(R.color.brown_important_urgent_on)))
 
-                duration = 0
+                duration = 1
             }
 
             R.id.duration2 -> {
@@ -127,7 +127,7 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
                 //binding.duration2.setColorFilter(getResources().getColor(R.color.hard_red));
                 binding.duration2.getBackground().setTint((getResources().getColor(R.color.brown_important_urgent_on)))
 
-                duration = 1
+                duration = 2
             }
 
             R.id.duration3 -> {
@@ -135,7 +135,7 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
                 //binding.duration3.setColorFilter(getResources().getColor(R.color.hard_red));
                 binding.duration3.getBackground().setTint((getResources().getColor(R.color.brown_important_urgent_on)))
 
-                duration = 2
+                duration = 6
             }
 
             R.id.duration4 -> {
@@ -143,19 +143,19 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
                 //binding.duration4.setColorFilter(getResources().getColor(R.color.hard_red));
                 binding.duration4.getBackground().setTint((getResources().getColor(R.color.brown_important_urgent_on)))
 
-                duration = 3
+                duration = 12
             }
 
             R.id.duration5 -> {
                 uncheckDuration()
                 binding.duration5.getBackground().setTint((getResources().getColor(R.color.brown_important_urgent_on)))
-                duration = 4
+                duration = 24
             }
 
             R.id.duration6 -> {
                 uncheckDuration()
                 binding.duration6.getBackground().setTint((getResources().getColor(R.color.brown_important_urgent_on)))
-                duration = 5
+                duration = 30
             }
 
 
