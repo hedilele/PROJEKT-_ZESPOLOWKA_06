@@ -82,7 +82,7 @@
             </TextView>
 
             <LinearLayout
-                android:id="@+id/name2"
+                android:id="@+id/edit_drawer"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/shape_navigartion_button2"

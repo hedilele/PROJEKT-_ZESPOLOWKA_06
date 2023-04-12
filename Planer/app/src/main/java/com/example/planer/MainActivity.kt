@@ -11,10 +11,7 @@ import androidx.viewpager.widget.ViewPager
 import com.example.planer.databinding.ActivityMainBinding
 import com.example.planer.gui.AddingTaskActivity
 import com.example.planer.gui.HideNextPage
-import com.example.planer.gui.pages.CalendarFragment
-import com.example.planer.gui.pages.DrawerFragment
-import com.example.planer.gui.pages.FilterFragment
-import com.example.planer.gui.pages.HomeFragment
+import com.example.planer.gui.pages.*
 import kotlinx.coroutines.launch
 
 
@@ -38,9 +35,11 @@ class MainActivity : AppCompatActivity() {
 
         // dodanie fragmentów do listy
         pagerAdapters = PagerAdapters(supportFragmentManager)
-        pagerAdapters.addFragment(HomeFragment())       // 1
-        pagerAdapters.addFragment(CalendarFragment())   // 2
-        pagerAdapters.addFragment(FilterFragment())     // 3
+        pagerAdapters.addFragment(HomeFragment())       // 0
+        pagerAdapters.addFragment(CalendarFragment())   // 1
+        pagerAdapters.addFragment(FilterFragment())     // 2
+        pagerAdapters.addFragment(HabitsFragment())     // 3
+        pagerAdapters.addFragment(PomodoroFragment())     // 4
 
         // przypisanie adaptera zajmującego się fragmentami do adaptera pagerView
         binding.pagerView.adapter = pagerAdapters
@@ -93,30 +92,30 @@ class MainActivity : AppCompatActivity() {
         }
 
 
-       binding.pagerView.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
-           override fun onPageScrollStateChanged(state: Int) {
-               // This method will be invoked when the scroll state changes.
-           }
+        binding.pagerView.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+            override fun onPageScrollStateChanged(state: Int) {
+                // This method will be invoked when the scroll state changes.
+            }
 
-           override fun onPageScrolled(
-               position: Int,
-               positionOffset: Float,
-               positionOffsetPixels: Int
-           ) {
-               // This method will be invoked when the current page is scrolled.
-               if (position == 1 && byDrawer == 0)
-               {
-                   binding.pagerView.setCurrentItem(1)
-                   binding.pagerView.setPageTransformer(false, HideNextPage())
-                   return
-               }
-           }
+            override fun onPageScrolled(
+                position: Int,
+                positionOffset: Float,
+                positionOffsetPixels: Int
+            ) {
+                // This method will be invoked when the current page is scrolled.
+                if (position == 1 && byDrawer == 0)
+                {
+                    binding.pagerView.setCurrentItem(1)
+                    binding.pagerView.setPageTransformer(false, HideNextPage())
+                    return
+                }
+            }
 
-           override fun onPageSelected(position: Int) {
-               // This method will be invoked when a new page becomes selected.
+            override fun onPageSelected(position: Int) {
+                // This method will be invoked when a new page becomes selected.
 
-           }
-       })
+            }
+        })
 
 
 
@@ -139,7 +138,7 @@ class MainActivity : AppCompatActivity() {
                 when (it.itemId) {
                     R.id.item1 -> {
                         Toast.makeText(this@MainActivity, "111", Toast.LENGTH_SHORT).show()
-                        binding.pagerView.setCurrentItem(3)
+                        binding.pagerView.setCurrentItem(2)
 
                         //możliwosc scrollowania wylaczona
                         binding.pagerView.setOnTouchListener { arg0, arg1 -> true }
@@ -151,10 +150,27 @@ class MainActivity : AppCompatActivity() {
                         binding.drawerLayout.closeDrawer(GravityCompat.START);
                     }
                     R.id.item2 -> {
-                        Toast.makeText(this@MainActivity, "222", Toast.LENGTH_SHORT).show()
+                        //Toast.makeText(this@MainActivity, "222", Toast.LENGTH_SHORT).show()
+
+                        binding.pagerView.setCurrentItem(3)
+
+                        //możliwosc scrollowania wylaczona
+                        binding.pagerView.setOnTouchListener { arg0, arg1 -> true }
+
+                        byDrawer = 1
+                        binding.drawerLayout.closeDrawer(GravityCompat.START);
                     }
                     R.id.item3 -> {
                         Toast.makeText(this@MainActivity, "333", Toast.LENGTH_SHORT).show()
+
+                        binding.pagerView.setCurrentItem(4)
+
+                        //możliwosc scrollowania wylaczona
+                        binding.pagerView.setOnTouchListener { arg0, arg1 -> true }
+
+                        byDrawer = 1
+                        binding.drawerLayout.closeDrawer(GravityCompat.START);
+
                     }
                 }
                 true
@@ -162,122 +178,6 @@ class MainActivity : AppCompatActivity() {
         }
 
 
+    }
 }
-}
 
-
-
-// może mi się jeszcze przydać
-/*
-class MainActivity : AppCompatActivity() {
-
-    private lateinit var binding: ActivityMainBinding
-    lateinit var toggle: ActionBarDrawerToggle
-
-    private lateinit var db : AppDatabase
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        //setContentView(R.layout.activity_main)
-        setContentView(binding?.root)
-
-// menu boczne
-        binding.apply {
-            toggle = ActionBarDrawerToggle(this@MainActivity, drawerLayout, R.string.open, R.string.close)
-            drawerLayout.addDrawerListener(toggle)
-            toggle.syncState()
-
-            supportActionBar?.setDisplayHomeAsUpEnabled(true)
-
-            binding?.navigation?.setNavigationItemSelectedListener {
-                when(it.itemId) {
-                    R.id.item1 -> {
-                        Toast.makeText(this@MainActivity, "111", Toast.LENGTH_SHORT).show()
-                    }
-                    R.id.item2 -> {
-                        Toast.makeText(this@MainActivity, "222", Toast.LENGTH_SHORT).show()
-                    }
-                    R.id.item3 -> {
-                        Toast.makeText(this@MainActivity, "333", Toast.LENGTH_SHORT).show()
-                    }
-                }
-                true
-            }
-        }
-
-// baza danych
-        val tasksDao = (application as DatabaseApp).db.tasksDAO()
-
-        binding?.btnAdd?.setOnClickListener{
-            //addHabit(habitsDao)
-            val intent = Intent(this, AddingTaskActivity::class.java)
-            startActivity(intent)
-        }
-
-        lifecycleScope.launch{
-            tasksDao.fetchAll().collect{
-                val list = ArrayList(it)
-                setupListOfDataIntoRecyclerView(list, tasksDao)
-            }
-        }
-
-    }
-
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if(toggle.onOptionsItemSelected(item)){
-            true
-        }
-
-        return super.onOptionsItemSelected(item)
-    }
-    private fun setupListOfDataIntoRecyclerView(taskList:ArrayList<Tasks>, tasksDAO: TasksDAO) {
-
-        if(taskList.isNotEmpty()){
-            val taskAdapter = Adapter(taskList,
-                {updateId -> },
-                {deleteId ->
-                    lifecycleScope.launch{
-                        tasksDAO.findTaskById(deleteId).collect{
-                            if(it != null) {
-                                deleteRecord(deleteId, tasksDAO, it)
-                            }
-                        }
-                    }
-                })
-
-            binding?.taskList?.layoutManager = LinearLayoutManager(this)
-            binding?.taskList?.adapter = taskAdapter
-            binding?.taskList?.visibility = View.VISIBLE
-
-        }
-        else{
-            binding?.taskList?.visibility = View.GONE
-        }
-
-    }
-
-    fun deleteRecord(id:Int ,tasksDAO: TasksDAO, tasks: Tasks) {
-
-        /*
-            val builder = AlertDialog.Builder(this)
-            //set title for alert dialog
-            builder.setTitle("Delete Record")
-            //set message for alert dialog
-            builder.setMessage("Are you sure you wants to delete ${employee.name}.")
-            builder.setIcon(android.R.drawable.ic_dialog_alert)
-
-         */
-        //performing positive action
-        // builder.setPositiveButton("Yes") { dialogInterface, _ ->
-        lifecycleScope.launch {
-            tasksDAO.delete(tasksDAO.findTaskById(id).first())
-
-
-            //  dialogInterface.dismiss() // Dialog will be dismissed
-        }
-
-    }
-
-}*/

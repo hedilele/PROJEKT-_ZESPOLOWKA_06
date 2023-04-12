@@ -52,6 +52,36 @@ class AdapterHabits(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = list[position]
+        val iv = holder.itemView
+
+
+        iv.edit_drawer.visibility = View.GONE
+
+
+        iv.more_open.setOnClickListener {
+
+            //holder.itemView.name2.setVisibility(View.VISIBLE)
+
+            val transition: Transition = Slide(Gravity.RIGHT)
+            transition.setDuration(500)
+            transition.addTarget(iv.edit_drawer)
+
+            TransitionManager.beginDelayedTransition(iv.parent_slide, transition)
+            iv.edit_drawer.setVisibility(View.VISIBLE)
+        }
+
+        iv.more_close.setOnClickListener {
+
+            //holder.itemView.name2.setVisibility(View.VISIBLE)
+
+            val transition: Transition = Slide(Gravity.RIGHT)
+            transition.setDuration(500)
+            transition.addTarget(iv.edit_drawer)
+
+            TransitionManager.beginDelayedTransition(iv.parent_slide, transition)
+            iv.edit_drawer.setVisibility(View.INVISIBLE)
+        }
+
 
     }
 

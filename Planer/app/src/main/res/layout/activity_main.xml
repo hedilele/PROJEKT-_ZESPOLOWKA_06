@@ -40,19 +40,19 @@
 
             </LinearLayout>
 
-<!--
-            <com.example.planer.gui.LockableViewPager
-                android:id="@+id/pagerView"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="7"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/appBarLa"
-                >
-            </com.example.planer.gui.LockableViewPager>
-            -->
+            <!--
+                        <com.example.planer.gui.LockableViewPager
+                            android:id="@+id/pagerView"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="7"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="@+id/appBarLa"
+                            >
+                        </com.example.planer.gui.LockableViewPager>
+                        -->
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -140,44 +140,6 @@
             </LinearLayout>
 
 
-            <!--
-                    <com.google.android.material.appbar.AppBarLayout
-                        android:id="@+id/appBarLa"
-                        android:layout_margin="10dp"
-                        app:elevation="10dp"
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="1"
-                        app:layout_constraintBottom_toTopOf="@+id/myPagerView"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        >
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent">
-
-
-
-                        <com.google.android.material.tabs.TabLayout
-                            android:id="@+id/tabs"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_margin="10dp"
-                            android:backgroundTint="@color/purple_200"
-                            android:padding="8dp"
-                            app:tabGravity="fill"
-                            app:tabIndicatorColor="@color/purple_500"
-                            app:tabMaxWidth="0dp"
-                            app:tabMode="fixed"
-                            app:tabTextColor="#031370"
-
-                            />
-                        </LinearLayout>
-
-                    </com.google.android.material.appbar.AppBarLayout>
-            -->
         </LinearLayout>
 
 
@@ -187,6 +149,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             app:menu="@menu/nav_menu"
+            app:itemShapeFillColor="#B3F3DEBA"
             app:headerLayout="@layout/nav_header"
             android:layout_gravity="start"
             android:fitsSystemWindows="true"

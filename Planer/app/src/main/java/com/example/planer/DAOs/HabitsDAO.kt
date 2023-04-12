@@ -16,7 +16,7 @@ interface HabitsDAO
 
     //Pobieranie listy habitsow z bazy
     @Query("SELECT * FROM habits")
-    suspend fun getAllHabits(): List<Habits>
+    fun getAllHabits(): List<Habits>
 
     //Pobieranie Habitsa po id
     @Query("SELECT * FROM habits WHERE id = :habitId")
