@@ -190,6 +190,17 @@ class EasyDate {
                 month = str.substring(5, 7).toInt()
                 year = str.substring(0, 4).toInt()
             }
+        }else if(str.length == 16){
+            if(test == '-' || test == '.'){  //DD.MM.YYYY HH:mm
+                day = str.substring(0, 2).toInt()
+                month = str.substring(3, 5).toInt()
+                year = str.substring(6, 10).toInt()
+            }
+            else{  //YYYY.MM.DD HH:mm
+                year = str.substring(0, 4).toInt()
+                month = str.substring(5, 7).toInt()
+                day = str.substring(8, 10).toInt()
+            }
         }
         else if(str.length == 17){
             if(test == '-' || test == '.'){  //DD.MM.YYYY  HH:mm
