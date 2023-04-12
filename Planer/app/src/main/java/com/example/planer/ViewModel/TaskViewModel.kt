@@ -72,19 +72,11 @@ class TaskViewModel(application: Application): AndroidViewModel(application)
         }
     }
 
-    suspend fun readTasksWithTypes(): LiveData<List<Tasks>>
+    suspend fun readTasksWithTypes(typeId: Int): LiveData<List<Tasks>>
     {
-        /*
-        viewModelScope.launch(Dispatchers.IO)
-        {
-            //repository.readTaskWithTypes(typeId)
-            //val readP: LiveData<List<Tasks>>
-            repository.readP
-        }
-         */
         return withContext(Dispatchers.IO)
         {
-            repository.readP
+            repository.readTaskWithTypes(typeId)
         }
     }
 

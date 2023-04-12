@@ -63,8 +63,8 @@ interface TasksDAO
     @Query("SELECT * FROM Tasks WHERE type_id IN (:typeId)") //Czysto przykladowo
     fun readTasksWithTypes(typeId: Int): LiveData<List<Tasks>>
 
-    @Query("SELECT * FROM Tasks WHERE type_id = 0")
-    fun readP(): LiveData<List<Tasks>>
+    //@Query("SELECT * FROM Tasks WHERE type_id = 0")
+    //fun readP(): LiveData<List<Tasks>>
 
     // Pobiera łączone typy Tasks i Notes do przekazania scope mode aka deadline minął
     @Transaction

@@ -137,14 +137,17 @@ class FilterFragment : Fragment(){
 
             type2.setOnClickListener{
                 type2.getBackground().setTint(ContextCompat.getColor(requireContext(), R.color.brown_important_urgent_on))
+                typ = 1
             }
 
             type3.setOnClickListener{
                 type3.getBackground().setTint(ContextCompat.getColor(requireContext(), R.color.brown_important_urgent_on))
+                typ = 2
             }
 
             type4.setOnClickListener{
                 type4.getBackground().setTint(ContextCompat.getColor(requireContext(), R.color.brown_important_urgent_on))
+                typ = 3
             }
 
             //TODO Dla wybierania daty
@@ -154,9 +157,40 @@ class FilterFragment : Fragment(){
 
             //Sortowanie po kliknieciu w przycisk
             sortButton.setOnClickListener{
-                if(typ == 0)
+                val rv = view.rv_list
+                val adapter = AdapterTasks(
+                    list,
+                    {deleteId -> userViewModel.deleteTaskById(deleteId) },
+                    {updateTask, note -> userViewModel.updateTask(updateTask) }
+                )
+                rv?.adapter = adapter
+                rv?.layoutManager = LinearLayoutManager(requireContext())
+
+                userViewModel = ViewModelProvider(this)[TaskViewModel::class.java]
+                if(typ == 0 || typ == 1 || typ == 2 || typ == 3)
                 {
-                    flaga = 1
+                    println("**************************************")
+                    println(typ)
+                    CoroutineScope(Dispatchers.Main).launch{
+                        userViewModel.readTasksWithTypes(typ!!).observe(viewLifecycleOwner, Observer {
+                            val blockListTask = BlockListTask(it)
+                            blockListTask.planner()
+                            adapter.setData((blockListTask.today_list + blockListTask.tomorrow_list
+                                    + blockListTask.week_list + blockListTask.month_list +
+                                    blockListTask.rest_list).toMutableList())
+                        })
+                    }
+                }
+                else if(typ == null)
+                {
+                    userViewModel = ViewModelProvider(this)[TaskViewModel::class.java]
+                    userViewModel.readAllData.observe(viewLifecycleOwner, Observer {
+                        val blockListTask = BlockListTask(it)
+                        blockListTask.planner()
+                        adapter.setData((blockListTask.today_list + blockListTask.tomorrow_list
+                                + blockListTask.week_list + blockListTask.month_list +
+                                blockListTask.rest_list).toMutableList())
+                    })
                 }
                 alertDialog.dismiss()
             }
@@ -170,8 +204,8 @@ class FilterFragment : Fragment(){
             {deleteId -> userViewModel.deleteTaskById(deleteId) },
             {updateTask, note -> userViewModel.updateTask(updateTask) }
         )
-        rv.adapter = adapter
-        rv.layoutManager = LinearLayoutManager(requireContext())
+        rv?.adapter = adapter
+        rv?.layoutManager = LinearLayoutManager(requireContext())
 
         userViewModel = ViewModelProvider(this)[TaskViewModel::class.java]
         userViewModel.readAllData.observe(viewLifecycleOwner, Observer {
@@ -180,19 +214,6 @@ class FilterFragment : Fragment(){
             adapter.setData((blockListTask.today_list + blockListTask.tomorrow_list
                     + blockListTask.week_list + blockListTask.month_list +
                     blockListTask.rest_list).toMutableList())
-            if(flaga == 1)
-            {
-                CoroutineScope(Dispatchers.Main).launch{
-                    userViewModel.readTasksWithTypes().observe(viewLifecycleOwner, Observer {
-                        val blockListTask = BlockListTask(it)
-                        blockListTask.planner()
-                        adapter.setData((blockListTask.today_list + blockListTask.tomorrow_list
-                                + blockListTask.week_list + blockListTask.month_list +
-                                blockListTask.rest_list).toMutableList())
-                    })
-                }
-            }
-
         })
         return view
     }
