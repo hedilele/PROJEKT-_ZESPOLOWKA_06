@@ -15,7 +15,7 @@ data class Tasks(
     @ColumnInfo(name = "importance")
     val importance: Int,
     @ColumnInfo(name = "urgency")
-    val urgency: Int,
+    var urgency: Int,
     @ColumnInfo(name = "deadline")
     val deadline: String,
     @ColumnInfo(name = "time_to_finish")

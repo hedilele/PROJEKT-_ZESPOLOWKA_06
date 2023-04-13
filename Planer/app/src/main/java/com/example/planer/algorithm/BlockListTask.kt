@@ -25,11 +25,22 @@ class BlockListTask (
      */
     fun planner(){
         val today = EasyDate(LocalDate.now())
+
+
+
+
+        //rozdzielenie tasków do odpowiednich przedziałów
         for (i in tasks){
             val d = EasyDate(i.deadline)
             when{
 
+                //zadanie, które miało termin do dzisiaj, a się nie mieści, zostaje przesunięte na jutro, lub jeśli się nie da - do końca tyg
                 d.date == today.date -> {
+
+                    //deadline <=3 -> task staje się pilny
+                    if(i.importance == 1)
+                        i.urgency = 1
+
                     when{
                         todayWork + i.timeToFinish <= 60 -> {
                             today_list.add(i)
@@ -43,7 +54,13 @@ class BlockListTask (
                     }
                 }
 
+                //zadanie, które miało termin do jutra, a się nie mieści, zostaje przesunięte na do końca tyg
                 d.date == (today+1).date -> {
+
+                    //deadline <=3 -> task staje się pilny
+                    if(i.importance == 1)
+                        i.urgency = 1
+
                     if(tomorrowWork + i.timeToFinish <= 60 ){
                         tomorrow_list.add(i)
                         tomorrowWork += i.timeToFinish
@@ -60,6 +77,8 @@ class BlockListTask (
                 else -> rest_list.add(i)
             }
         }
+
+        //sortowanie przedziałów najpierw po ważności, potem pilności i na koniec po czasie trwania
         today_list.sortedWith(compareBy({it.importance}, {it.urgency}, {it.timeToFinish}))
         tomorrow_list.sortedWith(compareBy({it.importance}, {it.urgency}, {it.timeToFinish}))
         week_list.sortedWith(compareBy({it.importance}, {it.urgency}, {it.timeToFinish}))
