@@ -12,6 +12,8 @@ import com.example.planer.databinding.ActivityScopeModeBinding
 import com.example.planer.entities.Tasks
 import com.example.planer.scope.CardAdapter
 import kotlinx.coroutines.coroutineScope
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 
 class ScopeMode : AppCompatActivity(), CardAdapter.OnButtonClickListener {
@@ -40,7 +42,7 @@ class ScopeMode : AppCompatActivity(), CardAdapter.OnButtonClickListener {
             }
         })
 
-        viewModel.getOverdueTasks().observe(this) { tasks ->
+        viewModel.getScopeTasks().observe(this) { tasks ->
             adapter.updateList(tasks)
         }
     }
@@ -48,8 +50,14 @@ class ScopeMode : AppCompatActivity(), CardAdapter.OnButtonClickListener {
 
     @RequiresApi(Build.VERSION_CODES.O)
     override suspend fun onLaterButtonClick(item: Tasks) {
-        coroutineScope {
-            viewModel.postponeTaskTommorow(item)
+        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
+        if (item.importance == 0 && item.urgency == 0
+            && LocalDateTime.now().isBefore(LocalDateTime.parse(item.deadline, formatter))) {
+            viewModel.removeTask(item)
+        } else {
+            coroutineScope {
+                viewModel.postponeTaskTomorrow(item)
+            }
         }
     }
 

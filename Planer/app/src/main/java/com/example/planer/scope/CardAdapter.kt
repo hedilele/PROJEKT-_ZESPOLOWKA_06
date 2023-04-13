@@ -20,7 +20,6 @@ class CardAdapter(taskList: Map<Tasks, List<Notes>>) :
     private var tasks: Map<Tasks, List<Notes>> = taskList
     private var onButtonClickListener: OnButtonClickListener? = null
 
-
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val titleText: TextView
         val deadlineText: TextView
@@ -39,7 +38,6 @@ class CardAdapter(taskList: Map<Tasks, List<Notes>>) :
 
     interface OnButtonClickListener {
         suspend fun onLaterButtonClick(item: Tasks)
-
         suspend fun onDoneButtonClick(item: Tasks)
     }
 
@@ -50,6 +48,7 @@ class CardAdapter(taskList: Map<Tasks, List<Notes>>) :
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
+
         val oneTask = tasks.keys.elementAt(position)
         val oneNote: Notes? = tasks[oneTask]?.firstOrNull()
 

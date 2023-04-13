@@ -3,8 +3,7 @@ package com.example.planer.ViewModel
 import android.app.Application
 import android.os.Build
 import androidx.annotation.RequiresApi
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
+import androidx.lifecycle.*
 import com.example.planer.AppDatabase
 import com.example.planer.entities.Notes
 import com.example.planer.entities.Tasks
@@ -17,13 +16,21 @@ class ScopeViewModel(application: Application): AndroidViewModel(application)
 {
     private val taskDAO = AppDatabase.getDatabase(application).tasksDAO()
     private val scopeRepository: ScopeRepository = ScopeRepository(taskDAO)
+    private val unfilteredTasks: LiveData<Map<Tasks, List<Notes>>> = scopeRepository.getOverdueTasks()
+    private var mutableTaskMap: MutableLiveData<Map<Tasks, List<Notes>>> = MutableLiveData()
 
-    fun getOverdueTasks(): LiveData<Map<Tasks, List<Notes>>> {
-        return scopeRepository.getOverdueTasks()
+    init {
+        mutableTaskMap = MediatorLiveData<Map<Tasks, List<Notes>>>().apply {
+            addSource(unfilteredTasks) { value = it }
+        }
+    }
+
+    fun getScopeTasks(): LiveData<Map<Tasks, List<Notes>>> {
+        return mutableTaskMap
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    suspend fun postponeTaskTommorow(task: Tasks) {
+    suspend fun postponeTaskTomorrow(task: Tasks) {
         val currentDateTime = LocalDateTime.now().plusDays(1)
         val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
         val formattedDateTime = currentDateTime.format(formatter).toString()
@@ -37,4 +44,7 @@ class ScopeViewModel(application: Application): AndroidViewModel(application)
         scopeRepository.updateTask(task)
     }
 
+    fun removeTask(task: Tasks) {
+        mutableTaskMap.postValue(mutableTaskMap.value?.filterKeys { it != task } ?: return)
+    }
 }
