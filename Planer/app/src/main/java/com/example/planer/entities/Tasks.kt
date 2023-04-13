@@ -25,7 +25,6 @@ data class Tasks(
     val typeId: Int,
     @ColumnInfo(name = "note_id")
     val noteId: Int?,
-    //@ColumnInfo(name = "date")
-    //val date: Date?
-
+    @ColumnInfo(name = "date")
+    val date: String?
 )

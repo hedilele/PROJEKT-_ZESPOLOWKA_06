@@ -12,7 +12,7 @@ import com.example.planer.DAOs.TasksDAO
 import com.example.planer.entities.*
 
 //Update wersji + 11, jesli zmienimy baze danych, dodamy jakies itp
-@Database(entities = [Habits::class, Tasks::class, Finished::class, Subtasks::class, Calendar::class, Notes::class], version = 9)
+@Database(entities = [Habits::class, Tasks::class, Finished::class, Subtasks::class, Calendar::class, Notes::class], version = 10)
 @TypeConverters(DateConverter::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun habitsDAO() : HabitsDAO

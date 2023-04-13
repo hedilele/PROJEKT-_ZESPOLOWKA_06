@@ -240,9 +240,9 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
                         isActive = 0,
                         typeId = 0,
                         noteId = 0,
-                        urgency = 0
+                        urgency = 0,
                         //date = Calendar.getInstance().time //Ustawianie czasu na domyslny
-                        //date = null
+                        date = null
                     )
                 )
                 Toast.makeText(applicationContext, "record saved", Toast.LENGTH_SHORT).show()
