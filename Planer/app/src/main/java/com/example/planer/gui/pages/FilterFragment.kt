@@ -169,8 +169,6 @@ class FilterFragment : Fragment(){
                 userViewModel = ViewModelProvider(this)[TaskViewModel::class.java]
                 if(typ == 0 || typ == 1 || typ == 2 || typ == 3)
                 {
-                    println("**************************************")
-                    println(typ)
                     CoroutineScope(Dispatchers.Main).launch{
                         userViewModel.readTasksWithTypes(typ!!).observe(viewLifecycleOwner, Observer {
                             val blockListTask = BlockListTask(it)
