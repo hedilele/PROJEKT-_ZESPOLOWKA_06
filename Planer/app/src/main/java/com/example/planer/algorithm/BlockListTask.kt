@@ -38,8 +38,6 @@ class BlockListTask (
         var tomorrowLimitINU = 0
         var tomorrowLimitNIU = 0
 
-        var trash = mutableListOf<Tasks>()
-
         //pobranie dzisiejszej daty
         val today = EasyDate(LocalDate.now())
 
@@ -50,8 +48,9 @@ class BlockListTask (
                 val d = EasyDate(i.deadline)
                 
                 when{
-                    //zadanie, które miało termin do dzisiaj, a się nie mieści, zostaje przesunięte na jutro, lub jeśli się nie da - do końca tyg
-                    d.date == today.date -> {
+                    //zadanie, które miało termin na max 3 najbliższe dni włącznie z dzisiaj
+                    d.date <= (today+2).date -> {
+                        //zostanie dodane na dzisiaj, jutro lub do konca tygodnia zaleznie od limitu obciazenia (60)
                         when{
                             
                             todayWork + i.timeToFinish <= 60 -> {
@@ -62,23 +61,11 @@ class BlockListTask (
                             
                             tomorrowWork + i.timeToFinish <= 60 -> {
                                 tomorrowLimitIU += 1
-                                tomorrowFakeList.add(i)
+                                tomorrowList.add(i)
                                 tomorrowWork += i.timeToFinish
                             }
                             
                             else -> weekFakeList.add(i)
-                        }
-                    }
-
-                    //zadanie, które miało termin do jutra, a się nie mieści, zostaje przesunięte na do końca tyg
-                    d.date == (today+1).date -> {
-                        if(tomorrowWork + i.timeToFinish <= 60 ){ 
-                            tomorrowLimitIU += 1
-                            tomorrowFakeList.add(i)
-                            tomorrowWork += i.timeToFinish
-                        }
-                        else {
-                            weekFakeList.add(i)
                         }
                     }
 
@@ -91,8 +78,57 @@ class BlockListTask (
             }
         }
 
+        //jeśli mamy jakieś odległe pilne-ważne zadanie zostanie ono wypchnięte na dzisiaj o ile jest mozliwosc
+        if(todayLimitIU == 0){
+            when{
+                weekFakeList.isNotEmpty() -> {
+                    val task = weekFakeList.first()
+                    todayList.add(task)
+                    todayWork += task.timeToFinish
+                    weekFakeList.remove(task)
+                }
+                monthFakeList.isNotEmpty() -> {
+                    val task = monthFakeList.first()
+                    todayList.add(task)
+                    todayWork += task.timeToFinish
+                    monthFakeList.remove(task)
+                }
+                restFakeList.isNotEmpty() -> {
+                    val task = restFakeList.first()
+                    todayList.add(task)
+                    todayWork += task.timeToFinish
+                    restFakeList.remove(task)
+                }
+            }
+        }
 
-                //rozdzielenie tasków do odpowiednich przedziałów
+        //jeśli mamy jakieś odległe pilne-ważne zadanie zostanie ono wypchnięte na jutro o ile jest mozliwosc
+        if(tomorrowLimitIU == 0){
+            when{
+                weekFakeList.isNotEmpty() -> {
+                    val task = weekFakeList.first()
+                    tomorrowList.add(task)
+                    todayWork += task.timeToFinish
+                    weekFakeList.remove(task)
+                }
+                monthFakeList.isNotEmpty() -> {
+                    val task = monthFakeList.first()
+                    tomorrowList.add(task)
+                    todayWork += task.timeToFinish
+                    monthFakeList.remove(task)
+                }
+                restFakeList.isNotEmpty() -> {
+                    val task = restFakeList.first()
+                    tomorrowList.add(task)
+                    todayWork += task.timeToFinish
+                    restFakeList.remove(task)
+                }
+            }
+        }
+
+        /*
+        //TODO template
+           //rozdzielenie tasków do odpowiednich przedziałów
         for (i in tasks){
                 val d = EasyDate(i.deadline)
                 when{
@@ -152,6 +188,8 @@ class BlockListTask (
                 }
 
         }
+         */
+
 
         todayList.sortWith(compareBy({it.importance}, {it.urgency}, {it.timeToFinish}))
         tomorrowList.sortWith(compareBy({it.importance}, {it.urgency}, {it.timeToFinish}))
