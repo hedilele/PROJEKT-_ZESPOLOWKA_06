@@ -108,22 +108,161 @@ class BlockListTask (
                 weekFakeList.isNotEmpty() -> {
                     val task = weekFakeList.first()
                     tomorrowList.add(task)
-                    todayWork += task.timeToFinish
+                    tomorrowWork += task.timeToFinish
                     weekFakeList.remove(task)
                 }
                 monthFakeList.isNotEmpty() -> {
                     val task = monthFakeList.first()
                     tomorrowList.add(task)
-                    todayWork += task.timeToFinish
+                    tomorrowWork += task.timeToFinish
                     monthFakeList.remove(task)
                 }
                 restFakeList.isNotEmpty() -> {
                     val task = restFakeList.first()
                     tomorrowList.add(task)
+                    tomorrowWork += task.timeToFinish
+                    restFakeList.remove(task)
+                }
+            }
+        }
+
+        //zatwierdzenie pozostałych ważnych-pilnych
+        while(weekFakeList.isNotEmpty()){
+            weekList.add(weekFakeList.first())
+            weekFakeList.remove(weekFakeList.first())
+        }
+
+        while(monthFakeList.isNotEmpty()){
+            monthList.add(monthFakeList.first())
+            monthFakeList.remove(monthFakeList.first())
+        }
+
+        while(restFakeList.isNotEmpty()){
+            restList.add(restFakeList.first())
+            restFakeList.remove(restFakeList.first())
+        }
+
+
+
+        //przejscie po taskach waznych-NIEpilnych (np, celach)
+        for(i in tasks){
+            if(i.importance == 1 && i.urgency == 0){
+
+                val d = EasyDate(i.deadline)
+
+                when{
+                    //zadanie, które miało termin do dzisiaj
+                    d.date <= today.date -> {
+                        //zostanie dodane na dzisiaj, jutro lub do konca tygodnia zaleznie od limitu obciazenia (60)
+                        when{
+
+                            todayWork + i.timeToFinish <= 60 -> {
+                                todayLimitINU += 1
+                                todayList.add(i)
+                                todayWork += i.timeToFinish
+                            }
+
+                            tomorrowWork + i.timeToFinish <= 60 -> {
+                                tomorrowLimitINU += 1
+                                tomorrowFakeList.add(i)
+                                tomorrowWork += i.timeToFinish
+                            }
+
+                            else -> weekFakeList.add(i)
+                        }
+                    }
+
+                    d.date == (today+1).date -> {
+                        when{
+                            tomorrowWork + i.timeToFinish <= 60 -> {
+                                tomorrowLimitINU += 1
+                                tomorrowFakeList.add(i)
+                                tomorrowWork += i.timeToFinish
+                            }
+
+                            else -> weekFakeList.add(i)
+                        }
+                    }
+
+                    d.date <= (today+7).date -> weekFakeList.add(i)
+
+                    d.date <= (today+31).date -> monthFakeList.add(i)
+
+                    else -> restFakeList.add(i)
+                }
+            }
+        }
+
+        //jeśli mamy jakieś odległe pilne-NIEważne zadanie zostanie ono wypchnięte na dzisiaj o ile jest mozliwosc
+        if(todayLimitINU == 0){
+            when{
+                tomorrowFakeList.isNotEmpty() && todayWork + tomorrowFakeList.first().timeToFinish <= 60 -> {
+                    val task = tomorrowFakeList.first()
+                    todayList.add(task)
+                    todayWork += task.timeToFinish
+                    tomorrowWork -= task.timeToFinish
+                    tomorrowFakeList.remove(task)
+                }
+                weekFakeList.isNotEmpty() &&  todayWork + weekFakeList.first().timeToFinish <= 60 -> {
+                    val task = weekFakeList.first()
+                    todayList.add(task)
+                    todayWork += task.timeToFinish
+                    weekFakeList.remove(task)
+                }
+                monthFakeList.isNotEmpty() &&  todayWork + monthFakeList.first().timeToFinish <= 60 -> {
+                    val task = monthFakeList.first()
+                    todayList.add(task)
+                    todayWork += task.timeToFinish
+                    monthFakeList.remove(task)
+                }
+                restFakeList.isNotEmpty() &&  todayWork + restFakeList.first().timeToFinish <= 60 -> {
+                    val task = restFakeList.first()
+                    todayList.add(task)
                     todayWork += task.timeToFinish
                     restFakeList.remove(task)
                 }
             }
+        }
+
+        //jeśli mamy jakieś odległe pilne-NIEważne zadanie zostanie ono wypchnięte na jutro o ile jest mozliwosc
+        if(tomorrowLimitINU == 0){
+            when{
+                weekFakeList.isNotEmpty() && tomorrowWork + weekFakeList.first().timeToFinish <= 60 -> {
+                    val task = weekFakeList.first()
+                    tomorrowList.add(task)
+                    tomorrowWork += task.timeToFinish
+                    weekFakeList.remove(task)
+                }
+                monthFakeList.isNotEmpty() && tomorrowWork + monthFakeList.first().timeToFinish <= 60 -> {
+                    val task = monthFakeList.first()
+                    tomorrowList.add(task)
+                    tomorrowWork += task.timeToFinish
+                    monthFakeList.remove(task)
+                }
+                restFakeList.isNotEmpty() && tomorrowWork + restFakeList.first().timeToFinish <= 60 -> {
+                    val task = restFakeList.first()
+                    tomorrowList.add(task)
+                    tomorrowWork += task.timeToFinish
+                    restFakeList.remove(task)
+                }
+                else -> {}
+            }
+        }
+
+        //zatwierdzenie pozostałych ważnych-NIEpilnych
+        while(weekFakeList.isNotEmpty()){
+            weekList.add(weekFakeList.first())
+            weekFakeList.remove(weekFakeList.first())
+        }
+
+        while(monthFakeList.isNotEmpty()){
+            monthList.add(monthFakeList.first())
+            monthFakeList.remove(monthFakeList.first())
+        }
+
+        while(restFakeList.isNotEmpty()){
+            restList.add(restFakeList.first())
+            restFakeList.remove(restFakeList.first())
         }
 
         /*
