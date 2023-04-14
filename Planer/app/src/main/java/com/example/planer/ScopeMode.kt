@@ -5,12 +5,12 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.planer.ViewModel.ScopeViewModel
 import com.example.planer.databinding.ActivityScopeModeBinding
 import com.example.planer.entities.Tasks
 import com.example.planer.scope.CardAdapter
+import com.example.planer.scope.UnscrollableLinearLayoutManager
 import kotlinx.coroutines.coroutineScope
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -30,9 +30,8 @@ class ScopeMode : AppCompatActivity(), CardAdapter.OnButtonClickListener {
 
         adapter = CardAdapter(emptyMap())
         adapter.setOnItemClickListener(this)
-
         binding.recyclerView.adapter = adapter
-        binding.recyclerView.layoutManager = LinearLayoutManager(this)
+        binding.recyclerView.layoutManager = UnscrollableLinearLayoutManager(this)
 
         adapter.registerAdapterDataObserver(object: RecyclerView.AdapterDataObserver() {
             override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {

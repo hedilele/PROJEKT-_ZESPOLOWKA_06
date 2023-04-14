@@ -4,7 +4,8 @@
     android:id="@+id/cardView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="16dp">
+    android:layout_margin="16dp"
+    android:elevation="8dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -58,6 +59,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:maxWidth="320dp"
+                android:layout_margin="16dp"
                 android:text="Potem" />
 
             <Space
@@ -71,6 +73,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:maxWidth="320dp"
+                android:layout_margin="16dp"
                 android:text="Zrobione" />
         </LinearLayout>
     </LinearLayout>
