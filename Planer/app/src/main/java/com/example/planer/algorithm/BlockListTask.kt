@@ -249,6 +249,11 @@ class BlockListTask (
         }
 
         //zatwierdzenie pozostałych ważnych-NIEpilnych
+        while(tomorrowFakeList.isNotEmpty()){
+            tomorrowList.add(tomorrowFakeList.first())
+            tomorrowFakeList.remove(tomorrowFakeList.first())
+        }
+        
         while(weekFakeList.isNotEmpty()){
             weekList.add(weekFakeList.first())
             weekFakeList.remove(weekFakeList.first())
@@ -381,6 +386,11 @@ class BlockListTask (
         }
 
         //zatwierdzenie pozostałych NIEważnych-pilnych
+        while(tomorrowFakeList.isNotEmpty()){
+            tomorrowList.add(tomorrowFakeList.first())
+            tomorrowFakeList.remove(tomorrowFakeList.first())
+        }
+
         while(weekFakeList.isNotEmpty()){
             weekList.add(weekFakeList.first())
             weekFakeList.remove(weekFakeList.first())
@@ -506,6 +516,11 @@ class BlockListTask (
 
 
         //zatwierdzenie pozostałych NIEważnych-NIEpilnych
+        while(tomorrowFakeList.isNotEmpty()){
+            tomorrowList.add(tomorrowFakeList.first())
+            tomorrowFakeList.remove(tomorrowFakeList.first())
+        }
+
         while(weekFakeList.isNotEmpty()){
             weekList.add(weekFakeList.first())
             weekFakeList.remove(weekFakeList.first())
