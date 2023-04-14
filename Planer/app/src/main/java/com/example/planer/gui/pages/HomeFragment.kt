@@ -94,11 +94,11 @@ class HomeFragment : Fragment() {
         userViewModel.readAllData.observe(viewLifecycleOwner, Observer {
             val blockListTask = BlockListTask(it)
             blockListTask.planner()
-            adapter.setData(blockListTask.today_list)
-            adapter2.setData(blockListTask.tomorrow_list)
-            adapter3.setData(blockListTask.week_list)
-            adapter4.setData(blockListTask.month_list)
-            adapter5.setData(blockListTask.rest_list)
+            adapter.setData(blockListTask.todayList)
+            adapter2.setData(blockListTask.tomorrowList)
+            adapter3.setData(blockListTask.weekList)
+            adapter4.setData(blockListTask.monthList)
+            adapter5.setData(blockListTask.restList)
         })
 
 

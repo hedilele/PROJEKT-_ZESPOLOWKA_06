@@ -175,9 +175,9 @@ class FilterFragment : Fragment(){
                         userViewModel.readTasksWithTypes(typ!!).observe(viewLifecycleOwner, Observer {
                             val blockListTask = BlockListTask(it)
                             blockListTask.planner()
-                            adapter.setData((blockListTask.today_list + blockListTask.tomorrow_list
-                                    + blockListTask.week_list + blockListTask.month_list +
-                                    blockListTask.rest_list).toMutableList())
+                            adapter.setData((blockListTask.todayList + blockListTask.tomorrowList
+                                    + blockListTask.weekList + blockListTask.monthList +
+                                    blockListTask.restList).toMutableList())
                         })
                     }
                 }
@@ -187,9 +187,9 @@ class FilterFragment : Fragment(){
                     userViewModel.readAllData.observe(viewLifecycleOwner, Observer {
                         val blockListTask = BlockListTask(it)
                         blockListTask.planner()
-                        adapter.setData((blockListTask.today_list + blockListTask.tomorrow_list
-                                + blockListTask.week_list + blockListTask.month_list +
-                                blockListTask.rest_list).toMutableList())
+                        adapter.setData((blockListTask.todayList + blockListTask.tomorrowList
+                                + blockListTask.weekList + blockListTask.monthList +
+                                blockListTask.restList).toMutableList())
                     })
                 }
                 alertDialog.dismiss()
@@ -211,9 +211,9 @@ class FilterFragment : Fragment(){
         userViewModel.readAllData.observe(viewLifecycleOwner, Observer {
             val blockListTask = BlockListTask(it)
             blockListTask.planner()
-            adapter.setData((blockListTask.today_list + blockListTask.tomorrow_list
-                    + blockListTask.week_list + blockListTask.month_list +
-                    blockListTask.rest_list).toMutableList())
+            adapter.setData((blockListTask.todayList + blockListTask.tomorrowList
+                    + blockListTask.weekList + blockListTask.monthList +
+                    blockListTask.restList).toMutableList())
         })
         return view
     }
