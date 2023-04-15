@@ -17,7 +17,7 @@ import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.planer.R
-import com.example.planer.UserViewModel
+import com.example.planer.ViewModel.UserViewModel
 import com.example.planer.entities.Habits
 import com.example.planer.entities.Tasks
 import com.google.android.material.snackbar.Snackbar

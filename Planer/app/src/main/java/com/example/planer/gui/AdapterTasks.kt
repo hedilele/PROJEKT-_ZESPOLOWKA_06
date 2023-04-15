@@ -18,7 +18,7 @@ import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.planer.R
-import com.example.planer.UserViewModel
+import com.example.planer.ViewModel.UserViewModel
 import com.example.planer.entities.Tasks
 import com.example.planer.tasks.Task
 import com.google.android.material.snackbar.Snackbar
@@ -509,7 +509,8 @@ class AdapterTasks(
                     duration,
                     isActive,
                     typeId,
-                    0
+                    0,
+                    date = null
                 )
 
                 updateListener(task, note)
