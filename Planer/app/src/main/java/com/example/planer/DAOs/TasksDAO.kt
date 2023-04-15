@@ -3,6 +3,7 @@ package com.example.planer.DAOs
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.example.planer.entities.Finished
+import com.example.planer.entities.Notes
 import com.example.planer.entities.Subtasks
 import com.example.planer.entities.Tasks
 import com.example.planer.entities.relations.NoteAndTask
@@ -79,10 +80,15 @@ interface TasksDAO
     @Query("SELECT * FROM Tasks WHERE type_id IN (:typeIds) AND time_to_finish IN (:timeToFinishes)")
     fun readTasksWithTypesAndDurations(typeIds: List<Int>, timeToFinishes: List<Int>): LiveData<List<Tasks>>
 
-    // Pobiera łączone typy Tasks i Notes do przekazania scope mode aka deadline minął
+    // Pobiera łączone typy Tasks i Notes do przekazania scope mode aka są aktywne, deadline minął lub są nieważne niepilne
     @Transaction
-    @Query("SELECT * FROM Tasks t JOIN Notes n ON t.note_id=n.id WHERE strftime('%s', t.deadline) < strftime('%s', 'now')")
-    fun readOverdueTasksWithNotes(): LiveData<List<NoteAndTask>>
+    @RewriteQueriesToDropUnusedColumns
+    @Query("SELECT * FROM Tasks t " +
+        "LEFT JOIN Notes n ON t.note_id = n.id " +
+        "WHERE t.is_active = 1 " +
+        "AND (strftime('%s', t.deadline) < strftime('%s', 'now') OR (t.importance = 0 AND t.urgency = 0))" +
+            "ORDER BY t.deadline")
+    fun readOverdueTasksWithNotes(): LiveData<Map<Tasks, List<Notes>>>
 
     @Transaction
     @Query("SELECT * FROM Tasks WHERE id = :id")
