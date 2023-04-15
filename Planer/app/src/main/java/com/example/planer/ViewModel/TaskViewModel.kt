@@ -72,27 +72,39 @@ class TaskViewModel(application: Application): AndroidViewModel(application)
         }
     }
 
-    suspend fun readTasksWithTypes(typeId: Int): LiveData<List<Tasks>>
+    //Po typie
+    suspend fun readTasksWithTypes(typeIds: List<Int>) : LiveData<List<Tasks>>
     {
         return withContext(Dispatchers.IO)
         {
-            repository.readTaskWithTypes(typeId)
+            repository.readTasksWithTypes2(typeIds)
         }
     }
 
-    suspend fun readTasksWithDuration(timeToFinish: Int): LiveData<List<Tasks>>
+    //Po czasie trwania
+    suspend fun readTasksWithDuration(timeToFinishes: List<Int>): LiveData<List<Tasks>>
     {
         return withContext(Dispatchers.IO)
         {
-            repository.readTasksWithDuration(timeToFinish)
+            repository.readTasksWithDuration2(timeToFinishes)
         }
     }
 
-    suspend fun readTasksWithTypesAndDuration(typeId: Int,timeToFinish: Int): LiveData<List<Tasks>>
+    //Po tym i po tym
+    suspend fun readTasksWithTypesAndDuration(typeIds: List<Int>,timeToFinishes: List<Int>): LiveData<List<Tasks>>
     {
         return withContext(Dispatchers.IO)
         {
-            repository.readTasksWithTypesAndDuration(typeId,timeToFinish)
+            repository.readTasksWithTypesAndDuration(typeIds, timeToFinishes)
         }
     }
+    //Co zostalo do dodania TODO
+        /*
+            -listowanie po dacie
+            -listowanie po dacie i typie
+            -listowanie po dacie i czasie trwania
+            -listowanie po wszystkich trzech
+            W takim razie, będą potrzebne dodatkowe 4 zapytania(chyba ze pojawi
+            sie lepszy sposob) do bazy - najwiekszy problem moze sprawic data,
+         */
 }

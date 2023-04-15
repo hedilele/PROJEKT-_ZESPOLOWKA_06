@@ -8,6 +8,7 @@ import com.example.planer.entities.Tasks
 import com.example.planer.entities.relations.NoteAndTask
 import com.example.planer.entities.relations.TaskAndFinished
 import com.example.planer.entities.relations.TaskAndSubtasks
+import com.example.planer.tasks.Task
 import kotlinx.coroutines.flow.Flow
 import kotlin.time.Duration
 
@@ -61,19 +62,22 @@ interface TasksDAO
     //UPDATE - takie zapytanie zwraca nam te taski z przedzialem
     //Mozna to ograc takimi zapytaniami SELECT * FROM Tasks WHERE type_id IN (3,1) AND time_to_finish IN(1)
     //PROBLEM - Jak w zasadzie polaczyc te typy,
-    @Query("SELECT * FROM Tasks WHERE type_id IN (:typeId)") //Czysto przykladowo
-    fun readTasksWithTypes(typeId: Int): LiveData<List<Tasks>>
-
-    //Zwraca po czasie trwania
-    @Query("SELECT * FROM Tasks WHERE time_to_finish IN (:timeToFinish)") //Czysto przykladowo
-    fun readTasksWithDuration(timeToFinish: Int): LiveData<List<Tasks>>
-
+    /*
     //Query do czytania jednoczesnie typu i czasu trwania
     @Query("SELECT * FROM Tasks WHERE time_to_finish IN (:timeToFinish) AND type_id IN (:typeId)") //Czysto przykladowo
     fun readTasksWithDurationAndTypes(timeToFinish: Int, typeId: Int): LiveData<List<Tasks>>
+     */
+    //Czytanie po typach
+    @Query("SELECT * FROM Tasks WHERE type_id IN (:typeIds)")
+    fun readTasksWithTypes(typeIds: List<Int>): LiveData<List<Tasks>>
 
-    //@Query("SELECT * FROM Tasks WHERE type_id = 0")
-    //fun readP(): LiveData<List<Tasks>>
+    //Czytanie po czasie trwania
+    @Query("SELECT * FROM Tasks WHERE time_to_finish IN (:timeToFinishes)")
+    fun readTasksWithDuration(timeToFinishes: List<Int>): LiveData<List<Tasks>>
+
+    //Czytanie po czasie trwania i po typie
+    @Query("SELECT * FROM Tasks WHERE type_id IN (:typeIds) AND time_to_finish IN (:timeToFinishes)")
+    fun readTasksWithTypesAndDurations(typeIds: List<Int>, timeToFinishes: List<Int>): LiveData<List<Tasks>>
 
     // Pobiera łączone typy Tasks i Notes do przekazania scope mode aka deadline minął
     @Transaction

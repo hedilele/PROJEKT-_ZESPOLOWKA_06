@@ -64,9 +64,10 @@ class FilterFragment : Fragment(){
             //Button do sortowania - pozniej moze byc czyms innym
             val sortButton = dialogView.findViewById<Button>(R.id.sortButton)
 
-            //val duration : Int
-            var typ: Int? = null
-            var durationn: Int? = null
+            //var typ: Int? = null
+            //var durationn: Int? = null
+            val typeIds = mutableListOf<Int>()
+            val finishIds = mutableListOf<Int>()
             /*
             //TODO kiedy mam jakis textView i chce go zaznaczyc i odznaczyc
             fun uncheckDuration()
@@ -101,58 +102,58 @@ class FilterFragment : Fragment(){
             duration1.setOnClickListener{
                 //uncheckDuration()
                 duration1.getBackground().setTint(ContextCompat.getColor(requireContext(),R.color.brown_important_urgent_on))
-                durationn = 1;
+                finishIds.add(1)
             }
 
             duration2.setOnClickListener{
                 //uncheckDuration()
                 duration2.getBackground().setTint(ContextCompat.getColor(requireContext(),R.color.brown_important_urgent_on))
-                durationn = 2;
+                finishIds.add(2)
             }
 
             duration3.setOnClickListener{
                 //uncheckDuration()
                 duration3.getBackground().setTint(ContextCompat.getColor(requireContext(),R.color.brown_important_urgent_on))
-                durationn = 6;
+                finishIds.add(6)
             }
 
             duration4.setOnClickListener{
                 //uncheckDuration()
                 duration4.getBackground().setTint(ContextCompat.getColor(requireContext(),R.color.brown_important_urgent_on))
-                durationn = 12;
+                finishIds.add(12)
             }
 
             duration5.setOnClickListener{
                 //uncheckDuration()
                 duration5.getBackground().setTint(ContextCompat.getColor(requireContext(),R.color.brown_important_urgent_on))
-                durationn = 24;
+                finishIds.add(24)
             }
 
             duration6.setOnClickListener{
                 //uncheckDuration()
                 duration6.getBackground().setTint(ContextCompat.getColor(requireContext(),R.color.brown_important_urgent_on))
-                durationn = 30;
+                finishIds.add(30)
             }
 
             //Ustawianie dla typu koloru, jesli wybrany
             type1.setOnClickListener{
                 type1.getBackground().setTint(ContextCompat.getColor(requireContext(), R.color.brown_important_urgent_on))
-                typ = 0
+                typeIds.add(0)
             }
 
             type2.setOnClickListener{
                 type2.getBackground().setTint(ContextCompat.getColor(requireContext(), R.color.brown_important_urgent_on))
-                typ = 1
+                typeIds.add(1)
             }
 
             type3.setOnClickListener{
                 type3.getBackground().setTint(ContextCompat.getColor(requireContext(), R.color.brown_important_urgent_on))
-                typ = 2
+                typeIds.add(2)
             }
 
             type4.setOnClickListener{
                 type4.getBackground().setTint(ContextCompat.getColor(requireContext(), R.color.brown_important_urgent_on))
-                typ = 3
+                typeIds.add(3)
             }
 
             //TODO Dla wybierania daty
@@ -172,47 +173,8 @@ class FilterFragment : Fragment(){
                 rv?.layoutManager = LinearLayoutManager(requireContext())
 
                 userViewModel = ViewModelProvider(this)[TaskViewModel::class.java]
-                if(typ == 0 || typ == 1 || typ == 2 || typ == 3)
+                if(finishIds.isEmpty() && typeIds.isEmpty())
                 {
-                    CoroutineScope(Dispatchers.Main).launch{
-                        userViewModel.readTasksWithTypes(typ!!).observe(viewLifecycleOwner, Observer {
-                            val blockListTask = BlockListTask(it)
-                            blockListTask.planner()
-                            adapter.setData((blockListTask.todayList + blockListTask.tomorrowList
-                                    + blockListTask.weekList + blockListTask.monthList +
-                                    blockListTask.restList).toMutableList())
-                        })
-                    }
-                }
-                else if(durationn == 1 || durationn == 2 || durationn == 6 || durationn == 12 || durationn == 24 || durationn == 30)
-                {
-                    CoroutineScope(Dispatchers.Main).launch{
-                        userViewModel.readTasksWithDuration(durationn!!).observe(viewLifecycleOwner, Observer {
-                            val blockListTask = BlockListTask(it)
-                            blockListTask.planner()
-                            adapter.setData((blockListTask.todayList + blockListTask.tomorrowList
-                                    + blockListTask.weekList + blockListTask.monthList +
-                                    blockListTask.restList).toMutableList())
-                        })
-                    }
-                }
-                /*
-                else if((typ == 0 || typ == 1 || typ == 2 || typ == 3) && (durationn == 1 || durationn == 2 || durationn == 6 || durationn == 12 || durationn == 24 || durationn == 30))
-                {
-                    CoroutineScope(Dispatchers.Main).launch{
-                        userViewModel.readTasksWithTypesAndDuration(typ!!,durationn!!).observe(viewLifecycleOwner, Observer {
-                            val blockListTask = BlockListTask(it)
-                            blockListTask.planner()
-                            adapter.setData((blockListTask.todayList + blockListTask.tomorrowList
-                                    + blockListTask.weekList + blockListTask.monthList +
-                                    blockListTask.restList).toMutableList())
-                        })
-                    }
-                }
-                 */
-                else if(typ == null || durationn == null)
-                {
-                    userViewModel = ViewModelProvider(this)[TaskViewModel::class.java]
                     userViewModel.readAllData.observe(viewLifecycleOwner, Observer {
                         val blockListTask = BlockListTask(it)
                         blockListTask.planner()
@@ -220,6 +182,45 @@ class FilterFragment : Fragment(){
                                 + blockListTask.weekList + blockListTask.monthList +
                                 blockListTask.restList).toMutableList())
                     })
+                }
+                //Po typie
+                if(typeIds.isNotEmpty())
+                {
+                    CoroutineScope(Dispatchers.Main).launch{
+                        userViewModel.readTasksWithTypes(typeIds).observe(viewLifecycleOwner, Observer {
+                            val blockListTask = BlockListTask(it)
+                            blockListTask.planner()
+                            adapter.setData((blockListTask.todayList + blockListTask.tomorrowList
+                                    + blockListTask.weekList + blockListTask.monthList +
+                                    blockListTask.restList).toMutableList())
+                        })
+                    }
+                }
+                //Po czasie trwania
+                if(finishIds.isNotEmpty())
+                {
+                    CoroutineScope(Dispatchers.Main).launch{
+                        userViewModel.readTasksWithDuration(finishIds).observe(viewLifecycleOwner, Observer {
+                            val blockListTask = BlockListTask(it)
+                            blockListTask.planner()
+                            adapter.setData((blockListTask.todayList + blockListTask.tomorrowList
+                                    + blockListTask.weekList + blockListTask.monthList +
+                                    blockListTask.restList).toMutableList())
+                        })
+                    }
+                }
+                //Po typie i czasie trwania
+                if(typeIds.isNotEmpty() && finishIds.isNotEmpty())
+                {
+                    CoroutineScope(Dispatchers.Main).launch{
+                        userViewModel.readTasksWithTypesAndDuration(typeIds,finishIds).observe(viewLifecycleOwner, Observer {
+                            val blockListTask = BlockListTask(it)
+                            blockListTask.planner()
+                            adapter.setData((blockListTask.todayList + blockListTask.tomorrowList
+                                    + blockListTask.weekList + blockListTask.monthList +
+                                    blockListTask.restList).toMutableList())
+                        })
+                    }
                 }
                 alertDialog.dismiss()
             }
