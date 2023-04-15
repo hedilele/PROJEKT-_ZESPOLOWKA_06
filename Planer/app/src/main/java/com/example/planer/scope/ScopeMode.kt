@@ -1,4 +1,4 @@
-package com.example.planer
+package com.example.planer.scope
 
 import android.os.Build
 import android.os.Bundle
@@ -9,8 +9,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.planer.ViewModel.ScopeViewModel
 import com.example.planer.databinding.ActivityScopeModeBinding
 import com.example.planer.entities.Tasks
-import com.example.planer.scope.CardAdapter
-import com.example.planer.scope.UnscrollableLinearLayoutManager
 import kotlinx.coroutines.coroutineScope
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
