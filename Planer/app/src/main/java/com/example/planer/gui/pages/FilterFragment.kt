@@ -66,7 +66,7 @@ class FilterFragment : Fragment(){
 
             //val duration : Int
             var typ: Int? = null
-            var trwanie: Int? = null
+            var durationn: Int? = null
             /*
             //TODO kiedy mam jakis textView i chce go zaznaczyc i odznaczyc
             fun uncheckDuration()
@@ -101,32 +101,37 @@ class FilterFragment : Fragment(){
             duration1.setOnClickListener{
                 //uncheckDuration()
                 duration1.getBackground().setTint(ContextCompat.getColor(requireContext(),R.color.brown_important_urgent_on))
-                trwanie = 1;
+                durationn = 1;
             }
 
             duration2.setOnClickListener{
                 //uncheckDuration()
                 duration2.getBackground().setTint(ContextCompat.getColor(requireContext(),R.color.brown_important_urgent_on))
+                durationn = 2;
             }
 
             duration3.setOnClickListener{
                 //uncheckDuration()
                 duration3.getBackground().setTint(ContextCompat.getColor(requireContext(),R.color.brown_important_urgent_on))
+                durationn = 6;
             }
 
             duration4.setOnClickListener{
                 //uncheckDuration()
                 duration4.getBackground().setTint(ContextCompat.getColor(requireContext(),R.color.brown_important_urgent_on))
+                durationn = 12;
             }
 
             duration5.setOnClickListener{
                 //uncheckDuration()
                 duration5.getBackground().setTint(ContextCompat.getColor(requireContext(),R.color.brown_important_urgent_on))
+                durationn = 24;
             }
 
             duration6.setOnClickListener{
                 //uncheckDuration()
                 duration6.getBackground().setTint(ContextCompat.getColor(requireContext(),R.color.brown_important_urgent_on))
+                durationn = 30;
             }
 
             //Ustawianie dla typu koloru, jesli wybrany
@@ -179,7 +184,33 @@ class FilterFragment : Fragment(){
                         })
                     }
                 }
-                else if(typ == null)
+                else if(durationn == 1 || durationn == 2 || durationn == 6 || durationn == 12 || durationn == 24 || durationn == 30)
+                {
+                    CoroutineScope(Dispatchers.Main).launch{
+                        userViewModel.readTasksWithDuration(durationn!!).observe(viewLifecycleOwner, Observer {
+                            val blockListTask = BlockListTask(it)
+                            blockListTask.planner()
+                            adapter.setData((blockListTask.todayList + blockListTask.tomorrowList
+                                    + blockListTask.weekList + blockListTask.monthList +
+                                    blockListTask.restList).toMutableList())
+                        })
+                    }
+                }
+                /*
+                else if((typ == 0 || typ == 1 || typ == 2 || typ == 3) && (durationn == 1 || durationn == 2 || durationn == 6 || durationn == 12 || durationn == 24 || durationn == 30))
+                {
+                    CoroutineScope(Dispatchers.Main).launch{
+                        userViewModel.readTasksWithTypesAndDuration(typ!!,durationn!!).observe(viewLifecycleOwner, Observer {
+                            val blockListTask = BlockListTask(it)
+                            blockListTask.planner()
+                            adapter.setData((blockListTask.todayList + blockListTask.tomorrowList
+                                    + blockListTask.weekList + blockListTask.monthList +
+                                    blockListTask.restList).toMutableList())
+                        })
+                    }
+                }
+                 */
+                else if(typ == null || durationn == null)
                 {
                     userViewModel = ViewModelProvider(this)[TaskViewModel::class.java]
                     userViewModel.readAllData.observe(viewLifecycleOwner, Observer {

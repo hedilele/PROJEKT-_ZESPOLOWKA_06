@@ -80,4 +80,19 @@ class TaskViewModel(application: Application): AndroidViewModel(application)
         }
     }
 
+    suspend fun readTasksWithDuration(timeToFinish: Int): LiveData<List<Tasks>>
+    {
+        return withContext(Dispatchers.IO)
+        {
+            repository.readTasksWithDuration(timeToFinish)
+        }
+    }
+
+    suspend fun readTasksWithTypesAndDuration(typeId: Int,timeToFinish: Int): LiveData<List<Tasks>>
+    {
+        return withContext(Dispatchers.IO)
+        {
+            repository.readTasksWithTypesAndDuration(typeId,timeToFinish)
+        }
+    }
 }

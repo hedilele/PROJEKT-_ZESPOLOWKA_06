@@ -42,8 +42,21 @@ class TaskRepository(private val tasksDAO: TasksDAO)
         tasksDAO.readAllDataa()
     }
 
+    //Czytwanie po typie
     fun readTaskWithTypes(typeId: Int) : LiveData<List<Tasks>>
     {
         return tasksDAO.readTasksWithTypes(typeId)
+    }
+
+    //Czytanie po czasie trwania
+    fun readTasksWithDuration(timeToFinish: Int) : LiveData<List<Tasks>>
+    {
+        return tasksDAO.readTasksWithDuration(timeToFinish)
+    }
+
+    //Czytanie jednoczesnie po typie i czasie trwania
+    fun readTasksWithTypesAndDuration(typeId: Int, timeToFinish: Int) : LiveData<List<Tasks>>
+    {
+        return tasksDAO.readTasksWithDurationAndTypes(timeToFinish,typeId)
     }
 }

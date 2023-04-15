@@ -9,6 +9,7 @@ import com.example.planer.entities.relations.NoteAndTask
 import com.example.planer.entities.relations.TaskAndFinished
 import com.example.planer.entities.relations.TaskAndSubtasks
 import kotlinx.coroutines.flow.Flow
+import kotlin.time.Duration
 
 @Dao
 interface TasksDAO
@@ -62,6 +63,14 @@ interface TasksDAO
     //PROBLEM - Jak w zasadzie polaczyc te typy,
     @Query("SELECT * FROM Tasks WHERE type_id IN (:typeId)") //Czysto przykladowo
     fun readTasksWithTypes(typeId: Int): LiveData<List<Tasks>>
+
+    //Zwraca po czasie trwania
+    @Query("SELECT * FROM Tasks WHERE time_to_finish IN (:timeToFinish)") //Czysto przykladowo
+    fun readTasksWithDuration(timeToFinish: Int): LiveData<List<Tasks>>
+
+    //Query do czytania jednoczesnie typu i czasu trwania
+    @Query("SELECT * FROM Tasks WHERE time_to_finish IN (:timeToFinish) AND type_id IN (:typeId)") //Czysto przykladowo
+    fun readTasksWithDurationAndTypes(timeToFinish: Int, typeId: Int): LiveData<List<Tasks>>
 
     //@Query("SELECT * FROM Tasks WHERE type_id = 0")
     //fun readP(): LiveData<List<Tasks>>
