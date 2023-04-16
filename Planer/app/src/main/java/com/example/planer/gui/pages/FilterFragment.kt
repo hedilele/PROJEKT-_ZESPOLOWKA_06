@@ -183,16 +183,12 @@ class FilterFragment : Fragment(){
                 rv?.adapter = adapter
                 rv?.layoutManager = LinearLayoutManager(requireContext())
                 //Do parsowania daty
-                val startDateString = "${startYear.text}-${startMonth.text}-${startDay.text}"
-                val endDateString = "${endYear.text}-${endMonth.text}-${endDay.text}"
-                val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-                val startDate = dateFormat.parse(startDateString)?.time ?: 0
-                val endDate = dateFormat.parse(endDateString)?.time ?: 0
-                val startDateStringFormatted = dateFormat.format(startDate)
-                val endDateStringFormatted = dateFormat.format(endDate)
 
                 userViewModel = ViewModelProvider(this)[TaskViewModel::class.java]
-                if(finishIds.isEmpty() && typeIds.isEmpty())
+                //Jesli jest pusto
+                if(finishIds.isEmpty() && typeIds.isEmpty() && startDay.text.isBlank() && startMonth.text.isBlank()
+                    && startYear.text.isBlank() && endDay.text.isBlank() && endMonth.text.isBlank()
+                    && endYear.text.isBlank())
                 {
                     userViewModel.readAllData.observe(viewLifecycleOwner, Observer {
                         val blockListTask = BlockListTask(it)
@@ -232,6 +228,13 @@ class FilterFragment : Fragment(){
                 if(startDay.text.isNotBlank() && startMonth.text.isNotBlank() && startYear.text.isNotBlank() &&
                         endDay.text.isNotBlank() && endMonth.text.isNotBlank() && endYear.text.isNotBlank())
                 {
+                    val startDateString = "${startYear.text}-${startMonth.text}-${startDay.text}"
+                    val endDateString = "${endYear.text}-${endMonth.text}-${endDay.text}"
+                    val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+                    val startDate = dateFormat.parse(startDateString)?.time ?: 0
+                    val endDate = dateFormat.parse(endDateString)?.time ?: 0
+                    val startDateStringFormatted = dateFormat.format(startDate)
+                    val endDateStringFormatted = dateFormat.format(endDate)
                     CoroutineScope(Dispatchers.Main).launch{
                         userViewModel.readTasksWithDate(startDateStringFormatted, endDateStringFormatted).observe(viewLifecycleOwner, Observer {
                             val blockListTask = BlockListTask(it)
@@ -246,6 +249,13 @@ class FilterFragment : Fragment(){
                 if((startDay.text.isNotBlank() && startMonth.text.isNotBlank() && startYear.text.isNotBlank() &&
                     endDay.text.isNotBlank() && endMonth.text.isNotBlank() && endYear.text.isNotBlank()) && finishIds.isNotEmpty())
                 {
+                    val startDateString = "${startYear.text}-${startMonth.text}-${startDay.text}"
+                    val endDateString = "${endYear.text}-${endMonth.text}-${endDay.text}"
+                    val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+                    val startDate = dateFormat.parse(startDateString)?.time ?: 0
+                    val endDate = dateFormat.parse(endDateString)?.time ?: 0
+                    val startDateStringFormatted = dateFormat.format(startDate)
+                    val endDateStringFormatted = dateFormat.format(endDate)
                     CoroutineScope(Dispatchers.Main).launch{
                         userViewModel.readTasksWithDurationAndDate(finishIds,startDateStringFormatted, endDateStringFormatted).observe(viewLifecycleOwner, Observer {
                             val blockListTask = BlockListTask(it)
@@ -260,8 +270,28 @@ class FilterFragment : Fragment(){
                 if((startDay.text.isNotBlank() && startMonth.text.isNotBlank() && startYear.text.isNotBlank() &&
                             endDay.text.isNotBlank() && endMonth.text.isNotBlank() && endYear.text.isNotBlank()) && typeIds.isNotEmpty())
                 {
+                    val startDateString = "${startYear.text}-${startMonth.text}-${startDay.text}"
+                    val endDateString = "${endYear.text}-${endMonth.text}-${endDay.text}"
+                    val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+                    val startDate = dateFormat.parse(startDateString)?.time ?: 0
+                    val endDate = dateFormat.parse(endDateString)?.time ?: 0
+                    val startDateStringFormatted = dateFormat.format(startDate)
+                    val endDateStringFormatted = dateFormat.format(endDate)
                     CoroutineScope(Dispatchers.Main).launch{
                         userViewModel.readTasksWithTypesAndDate(typeIds,startDateStringFormatted, endDateStringFormatted).observe(viewLifecycleOwner, Observer {
+                            val blockListTask = BlockListTask(it)
+                            blockListTask.planner()
+                            adapter.setData((blockListTask.todayList + blockListTask.tomorrowList
+                                    + blockListTask.weekList + blockListTask.monthList +
+                                    blockListTask.restList).toMutableList())
+                        })
+                    }
+                }
+                //Po typie i czasie trwania
+                if(typeIds.isNotEmpty() && finishIds.isNotEmpty())
+                {
+                    CoroutineScope(Dispatchers.Main).launch{
+                        userViewModel.readTasksWithTypesAndDuration(typeIds,finishIds).observe(viewLifecycleOwner, Observer {
                             val blockListTask = BlockListTask(it)
                             blockListTask.planner()
                             adapter.setData((blockListTask.todayList + blockListTask.tomorrowList
@@ -275,22 +305,16 @@ class FilterFragment : Fragment(){
                             endDay.text.isNotBlank() && endMonth.text.isNotBlank() && endYear.text.isNotBlank()) && typeIds.isNotEmpty()
                     && finishIds.isNotEmpty())
                 {
+                    val startDateString = "${startYear.text}-${startMonth.text}-${startDay.text}"
+                    val endDateString = "${endYear.text}-${endMonth.text}-${endDay.text}"
+                    val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+                    val startDate = dateFormat.parse(startDateString)?.time ?: 0
+                    val endDate = dateFormat.parse(endDateString)?.time ?: 0
+                    val startDateStringFormatted = dateFormat.format(startDate)
+                    val endDateStringFormatted = dateFormat.format(endDate)
                     CoroutineScope(Dispatchers.Main).launch{
                         userViewModel.readTasksWithTypesAndDurationAndDate(typeIds,finishIds,startDateStringFormatted, endDateStringFormatted)
                             .observe(viewLifecycleOwner, Observer {
-                            val blockListTask = BlockListTask(it)
-                            blockListTask.planner()
-                            adapter.setData((blockListTask.todayList + blockListTask.tomorrowList
-                                    + blockListTask.weekList + blockListTask.monthList +
-                                    blockListTask.restList).toMutableList())
-                        })
-                    }
-                }
-                //Jesli jest pusto
-                if(typeIds.isNotEmpty() && finishIds.isNotEmpty())
-                {
-                    CoroutineScope(Dispatchers.Main).launch{
-                        userViewModel.readTasksWithTypesAndDuration(typeIds,finishIds).observe(viewLifecycleOwner, Observer {
                             val blockListTask = BlockListTask(it)
                             blockListTask.planner()
                             adapter.setData((blockListTask.todayList + blockListTask.tomorrowList
