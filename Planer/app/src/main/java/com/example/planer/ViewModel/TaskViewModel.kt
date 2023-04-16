@@ -107,12 +107,31 @@ class TaskViewModel(application: Application): AndroidViewModel(application)
             repository.readTasksWithTypesAndDuration(typeIds, timeToFinishes)
         }
     }
-    //Co zostalo do dodania TODO
-        /*
-            -listowanie po dacie i typie
-            -listowanie po dacie i czasie trwania
-            -listowanie po wszystkich trzech
-            W takim razie, będą potrzebne dodatkowe 4 zapytania(chyba ze pojawi
-            sie lepszy sposob) do bazy - najwiekszy problem moze sprawic data,
-         */
+
+    //Czytanie po czasie trwania i dacie
+    suspend fun readTasksWithDurationAndDate(timeToFinishes: List<Int>,startDate: String, endDate: String): LiveData<List<Tasks>>
+    {
+        return withContext(Dispatchers.IO)
+        {
+            repository.readTasksWithDurationAndTime(timeToFinishes,startDate,endDate)
+        }
+    }
+
+    //Czytanie po typie i dacie
+    suspend fun readTasksWithTypesAndDate(typeIds: List<Int>, startDate: String, endDate: String): LiveData<List<Tasks>>
+    {
+        return withContext(Dispatchers.IO)
+        {
+            repository.readTasksWithTypesAndTime(typeIds, startDate, endDate)
+        }
+    }
+
+    //Czytanie po wszystkim
+    suspend fun readTasksWithTypesAndDurationAndDate(typeIds: List<Int>,timeToFinishes: List<Int>, startDate: String, endDate: String): LiveData<List<Tasks>>
+    {
+        return withContext(Dispatchers.IO)
+        {
+            repository.readTasksWithTypesAndDurationAndTime(typeIds,timeToFinishes,startDate,endDate)
+        }
+    }
 }

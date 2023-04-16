@@ -26,8 +26,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
-import java.time.LocalDate
-import java.time.ZoneId
 import java.util.*
 
 class FilterFragment : Fragment(){
@@ -171,9 +169,6 @@ class FilterFragment : Fragment(){
                 type4.getBackground().setTint(ContextCompat.getColor(requireContext(), R.color.brown_important_urgent_on))
                 typeIds.add(3)
             }
-
-            //TODO Dla wybierania daty
-
             val alertDialog = builder.create()
             alertDialog.show()
 
@@ -187,6 +182,14 @@ class FilterFragment : Fragment(){
                 )
                 rv?.adapter = adapter
                 rv?.layoutManager = LinearLayoutManager(requireContext())
+                //Do parsowania daty
+                val startDateString = "${startYear.text}-${startMonth.text}-${startDay.text}"
+                val endDateString = "${endYear.text}-${endMonth.text}-${endDay.text}"
+                val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+                val startDate = dateFormat.parse(startDateString)?.time ?: 0
+                val endDate = dateFormat.parse(endDateString)?.time ?: 0
+                val startDateStringFormatted = dateFormat.format(startDate)
+                val endDateStringFormatted = dateFormat.format(endDate)
 
                 userViewModel = ViewModelProvider(this)[TaskViewModel::class.java]
                 if(finishIds.isEmpty() && typeIds.isEmpty())
@@ -225,19 +228,11 @@ class FilterFragment : Fragment(){
                         })
                     }
                 }
+                //Po dacie
                 if(startDay.text.isNotBlank() && startMonth.text.isNotBlank() && startYear.text.isNotBlank() &&
                         endDay.text.isNotBlank() && endMonth.text.isNotBlank() && endYear.text.isNotBlank())
                 {
                     CoroutineScope(Dispatchers.Main).launch{
-                        val startDateString = "${startYear.text}-${startMonth.text}-${startDay.text}"
-                        val endDateString = "${endYear.text}-${endMonth.text}-${endDay.text}"
-                        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-                        val startDate = dateFormat.parse(startDateString)?.time ?: 0
-                        val endDate = dateFormat.parse(endDateString)?.time ?: 0
-                        val startDateStringFormatted = dateFormat.format(startDate)
-                        val endDateStringFormatted = dateFormat.format(endDate)
-                        println(startDateStringFormatted)
-
                         userViewModel.readTasksWithDate(startDateStringFormatted, endDateStringFormatted).observe(viewLifecycleOwner, Observer {
                             val blockListTask = BlockListTask(it)
                             blockListTask.planner()
@@ -247,7 +242,51 @@ class FilterFragment : Fragment(){
                         })
                     }
                 }
-                //Po typie i czasie trwania
+                //Po dacie i czasie trwania
+                if((startDay.text.isNotBlank() && startMonth.text.isNotBlank() && startYear.text.isNotBlank() &&
+                    endDay.text.isNotBlank() && endMonth.text.isNotBlank() && endYear.text.isNotBlank()) && finishIds.isNotEmpty())
+                {
+                    CoroutineScope(Dispatchers.Main).launch{
+                        userViewModel.readTasksWithDurationAndDate(finishIds,startDateStringFormatted, endDateStringFormatted).observe(viewLifecycleOwner, Observer {
+                            val blockListTask = BlockListTask(it)
+                            blockListTask.planner()
+                            adapter.setData((blockListTask.todayList + blockListTask.tomorrowList
+                                    + blockListTask.weekList + blockListTask.monthList +
+                                    blockListTask.restList).toMutableList())
+                        })
+                    }
+                }
+                //Po dacie i typie
+                if((startDay.text.isNotBlank() && startMonth.text.isNotBlank() && startYear.text.isNotBlank() &&
+                            endDay.text.isNotBlank() && endMonth.text.isNotBlank() && endYear.text.isNotBlank()) && typeIds.isNotEmpty())
+                {
+                    CoroutineScope(Dispatchers.Main).launch{
+                        userViewModel.readTasksWithTypesAndDate(typeIds,startDateStringFormatted, endDateStringFormatted).observe(viewLifecycleOwner, Observer {
+                            val blockListTask = BlockListTask(it)
+                            blockListTask.planner()
+                            adapter.setData((blockListTask.todayList + blockListTask.tomorrowList
+                                    + blockListTask.weekList + blockListTask.monthList +
+                                    blockListTask.restList).toMutableList())
+                        })
+                    }
+                }
+                //Po wszystkim
+                if((startDay.text.isNotBlank() && startMonth.text.isNotBlank() && startYear.text.isNotBlank() &&
+                            endDay.text.isNotBlank() && endMonth.text.isNotBlank() && endYear.text.isNotBlank()) && typeIds.isNotEmpty()
+                    && finishIds.isNotEmpty())
+                {
+                    CoroutineScope(Dispatchers.Main).launch{
+                        userViewModel.readTasksWithTypesAndDurationAndDate(typeIds,finishIds,startDateStringFormatted, endDateStringFormatted)
+                            .observe(viewLifecycleOwner, Observer {
+                            val blockListTask = BlockListTask(it)
+                            blockListTask.planner()
+                            adapter.setData((blockListTask.todayList + blockListTask.tomorrowList
+                                    + blockListTask.weekList + blockListTask.monthList +
+                                    blockListTask.restList).toMutableList())
+                        })
+                    }
+                }
+                //Jesli jest pusto
                 if(typeIds.isNotEmpty() && finishIds.isNotEmpty())
                 {
                     CoroutineScope(Dispatchers.Main).launch{

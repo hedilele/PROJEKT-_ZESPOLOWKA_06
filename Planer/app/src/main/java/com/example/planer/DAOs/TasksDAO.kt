@@ -6,13 +6,9 @@ import com.example.planer.entities.Finished
 import com.example.planer.entities.Notes
 import com.example.planer.entities.Subtasks
 import com.example.planer.entities.Tasks
-import com.example.planer.entities.relations.NoteAndTask
 import com.example.planer.entities.relations.TaskAndFinished
 import com.example.planer.entities.relations.TaskAndSubtasks
-import com.example.planer.tasks.Task
 import kotlinx.coroutines.flow.Flow
-import java.util.Date
-import kotlin.time.Duration
 
 @Dao
 interface TasksDAO
@@ -86,10 +82,16 @@ interface TasksDAO
     fun readTasksWithTypesAndDurations(typeIds: List<Int>, timeToFinishes: List<Int>): LiveData<List<Tasks>>
 
     //Czytanie po czasie trwania i dacie
+    @Query("SELECT * FROM Tasks WHERE time_to_finish IN (:timeToFinishes) AND deadline BETWEEN :startDate AND :endDate")
+    fun readTasksWithDurationAndTime(timeToFinishes: List<Int>,startDate: String, endDate: String): LiveData<List<Tasks>>
 
-    //Czytanie po czasie trwania i typie
+    //Czytanie po typie i dacie
+    @Query("SELECT * FROM Tasks WHERE type_id IN (:typeIds) AND deadline BETWEEN :startDate AND :endDate")
+    fun readTasksWithTypesAndTime(typeIds: List<Int>, startDate: String, endDate: String): LiveData<List<Tasks>>
 
     //Czytanie po wszystkich parametrach
+    @Query("SELECT * FROM Tasks WHERE type_id IN (:typeIds) AND time_to_finish IN (:timeToFinishes) AND deadline BETWEEN :startDate AND :endDate")
+    fun readTasksWithTypesAndTimeAndDuration(typeIds: List<Int>, timeToFinishes: List<Int>,startDate: String, endDate: String): LiveData<List<Tasks>>
 
     // Pobiera łączone typy Tasks i Notes do przekazania scope mode aka są aktywne, deadline minął lub są nieważne niepilne
     @Transaction
