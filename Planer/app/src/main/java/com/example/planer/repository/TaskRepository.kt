@@ -3,6 +3,7 @@ package com.example.planer.repository
 import androidx.lifecycle.LiveData
 import com.example.planer.DAOs.TasksDAO
 import com.example.planer.entities.Tasks
+import java.text.SimpleDateFormat
 
 class TaskRepository(private val tasksDAO: TasksDAO)
 {
@@ -43,17 +44,27 @@ class TaskRepository(private val tasksDAO: TasksDAO)
     }
 
     //Czytwanie po typach
-    fun readTasksWithTypes2(typeIds: List<Int>): LiveData<List<Tasks>>
+    fun readTasksWithTypes(typeIds: List<Int>): LiveData<List<Tasks>>
     {
         return tasksDAO.readTasksWithTypes(typeIds)
     }
 
     //Czytwanie po czasie trwania
-    fun readTasksWithDuration2(timeToFinishes: List<Int>): LiveData<List<Tasks>>
+    fun readTasksWithDuration(timeToFinishes: List<Int>): LiveData<List<Tasks>>
     {
         return tasksDAO.readTasksWithDuration(timeToFinishes)
     }
 
+    //Czytanie po dacie
+    fun readTasksWithDates(startDate: String, endDate: String): LiveData<List<Tasks>>
+    {
+        val sdf = SimpleDateFormat("yyyy-MM-dd")
+        val startMillis = sdf.parse(startDate)?.time ?: 0L
+        val endMillis = sdf.parse(endDate)?.time ?: 0L
+        return tasksDAO.readTasksWithTime(startDate, endDate)
+    }
+
+    //Czytwanie po typach i czasie trwania
     fun readTasksWithTypesAndDuration(typeIds: List<Int>,timeToFinishes: List<Int>): LiveData<List<Tasks>>
     {
         return tasksDAO.readTasksWithTypesAndDurations(typeIds,timeToFinishes)

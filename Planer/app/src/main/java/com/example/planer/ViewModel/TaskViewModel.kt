@@ -77,7 +77,7 @@ class TaskViewModel(application: Application): AndroidViewModel(application)
     {
         return withContext(Dispatchers.IO)
         {
-            repository.readTasksWithTypes2(typeIds)
+            repository.readTasksWithTypes(typeIds)
         }
     }
 
@@ -86,7 +86,16 @@ class TaskViewModel(application: Application): AndroidViewModel(application)
     {
         return withContext(Dispatchers.IO)
         {
-            repository.readTasksWithDuration2(timeToFinishes)
+            repository.readTasksWithDuration(timeToFinishes)
+        }
+    }
+
+    //Po dacie
+    suspend fun readTasksWithDate(startDate: String, endDate: String): LiveData<List<Tasks>>
+    {
+        return withContext(Dispatchers.IO)
+        {
+            repository.readTasksWithDates(startDate, endDate)
         }
     }
 
@@ -100,7 +109,6 @@ class TaskViewModel(application: Application): AndroidViewModel(application)
     }
     //Co zostalo do dodania TODO
         /*
-            -listowanie po dacie
             -listowanie po dacie i typie
             -listowanie po dacie i czasie trwania
             -listowanie po wszystkich trzech

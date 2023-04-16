@@ -1,13 +1,16 @@
 package com.example.planer.gui.pages
 
 import android.app.AlertDialog
+import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.EditText
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -22,6 +25,10 @@ import kotlinx.android.synthetic.main.fragment_filter.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.ZoneId
+import java.util.*
 
 class FilterFragment : Fragment(){
 
@@ -30,6 +37,7 @@ class FilterFragment : Fragment(){
     private lateinit var userViewModel: TaskViewModel
     // lista tasków do recyclerView
     var list = mutableListOf<Tasks>()
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -60,6 +68,14 @@ class FilterFragment : Fragment(){
             val type2 = dialogView.findViewById<TextView>(R.id.type2)
             val type3 = dialogView.findViewById<TextView>(R.id.type3)
             val type4 = dialogView.findViewById<TextView>(R.id.type4)
+
+            //Do daty
+            val startDay = dialogView.findViewById<EditText>(R.id.filter_date_start_d)
+            val startMonth = dialogView.findViewById<EditText>(R.id.filter_date_start_m)
+            val startYear = dialogView.findViewById<EditText>(R.id.filter_date_start_y)
+            val endDay = dialogView.findViewById<EditText>(R.id.filter_date_end_d)
+            val endMonth = dialogView.findViewById<EditText>(R.id.filter_date_end_m)
+            val endYear = dialogView.findViewById<EditText>(R.id.filter_date_end_y)
 
             //Button do sortowania - pozniej moze byc czyms innym
             val sortButton = dialogView.findViewById<Button>(R.id.sortButton)
@@ -201,6 +217,28 @@ class FilterFragment : Fragment(){
                 {
                     CoroutineScope(Dispatchers.Main).launch{
                         userViewModel.readTasksWithDuration(finishIds).observe(viewLifecycleOwner, Observer {
+                            val blockListTask = BlockListTask(it)
+                            blockListTask.planner()
+                            adapter.setData((blockListTask.todayList + blockListTask.tomorrowList
+                                    + blockListTask.weekList + blockListTask.monthList +
+                                    blockListTask.restList).toMutableList())
+                        })
+                    }
+                }
+                if(startDay.text.isNotBlank() && startMonth.text.isNotBlank() && startYear.text.isNotBlank() &&
+                        endDay.text.isNotBlank() && endMonth.text.isNotBlank() && endYear.text.isNotBlank())
+                {
+                    CoroutineScope(Dispatchers.Main).launch{
+                        val startDateString = "${startYear.text}-${startMonth.text}-${startDay.text}"
+                        val endDateString = "${endYear.text}-${endMonth.text}-${endDay.text}"
+                        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+                        val startDate = dateFormat.parse(startDateString)?.time ?: 0
+                        val endDate = dateFormat.parse(endDateString)?.time ?: 0
+                        val startDateStringFormatted = dateFormat.format(startDate)
+                        val endDateStringFormatted = dateFormat.format(endDate)
+                        println(startDateStringFormatted)
+
+                        userViewModel.readTasksWithDate(startDateStringFormatted, endDateStringFormatted).observe(viewLifecycleOwner, Observer {
                             val blockListTask = BlockListTask(it)
                             blockListTask.planner()
                             adapter.setData((blockListTask.todayList + blockListTask.tomorrowList

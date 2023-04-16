@@ -11,6 +11,7 @@ import com.example.planer.entities.relations.TaskAndFinished
 import com.example.planer.entities.relations.TaskAndSubtasks
 import com.example.planer.tasks.Task
 import kotlinx.coroutines.flow.Flow
+import java.util.Date
 import kotlin.time.Duration
 
 @Dao
@@ -76,9 +77,19 @@ interface TasksDAO
     @Query("SELECT * FROM Tasks WHERE time_to_finish IN (:timeToFinishes)")
     fun readTasksWithDuration(timeToFinishes: List<Int>): LiveData<List<Tasks>>
 
+    //Czytanie po dacie
+    @Query("SELECT * FROM Tasks WHERE deadline BETWEEN :startDate AND :endDate")
+    fun readTasksWithTime(startDate: String, endDate: String): LiveData<List<Tasks>>
+
     //Czytanie po czasie trwania i po typie
     @Query("SELECT * FROM Tasks WHERE type_id IN (:typeIds) AND time_to_finish IN (:timeToFinishes)")
     fun readTasksWithTypesAndDurations(typeIds: List<Int>, timeToFinishes: List<Int>): LiveData<List<Tasks>>
+
+    //Czytanie po czasie trwania i dacie
+
+    //Czytanie po czasie trwania i typie
+
+    //Czytanie po wszystkich parametrach
 
     // Pobiera łączone typy Tasks i Notes do przekazania scope mode aka są aktywne, deadline minął lub są nieważne niepilne
     @Transaction
