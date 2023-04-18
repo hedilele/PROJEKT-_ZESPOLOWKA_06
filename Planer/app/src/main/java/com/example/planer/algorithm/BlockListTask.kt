@@ -1,8 +1,12 @@
 package com.example.planer.algorithm
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import com.example.planer.entities.Tasks
 import java.time.LocalDate
 import java.util.Queue
+
+const val WORK_LIMIT = 60
 
 /**
  * Klasa, która rozdziela listę tasków na poszczególne przedziały czasowe.
@@ -21,12 +25,21 @@ class BlockListTask (
     /**
      * Funkcja układająca plan użytkownikowi
      */
+    @RequiresApi(Build.VERSION_CODES.O)
     fun planner(){
 
-        var tomorrowFakeList = mutableListOf<Tasks>()
-        var weekFakeList = mutableListOf<Tasks>()
-        var monthFakeList = mutableListOf<Tasks>()
-        var restFakeList = mutableListOf<Tasks>()
+        val deadlines = mutableSetOf<Tasks>()       //zbiór tasków do określonego dnia
+        val myDates = mutableSetOf<Tasks>()         //zbiór tasków o konkretnym dniu wykonania
+
+        val red = mutableSetOf<Tasks>()     //ważne-pilne
+        val green = mutableSetOf<Tasks>()   //ważne-niepilne
+        val yellow = mutableSetOf<Tasks>()  //nieważne-pilne
+        val blue = mutableSetOf<Tasks>()    //nieważne-niepilne
+
+        val tomorrowFakeList = mutableSetOf<Tasks>()
+        val weekFakeList = mutableSetOf<Tasks>()
+        val monthFakeList = mutableSetOf<Tasks>()
+        val restFakeList = mutableSetOf<Tasks>()
         
         var todayWork = 0
         var todayLimitIU = 0
@@ -41,25 +54,69 @@ class BlockListTask (
         //pobranie dzisiejszej daty
         val today = EasyDate(LocalDate.now())
 
-        //przejscie po taskach waznych-pilnych (np, pozarach)
+        //dziel taski na "do dnia" i "konkretny dzien"
         for(i in tasks){
-            if(i.importance == 1 && i.urgency == 1){
+            if(i.date?.isBlank() == true){
+                val d = EasyDate(i.deadline)
+                if(i.importance == 1 && i.urgency == 0 && d.date < (today+3).date)
+                    i.urgency = 1
+                deadlines.add(i)
+            }
+            else
+                myDates.add(i)
+        }
 
+        //przypisanie tasków o konkretnym dniu realizacji do odpowiednich list
+        for(i in myDates){
+            val d = EasyDate(i.deadline)
+            when{
+                d.date == today.date -> {
+                    todayWork += i.timeToFinish
+                    todayList.add(i)
+                }
+                d.date == (today+1).date -> {
+                    tomorrowWork += i.timeToFinish
+                    tomorrowList.add(i)
+                }
+                d.date < (today+7).date -> {
+                    weekList.add(i)
+                }
+                d.date < (today+30).date -> {
+                    monthList.add(i)
+                }
+                else -> restList.add(i)
+            }
+        }
+
+        //przydziel taski o określonym deadlinie, do odpowiednich ćwiartek
+        for(i in deadlines){
+            when{
+                i.importance == 1 && i.urgency == 1 -> red.add(i)
+                i.importance == 1 && i.urgency == 0 -> green.add(i)
+                i.importance == 0 && i.urgency == 1 -> yellow.add(i)
+                else -> blue.add(i)
+            }
+        }
+
+
+
+        //przejscie po taskach waznych-pilnych (np, pozarach)
+        for(i in red){
                 val d = EasyDate(i.deadline)
                 
                 when{
                     //zadanie, które miało termin na max 3 najbliższe dni włącznie z dzisiaj
                     d.date <= (today+2).date -> {
-                        //zostanie dodane na dzisiaj, jutro lub do konca tygodnia zaleznie od limitu obciazenia (60)
+                        //zostanie dodane na dzisiaj, jutro lub do konca tygodnia zaleznie od limitu obciazenia (WORK_LIMIT)
                         when{
                             
-                            todayWork + i.timeToFinish <= 60 -> {
+                            todayWork + i.timeToFinish <= WORK_LIMIT -> {
                                 todayLimitIU += 1
                                 todayList.add(i)
                                 todayWork += i.timeToFinish
                             }
                             
-                            tomorrowWork + i.timeToFinish <= 60 -> {
+                            tomorrowWork + i.timeToFinish <= WORK_LIMIT -> {
                                 tomorrowLimitIU += 1
                                 tomorrowList.add(i)
                                 tomorrowWork += i.timeToFinish
@@ -76,7 +133,6 @@ class BlockListTask (
                     else -> restFakeList.add(i)
                 }
             }
-        }
 
         //jeśli mamy jakieś odległe pilne-ważne zadanie zostanie ono wypchnięte na dzisiaj o ile jest mozliwosc
         if(todayLimitIU == 0){
@@ -145,24 +201,23 @@ class BlockListTask (
 
 
         //przejscie po taskach waznych-NIEpilnych (np, celach)
-        for(i in tasks){
-            if(i.importance == 1 && i.urgency == 0){
+        for(i in green){
 
                 val d = EasyDate(i.deadline)
 
                 when{
                     //zadanie, które miało termin do dzisiaj
                     d.date <= today.date -> {
-                        //zostanie dodane na dzisiaj, jutro lub do konca tygodnia zaleznie od limitu obciazenia (60)
+                        //zostanie dodane na dzisiaj, jutro lub do konca tygodnia zaleznie od limitu obciazenia (WORK_LIMIT)
                         when{
 
-                            todayWork + i.timeToFinish <= 60 -> {
+                            todayWork + i.timeToFinish <= WORK_LIMIT -> {
                                 todayLimitINU += 1
                                 todayList.add(i)
                                 todayWork += i.timeToFinish
                             }
 
-                            tomorrowWork + i.timeToFinish <= 60 -> {
+                            tomorrowWork + i.timeToFinish <= WORK_LIMIT -> {
                                 tomorrowLimitINU += 1
                                 tomorrowFakeList.add(i)
                                 tomorrowWork += i.timeToFinish
@@ -174,7 +229,7 @@ class BlockListTask (
 
                     d.date == (today+1).date -> {
                         when{
-                            tomorrowWork + i.timeToFinish <= 60 -> {
+                            tomorrowWork + i.timeToFinish <= WORK_LIMIT -> {
                                 tomorrowLimitINU += 1
                                 tomorrowFakeList.add(i)
                                 tomorrowWork += i.timeToFinish
@@ -191,31 +246,30 @@ class BlockListTask (
                     else -> restFakeList.add(i)
                 }
             }
-        }
 
         //jeśli mamy jakieś odległe pilne-NIEważne zadanie zostanie ono wypchnięte na dzisiaj o ile jest mozliwosc
         if(todayLimitINU == 0){
             when{
-                tomorrowFakeList.isNotEmpty() && todayWork + tomorrowFakeList.first().timeToFinish <= 60 -> {
+                tomorrowFakeList.isNotEmpty() && todayWork + tomorrowFakeList.first().timeToFinish <= WORK_LIMIT -> {
                     val task = tomorrowFakeList.first()
                     todayList.add(task)
                     todayWork += task.timeToFinish
                     tomorrowWork -= task.timeToFinish
                     tomorrowFakeList.remove(task)
                 }
-                weekFakeList.isNotEmpty() &&  todayWork + weekFakeList.first().timeToFinish <= 60 -> {
+                weekFakeList.isNotEmpty() &&  todayWork + weekFakeList.first().timeToFinish <= WORK_LIMIT -> {
                     val task = weekFakeList.first()
                     todayList.add(task)
                     todayWork += task.timeToFinish
                     weekFakeList.remove(task)
                 }
-                monthFakeList.isNotEmpty() &&  todayWork + monthFakeList.first().timeToFinish <= 60 -> {
+                monthFakeList.isNotEmpty() &&  todayWork + monthFakeList.first().timeToFinish <= WORK_LIMIT -> {
                     val task = monthFakeList.first()
                     todayList.add(task)
                     todayWork += task.timeToFinish
                     monthFakeList.remove(task)
                 }
-                restFakeList.isNotEmpty() &&  todayWork + restFakeList.first().timeToFinish <= 60 -> {
+                restFakeList.isNotEmpty() &&  todayWork + restFakeList.first().timeToFinish <= WORK_LIMIT -> {
                     val task = restFakeList.first()
                     todayList.add(task)
                     todayWork += task.timeToFinish
@@ -227,19 +281,19 @@ class BlockListTask (
         //jeśli mamy jakieś odległe pilne-NIEważne zadanie zostanie ono wypchnięte na jutro o ile jest mozliwosc
         if(tomorrowLimitINU == 0){
             when{
-                weekFakeList.isNotEmpty() && tomorrowWork + weekFakeList.first().timeToFinish <= 60 -> {
+                weekFakeList.isNotEmpty() && tomorrowWork + weekFakeList.first().timeToFinish <= WORK_LIMIT -> {
                     val task = weekFakeList.first()
                     tomorrowList.add(task)
                     tomorrowWork += task.timeToFinish
                     weekFakeList.remove(task)
                 }
-                monthFakeList.isNotEmpty() && tomorrowWork + monthFakeList.first().timeToFinish <= 60 -> {
+                monthFakeList.isNotEmpty() && tomorrowWork + monthFakeList.first().timeToFinish <= WORK_LIMIT -> {
                     val task = monthFakeList.first()
                     tomorrowList.add(task)
                     tomorrowWork += task.timeToFinish
                     monthFakeList.remove(task)
                 }
-                restFakeList.isNotEmpty() && tomorrowWork + restFakeList.first().timeToFinish <= 60 -> {
+                restFakeList.isNotEmpty() && tomorrowWork + restFakeList.first().timeToFinish <= WORK_LIMIT -> {
                     val task = restFakeList.first()
                     tomorrowList.add(task)
                     tomorrowWork += task.timeToFinish
@@ -272,24 +326,23 @@ class BlockListTask (
 
 
         //przejscie po taskach NIEwaznych-pilnych (np, lodówka się pali)
-        for(i in tasks){
-            if(i.importance == 0 && i.urgency == 1){
+        for(i in yellow){
 
                 val d = EasyDate(i.deadline)
 
                 when{
                     //zadanie, które miało termin do dzisiaj
                     d.date <= today.date -> {
-                        //zostanie dodane na dzisiaj, jutro lub do konca tygodnia zaleznie od limitu obciazenia (60)
+                        //zostanie dodane na dzisiaj, jutro lub do konca tygodnia zaleznie od limitu obciazenia (WORK_LIMIT)
                         when{
 
-                            todayWork + i.timeToFinish <= 60 -> {
+                            todayWork + i.timeToFinish <= WORK_LIMIT -> {
                                 todayLimitNIU += 1
                                 todayList.add(i)
                                 todayWork += i.timeToFinish
                             }
 
-                            tomorrowWork + i.timeToFinish <= 60 -> {
+                            tomorrowWork + i.timeToFinish <= WORK_LIMIT -> {
                                 tomorrowLimitNIU += 1
                                 tomorrowFakeList.add(i)
                                 tomorrowWork += i.timeToFinish
@@ -301,7 +354,7 @@ class BlockListTask (
 
                     d.date == (today+1).date -> {
                         when{
-                            tomorrowWork + i.timeToFinish <= 60 -> {
+                            tomorrowWork + i.timeToFinish <= WORK_LIMIT -> {
                                 tomorrowLimitNIU += 1
                                 tomorrowFakeList.add(i)
                                 tomorrowWork += i.timeToFinish
@@ -317,13 +370,12 @@ class BlockListTask (
 
                     else -> restFakeList.add(i)
                 }
-            }
         }
 
         //jeśli mamy jakieś odległe NIEpilne-ważne zadanie zostanie ono wypchnięte na dzisiaj o ile jest mozliwosc
         while(todayLimitNIU < 2){
             when{
-                tomorrowFakeList.isNotEmpty() && todayWork + tomorrowFakeList.first().timeToFinish <= 60 -> {
+                tomorrowFakeList.isNotEmpty() && todayWork + tomorrowFakeList.first().timeToFinish <= WORK_LIMIT -> {
                     val task = tomorrowFakeList.first()
                     todayList.add(task)
                     todayWork += task.timeToFinish
@@ -332,21 +384,21 @@ class BlockListTask (
                     tomorrowLimitNIU -= 1
                     tomorrowFakeList.remove(task)
                 }
-                weekFakeList.isNotEmpty() &&  todayWork + weekFakeList.first().timeToFinish <= 60 -> {
+                weekFakeList.isNotEmpty() &&  todayWork + weekFakeList.first().timeToFinish <= WORK_LIMIT -> {
                     val task = weekFakeList.first()
                     todayList.add(task)
                     todayWork += task.timeToFinish
                     todayLimitNIU += 1
                     weekFakeList.remove(task)
                 }
-                monthFakeList.isNotEmpty() &&  todayWork + monthFakeList.first().timeToFinish <= 60 -> {
+                monthFakeList.isNotEmpty() &&  todayWork + monthFakeList.first().timeToFinish <= WORK_LIMIT -> {
                     val task = monthFakeList.first()
                     todayList.add(task)
                     todayWork += task.timeToFinish
                     todayLimitNIU += 1
                     monthFakeList.remove(task)
                 }
-                restFakeList.isNotEmpty() &&  todayWork + restFakeList.first().timeToFinish <= 60 -> {
+                restFakeList.isNotEmpty() &&  todayWork + restFakeList.first().timeToFinish <= WORK_LIMIT -> {
                     val task = restFakeList.first()
                     todayList.add(task)
                     todayWork += task.timeToFinish
@@ -360,21 +412,21 @@ class BlockListTask (
         //jeśli mamy jakieś odległe NIEpilne-ważne zadanie zostanie ono wypchnięte na jutro o ile jest mozliwosc
         while(tomorrowLimitNIU < 2){
             when{
-                weekFakeList.isNotEmpty() && tomorrowWork + weekFakeList.first().timeToFinish <= 60 -> {
+                weekFakeList.isNotEmpty() && tomorrowWork + weekFakeList.first().timeToFinish <= WORK_LIMIT -> {
                     val task = weekFakeList.first()
                     tomorrowList.add(task)
                     tomorrowWork += task.timeToFinish
                     tomorrowLimitNIU += 1
                     weekFakeList.remove(task)
                 }
-                monthFakeList.isNotEmpty() && tomorrowWork + monthFakeList.first().timeToFinish <= 60 -> {
+                monthFakeList.isNotEmpty() && tomorrowWork + monthFakeList.first().timeToFinish <= WORK_LIMIT -> {
                     val task = monthFakeList.first()
                     tomorrowList.add(task)
                     tomorrowWork += task.timeToFinish
                     tomorrowLimitNIU += 1
                     monthFakeList.remove(task)
                 }
-                restFakeList.isNotEmpty() && tomorrowWork + restFakeList.first().timeToFinish <= 60 -> {
+                restFakeList.isNotEmpty() && tomorrowWork + restFakeList.first().timeToFinish <= WORK_LIMIT -> {
                     val task = restFakeList.first()
                     tomorrowList.add(task)
                     tomorrowWork += task.timeToFinish
@@ -409,24 +461,23 @@ class BlockListTask (
 
 
         //przejscie po taskach NIEwaznych-NIEpilnych (np, pierdoły)
-        for(i in tasks){
-            if(i.importance == 0 && i.urgency == 0){
+        for(i in blue){
 
                 val d = EasyDate(i.deadline)
 
                 when{
                     //zadanie, które miało termin do dzisiaj
                     d.date <= today.date -> {
-                        //zostanie dodane na dzisiaj, jutro lub do konca tygodnia zaleznie od limitu obciazenia (60)
+                        //zostanie dodane na dzisiaj, jutro lub do konca tygodnia zaleznie od limitu obciazenia (WORK_LIMIT)
                         when{
 
-                            todayWork + i.timeToFinish <= 60 -> {
+                            todayWork + i.timeToFinish <= WORK_LIMIT -> {
                                 todayLimitNIU += 1
                                 todayList.add(i)
                                 todayWork += i.timeToFinish
                             }
 
-                            tomorrowWork + i.timeToFinish <= 60 -> {
+                            tomorrowWork + i.timeToFinish <= WORK_LIMIT -> {
                                 tomorrowLimitNIU += 1
                                 tomorrowFakeList.add(i)
                                 tomorrowWork += i.timeToFinish
@@ -438,7 +489,7 @@ class BlockListTask (
 
                     d.date == (today+1).date -> {
                         when{
-                            tomorrowWork + i.timeToFinish <= 60 -> {
+                            tomorrowWork + i.timeToFinish <= WORK_LIMIT -> {
                                 tomorrowLimitNIU += 1
                                 tomorrowFakeList.add(i)
                                 tomorrowWork += i.timeToFinish
@@ -454,32 +505,31 @@ class BlockListTask (
 
                     else -> restFakeList.add(i)
                 }
-            }
         }
 
         //jeśli mamy jakieś odległe NIEpilne-NIEważne zadanie zostanie ono wypchnięte na dzisiaj o ile jest mozliwosc
-        while(todayWork < 60){
+        while(todayWork < WORK_LIMIT){
             when{
-                tomorrowFakeList.isNotEmpty() && todayWork + tomorrowFakeList.first().timeToFinish <= 60 -> {
+                tomorrowFakeList.isNotEmpty() && todayWork + tomorrowFakeList.first().timeToFinish <= WORK_LIMIT -> {
                     val task = tomorrowFakeList.first()
                     todayList.add(task)
                     todayWork += task.timeToFinish
                     tomorrowWork -= task.timeToFinish
                     tomorrowFakeList.remove(task)
                 }
-                weekFakeList.isNotEmpty() &&  todayWork + weekFakeList.first().timeToFinish <= 60 -> {
+                weekFakeList.isNotEmpty() &&  todayWork + weekFakeList.first().timeToFinish <= WORK_LIMIT -> {
                     val task = weekFakeList.first()
                     todayList.add(task)
                     todayWork += task.timeToFinish
                     weekFakeList.remove(task)
                 }
-                monthFakeList.isNotEmpty() &&  todayWork + monthFakeList.first().timeToFinish <= 60 -> {
+                monthFakeList.isNotEmpty() &&  todayWork + monthFakeList.first().timeToFinish <= WORK_LIMIT -> {
                     val task = monthFakeList.first()
                     todayList.add(task)
                     todayWork += task.timeToFinish
                     monthFakeList.remove(task)
                 }
-                restFakeList.isNotEmpty() &&  todayWork + restFakeList.first().timeToFinish <= 60 -> {
+                restFakeList.isNotEmpty() &&  todayWork + restFakeList.first().timeToFinish <= WORK_LIMIT -> {
                     val task = restFakeList.first()
                     todayList.add(task)
                     todayWork += task.timeToFinish
@@ -490,21 +540,21 @@ class BlockListTask (
         }
 
         //jeśli mamy jakieś odległe NIEpilne-NIEważne zadanie zostanie ono wypchnięte na jutro o ile jest mozliwosc
-        while(tomorrowWork < 60){
+        while(tomorrowWork < WORK_LIMIT){
             when{
-                weekFakeList.isNotEmpty() && tomorrowWork + weekFakeList.first().timeToFinish <= 60 -> {
+                weekFakeList.isNotEmpty() && tomorrowWork + weekFakeList.first().timeToFinish <= WORK_LIMIT -> {
                     val task = weekFakeList.first()
                     tomorrowList.add(task)
                     tomorrowWork += task.timeToFinish
                     weekFakeList.remove(task)
                 }
-                monthFakeList.isNotEmpty() && tomorrowWork + monthFakeList.first().timeToFinish <= 60 -> {
+                monthFakeList.isNotEmpty() && tomorrowWork + monthFakeList.first().timeToFinish <= WORK_LIMIT -> {
                     val task = monthFakeList.first()
                     tomorrowList.add(task)
                     tomorrowWork += task.timeToFinish
                     monthFakeList.remove(task)
                 }
-                restFakeList.isNotEmpty() && tomorrowWork + restFakeList.first().timeToFinish <= 60 -> {
+                restFakeList.isNotEmpty() && tomorrowWork + restFakeList.first().timeToFinish <= WORK_LIMIT -> {
                     val task = restFakeList.first()
                     tomorrowList.add(task)
                     tomorrowWork += task.timeToFinish
