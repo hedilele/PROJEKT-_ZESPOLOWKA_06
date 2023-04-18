@@ -56,7 +56,7 @@ class BlockListTask (
 
         //dziel taski na "do dnia" i "konkretny dzien"
         for(i in tasks){
-            if(i.date?.isBlank() == true){
+            if(i.date == null){
                 val d = EasyDate(i.deadline)
                 if(i.importance == 1 && i.urgency == 0 && d.date < (today+3).date)
                     i.urgency = 1
