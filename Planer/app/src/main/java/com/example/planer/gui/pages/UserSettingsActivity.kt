@@ -5,9 +5,12 @@ import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.example.planer.R
+import com.example.planer.ViewModel.SettingsViewModel
 import com.example.planer.databinding.ActivityUserSettingsBinding
+import com.example.planer.entities.Settings
 import com.google.android.material.slider.RangeSlider
 import kotlinx.android.synthetic.main.activity_user_settings.*
 import kotlinx.android.synthetic.main.single_task.view.*
@@ -16,6 +19,9 @@ import java.util.*
 
 class UserSettingsActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var binding: ActivityUserSettingsBinding
+
+    private val settingsViewModel: SettingsViewModel by viewModels()
+    private var localSettings: Settings = settingsViewModel.getSettings()
 
     var week_hours = 0
     var weekend_hours = 0
@@ -59,13 +65,13 @@ class UserSettingsActivity : AppCompatActivity(), View.OnClickListener {
 
         //binding.dateSpinner.setOnClickListener(this)
         binding.calendarIcon.setOnClickListener(this)
+        binding.btnSave.setOnClickListener(this)
 
        // binding.weekHours.setOnClickListener(this)
         //binding.weekendHours.setOnClickListener(this)
 
         chosenItems.add("kliknij aby usunąć")
         binding.dateSpinner.setSelection(0)
-
 
     }
 
