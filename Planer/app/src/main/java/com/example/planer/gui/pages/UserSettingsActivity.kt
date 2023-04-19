@@ -35,7 +35,7 @@ class UserSettingsActivity : AppCompatActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityUserSettingsBinding.inflate(layoutInflater)
-        setContentView(binding?.root)
+        setContentView(binding.root)
 
         binding.type1Col1.setOnClickListener(this)
         binding.type1Col2.setOnClickListener(this)

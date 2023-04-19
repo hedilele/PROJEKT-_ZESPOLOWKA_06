@@ -9,8 +9,6 @@ data class Settings (
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
     val id: Int = 0,
-    @ColumnInfo(name = "available_weekday_hours")
-    var availableWeekdayHours: Int = 5,
-    @ColumnInfo(name = "available_weekend_hours")
-    var availableWeekendHours: Int = 6,
+    @ColumnInfo(name = "daily_available_hours")
+    var dailyAvailableHours: Int = 5
     )

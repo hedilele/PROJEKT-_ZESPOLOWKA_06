@@ -24,7 +24,4 @@ interface SettingsDAO {
     @Query("DELETE FROM Settings WHERE id=:id")
     suspend fun deleteById(id: Int)
 
-    @Query("DELETE FROM Settings")
-    suspend fun deleteAll()
-
 }

@@ -380,7 +380,7 @@
             android:layout_marginHorizontal="15dp"
             android:backgroundTint="@color/pr1_green_text"
             android:padding="10dp"
-            android:text="zaipsz"
+            android:text="zapisz"
             android:textColor="#99ffffff"
             android:textSize="18dp"
             android:textStyle="bold" />
