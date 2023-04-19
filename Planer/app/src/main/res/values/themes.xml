@@ -15,5 +15,9 @@
         <item name="android:fontFamily">@font/poppins_semibold</item>
     </style>
 
+    <style name="Widget.App.Tooltip" parent="Widget.MaterialComponents.Tooltip">
+        <item name="backgroundTint">#90be6d</item>
+    </style>
+
 
 </resources>

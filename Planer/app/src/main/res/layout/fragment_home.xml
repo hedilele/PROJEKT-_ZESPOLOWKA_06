@@ -11,21 +11,65 @@
             android:id="@+id/lista"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            >
+            android:orientation="vertical">
 
                 <RelativeLayout
 
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginTop="20dp">
+                    android:layout_marginTop="20dp"
+                    android:orientation="vertical">
 
+                        <TextView
+                            android:id="@+id/habits_title"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:background="#99F3DEBA"
+                            android:paddingHorizontal="10dp"
+                            android:text="Nawyki"
+                            android:textColor="#543C38"
+                            android:textSize="25dp" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:orientation="horizontal">
+
+                                <ImageView
+                                    android:id="@+id/habits_add"
+                                    android:layout_width="30dp"
+                                    android:layout_height="30dp"
+                                    android:layout_marginTop="5dp"
+                                    android:background="#99F3DEBA"
+                                    android:src="@drawable/navigation_add" />
+
+                                <ImageView
+                                    android:id="@+id/habits_delete"
+                                    android:layout_width="30dp"
+                                    android:layout_height="30dp"
+                                    android:layout_marginHorizontal="10dp"
+                                    android:layout_marginTop="5dp"
+                                    android:background="#99F3DEBA"
+                                    android:src="@drawable/icon_remove" />
+
+                        </LinearLayout>
+
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/habits_list"
+                            android:layout_width="match_parent"
+                            android:layout_height="100dp"
+                            android:layout_below="@id/habits_title"
+                            android:paddingHorizontal="10dp"
+                            android:scrollbars="horizontal"
+                            tools:listitem="@layout/single_habit" />
 
                         <TextView
                             android:id="@+id/today_title"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_below="@id/habits_list"
                             android:paddingHorizontal="10dp"
                             android:text="Dziś"
                             android:textColor="#543C38"
@@ -42,11 +86,11 @@
 
 
                         <androidx.recyclerview.widget.RecyclerView
-                            android:paddingHorizontal="10dp"
                             android:id="@+id/today_task_list"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/line1"
+                            android:paddingHorizontal="10dp"
                             tools:listitem="@layout/single_task" />
 
                         <TextView
@@ -56,18 +100,17 @@
                             android:layout_below="@+id/today_task_list"
                             android:paddingHorizontal="10dp"
                             android:text="Jutro"
-                            android:textSize="25dp"
-                            android:textColor="#543C38"/>
+                            android:textColor="#543C38"
+                            android:textSize="25dp" />
 
                         <TextView
                             android:id="@+id/line2"
                             android:layout_width="match_parent"
                             android:layout_height="2dp"
+                            android:layout_below="@+id/tomorrow_title"
                             android:layout_marginHorizontal="10dp"
                             android:layout_marginBottom="5dp"
-                            android:background="#4DA66A2C"
-                            android:layout_below="@+id/tomorrow_title"/>
-
+                            android:background="#4DA66A2C" />
 
 
                         <androidx.recyclerview.widget.RecyclerView
@@ -87,17 +130,17 @@
                             android:paddingHorizontal="10dp"
 
                             android:text="Do końca tygodnia"
-                            android:textSize="25dp"
-                            android:textColor="#543C38"/>
+                            android:textColor="#543C38"
+                            android:textSize="25dp" />
 
                         <TextView
                             android:id="@+id/line3"
                             android:layout_width="match_parent"
                             android:layout_height="2dp"
+                            android:layout_below="@+id/week_title"
                             android:layout_marginHorizontal="10dp"
                             android:layout_marginBottom="5dp"
-                            android:background="#4DA66A2C"
-                            android:layout_below="@+id/week_title"/>
+                            android:background="#4DA66A2C" />
 
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/week_task_list"
@@ -115,17 +158,17 @@
                             android:paddingHorizontal="10dp"
 
                             android:text="Do końca miesiąca"
-                            android:textSize="25dp"
-                            android:textColor="#543C38"/>
+                            android:textColor="#543C38"
+                            android:textSize="25dp" />
 
                         <TextView
                             android:id="@+id/line4"
                             android:layout_width="match_parent"
                             android:layout_height="2dp"
+                            android:layout_below="@+id/month_title"
                             android:layout_marginHorizontal="10dp"
                             android:layout_marginBottom="5dp"
-                            android:background="#4DA66A2C"
-                            android:layout_below="@+id/month_title"/>
+                            android:background="#4DA66A2C" />
 
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/month_task_list"
@@ -138,22 +181,22 @@
                         <TextView
                             android:id="@+id/rest_title"
                             android:layout_width="match_parent"
-                            android:paddingHorizontal="10dp"
-
                             android:layout_height="wrap_content"
+
                             android:layout_below="@+id/month_task_list"
+                            android:paddingHorizontal="10dp"
                             android:text="Reszta"
-                            android:textSize="25dp"
-                            android:textColor="#543C38"/>
+                            android:textColor="#543C38"
+                            android:textSize="25dp" />
 
                         <TextView
                             android:id="@+id/line5"
                             android:layout_width="match_parent"
                             android:layout_height="2dp"
+                            android:layout_below="@+id/rest_title"
                             android:layout_marginHorizontal="10dp"
                             android:layout_marginBottom="5dp"
-                            android:background="#4DA66A2C"
-                            android:layout_below="@+id/rest_title"/>
+                            android:background="#4DA66A2C" />
 
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/rest_task_list"

@@ -1,5 +1,6 @@
 package com.example.planer.DAOs
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.example.planer.entities.Habits
 
@@ -15,8 +16,11 @@ interface HabitsDAO
     suspend fun update(habits: Habits)
 
     //Pobieranie listy habitsow z bazy
-    @Query("SELECT * FROM habits")
-    fun getAllHabits(): List<Habits>
+    @Query("SELECT * FROM 'Habits'")
+    fun getAllHabits(): LiveData<List<Habits>>
+
+    @Query("SELECT * FROM `Habits`")
+    fun readAllData(): LiveData<List<Habits>>
 
     //Pobieranie Habitsa po id
     @Query("SELECT * FROM habits WHERE id = :habitId")

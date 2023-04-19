@@ -172,6 +172,13 @@ class MainActivity : AppCompatActivity() {
                         binding.drawerLayout.closeDrawer(GravityCompat.START);
 
                     }
+
+                    R.id.item4 -> {
+
+                        val intent = Intent(applicationContext, UserSettingsActivity::class.java)
+                        startActivity(intent)
+
+                    }
                 }
                 true
             }

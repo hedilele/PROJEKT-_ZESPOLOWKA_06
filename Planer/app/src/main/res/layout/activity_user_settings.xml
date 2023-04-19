@@ -1,0 +1,406 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:paddingHorizontal="10dp"
+    tools:context=".gui.pages.UserSettingsActivity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="20dp"
+            android:gravity="top"
+            android:orientation="vertical">
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="vertical"
+                >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="5dp"
+                    android:layout_marginVertical="5dp"
+                    android:text="Dni wolne od zadań: "
+                    android:textColor="#99000000"
+                    android:textSize="20sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <ImageButton
+                        android:id="@+id/calendar_icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginVertical="10dp"
+                        android:layout_marginHorizontal="20dp"
+                        android:background="@drawable/calendar"
+                        android:backgroundTint="@color/pr1_brown_dark"
+                        android:scaleX="2"
+                        android:scaleY="2" />
+
+                    <Spinner
+                        android:id="@+id/date_spinner"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginHorizontal="20dp"
+                        />
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="vertical"
+                >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="5dp"
+                    android:layout_marginVertical="5dp"
+                    android:text="Ilość wolnych godzin w tygodniu:"
+                    android:textColor="#99000000"
+                    android:textSize="20sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:gravity="center">
+
+                    <com.google.android.material.slider.Slider
+                        android:id="@+id/slider"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:stepSize="1"
+                        android:value="5"
+                        android:valueFrom="1"
+                        android:valueTo="8"
+                        app:haloColor="#03000000"
+                        app:haloRadius="0dp"
+                        app:labelBehavior="visible"
+                        app:labelStyle="@style/Widget.App.Tooltip"
+                        app:thumbColor="@color/pr1_brown_warm"
+                        app:tickColorInactive="@color/brown_important_urgent_on"
+                        app:trackColorActive="@color/pr1_brown_light"
+                        app:trackColorInactive="@color/pr1_beige_background" />
+
+
+                </LinearLayout>
+
+
+
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:paddingLeft="5dp"
+                    android:layout_marginVertical="5dp"
+                    android:text="typy zadań: "
+                    android:textColor="#99000000"
+                    android:textSize="20sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="40dp"
+                        android:layout_height="match_parent"
+                        android:text="1: "
+                        android:padding="5dp"
+                        android:textSize="25dp"
+                        />
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/type1"
+                        android:layout_width="160dp"
+                        android:layout_height="50dp"
+                        android:hint="Dom"
+                        android:inputType="textCapSentences"
+                        android:padding="5dp"
+                        android:singleLine="true"
+                        android:gravity="center"
+                        android:textColor="#99000000"
+                        android:textSize="20sp"
+                        />
+
+                    <ImageView
+                        android:id="@+id/type1_col1"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:src="@drawable/radio_checked"
+                        app:tint="#81A969"
+                        />
+
+                    <ImageView
+                        android:id="@+id/type1_col2"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:src="@drawable/radio_unchecked"
+                        app:tint="#43B14B" />
+
+                    <ImageView
+                        android:id="@+id/type1_col3"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:src="@drawable/radio_unchecked"
+                        app:tint="#68902B" />
+
+                    <ImageView
+                        android:id="@+id/type1_col4"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:src="@drawable/radio_unchecked"
+                        app:tint="#29741D" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="40dp"
+                        android:layout_height="match_parent"
+                        android:text="2: "
+                        android:padding="5dp"
+                        android:textSize="25dp"
+                        />
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/type2"
+                        android:layout_width="160dp"
+                        android:layout_height="50dp"
+                        android:hint="Szkoła"
+                        android:inputType="textCapSentences"
+                        android:padding="5dp"
+                        android:singleLine="true"
+                        android:gravity="center"
+                        android:textColor="#99000000"
+                        android:textSize="20sp"
+                        />
+
+                    <ImageView
+                        android:id="@+id/type2_col1"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:src="@drawable/radio_checked"
+                        app:tint="#88A9C3" />
+
+                    <ImageView
+                        android:id="@+id/type2_col2"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:src="@drawable/radio_unchecked"
+                        app:tint="#00A8A8"
+                        />
+
+                    <ImageView
+                        android:id="@+id/type2_col3"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:src="@drawable/radio_unchecked"
+                        app:tint="#1B7895" />
+
+                    <ImageView
+                        android:id="@+id/type2_col4"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:src="@drawable/radio_unchecked"
+                        app:tint="#0C6980" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="40dp"
+                        android:layout_height="match_parent"
+                        android:text="3: "
+                        android:padding="5dp"
+                        android:textSize="25dp"
+                        />
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/type3"
+                        android:layout_width="160dp"
+                        android:layout_height="50dp"
+                        android:hint="Komputer"
+                        android:inputType="textCapSentences"
+                        android:padding="5dp"
+                        android:singleLine="true"
+                        android:gravity="center"
+                        android:textColor="#99000000"
+                        android:textSize="20sp"
+                        />
+
+                    <ImageView
+                        android:id="@+id/type3_col1"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:src="@drawable/radio_checked"
+                        app:tint="#FFEB5B" />
+
+                    <ImageView
+                        android:id="@+id/type3_col2"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:src="@drawable/radio_unchecked"
+                        app:tint="#FAD02C" />
+
+                    <ImageView
+                        android:id="@+id/type3_col3"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:src="@drawable/radio_unchecked"
+                        app:tint="#FAA94A" />
+
+                    <ImageView
+                        android:id="@+id/type3_col4"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:src="@drawable/radio_unchecked"
+                        app:tint="#F27C22" />
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="40dp"
+                        android:layout_height="match_parent"
+                        android:text="4: "
+                        android:padding="5dp"
+                        android:textSize="25dp"
+                        />
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/type4"
+                        android:layout_width="160dp"
+                        android:layout_height="50dp"
+                        android:hint="Rozrywka"
+                        android:inputType="textCapSentences"
+                        android:padding="5dp"
+                        android:singleLine="true"
+                        android:gravity="center"
+                        android:textColor="#99000000"
+                        android:textSize="20sp"
+                        />
+
+                    <ImageView
+                        android:id="@+id/type4_col1"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:src="@drawable/radio_checked"
+                        app:tint="#FFC0CB" />
+
+                    <ImageView
+                        android:id="@+id/type4_col2"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:src="@drawable/radio_unchecked"
+                        app:tint="#D0C3F1" />
+
+                    <ImageView
+                        android:id="@+id/type4_col3"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:src="@drawable/radio_unchecked"
+                        app:tint="#830C4F" />
+
+                    <ImageView
+                        android:id="@+id/type4_col4"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:src="@drawable/radio_unchecked"
+                        app:tint="#633058" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_create"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="15dp"
+            android:backgroundTint="@color/pr1_green_text"
+            android:padding="10dp"
+            android:text="zaipsz"
+            android:textColor="#99ffffff"
+            android:textSize="18dp"
+            android:textStyle="bold" />
+
+        <!--
+        90be6d - zielony
+        -->
+
+        <Button
+            android:id="@+id/btn_cancel"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="15dp"
+            android:backgroundTint="#90be6d"
+            android:padding="10dp"
+            android:text="anuluj"
+            android:textColor="#99000000"
+            android:textSize="18dp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+
+</LinearLayout>

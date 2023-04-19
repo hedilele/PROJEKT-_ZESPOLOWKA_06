@@ -2,223 +2,30 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/single_task"
-    android:layout_width="match_parent"
-    android:layout_height="100dp"
+    android:id="@+id/single_habit"
+    android:layout_width="85dp"
+    android:layout_height="50dp"
     android:layout_margin="10dp"
     android:orientation="vertical"
-    app:cardCornerRadius="15dp"
+    app:cardCornerRadius="5dp"
+    android:backgroundTint="#99F3DEBA"
     >
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/task_layout"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#99F3DEBA">
+        android:gravity="center"
+        >
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            tools:ignore="MissingConstraints">
-
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginHorizontal="5dp"
-                android:layout_marginVertical="5dp"
-                android:layout_weight="6"
-                android:orientation="horizontal"
-                android:gravity="center">
-
-                <TextView
-                    android:id="@+id/counter"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:background="@drawable/shape_navigartion_button2"
-                    android:backgroundTint="#664F904C"
-                    android:gravity="center"
-                    android:textSize="18dp"
-                    android:textAlignment="center"
-                    android:text="1/2"
-                    android:layout_marginLeft="10dp"
-                    />
-
-                <!--                33D5AA72    -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    >
-
-                    <TextView
-                        android:id="@+id/task_title"
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="1"
-                        android:gravity="center|left"
-                        android:paddingHorizontal="10dp"
-                        android:text="Przykladowy nawyk"
-                        android:textColor="@color/pr1_green_text"
-                        android:textSize="18dp"
-                        android:layout_marginTop="15dp"/>
-
-                    <TextView
-                        android:id="@+id/task_frequency"
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="1"                        android:gravity="center|left"
-                        android:paddingHorizontal="10dp"
-                        android:text="Częstotliwość 2dni w tygodniu"
-                        android:textSize="15dp"
-                        android:layout_marginBottom="15dp"/>
-
-                </LinearLayout>
-
-
-
-            </LinearLayout>
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1" />
-
-        </LinearLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/parent_slide"
-            android:layout_width="120dp"
-            android:layout_height="match_parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            tools:ignore="MissingConstraints">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="right|center">
-
-                <TextView
-                    android:id="@+id/more_open"
-                    android:layout_width="30dp"
-                    android:layout_height="55dp"
-                    android:text="⋮"
-                    android:textColor="#B3A66A2C"
-                    android:textSize="40dp">
-
-                </TextView>
-            </LinearLayout>
-
-
-            <LinearLayout
-                android:id="@+id/edit_drawer"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/shape_navigartion_button2"
-                android:backgroundTint="#F2D5B2"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-
-                <TextView
-                    android:id="@+id/more_close"
-                    android:layout_width="0dp"
-                    android:layout_height="55dp"
-                    android:layout_weight="1"
-                    android:text="⋮"
-                    android:textColor="#B3A66A2C"
-                    android:textSize="40dp" />
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="3"
-                    android:gravity="center"
-                    android:orientation="horizontal">
-
-                    <!--
-                    <TextView
-                        android:layout_width="60dp"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="3dp"
-                        android:text="Edytuj"
-                        android:shadowColor="#D3AC69"
-                        android:textAlignment="center"
-                        android:textSize="15dp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="60dp"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="3dp"
-                        android:background="#59D3AC69"
-                        android:textAlignment="center"
-                        android:text="Usuń"
-                        android:textSize="15dp"
-                        android:textStyle="bold" />
-
-                        -->
-
-
-                    <LinearLayout
-                        android:id="@+id/btn_edit"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:orientation="vertical"
-                        android:padding="5dp">
-
-                        <ImageView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:src="@drawable/icon_edit"
-                            app:tint="#B3A66A2C" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Edytuj"
-                            android:textSize="10dp"
-                            android:textStyle="bold" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/btn_delete"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:orientation="vertical"
-                        android:padding="5dp">
-
-                        <ImageView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:src="@drawable/icon_delete" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Usuń"
-                            android:textSize="10dp"
-                            android:textStyle="bold" />
-                    </LinearLayout>
-
-
-                </LinearLayout>
-
-
-            </LinearLayout>
-
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/habit_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Rozrywka"
+            android:padding="3dp"
+            android:textSize="15sp"
+            android:textAlignment="center"/>
+    </LinearLayout>
 
 
 </androidx.cardview.widget.CardView>
