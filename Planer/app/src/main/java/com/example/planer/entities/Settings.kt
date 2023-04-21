@@ -6,9 +6,9 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "Settings")
 data class Settings (
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey(autoGenerate = false)
     @ColumnInfo(name = "id")
-    val id: Int = 0,
+    val id: Int = 1,
     @ColumnInfo(name = "daily_available_hours")
     var dailyAvailableHours: Int = 5
     )

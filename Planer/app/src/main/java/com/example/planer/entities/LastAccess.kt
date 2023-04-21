@@ -7,9 +7,9 @@ import java.time.LocalDate
 
 @Entity(tableName = "LastAccess")
 data class LastAccess(
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey(autoGenerate = false)
     @ColumnInfo(name = "id")
-    val id: Int = 0,
+    val id: Int = 1,
     @ColumnInfo(name = "last_access_date")
     var lastAccessDate: LocalDate
 )
