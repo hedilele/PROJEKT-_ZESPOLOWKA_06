@@ -20,7 +20,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.planer.R
 import com.example.planer.ViewModel.UserViewModel
 import com.example.planer.entities.Tasks
-import com.example.planer.tasks.Task
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_adding_task.view.*
 import kotlinx.android.synthetic.main.dialog_task_info.view.*
@@ -113,6 +112,7 @@ class AdapterTasks(
             //TODO uruchomic algo?
         }
 
+        // edycja tasku
         holder.itemView.btn_edit.setOnClickListener {
 
             var title: String
@@ -123,10 +123,12 @@ class AdapterTasks(
 
 
             var duration: Int = item.timeToFinish
-            var isActive: Int = 0
+            var isActive: Int = item.isActive
             var typeId: Int = item.typeId
             var noteId: Int = 0
             var note: String = ""
+
+            var specyfic_date: Int = 0
 
 
 
@@ -136,16 +138,7 @@ class AdapterTasks(
             //builder.setView(R.layout.activity_adding_task)
 
             val inflater = LayoutInflater.from(holder.itemView.context)
-            val dialogView = inflater.inflate(R.layout.activity_editing_task, null)
-            builder.setView(dialogView)
-            val textView = dialogView.findViewById<AppCompatEditText>(R.id.task_title)
-
-            val btn_important0 = dialogView.findViewById<Button>(R.id.important0)
-            val btn_important1 = dialogView.findViewById<Button>(R.id.important1)
-            val btn_urgent0 = dialogView.findViewById<Button>(R.id.urgent0)
-            val btn_urgent1 = dialogView.findViewById<Button>(R.id.urgent1)
-            val btn_update = dialogView.findViewById<Button>(R.id.btn_create)
-
+            val dialogView = inflater.inflate(R.layout.dialog_editing_task, null)
             builder.setView(dialogView) //Podlaczanie xmla
 
 
@@ -177,6 +170,9 @@ class AdapterTasks(
             val type3 = dialogView.findViewById<TextView>(R.id.type3)
             val type4 = dialogView.findViewById<TextView>(R.id.type4)
 
+            val toThisDay = dialogView.findViewById<TextView>(R.id.to_this_day)
+            val atThisDay = dialogView.findViewById<TextView>(R.id.at_this_day)
+
             val task_note = dialogView.findViewById<AppCompatEditText>(R.id.note)
 
             val cancel = dialogView.findViewById<Button>(R.id.btn_cancel)
@@ -187,27 +183,72 @@ class AdapterTasks(
             //ustawianie wartosci taska
             task_title.setText(item.title)
 
-            if(item.importance == 0)
+
+            when(item.importance)
             {
-                importance = 0
-                important0.setBackgroundColor(R.color.brown_important_urgent_on)
-            }
-            else
-            {
-                importance = 1
-                important1.setBackgroundColor(R.color.brown_important_urgent_on)
+                0 -> { important0.setBackgroundColor(R.color.brown_important_urgent_on) }
+                1 -> { important1.setBackgroundColor(R.color.brown_important_urgent_on) }
             }
 
-            if(item.urgency == 0)
+            when(item.urgency)
             {
-                urgency = 0
-                urgent0.setBackgroundColor(R.color.brown_important_urgent_on)
+                0 -> { urgent0.setBackgroundColor(R.color.brown_important_urgent_on) }
+                1 -> { urgent1.setBackgroundColor(R.color.brown_important_urgent_on) }
+            }
+
+
+            when(item.timeToFinish)
+            {
+                1 -> {
+                    duration1.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_on))
+                }
+                2 -> {
+                    duration2.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_on))
+                }
+                6 -> {
+                    duration3.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_on))
+                }
+                12 -> {
+                    duration4.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_on))
+                }
+                24 -> {
+                    duration5.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_on))
+                }
+                30 -> {
+                    duration6.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_on))
+                }
+            }
+
+            when(item.typeId)
+            {
+                0 -> {}
+                1 -> {
+                    type1.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_on))
+                }
+                2 -> {
+                    type2.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_on))
+                }
+                3 -> {
+                    type3.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_on))
+                }
+                4 -> {
+                    type4.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_on))
+                }
+            }
+
+            if(item.date != null)
+            {
+                atThisDay.setTextColor(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_on))
+                specyfic_date = 1
             }
             else
             {
-                urgency = 1
-                urgent1.setBackgroundColor(R.color.brown_important_urgent_on)
+                toThisDay.setTextColor(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_on))
+                specyfic_date = 0
             }
+
+
+
 
 
             deadline_day = item.deadline.substring(0, 10)
@@ -374,6 +415,22 @@ class AdapterTasks(
             //TODO konkretna data czy deadline
 
 
+
+            toThisDay.setOnClickListener{
+                atThisDay.setTextColor(ContextCompat.getColor(holder.itemView.context, R.color.pr1_this_day_off))
+                toThisDay.setTextColor(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_on))
+                specyfic_date = 0
+            }
+
+            atThisDay.setOnClickListener{
+                toThisDay.setTextColor(ContextCompat.getColor(holder.itemView.context, R.color.pr1_this_day_off))
+                atThisDay.setTextColor(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_on))
+                specyfic_date = 1
+            }
+
+
+
+
             fun uncheckDuration()
             {
                 when(duration)
@@ -384,16 +441,16 @@ class AdapterTasks(
                     2 -> {
                         duration2.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_off))
                     }
-                    3 -> {
+                    6 -> {
                         duration3.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_off))
                     }
-                    4 -> {
+                    12 -> {
                         duration4.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_off))
                     }
-                    5 -> {
+                    24 -> {
                         duration5.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_off))
                     }
-                    6 -> {
+                    30 -> {
                         duration6.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_off))
                     }
 
@@ -403,38 +460,81 @@ class AdapterTasks(
 
             duration1.setOnClickListener {
                 uncheckDuration()
-                duration1.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_on))
-                duration = 1
+
+                    //binding.duration2.setColorFilter(getResources().getColor(R.color.hard_red));
+                    duration1.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_on))
+                    duration = 1
+
             }
 
             duration2.setOnClickListener {
                 uncheckDuration()
-                duration2.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_on))
-                duration = 2
+                if(duration == 2)
+                {
+                    //binding.duration2.setColorFilter(getResources().getColor(R.color.hard_red));
+                    duration1.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_on))
+                    duration = 1
+                }
+                else{
+                    duration2.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_on))
+                    duration = 2
+                }
             }
 
             duration3.setOnClickListener {
                 uncheckDuration()
-                duration3.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_on))
-                duration = 3
+                if(duration == 6)
+                {
+                    //binding.duration2.setColorFilter(getResources().getColor(R.color.hard_red));
+                    duration1.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_on))
+                    duration = 1
+                }
+                else{
+                    duration3.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_on))
+                    duration = 6
+                }
             }
 
             duration4.setOnClickListener {
                 uncheckDuration()
-                duration4.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_on))
-                duration = 4
+                if(duration == 12)
+                {
+                    //binding.duration2.setColorFilter(getResources().getColor(R.color.hard_red));
+                    duration1.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_on))
+                    duration = 1
+                }
+                else{
+                    duration4.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_on))
+                    duration = 12
+                }
             }
 
             duration5.setOnClickListener {
                 uncheckDuration()
-                duration5.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_on))
-                duration = 5
+                if(duration == 24)
+                {
+                    //binding.duration2.setColorFilter(getResources().getColor(R.color.hard_red));
+                    duration1.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_on))
+                    duration = 1
+                }
+                else{
+                    duration5.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_on))
+                    duration = 24
+                }
             }
 
             duration6.setOnClickListener {
                 uncheckDuration()
-                duration6.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_on))
-                duration = 6
+                if(duration == 30)
+                {
+                    //binding.duration2.setColorFilter(getResources().getColor(R.color.hard_red));
+                    duration1.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_on))
+                    duration = 1
+                }
+                else{
+                    duration6.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_on))
+                    duration = 30
+                }
             }
 
             fun uncheckType()
@@ -460,26 +560,58 @@ class AdapterTasks(
 
             type1.setOnClickListener {
                 uncheckType()
-                type1.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_on))
-                typeId = 1
+                if(typeId == 1)
+                {
+                    //type1.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_on))
+                    typeId = 0
+                }
+                else
+                {
+                    type1.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_on))
+                    typeId = 1
+                }
             }
 
             type2.setOnClickListener {
                 uncheckType()
-                type2.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_on))
-                typeId = 2
+                if(typeId == 2)
+                {
+                    //type1.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_on))
+                    typeId = 0
+                }
+                else
+                {
+                    type2.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_on))
+                    typeId = 2
+                }
             }
 
             type3.setOnClickListener {
                 uncheckType()
-                type3.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_on))
-                typeId = 3
+                if(typeId == 3)
+                {
+                    //type1.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_on))
+                    typeId = 0
+                }
+                else
+                {
+                    type3.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_on))
+                    typeId = 3
+                }
             }
 
             type4.setOnClickListener {
                 uncheckType()
-                type4.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_on))
-                typeId = 4
+                if(typeId == 4)
+                {
+                    //type1.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_on))
+                    typeId = 0
+                }
+                else
+                {
+                    type4.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_on))
+                    typeId = 4
+                }
             }
 
             if(!task_note.text.toString().isEmpty())
@@ -510,7 +642,7 @@ class AdapterTasks(
                     isActive,
                     typeId,
                     0,
-                    date = null
+                    date = if (specyfic_date == 1) "$deadline_day $deadline_time" else null
                 )
 
                 updateListener(task, note)
@@ -521,41 +653,10 @@ class AdapterTasks(
             }
 
 
-
-
-
-
-//            //builder.setTitle("Dialog Title")
-//            //builder.setMessage("Dialog Message for position $position")
-//            builder.setPositiveButton("OK") { dialog, which ->
-//                // Positive button click action
-//            }
-//            builder.setNegativeButton("Cancel") { dialog, which ->
-//                // Negative button click action
-//            }
-            //builder.show()
         }
 
 
-
-
-
-        //holder.itemView.findViewById<CardView>(R.id.task_list).startAnimation(AnimationUtils.loadAnimation(holder.itemView.context, R.anim.animation_recyclerview_load))
-
-
-
-/*
-        val popupMenu = PopupMenu(holder.itemView.context, holder.itemView.more_open)
-
-        popupMenu.menu.add(Menu.NONE,0, 0, "edit")
-        popupMenu.menu.add(Menu.NONE,1, 1, "add")
-
-
-        holder.itemView.more_open.setOnClickListener {
-            popupMenu.show()
-        }
-*/
-
+        // wyswietlanie info o tasku
         holder.itemView.setOnClickListener{
 
             val builder = AlertDialog.Builder(holder.itemView.context) //TODO
@@ -567,18 +668,39 @@ class AdapterTasks(
 
             val title = dialogView.findViewById<TextView>(R.id.title)
             val date = dialogView.findViewById<TextView>(R.id.date)
-            val important = dialogView.findViewById<TextView>(R.id.important)
-            val urgent = dialogView.findViewById<TextView>(R.id.urgent)
             val type = dialogView.findViewById<TextView>(R.id.type)
             val duration = dialogView.findViewById<TextView>(R.id.duration)
-            val note = dialogView.findViewById<TextView>(R.id.note_content)
+            val note_cont = dialogView.findViewById<TextView>(R.id.note_content)
+            val note = dialogView.findViewById<TextView>(R.id.note)
 
 
             builder.setView(dialogView) //Podlaczanie xmla
 
-            title.setText(holder.itemView.task_title.text.toString())
-            date.setText(holder.itemView.task_date.text.toString())
-            //important.setText(holder.itemView.important.text.toString())
+            title.setText(item.title)
+            date.setText(item.deadline)
+
+            if(item.typeId != 0)
+            {
+                type.setText("Typ: " + item.typeId.toString())
+            }
+            else
+            {
+                type.visibility = View.GONE
+            }
+
+            duration.setText("Trwanie: " + item.timeToFinish.toString())
+
+            if(item.noteId != 0)
+            {
+                note_cont.setText(item.noteId.toString())       // TODO zrobić to dobrze
+            }
+            else
+            {
+                note.visibility = View.GONE
+                note_cont.visibility = View.GONE
+            }
+
+            //TODO zrobic dla notatki
 
             val alertDialog = builder.create()
             alertDialog.show()

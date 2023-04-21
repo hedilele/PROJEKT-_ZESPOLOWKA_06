@@ -19,5 +19,11 @@
         <item name="backgroundTint">#90be6d</item>
     </style>
 
+    <style name="CalendarDateStyle">
+        <item name="android:textColor">@color/brown_important_urgent_on</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:background">@drawable/calendardatebackground</item>
+    </style>
+
 
 </resources>

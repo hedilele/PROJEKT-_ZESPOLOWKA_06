@@ -32,7 +32,7 @@ interface CalendarDAO
 
     //Zwraca wszystkie daty
     @Query("SELECT * FROM Calendar")
-    suspend fun getAllDates(): List<Calendar>
+    fun getAllDates():LiveData<List<Calendar>>
 
     //Podaje date w string i wypluwa wydarzenia z tej daty
     @Query("SELECT * FROM Calendar WHERE date(start_date) = :query_date")

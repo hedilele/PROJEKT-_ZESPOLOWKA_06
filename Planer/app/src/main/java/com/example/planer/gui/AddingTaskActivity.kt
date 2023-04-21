@@ -36,7 +36,7 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
     var important: Int = 0
     var urgent: Int = 0
     var type: Int = 0
-    var duration: Int = 0
+    var duration: Int = 1
     var periodicity: Int = 0
     var note_txt: Int = 0
     var date: String = ""
@@ -105,6 +105,7 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
 
         chosenItems.add("kliknij aby usunąć")
 
+
         setEverything()
 
     }
@@ -124,38 +125,78 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
 
             R.id.duration2 -> {
                 uncheckDuration()
-                //binding.duration2.setColorFilter(getResources().getColor(R.color.hard_red));
-                binding.duration2.getBackground().setTint((getResources().getColor(R.color.brown_important_urgent_on)))
 
-                duration = 2
+                if(duration == 2)
+                {
+                    //binding.duration2.setColorFilter(getResources().getColor(R.color.hard_red));
+                    binding.duration1.getBackground().setTint((getResources().getColor(R.color.brown_important_urgent_on)))
+                    duration = 1
+                }
+                else{
+                    binding.duration2.getBackground().setTint((getResources().getColor(R.color.brown_important_urgent_on)))
+                    duration = 2
+                }
+
+
             }
 
             R.id.duration3 -> {
                 uncheckDuration()
-                //binding.duration3.setColorFilter(getResources().getColor(R.color.hard_red));
-                binding.duration3.getBackground().setTint((getResources().getColor(R.color.brown_important_urgent_on)))
+                if(duration == 6)
+                {
+                    //binding.duration2.setColorFilter(getResources().getColor(R.color.hard_red));
+                    binding.duration1.getBackground().setTint((getResources().getColor(R.color.brown_important_urgent_on)))
+                    duration = 1
+                }
+                else{
+                    binding.duration3.getBackground().setTint((getResources().getColor(R.color.brown_important_urgent_on)))
+                    duration = 6
+                }
 
-                duration = 6
             }
 
             R.id.duration4 -> {
                 uncheckDuration()
-                //binding.duration4.setColorFilter(getResources().getColor(R.color.hard_red));
-                binding.duration4.getBackground().setTint((getResources().getColor(R.color.brown_important_urgent_on)))
 
-                duration = 12
+                if(duration == 12)
+                {
+                    //binding.duration2.setColorFilter(getResources().getColor(R.color.hard_red));
+                    binding.duration1.getBackground().setTint((getResources().getColor(R.color.brown_important_urgent_on)))
+                    duration = 1
+                }
+                else{
+                    binding.duration4.getBackground().setTint((getResources().getColor(R.color.brown_important_urgent_on)))
+                    duration = 12
+                }
+
             }
 
             R.id.duration5 -> {
                 uncheckDuration()
-                binding.duration5.getBackground().setTint((getResources().getColor(R.color.brown_important_urgent_on)))
-                duration = 24
+                if(duration == 24)
+                {
+                    //binding.duration2.setColorFilter(getResources().getColor(R.color.hard_red));
+                    binding.duration1.getBackground().setTint((getResources().getColor(R.color.brown_important_urgent_on)))
+                    duration = 1
+                }
+                else{
+                    binding.duration5.getBackground().setTint((getResources().getColor(R.color.brown_important_urgent_on)))
+                    duration = 24
+                }
             }
 
             R.id.duration6 -> {
                 uncheckDuration()
-                binding.duration6.getBackground().setTint((getResources().getColor(R.color.brown_important_urgent_on)))
-                duration = 30
+                if(duration == 30)
+                {
+                    //binding.duration2.setColorFilter(getResources().getColor(R.color.hard_red));
+                    binding.duration1.getBackground().setTint((getResources().getColor(R.color.brown_important_urgent_on)))
+                    duration = 1
+                }
+                else{
+                    binding.duration6.getBackground().setTint((getResources().getColor(R.color.brown_important_urgent_on)))
+                    duration = 30
+                }
             }
 
 
@@ -163,25 +204,25 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
             R.id.type1 -> {
                 uncheckType()
                 binding.type1.getBackground().setTint((getResources().getColor(R.color.brown_important_urgent_on)))
-                type = 0
+                type = 1
             }
 
             R.id.type2 -> {
                 uncheckType()
                 binding.type2.getBackground().setTint((getResources().getColor(R.color.brown_important_urgent_on)))
-                type = 1
+                type = 2
             }
 
             R.id.type3 -> {
                 uncheckType()
                 binding.type3.getBackground().setTint((getResources().getColor(R.color.brown_important_urgent_on)))
-                type = 2
+                type = 3
             }
 
             R.id.type4 -> {
                 uncheckType()
                 binding.type4.getBackground().setTint((getResources().getColor(R.color.brown_important_urgent_on)))
-                type = 3
+                type = 4
             }
 
 
@@ -230,25 +271,115 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
                     minute = today_minute.toString()
                 }
 
+
+
+
                 // podłączenie się do bazy i dodanie do niej taska
                 taskViewModel = ViewModelProvider(this).get(TaskViewModel::class.java)
-                taskViewModel.addTask(
-                    Tasks(
-                        title = binding.taskTitle.text.toString(),
-                        importance = important,           //???????????????
 
-                        /*TODO uwzględnienie pilności w bazie (nieobowiązkowe)*/
-                        urgency = urgent,
-                        deadline = setUpDate(day.toInt(),month.toInt()-1, year.toInt()) + "  " +
-                                setUpTime(hour.toInt(), minute.toInt()),
-                        timeToFinish = duration,
-                        isActive = 0,
-                        typeId = type,
-                        noteId = 0,
-                        //date = Calendar.getInstance().time //Ustawianie czasu na domyslny
-                        date = null
-                    )
-                )
+                val date_final = setUpDate(day.toInt(),month.toInt()-1, year.toInt()) // + "  " + setUpTime(hour.toInt(), minute.toInt())
+                chosenItems.add(date_final)
+
+                val chosenItemsTemp = chosenItems.distinct()
+
+                if (chosenItems.size != chosenItemsTemp.size) {
+                    // List contains duplicates
+                    chosenItems.removeLast()
+
+                }
+
+
+                if(chosenItems.size > 2)
+                {
+                    if(specyficDate == 1)       //size>2 i specyficDate=1
+                    {
+                        for(i in 1..chosenItems.size-1)
+                        {
+                            taskViewModel.addTask(
+                                Tasks(
+                                    title = binding.taskTitle.text.toString(),
+                                    importance = important,
+                                    /*TODO uwzględnienie pilności w bazie (nieobowiązkowe)*/
+                                    urgency = urgent,
+                                    deadline = chosenItems[i]+ "  " + setUpTime(hour.toInt(), minute.toInt()),
+                                    timeToFinish = duration,
+                                    isActive = 1,   //aktywny
+                                    typeId = type,
+                                    noteId = 0,
+                                    //date = Calendar.getInstance().time //Ustawianie czasu na domyslny
+                                    date = chosenItems[i]+ "  " + setUpTime(hour.toInt(), minute.toInt())
+                                )
+                            )
+                        }
+
+                    }
+                    else                        //size>2 i specyficDate=0
+                    {
+                        for(i in 1..chosenItems.size-1)
+                        {
+                            taskViewModel.addTask(
+                                Tasks(
+                                    title = binding.taskTitle.text.toString(),
+                                    importance = important,
+                                    /*TODO uwzględnienie pilności w bazie (nieobowiązkowe)*/
+                                    urgency = urgent,
+                                    deadline = chosenItems[i] + "  " + setUpTime(hour.toInt(), minute.toInt()),
+                                    timeToFinish = duration,
+                                    isActive = 1,   //aktywny
+                                    typeId = type,
+                                    noteId = 0,
+                                    //date = Calendar.getInstance().time //Ustawianie czasu na domyslny
+                                    date = null
+                                )
+                            )
+                        }
+                    }
+
+                }
+                else
+                {
+                    if(specyficDate == 1)       //size=2 i specyficDate=1
+                    {
+                            taskViewModel.addTask(
+                                Tasks(
+                                    title = binding.taskTitle.text.toString(),
+                                    importance = important,
+                                    /*TODO uwzględnienie pilności w bazie (nieobowiązkowe)*/
+                                    urgency = urgent,
+                                    deadline = chosenItems[1]+ "  " + setUpTime(hour.toInt(), minute.toInt()),
+                                    timeToFinish = duration,
+                                    isActive = 1,   //aktywny
+                                    typeId = type,
+                                    noteId = 0,
+                                    //date = Calendar.getInstance().time //Ustawianie czasu na domyslny
+                                    date = chosenItems[1]+ "  " + setUpTime(hour.toInt(), minute.toInt())
+                                )
+                            )
+
+                    }
+                    else                        //size>2 i specyficDate=0
+                    {
+                            taskViewModel.addTask(
+                                Tasks(
+                                    title = binding.taskTitle.text.toString(),
+                                    importance = important,
+                                    /*TODO uwzględnienie pilności w bazie (nieobowiązkowe)*/
+                                    urgency = urgent,
+                                    deadline = chosenItems[1]+ "  " + setUpTime(hour.toInt(), minute.toInt()),
+                                    timeToFinish = duration,
+                                    isActive = 1,   //aktywny
+                                    typeId = type,
+                                    noteId = 0,
+                                    //date = Calendar.getInstance().time //Ustawianie czasu na domyslny
+                                    date = null
+                                )
+                            )
+
+                    }
+                }
+
+
+
                 Toast.makeText(applicationContext, "record saved", Toast.LENGTH_SHORT).show()
 
                 //startActivity(intent)
@@ -330,8 +461,18 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
 
                         //date = setUpDate(sel_day, sel_month, sel_year)
                         //setDateBlocks(date)
+                        date = setUpDate(sel_day, sel_month, sel_year)
 
-                        chosenItems.add(setUpDate(sel_day, sel_month, sel_year))
+                        chosenItems.add(date)
+
+                        val chosenItemsTemp = chosenItems.distinct()
+
+                        if (chosenItems.size != chosenItemsTemp.size) {
+                            // List contains duplicates
+                            chosenItems.removeLast()
+
+                        }
+
 
                     }, today_year, today_month, today_day
                 )
@@ -505,6 +646,11 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
 //        deadline_month?.filters = arrayOf<InputFilter>(InputFilter.LengthFilter(2))
 //        deadline_year?.filters = arrayOf<InputFilter>(InputFilter.LengthFilter(4))
 
+        binding.important0.setBackgroundColor(getResources().getColor(R.color.brown_important_urgent_on))
+        binding.urgent0.setBackgroundColor(getResources().getColor(R.color.brown_important_urgent_on))
+
+        binding.duration1.getBackground().setTint((getResources().getColor(R.color.brown_important_urgent_on)))
+
 
         setOnEnterKey()
         setOnFocusChange()
@@ -513,19 +659,19 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
 
     fun uncheckType() {
         when (type) {
-            0 -> {
+            1 -> {
                 binding.type1.getBackground().setTint((getResources().getColor(R.color.brown_important_urgent_off)))
             }
 
-            1 -> {
+            2 -> {
                 binding.type2.getBackground().setTint((getResources().getColor(R.color.brown_important_urgent_off)))
             }
 
-            2 -> {
+            3 -> {
                 binding.type3.getBackground().setTint((getResources().getColor(R.color.brown_important_urgent_off)))
             }
 
-            3 -> {
+            4 -> {
                 binding.type4.getBackground().setTint((getResources().getColor(R.color.brown_important_urgent_off)))
             }
         }
@@ -533,28 +679,28 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
 
     fun uncheckDuration() {
         when (duration) {
-            0 -> {
+            1 -> {
                 binding.duration1.getBackground().setTint((getResources().getColor(R.color.brown_important_urgent_off)))
             }
 
-            1 -> {
+            2 -> {
                 binding.duration2.getBackground().setTint((getResources().getColor(R.color.brown_important_urgent_off)))
             }
 
-            2 -> {
+            6 -> {
                 binding.duration3.getBackground().setTint((getResources().getColor(R.color.brown_important_urgent_off)))
             }
 
-            3 -> {
+            12 -> {
                 binding.duration4.getBackground().setTint((getResources().getColor(R.color.brown_important_urgent_off)))
             }
 
-            4 -> {
+            24 -> {
                 binding.duration5.getBackground().setTint((getResources().getColor(R.color.brown_important_urgent_off)))
 
             }
 
-            5 -> {
+            30 -> {
                 binding.duration6.getBackground().setTint((getResources().getColor(R.color.brown_important_urgent_off)))
             }
         }
