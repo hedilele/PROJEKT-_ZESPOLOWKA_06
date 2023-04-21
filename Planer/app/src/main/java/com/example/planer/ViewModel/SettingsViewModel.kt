@@ -11,23 +11,17 @@ class SettingsViewModel(application: Application): AndroidViewModel(application)
 
     private val settingsDAO = AppDatabase.getDatabase((application)).settingsDAO()
     private val settingsRepository = SettingsRepository(settingsDAO)
-    private var localSettings: Settings = Settings()
-
-    fun getSettings(): Settings {
-        return localSettings
-    }
 
     fun readSettingsFromDb(): LiveData<Settings> {
-        return settingsRepository.readSettings().apply {
-            observeForever { settings ->
-                localSettings = settings
-            }
-        }
+        return settingsRepository.readSettings()
     }
 
     suspend fun saveSettings(settings: Settings) {
         settingsRepository.updateSettings(settings)
-        localSettings = settings
+    }
+
+    suspend fun createSettingsIfDontExist(settings: Settings){
+        settingsRepository.setSettings(settings)
     }
 
 }

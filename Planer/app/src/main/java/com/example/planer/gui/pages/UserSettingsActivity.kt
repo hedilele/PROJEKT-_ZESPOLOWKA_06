@@ -5,15 +5,20 @@ import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.LinearLayout
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.example.planer.R
 import com.example.planer.ViewModel.SettingsViewModel
 import com.example.planer.databinding.ActivityUserSettingsBinding
 import com.example.planer.entities.Settings
-import com.google.android.material.slider.RangeSlider
+import com.google.android.material.snackbar.BaseTransientBottomBar
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_user_settings.*
-import kotlinx.android.synthetic.main.single_task.view.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+
 import java.util.*
 
 
@@ -21,7 +26,7 @@ class UserSettingsActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var binding: ActivityUserSettingsBinding
 
     private val settingsViewModel: SettingsViewModel by viewModels()
-    private var localSettings: Settings = settingsViewModel.getSettings()
+    private var localSettings: Settings = Settings()
 
     var week_hours = 0
     var weekend_hours = 0
@@ -40,6 +45,7 @@ class UserSettingsActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         binding = ActivityUserSettingsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -65,10 +71,24 @@ class UserSettingsActivity : AppCompatActivity(), View.OnClickListener {
 
         //binding.dateSpinner.setOnClickListener(this)
         binding.calendarIcon.setOnClickListener(this)
+
         binding.btnSave.setOnClickListener(this)
 
        // binding.weekHours.setOnClickListener(this)
         //binding.weekendHours.setOnClickListener(this)
+
+        settingsViewModel.readSettingsFromDb().observe(this) { settings ->
+            if (settings == null) {
+                CoroutineScope(Dispatchers.IO).launch {
+                    settingsViewModel.createSettingsIfDontExist(Settings())
+                }
+            } else {
+                localSettings = settings
+                binding.slider.value = localSettings.dailyAvailableHours.toFloat()
+            }
+        }
+
+        binding.slider.value = localSettings.dailyAvailableHours.toFloat()
 
         chosenItems.add("kliknij aby usunąć")
         binding.dateSpinner.setSelection(0)
@@ -77,6 +97,17 @@ class UserSettingsActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onClick(v: View?) {
         when (v?.id) {
+
+            R.id.btn_save -> {
+                val buttns = findViewById<LinearLayout>(R.id.button_layout)
+                val savedNotif = Snackbar.make(buttns, "Zapisane!", BaseTransientBottomBar.LENGTH_SHORT)
+                savedNotif.anchorView = buttns
+                localSettings.dailyAvailableHours = binding.slider.value.toInt()
+                CoroutineScope(Dispatchers.IO).launch {
+                    settingsViewModel.saveSettings(localSettings)
+                    savedNotif.show()
+                }
+            }
 
             //typ 1
             R.id.type1_col1 -> {
