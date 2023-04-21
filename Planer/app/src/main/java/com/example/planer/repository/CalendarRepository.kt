@@ -7,6 +7,8 @@ import com.example.planer.entities.Calendar
 
 class CalendarRepository(private val calendarDAO: CalendarDAO)
 {
+
+    val getAll: LiveData<List<Calendar>> = calendarDAO.getAllDates()
     //Dodawanie daty do kalendarza
     suspend fun addCalendarDate(calendar: Calendar)
     {
@@ -45,7 +47,7 @@ class CalendarRepository(private val calendarDAO: CalendarDAO)
     }
 
     //Wyswietlanie wszystkich
-    suspend fun getAll()
+    fun getAll()
     {
         calendarDAO.getAllDates()
     }
