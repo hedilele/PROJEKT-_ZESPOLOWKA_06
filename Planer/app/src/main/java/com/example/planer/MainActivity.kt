@@ -12,6 +12,7 @@ import com.example.planer.databinding.ActivityMainBinding
 import com.example.planer.gui.AddingTaskActivity
 import com.example.planer.gui.HideNextPage
 import com.example.planer.gui.pages.*
+import com.example.planer.scope.ScopeMode
 import kotlinx.coroutines.launch
 
 
@@ -38,7 +39,7 @@ class MainActivity : AppCompatActivity() {
         pagerAdapters.addFragment(HomeFragment())       // 0
         pagerAdapters.addFragment(CalendarFragment())   // 1
         pagerAdapters.addFragment(FilterFragment())     // 2
-        pagerAdapters.addFragment(HabitsFragment())     // 3
+        pagerAdapters.addFragment(FilterFragment())     // 3        //TODO DO ZMIANY
         pagerAdapters.addFragment(PomodoroFragment())     // 4
 
         // przypisanie adaptera zajmującego się fragmentami do adaptera pagerView
@@ -179,6 +180,14 @@ class MainActivity : AppCompatActivity() {
                         startActivity(intent)
 
                     }
+
+                    R.id.item5 -> {
+
+                        val intent = Intent(applicationContext, ScopeMode::class.java)
+                        startActivity(intent)
+
+                    }
+
                 }
                 true
             }

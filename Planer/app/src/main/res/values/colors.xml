@@ -36,6 +36,7 @@
     <color name="pr1_brown_light">#66A66A2C</color>
     <color name="pr1_beige_background">#99F3DEBA</color>
     <color name="pr1_green_text">#4f904c</color>
+    <color name="pr1_this_day_off">#66000000</color>
 
 
 </resources>

@@ -14,7 +14,7 @@ data class Notes(
     //Mozliwe jakies nulle ? - doda sie po uzgodnieniu
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
-    val noteId: Int,
+    val noteId: Int = 0,
     @ColumnInfo(name = "note_title")
     val noteTitle: String,
     @ColumnInfo(name = "note_content")

@@ -23,8 +23,8 @@ interface HabitsDAO
     fun readAllData(): LiveData<List<Habits>>
 
     //Pobieranie Habitsa po id
-    @Query("SELECT * FROM habits WHERE id = :habitId")
-    suspend fun getHabitById(habitId: Int): Habits //TODO - zwracac ma liste czy pojedynczy
+    //@Query("SELECT * FROM habits WHERE id = :habitId")
+    //suspend fun getHabitById(habitId: Int): Habits //TODO - zwracac ma liste czy pojedynczy
 
     //Usuwanie po parametrach
     @Delete

@@ -13,15 +13,26 @@ class HabitRepository(private val habitsDAO: HabitsDAO)
     //val readDataWithTasks: LiveData<List<Tasks>> = tasksDAO.readTasksWithTypes(typeId = Int)
     //val readP: LiveData<List<Tasks>> = tasksDAO.readP()
 
-    suspend fun addTask(habits: Habits)
+    suspend fun addHabit(habits: Habits)
     {
         habitsDAO.insert(habits)
     }
 
-    suspend fun deleteTask(habits: Habits)
+    suspend fun updateHabit(habits: Habits)
+    {
+        habitsDAO.update(habits)
+    }
+
+    suspend fun deleteHabit(habits: Habits)
     {
         habitsDAO.delete(habits)
     }
+
+//    suspend fun deleteHabitById(id: Int)
+//    {
+//        habitsDAO.delete(habitsDAO.getHabitById(id))
+//    }
+
 
     fun readAllDeadlines()
     {

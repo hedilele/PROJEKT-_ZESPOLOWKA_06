@@ -24,21 +24,38 @@ class HabitViewModel(application: Application): AndroidViewModel(application)
     }
 
     //Zla praktyka jest uruchamiac zapytania z bazy w watku glownym!
-    fun addTask(habit: Habits)
+    fun addHabit(habit: Habits)
     {
         viewModelScope.launch(Dispatchers.IO) //Odpali sie w oddzielnym watku w tle
         {
-            repository.addTask(habit)
+            repository.addHabit(habit)
         }
     }
 
-    fun deleteTask(habit: Habits)
+    fun deleteHabit(habit: Habits)
     {
         viewModelScope.launch(Dispatchers.IO) //Odpali sie w oddzielnym watku w tle
         {
-            repository.deleteTask(habit)
+            repository.deleteHabit(habit)
         }
     }
+
+    fun updateHabit(habit: Habits)
+    {
+        viewModelScope.launch(Dispatchers.IO) //Odpali sie w oddzielnym watku w tle
+        {
+            repository.updateHabit(habit)
+        }
+    }
+
+
+//    fun deleteHabitById(id: Int)
+//    {
+//        viewModelScope.launch(Dispatchers.IO) //Odpali sie w oddzielnym watku w tle
+//        {
+//            repository.deleteHabitById(id)
+//        }
+//    }
 
 
     fun readAllData()
