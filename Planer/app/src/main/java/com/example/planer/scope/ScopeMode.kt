@@ -2,6 +2,8 @@ package com.example.planer.scope
 
 import android.os.Build
 import android.os.Bundle
+import android.view.View.INVISIBLE
+import android.view.View.VISIBLE
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -40,6 +42,11 @@ class ScopeMode : AppCompatActivity(), CardAdapter.OnButtonClickListener {
         })
 
         viewModel.getScopeTasks().observe(this) { tasks ->
+            if (tasks.isEmpty()) {
+                binding.notasksleft.visibility = VISIBLE
+            } else {
+                binding.notasksleft.visibility = INVISIBLE
+            }
             adapter.updateList(tasks)
         }
     }

@@ -15,4 +15,12 @@
 
     </androidx.recyclerview.widget.RecyclerView>
 
+    <TextView
+        android:id="@+id/notasksleft"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="Wszystko zrobione :)"
+        android:visibility="invisible" />
+
 </RelativeLayout>
