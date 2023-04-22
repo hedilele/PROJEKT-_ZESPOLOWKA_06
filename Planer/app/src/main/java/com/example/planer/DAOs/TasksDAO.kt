@@ -65,6 +65,9 @@ interface TasksDAO
     @Query("SELECT * FROM Tasks WHERE time_to_finish IN (:timeToFinish) AND type_id IN (:typeId)") //Czysto przykladowo
     fun readTasksWithDurationAndTypes(timeToFinish: Int, typeId: Int): LiveData<List<Tasks>>
      */
+    //Wyszukiwanie po nazwie
+    @Query("SELECT * FROM Tasks WHERE title LIKE '%' || :searchName || '%'")
+    fun readTasksWithSearchName(searchName: String) : LiveData<List<Tasks>>
     //Czytanie po typach
     @Query("SELECT * FROM Tasks WHERE type_id IN (:typeIds)")
     fun readTasksWithTypes(typeIds: List<Int>): LiveData<List<Tasks>>

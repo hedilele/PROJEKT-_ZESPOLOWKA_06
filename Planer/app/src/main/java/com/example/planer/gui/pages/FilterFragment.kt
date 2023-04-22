@@ -1,8 +1,11 @@
 package com.example.planer.gui.pages
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.os.Build
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +14,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import androidx.annotation.RequiresApi
+import androidx.appcompat.widget.AppCompatEditText
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -21,6 +25,7 @@ import com.example.planer.algorithm.BlockListTask
 import com.example.planer.entities.Tasks
 import com.example.planer.gui.AdapterTasks
 import kotlinx.android.synthetic.main.dialog_task_info.*
+import kotlinx.android.synthetic.main.fragment_filter.*
 import kotlinx.android.synthetic.main.fragment_filter.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -29,28 +34,62 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class FilterFragment : Fragment(){
-
-    private var flaga = 0
     //Podlaczanie xmla dialog_filter
     private lateinit var userViewModel: TaskViewModel
     // lista tasków do recyclerView
     var list = mutableListOf<Tasks>()
+    @SuppressLint("MissingInflatedId", "NotifyDataSetChanged")
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val view: View = inflater.inflate(R.layout.fragment_filter, container, false)
+        //Do wyszukiwania po nazwie
+        val search = view.findViewById<AppCompatEditText>(R.id.search)
+        val rv = view.rv_list
+        val adapter = AdapterTasks(
+            list,
+            {deleteId -> userViewModel.deleteTaskById(deleteId) },
+            {updateTask, note -> userViewModel.updateTask(updateTask) }
+        )
+        rv?.adapter = adapter
+        rv?.layoutManager = LinearLayoutManager(requireContext())
+        userViewModel = ViewModelProvider(this)[TaskViewModel::class.java]
+        //Ustawiam flage, zeby mozna bylo po filtrowaniu nadasl wyszukiwac po naziwe
+        search.addTextChangedListener(object : TextWatcher{
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int)
+            {
+                    //Pobieram to co jest w textview
+                    val searchQuery = s.toString().trim()
+                    CoroutineScope(Dispatchers.Main).launch {
+                        userViewModel.readTasksWithSearchEdit(searchQuery)
+                            .observe(viewLifecycleOwner, Observer {
+                                val blockListTask = BlockListTask(it)
+                                blockListTask.planner()
+                                adapter.setData(
+                                    (blockListTask.todayList + blockListTask.tomorrowList
+                                            + blockListTask.weekList + blockListTask.monthList +
+                                            blockListTask.restList).toMutableList()
+                                )
+                            })
+                }
+
+            }
+            override fun afterTextChanged(p0: Editable?) {}
+        })
+
+
         //Po kliknieciu na lejek ImageView
-        //binding = FragmentFilterBinding.inflate(layoutInflater)
         view.searchView.setOnClickListener{
             val builder = AlertDialog.Builder(context)
-            //builder.setView(R.layout.activity_adding_task)
-
             val inflater = LayoutInflater.from(context)
             val dialogView = inflater.inflate(R.layout.dialog_filter, null)
 
             builder.setView(dialogView) //Podlaczanie xmla
+
+            //Obsluga po wyjsciu z okna
 
             //TODO - przyciski i cala obsluga okna
             //TextView do ustawiania czasu trwania
@@ -82,6 +121,7 @@ class FilterFragment : Fragment(){
             //var durationn: Int? = null
             val typeIds = mutableListOf<Int>()
             val finishIds = mutableListOf<Int>()
+
             /*
             //TODO kiedy mam jakis textView i chce go zaznaczyc i odznaczyc
             fun uncheckDuration()
@@ -152,28 +192,29 @@ class FilterFragment : Fragment(){
             //Ustawianie dla typu koloru, jesli wybrany
             type1.setOnClickListener{
                 type1.getBackground().setTint(ContextCompat.getColor(requireContext(), R.color.brown_important_urgent_on))
-                typeIds.add(0)
+                typeIds.add(1)
             }
 
             type2.setOnClickListener{
                 type2.getBackground().setTint(ContextCompat.getColor(requireContext(), R.color.brown_important_urgent_on))
-                typeIds.add(1)
+                typeIds.add(2)
             }
 
             type3.setOnClickListener{
                 type3.getBackground().setTint(ContextCompat.getColor(requireContext(), R.color.brown_important_urgent_on))
-                typeIds.add(2)
+                typeIds.add(3)
             }
 
             type4.setOnClickListener{
                 type4.getBackground().setTint(ContextCompat.getColor(requireContext(), R.color.brown_important_urgent_on))
-                typeIds.add(3)
+                typeIds.add(4)
             }
             val alertDialog = builder.create()
             alertDialog.show()
 
             //Sortowanie po kliknieciu w przycisk
             sortButton.setOnClickListener{
+                view.search.clearFocus()
                 val rv = view.rv_list
                 val adapter = AdapterTasks(
                     list,
@@ -196,6 +237,7 @@ class FilterFragment : Fragment(){
                         adapter.setData((blockListTask.todayList + blockListTask.tomorrowList
                                 + blockListTask.weekList + blockListTask.monthList +
                                 blockListTask.restList).toMutableList())
+                        adapter.notifyDataSetChanged()
                     })
                 }
                 //Po typie
@@ -329,16 +371,6 @@ class FilterFragment : Fragment(){
         }
 
         //Ustawianie wyswietlania taskow w recycle view do listowania
-        val rv = view.rv_list
-        val adapter = AdapterTasks(
-            list,
-            {deleteId -> userViewModel.deleteTaskById(deleteId) },
-            {updateTask, note -> userViewModel.updateTask(updateTask) }
-        )
-        rv?.adapter = adapter
-        rv?.layoutManager = LinearLayoutManager(requireContext())
-
-        userViewModel = ViewModelProvider(this)[TaskViewModel::class.java]
         userViewModel.readAllData.observe(viewLifecycleOwner, Observer {
             val blockListTask = BlockListTask(it)
             blockListTask.planner()

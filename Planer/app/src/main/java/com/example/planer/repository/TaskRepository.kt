@@ -96,4 +96,10 @@ class TaskRepository(private val tasksDAO: TasksDAO)
         return tasksDAO.readTasksWithTypesAndTimeAndDuration(typeIds,timeToFinishes,startDate,endDate)
     }
 
+    //Czytanie z searcha
+    fun readTasksWithSearchEdit(searchName: String): LiveData<List<Tasks>>
+    {
+        return tasksDAO.readTasksWithSearchName(searchName)
+    }
+
 }

@@ -134,4 +134,12 @@ class TaskViewModel(application: Application): AndroidViewModel(application)
             repository.readTasksWithTypesAndDurationAndTime(typeIds,timeToFinishes,startDate,endDate)
         }
     }
+
+    suspend fun readTasksWithSearchEdit(searchName: String): LiveData<List<Tasks>>
+    {
+        return withContext(Dispatchers.IO)
+        {
+            repository.readTasksWithSearchEdit(searchName)
+        }
+    }
 }
