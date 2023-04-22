@@ -277,7 +277,7 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
                 // podłączenie się do bazy i dodanie do niej taska
                 taskViewModel = ViewModelProvider(this).get(TaskViewModel::class.java)
 
-                val date_final = setUpDate(day.toInt(),month.toInt()-1, year.toInt()) // + "  " + setUpTime(hour.toInt(), minute.toInt())
+                val date_final = setUpDate(day.toInt(),month.toInt()-1, year.toInt()) // + " " + setUpTime(hour.toInt(), minute.toInt())
                 chosenItems.add(date_final)
 
                 val chosenItemsTemp = chosenItems.distinct()
@@ -301,13 +301,13 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
                                     importance = important,
                                     /*TODO uwzględnienie pilności w bazie (nieobowiązkowe)*/
                                     urgency = urgent,
-                                    deadline = chosenItems[i]+ "  " + setUpTime(hour.toInt(), minute.toInt()),
+                                    deadline = chosenItems[i]+ " " + setUpTime(hour.toInt(), minute.toInt()),
                                     timeToFinish = duration,
                                     isActive = 1,   //aktywny
                                     typeId = type,
                                     noteId = 0,
                                     //date = Calendar.getInstance().time //Ustawianie czasu na domyslny
-                                    date = chosenItems[i]+ "  " + setUpTime(hour.toInt(), minute.toInt())
+                                    date = chosenItems[i]+ " " + setUpTime(hour.toInt(), minute.toInt())
                                 )
                             )
                         }
@@ -323,7 +323,7 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
                                     importance = important,
                                     /*TODO uwzględnienie pilności w bazie (nieobowiązkowe)*/
                                     urgency = urgent,
-                                    deadline = chosenItems[i] + "  " + setUpTime(hour.toInt(), minute.toInt()),
+                                    deadline = chosenItems[i] + " " + setUpTime(hour.toInt(), minute.toInt()),
                                     timeToFinish = duration,
                                     isActive = 1,   //aktywny
                                     typeId = type,
@@ -346,13 +346,13 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
                                     importance = important,
                                     /*TODO uwzględnienie pilności w bazie (nieobowiązkowe)*/
                                     urgency = urgent,
-                                    deadline = chosenItems[1]+ "  " + setUpTime(hour.toInt(), minute.toInt()),
+                                    deadline = chosenItems[1]+ " " + setUpTime(hour.toInt(), minute.toInt()),
                                     timeToFinish = duration,
                                     isActive = 1,   //aktywny
                                     typeId = type,
                                     noteId = 0,
                                     //date = Calendar.getInstance().time //Ustawianie czasu na domyslny
-                                    date = chosenItems[1]+ "  " + setUpTime(hour.toInt(), minute.toInt())
+                                    date = chosenItems[1]+ " " + setUpTime(hour.toInt(), minute.toInt())
                                 )
                             )
 
@@ -365,7 +365,7 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
                                     importance = important,
                                     /*TODO uwzględnienie pilności w bazie (nieobowiązkowe)*/
                                     urgency = urgent,
-                                    deadline = chosenItems[1]+ "  " + setUpTime(hour.toInt(), minute.toInt()),
+                                    deadline = chosenItems[1]+ " " + setUpTime(hour.toInt(), minute.toInt()),
                                     timeToFinish = duration,
                                     isActive = 1,   //aktywny
                                     typeId = type,
