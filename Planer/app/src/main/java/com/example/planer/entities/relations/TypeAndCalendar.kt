@@ -3,7 +3,7 @@ package com.example.planer.entities.relations
 import androidx.room.Embedded
 import androidx.room.Relation
 import com.example.planer.entities.Calendar
-import java.sql.Types
+import com.example.planer.entities.Types
 
 //1:n
 data class TypeAndCalendar(
