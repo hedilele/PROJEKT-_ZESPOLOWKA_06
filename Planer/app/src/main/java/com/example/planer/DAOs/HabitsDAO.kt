@@ -19,8 +19,9 @@ interface HabitsDAO
     @Query("SELECT * FROM 'Habits'")
     fun getAllHabits(): LiveData<List<Habits>>
 
-    @Query("SELECT * FROM `Habits`")
-    fun readAllData(): LiveData<List<Habits>>
+    //Zwraca tylko aktywne habitsy
+    @Query("SELECT * FROM `Habits` WHERE is_active = 1")
+    fun readActiveHabits(): LiveData<List<Habits>>
 
     //Pobieranie Habitsa po id
     //@Query("SELECT * FROM habits WHERE id = :habitId")
