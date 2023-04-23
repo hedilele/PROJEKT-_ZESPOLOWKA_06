@@ -1,26 +1,20 @@
 package com.example.planer.DAOs
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.example.planer.entities.Calendar
-import com.example.planer.entities.Tasks
-import com.example.planer.entities.relations.TypeAndCalendar
-import com.example.planer.entities.relations.TypeAndTasks
-import java.sql.Types
+import com.example.planer.entities.Types
 
 @Dao
 interface TypeDAO
 {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertTask(tasks: Tasks)
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertType(types: Types)
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertCalendar(calendar: Calendar)
+    @Update
+    suspend fun updateType(type: Types)
 
     @Transaction
-    @Query("SELECT * FROM Types WHERE id = :id")
-    suspend fun getTypeAndTasks(id: Int) : List<TypeAndCalendar>
+    @Query("SELECT * FROM Types")
+    fun getAllTypes() : LiveData<List<Types>>
 
 }

@@ -12,6 +12,7 @@ import com.example.planer.R
 import com.example.planer.ViewModel.SettingsViewModel
 import com.example.planer.databinding.ActivityUserSettingsBinding
 import com.example.planer.entities.Settings
+import com.example.planer.entities.Types
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_user_settings.*
@@ -27,6 +28,7 @@ class UserSettingsActivity : AppCompatActivity(), View.OnClickListener {
 
     private val settingsViewModel: SettingsViewModel by viewModels()
     private var localSettings: Settings = Settings()
+    private var localTypes: List<Types> = emptyList()
 
     var week_hours = 0
     var weekend_hours = 0

@@ -11,7 +11,7 @@ data class TypeAndTasks (
         val types: Types,
         @Relation(
                 parentColumn = "id",
-                entityColumn = "type_id" //albo "type_id - SPRAWDZIC todo
+                entityColumn = "id"
         )
         val tasks: List<Tasks>
 )
