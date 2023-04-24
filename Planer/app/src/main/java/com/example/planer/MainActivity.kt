@@ -1,5 +1,6 @@
 package com.example.planer
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
@@ -30,7 +31,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding?.root)
+        setContentView(binding.root)
 
         //val db = Room.databaseBuilder(applicationContext, AppDatabase::class.java, "TOP.sqlite")
 
@@ -46,8 +47,6 @@ class MainActivity : AppCompatActivity() {
         binding.pagerView.adapter = pagerAdapters
 
 
-
-
         // nawigacja - po kliknięciu na odpowiednią ikonę przenosi nas do danego fragmentu
         // strona główna (z recyclerView)
         binding.buttonHome.setOnClickListener{
@@ -55,9 +54,7 @@ class MainActivity : AppCompatActivity() {
 
             //możliwosc scrollowania wlaczona
             binding.pagerView.setOnTouchListener { arg0, arg1 -> false }
-
-            binding.pagerView.setCurrentItem(0)
-
+            binding.pagerView.currentItem = 0
         }
 
         // menu boczne - wysuwanie
@@ -69,17 +66,16 @@ class MainActivity : AppCompatActivity() {
 
         // kalendarz
         binding.buttonCalendar.setOnClickListener{
-            binding.pagerView.setCurrentItem(1)
 
             //możliwosc scrollowania wlaczona
             binding.pagerView.setOnTouchListener { arg0, arg1 -> false }
+            binding.pagerView.setCurrentItem(1)
+
             byDrawer = 0
         }
 
         // dodanie tasków - przekierowanie do nowej aktywności
         binding.buttonAdd.setOnClickListener{
-            //binding.myPagerView.setCurrentItem(3)
-
             byDrawer = 0
 
             //możliwosc scrollowania wlaczona
@@ -89,6 +85,7 @@ class MainActivity : AppCompatActivity() {
                 val intent = Intent(applicationContext, AddingTaskActivity::class.java)
                 startActivity(intent)
             }
+
 
         }
 
@@ -162,7 +159,7 @@ class MainActivity : AppCompatActivity() {
                         binding.drawerLayout.closeDrawer(GravityCompat.START);
                     }
                     R.id.item3 -> {
-                        Toast.makeText(this@MainActivity, "333", Toast.LENGTH_SHORT).show()
+                        //Toast.makeText(this@MainActivity, "333", Toast.LENGTH_SHORT).show()
 
                         binding.pagerView.setCurrentItem(4)
 

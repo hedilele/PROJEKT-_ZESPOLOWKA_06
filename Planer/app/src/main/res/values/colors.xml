@@ -39,5 +39,9 @@
     <color name="pr1_green_text">#4f904c</color>
     <color name="pr1_this_day_off">#66000000</color>
 
+    <color name="pr1_pomodoro_yellow_off">#4DFFEB5B</color>
+    <color name="pr1_pomodoro_yellow_on">#B3FFEB5B</color>
+
+    <color name="pr1_pomodoro_green">#BFDC80</color>
 
 </resources>

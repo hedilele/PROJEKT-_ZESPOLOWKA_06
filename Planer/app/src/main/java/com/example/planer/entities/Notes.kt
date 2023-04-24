@@ -18,7 +18,7 @@ data class Notes(
     @ColumnInfo(name = "note_title")
     val noteTitle: String,
     @ColumnInfo(name = "note_content")
-    val noteContent: String,
+    var noteContent: String,
     //@ColumnInfo(typeAffinity = ColumnInfo.BLOB)
     //val photo: String
     //Albo tak do zdjecia - jeszcze nie wiem

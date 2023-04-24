@@ -11,6 +11,18 @@ import com.example.planer.entities.relations.NoteAndTask
 @Dao
 interface NotesDAO
 {
+    @Update
+    suspend fun update(notes: Notes)
+
+    @Delete
+    suspend fun delete(notes: Notes)
+
+    @Query("SELECT * FROM `Notes`")
+    fun readAllData(): LiveData<List<Notes>>
+
+    @Query("SELECT * FROM `Notes` WHERE note_title = '#pomodoro#'")
+    fun findPomoddoroNote(): LiveData<Notes>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertNote(notes: Notes)
 
