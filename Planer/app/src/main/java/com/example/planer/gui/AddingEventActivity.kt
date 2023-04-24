@@ -4,6 +4,7 @@ import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Intent
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.text.Editable
@@ -12,6 +13,7 @@ import android.view.KeyEvent
 import android.view.View
 import android.view.View.OnFocusChangeListener
 import android.widget.*
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.example.planer.MainActivity
@@ -24,7 +26,10 @@ import com.example.planer.gui.AddingEventActivity
 import com.example.planer.entities.Tasks
 import com.example.planer.gui.pages.CalendarFragment
 import kotlinx.android.synthetic.main.activity_adding_task.*
+import kotlinx.android.synthetic.main.dialog_edit_event.*
 import java.text.SimpleDateFormat
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 class AddingEventActivity : AppCompatActivity(), View.OnClickListener {
@@ -106,6 +111,9 @@ class AddingEventActivity : AppCompatActivity(), View.OnClickListener {
         binding.btnBeginEvent.setOnClickListener(this)
         binding.btnBeginEventTime.setOnClickListener(this)
 
+        binding.btnEndEvent.setOnClickListener(this)
+        binding.btnEndEventTime.setOnClickListener(this)
+
         today_day = selectedDateString.substring(8).toInt()
         today_month = selectedDateString.substring(5, 7).toInt()
         today_year= selectedDateString.substring(0, 4).toInt()
@@ -113,8 +121,8 @@ class AddingEventActivity : AppCompatActivity(), View.OnClickListener {
 
 
 
-        setDateBlocks(setUpDate(today_day, today_month, today_year))
-        setTimeBlocks(setUpTime(today_hour, today_minute))
+        setInitialDateBlocks(setUpDate(today_day, today_month, today_year))
+        setInitialTimeBlocks(setUpTime(today_hour, today_minute))
 
 
     }
@@ -247,32 +255,49 @@ class AddingEventActivity : AppCompatActivity(), View.OnClickListener {
                 }
 
 
-                var daye: String = binding.tvBeginEventDay.text.toString()
+                var daye: String = binding.tvEndEventDay.text.toString()
                 if (daye == "") {
                     daye = today_day.toString()
                 }       //????????????????? komunikat ze puste?
 
-                var monthe: String = binding.tvBeginEventMonth.text.toString()
+                var monthe: String = binding.tvEndEventMonth.text.toString()
                 if (monthe == "") {
                     monthe = today_month.toString()
                 }
 
-                var yeare: String = binding.tvBeginEventYear.text.toString()
+                var yeare: String = binding.tvEndEventYear.text.toString()
                 if (yeare == "") {
                     yeare = today_year.toString()
                 }
 
-                var houre: String = binding.tvBeginEventHour.text.toString()
+                var houre: String = binding.tvEndEventHour.text.toString()
                 if (houre == "") {
                     houre = today_hour.toString()
                 }
 
-                var minutee: String = binding.tvBeginEventMin.text.toString()
+                var minutee: String = binding.tvEndEventMin.text.toString()
                 if (minutee == "") {
                     minutee = today_minute.toString()
                 }
 
-                // podłączenie się do bazy i dodanie do niej taska
+                //porównuje czy data koncowa jest pozniejsza niz poczatkowa
+
+                val date1 = "${yearb}-${monthb}-${dayb} ${hourb}:${minuteb}"
+                val date2 = "${yeare}-${monthe}-${daye} ${houre}:${minutee}"
+                val result = compareDates(date1, date2)
+
+                if (result > 0 ) //jeżeli data koncowa jest wczesniej niz poczatkowa, to ustawiam ja na godzine pozniej niz poczatkowa
+                {
+                    val newDate = addOneHour(date1)
+                    yeare = newDate.substring(0, 4)
+                    monthe = newDate.substring(5, 7)
+                    daye = newDate.substring(8, 10)
+                    houre = newDate.substring(11, 13)
+                    minutee = newDate.substring(14, 16)
+
+
+                }
+
                 calendarViewModel = ViewModelProvider(this).get(CalendarViewModel::class.java)
                 calendarViewModel.addCalendarDate(
                     com.example.planer.entities.Calendar(
@@ -303,6 +328,7 @@ class AddingEventActivity : AppCompatActivity(), View.OnClickListener {
             }
 
 
+
             R.id.btn_begin_event -> {
                 val dpd = DatePickerDialog(
                     this,
@@ -329,6 +355,34 @@ class AddingEventActivity : AppCompatActivity(), View.OnClickListener {
                     true
                 )
                 tpd.show()
+            }
+
+            R.id.btn_end_event -> {
+                val dpde = DatePickerDialog(
+                    this,
+                    DatePickerDialog.OnDateSetListener { view, sel_year, sel_month, sel_day ->
+
+                        endDate = setUpDate(sel_day, sel_month, sel_year)
+                        setEndDateBlocks(endDate)
+
+                    }, today_year, today_month, today_day
+                )
+
+                dpde.show()
+            }
+
+            R.id.btn_end_event_time -> {
+                var tpde = TimePickerDialog(
+                    this,
+                    TimePickerDialog.OnTimeSetListener { view, sel_hour, sel_minutes ->
+
+                        endTime = setUpTime(sel_hour, sel_minutes)
+                        setEndTimeBlocks(endTime)
+
+                    }, today_hour, today_minute,
+                    true
+                )
+                tpde.show()
             }
 
             R.id.btn_cancel->
@@ -407,11 +461,36 @@ class AddingEventActivity : AppCompatActivity(), View.OnClickListener {
         val table = date.split(':')
         binding.tvBeginEventHour.setText(table[0])
         binding.tvBeginEventMin.setText(table[1])
-        binding.tvEndEventHour.setText("23")
-        binding.tvEndEventMin.setText("59")
     }
 
+    fun setEndTimeBlocks(date: String) {
+        val table = date.split(':')
+        binding.tvEndEventHour.setText(table[0])
+        binding.tvEndEventMin.setText(table[1])
+    }
+
+
+
+
     fun setDateBlocks(date: String) {
+        val table = date.split('-')
+        binding.tvBeginEventDay.setText(table[2])
+        binding.tvBeginEventMonth.setText(table[1])
+        binding.tvBeginEventYear.setText(table[0])
+    }
+
+
+    fun setEndDateBlocks(date: String) {
+        val table = date.split('-')
+        binding.tvEndEventDay.setText(table[2])
+        binding.tvEndEventMonth.setText(table[1])
+        binding.tvEndEventYear.setText(table[0])
+    }
+
+
+
+
+    fun setInitialDateBlocks(date: String) {
         val table = date.split('-')
         binding.tvBeginEventDay.setText(table[2])
         binding.tvBeginEventMonth.setText(table[1])
@@ -421,5 +500,32 @@ class AddingEventActivity : AppCompatActivity(), View.OnClickListener {
         binding.tvEndEventMonth.setText(table[1])
         binding.tvEndEventYear.setText(table[0])
     }
+
+    fun setInitialTimeBlocks(date: String) {
+        val table = date.split(':')
+        binding.tvBeginEventHour.setText(table[0])
+        binding.tvBeginEventMin.setText(table[1])
+        binding.tvEndEventHour.setText("23")
+        binding.tvEndEventMin.setText("59")
+    }
+
+
+    fun compareDates(date1: String, date2: String): Int {
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
+        val dateTime1 = dateFormat.parse(date1.replace("e", ""))
+        val dateTime2 = dateFormat.parse(date2.replace("e", ""))
+
+        return dateTime1.compareTo(dateTime2)
+    }
+
+    fun addOneHour(dateString: String): String {
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm")
+        val date = dateFormat.parse(dateString)
+        val calendar = Calendar.getInstance()
+        calendar.time = date
+        calendar.add(Calendar.HOUR_OF_DAY, 1)
+        return dateFormat.format(calendar.time)
+    }
+
 
 }

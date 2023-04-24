@@ -88,6 +88,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+//import com.applandeo.materialcalendarview.EventDay
+//import com.applandeo.materialcalendarview.listeners.OnDayClickListener
 import com.example.planer.R
 import com.example.planer.ViewModel.CalendarViewModel
 import com.example.planer.databinding.ActivityCalendarBinding
@@ -95,8 +97,10 @@ import com.example.planer.entities.Calendar
 import com.example.planer.gui.AdapterCalendar
 import com.example.planer.gui.AddingEventActivity
 import kotlinx.android.synthetic.main.activity_calendar.view.*
+import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
+
 
 class CalendarFragment : Fragment() {
     private lateinit var binding: ActivityCalendarBinding
@@ -124,8 +128,8 @@ class CalendarFragment : Fragment() {
         val rv = view.list_rv
         val adapter = AdapterCalendar(
             eventsList,
-            { updateId -> },
-            { deleteId -> },
+            { updateId -> calendarViewModel.updateCalendar(updateId)},
+            { deleteId -> calendarViewModel.deleteCalendarDateById(deleteId)},
         )
         rv?.adapter = adapter
         rv?.layoutManager = LinearLayoutManager(requireContext())
@@ -144,7 +148,32 @@ class CalendarFragment : Fragment() {
             adapter.notifyDataSetChanged()
         })
 
-        // set OnDateChangeListener to update selectedDate
+        /*  calview.setOnDayClickListener(object : OnDayClickListener {
+              override fun onDayClick(eventDay: EventDay) {
+                  val calendar: java.util.Calendar = eventDay.calendar
+                  selectedDatel = calendar.timeInMillis
+                  selectedDate =
+                      SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(calendar.time)
+
+                  calendarViewModel.getAll.observe(viewLifecycleOwner, Observer {
+                      eventsList.clear()
+                      val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
+                      for (event in it) {
+                          try {
+                              val eventDate = sdf.parse(event.startDate)?.let { sdf.format(it) } ?: ""
+                              if (eventDate.startsWith(selectedDate)) {
+                                  eventsList.add(event)
+                              }
+                          } catch (e: ParseException) {
+                              e.printStackTrace()
+                          }
+                      }
+                      adapter.notifyDataSetChanged()
+                  })
+              }
+          })
+  */
+
         calview.setOnDateChangeListener { _, year, month, dayOfMonth ->
             val calendar = java.util.Calendar.getInstance()
             calendar.set(year, month, dayOfMonth, 0, 0, 0)
