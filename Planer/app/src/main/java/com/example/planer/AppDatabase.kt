@@ -10,7 +10,7 @@ import com.example.planer.entities.*
 import com.example.planer.entities.typeconverters.LocalDateTypeConverter
 
 //Update wersji + 11, jesli zmienimy baze danych, dodamy jakies itp
-@Database(entities = [Habits::class, Tasks::class, Finished::class, Subtasks::class, Calendar::class, Notes::class, Settings::class, ExcludedDate::class, LastAccess::class, Types::class], version = 16)
+@Database(entities = [Habits::class, Tasks::class, Finished::class, Subtasks::class, Calendar::class, Notes::class, Settings::class, ExcludedDate::class, LastAccess::class, Types::class], version = 17)
 @TypeConverters(LocalDateTypeConverter::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun habitsDAO() : HabitsDAO

@@ -13,4 +13,8 @@ class TypeRepository(private val typeDAO: TypeDAO) {
     suspend fun updateType(type: Types) {
         typeDAO.updateType(type)
     }
+
+    suspend fun addType(type: Types) {
+        typeDAO.insertType(type)
+    }
 }

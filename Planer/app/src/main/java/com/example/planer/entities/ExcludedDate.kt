@@ -2,10 +2,11 @@ package com.example.planer.entities
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.Index
 import androidx.room.PrimaryKey
 import java.time.LocalDate
 
-@Entity(tableName = "ExcludedDate")
+@Entity(tableName = "ExcludedDate", indices = [Index(value = ["date"], unique = true)])
 data class ExcludedDate (
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")

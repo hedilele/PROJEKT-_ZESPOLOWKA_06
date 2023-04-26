@@ -3,6 +3,7 @@ package com.example.planer.DAOs
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.example.planer.entities.ExcludedDate
+import java.time.LocalDate
 
 @Dao
 interface ExcludedDateDAO {
@@ -21,6 +22,12 @@ interface ExcludedDateDAO {
 
     @Delete
     suspend fun delete(excludedDate: ExcludedDate)
+
+    @Query("DELETE FROM ExcludedDate WHERE date=:date")
+    suspend fun deleteByDate(date: LocalDate)
+
+    @Query("DELETE FROM ExcludedDate WHERE date NOT IN (:dates)")
+    suspend fun deleteDatesNotInList(dates: List<LocalDate>)
 
     @Query("DELETE FROM ExcludedDate WHERE id=:id")
     suspend fun deleteById(id: Int)
