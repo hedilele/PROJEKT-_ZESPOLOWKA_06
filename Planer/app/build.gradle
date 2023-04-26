@@ -111,6 +111,10 @@ dependencies {
     // Timber
     implementation 'com.jakewharton.timber:timber:4.7.1'
 
+    // Datepicker
+    implementation 'com.aminography:primedatepicker:3.6.0'
+    implementation 'com.aminography:primecalendar:1.7.0'
+
     // Local Unit Tests
     implementation "androidx.test:core:1.5.0"
     testImplementation "junit:junit:4.13.2"

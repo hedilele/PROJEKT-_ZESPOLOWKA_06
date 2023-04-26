@@ -1,16 +1,18 @@
 package com.example.planer.gui.pages
 
-import android.app.DatePickerDialog
 import android.os.Bundle
 import android.view.View
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import android.widget.LinearLayout
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import com.aminography.primecalendar.PrimeCalendar
+import com.aminography.primecalendar.civil.CivilCalendar
+import com.aminography.primedatepicker.picker.PrimeDatePicker
+import com.aminography.primedatepicker.picker.callback.MultipleDaysPickCallback
 import com.example.planer.R
 import com.example.planer.ViewModel.SettingsViewModel
 import com.example.planer.databinding.ActivityUserSettingsBinding
+import com.example.planer.entities.ExcludedDate
 import com.example.planer.entities.Settings
 import com.example.planer.entities.Types
 import com.google.android.material.snackbar.BaseTransientBottomBar
@@ -19,6 +21,8 @@ import kotlinx.android.synthetic.main.activity_user_settings.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.time.Instant
+import java.time.ZoneId
 
 import java.util.*
 
@@ -42,8 +46,10 @@ class UserSettingsActivity : AppCompatActivity(), View.OnClickListener {
     var type_3_color = 1
     var type_4_color = 1
 
-    //var chosenItems: MutableSet<String> = mutableSetOf()
-    var chosenItems: MutableList<String> = mutableListOf()
+    private lateinit var dbDates: List<PrimeCalendar>
+    private var markedDatePickerList: MutableList<PrimeCalendar> = mutableListOf()
+
+    private val calendar = CivilCalendar(TimeZone.getDefault(), Locale("pl", "PL"))
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,7 +66,6 @@ class UserSettingsActivity : AppCompatActivity(), View.OnClickListener {
         binding.type2Col2.setOnClickListener(this)
         binding.type2Col3.setOnClickListener(this)
         binding.type2Col4.setOnClickListener(this)
-
         binding.type3Col1.setOnClickListener(this)
         binding.type3Col2.setOnClickListener(this)
         binding.type3Col3.setOnClickListener(this)
@@ -71,18 +76,17 @@ class UserSettingsActivity : AppCompatActivity(), View.OnClickListener {
         binding.type4Col3.setOnClickListener(this)
         binding.type4Col4.setOnClickListener(this)
 
-        //binding.dateSpinner.setOnClickListener(this)
-        binding.calendarIcon.setOnClickListener(this)
+        binding.pickExcludedDatesButton.setOnClickListener(this)
 
         binding.btnSave.setOnClickListener(this)
 
-       // binding.weekHours.setOnClickListener(this)
-        //binding.weekendHours.setOnClickListener(this)
+        val yesterday = CivilCalendar(TimeZone.getDefault(), Locale("pl", "PL"))
+        yesterday.add(Calendar.DAY_OF_YEAR,-1)
 
         settingsViewModel.readSettingsFromDb().observe(this) { settings ->
             if (settings == null) {
                 CoroutineScope(Dispatchers.IO).launch {
-                    settingsViewModel.createSettingsIfDontExist(Settings())
+                    settingsViewModel.createSettingsIfDontExist() // TODO TO POWINNO BYĆ W MAIN
                 }
             } else {
                 localSettings = settings
@@ -90,10 +94,33 @@ class UserSettingsActivity : AppCompatActivity(), View.OnClickListener {
             }
         }
 
+        settingsViewModel.readExcludedDatesFromDb().observe(this) { exdates ->
+            dbDates = exdates.map {
+                val a = CivilCalendar()
+                a.setTime(Date.from(
+                    it.excludedDate
+                        .atStartOfDay()
+                        .atZone(ZoneId.systemDefault())
+                        .toInstant()
+                ))
+                a
+            }
+            // Automatycznie usuwa stare daty również potem w bazie
+            markedDatePickerList = dbDates.filter { it.after(yesterday) }.toMutableList()
+        }
+
+        settingsViewModel.readTypesFromDb().observe(this) { types ->
+            if (types == null) {
+                CoroutineScope(Dispatchers.IO).launch {
+                    settingsViewModel.createTypesIfDontExist() //TODO DO MAIN
+                }
+            } else {
+                //TODO adapter typów zadań
+            }
+        }
+
         binding.slider.value = localSettings.dailyAvailableHours.toFloat()
 
-        chosenItems.add("kliknij aby usunąć")
-        binding.dateSpinner.setSelection(0)
 
     }
 
@@ -104,12 +131,45 @@ class UserSettingsActivity : AppCompatActivity(), View.OnClickListener {
                 val buttns = findViewById<LinearLayout>(R.id.button_layout)
                 val savedNotif = Snackbar.make(buttns, "Zapisane!", BaseTransientBottomBar.LENGTH_SHORT)
                 savedNotif.anchorView = buttns
+
+                // Pobieram wartość dostępnych godzin ze slidera
                 localSettings.dailyAvailableHours = binding.slider.value.toInt()
+
+                // Zapisywanie ustawień do bazy
                 CoroutineScope(Dispatchers.IO).launch {
-                    settingsViewModel.saveSettings(localSettings)
+
+                    // Zamieniam ten customowy calendar na ExcludedDate z LocalTime
+                    val selectedDates: List<ExcludedDate> = markedDatePickerList.map {
+                        val localDate = it.getTime()
+                            .toInstant()
+                            .atZone(ZoneId.systemDefault())
+                            .toLocalDate()
+                        ExcludedDate(excludedDate = localDate)
+                    }
+
+                    settingsViewModel.saveSettings(localSettings, localTypes, selectedDates)
+
                     savedNotif.show()
                 }
             }
+
+            R.id.pick_excluded_dates_button -> {
+
+                val callback = MultipleDaysPickCallback { days ->
+                    markedDatePickerList = days
+                }
+
+                val datePicker = PrimeDatePicker.dialogWith(calendar)
+                    .pickMultipleDays(callback)
+                    .initiallyPickedMultipleDays(markedDatePickerList)
+                    .minPossibleDate(calendar)
+                    .build()
+
+                datePicker.show(supportFragmentManager, "Tak")
+
+            }
+
+            // TODO Adapter tego wszystkiego
 
             //typ 1
             R.id.type1_col1 -> {
@@ -224,57 +284,6 @@ class UserSettingsActivity : AppCompatActivity(), View.OnClickListener {
 
             }
 
-            R.id.calendar_icon -> {
-
-                val calendar = Calendar.getInstance()
-                val today_year = calendar.get(Calendar.YEAR)
-                val today_month = calendar.get(Calendar.MONTH)
-                val today_day = calendar.get(Calendar.DAY_OF_MONTH)
-
-                var date = ""
-
-                val dpd = DatePickerDialog(
-                    this,
-                    DatePickerDialog.OnDateSetListener { view, sel_year, sel_month, sel_day ->
-                        date = setUpDate(sel_day, sel_month, sel_year)
-
-                        chosenItems.add(date)
-
-                        val chosenItemsTemp = chosenItems.distinct()
-
-                        if (chosenItems.size != chosenItemsTemp.size) {
-                            // List contains duplicates
-                            chosenItems.removeLast()
-
-                        }
-
-                    }, today_year, today_month, today_day
-                )
-
-                dpd.show()
-
-                val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, chosenItems)
-                binding.dateSpinner.adapter = adapter
-                binding.dateSpinner.setSelection(0)
-                binding.dateSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                    override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
-                        // remove the selected item from the spinner's adapter
-                        if(!adapter.getItem(position).equals("kliknij aby usunąć"))
-                        {
-                            adapter.remove(adapter.getItem(position))
-                            binding.dateSpinner.setSelection(0)
-                            // notify the adapter that the data set has changed
-                            adapter.notifyDataSetChanged()
-                        }
-
-                    }
-
-                    override fun onNothingSelected(parent: AdapterView<*>) {
-                        binding.dateSpinner.setSelection(0)
-                    }
-                }
-            }
-
         }
 
 
@@ -282,20 +291,6 @@ class UserSettingsActivity : AppCompatActivity(), View.OnClickListener {
             if (value == 3.0f) "TEST" else java.lang.String.format(Locale.US, "%.0f", value)
         }
     }
-
-
-
-
-    fun setUpDate(d: Int, m: Int, y: Int): String {
-        var month = m.toString()
-        var day = d.toString()
-
-        month.takeIf { m + 1 < 10 }?.let { month = "0" + (m + 1) }
-        day.takeIf { d < 10 }?.let { day = "0" + d }
-
-        return "$y-$month-$day"
-    }
-
 
     private fun uncheckType(type: Int, color: Int) {
         when (type) {
