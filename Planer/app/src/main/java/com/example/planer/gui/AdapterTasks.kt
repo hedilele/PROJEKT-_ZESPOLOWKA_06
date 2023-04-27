@@ -19,6 +19,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.planer.R
 import com.example.planer.ViewModel.UserViewModel
+import com.example.planer.algorithm.IO
 import com.example.planer.entities.Tasks
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_adding_task.view.*
@@ -38,6 +39,7 @@ class AdapterTasks(
     //var list = emptyList<Tasks>()
     private lateinit var userViewModel: UserViewModel
 
+    var isToday = 0
 
     var pos: Tasks? = null
 
@@ -95,6 +97,10 @@ class AdapterTasks(
             Handler().postDelayed({
                 if(clicked == 0)
                 {
+                    if(isToday == 1){
+                        val io = IO()
+                        io.updateWork(holder.itemView.context, item.timeToFinish)
+                    }
                     deleteListener(item.id)
                 }
                 holder.itemView.done.setImageDrawable(ContextCompat.getDrawable(holder.itemView.context, R.drawable.icon_checkbox_empty))
@@ -740,8 +746,9 @@ class AdapterTasks(
     }
 
 
-    fun setData(task: MutableList<Tasks>){
+    fun setData(task: MutableList<Tasks>, isToday: Int){
         this.list = task
+        this.isToday = isToday
         notifyDataSetChanged()
     }
 

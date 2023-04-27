@@ -71,7 +71,7 @@ class FilterFragment : Fragment(){
                                 adapter.setData(
                                     (blockListTask.todayList + blockListTask.tomorrowList
                                             + blockListTask.weekList + blockListTask.monthList +
-                                            blockListTask.restList).toMutableList()
+                                            blockListTask.restList).toMutableList(), 0
                                 )
                             })
                 }
@@ -236,7 +236,7 @@ class FilterFragment : Fragment(){
                         blockListTask.planner()
                         adapter.setData((blockListTask.todayList + blockListTask.tomorrowList
                                 + blockListTask.weekList + blockListTask.monthList +
-                                blockListTask.restList).toMutableList())
+                                blockListTask.restList).toMutableList(), 0)
                         adapter.notifyDataSetChanged()
                     })
                 }
@@ -249,7 +249,7 @@ class FilterFragment : Fragment(){
                             blockListTask.planner()
                             adapter.setData((blockListTask.todayList + blockListTask.tomorrowList
                                     + blockListTask.weekList + blockListTask.monthList +
-                                    blockListTask.restList).toMutableList())
+                                    blockListTask.restList).toMutableList(), 0)
                         })
                     }
                 }
@@ -262,7 +262,7 @@ class FilterFragment : Fragment(){
                             blockListTask.planner()
                             adapter.setData((blockListTask.todayList + blockListTask.tomorrowList
                                     + blockListTask.weekList + blockListTask.monthList +
-                                    blockListTask.restList).toMutableList())
+                                    blockListTask.restList).toMutableList(), 0)
                         })
                     }
                 }
@@ -283,7 +283,7 @@ class FilterFragment : Fragment(){
                             blockListTask.planner()
                             adapter.setData((blockListTask.todayList + blockListTask.tomorrowList
                                     + blockListTask.weekList + blockListTask.monthList +
-                                    blockListTask.restList).toMutableList())
+                                    blockListTask.restList).toMutableList(), 0)
                         })
                     }
                 }
@@ -304,7 +304,7 @@ class FilterFragment : Fragment(){
                             blockListTask.planner()
                             adapter.setData((blockListTask.todayList + blockListTask.tomorrowList
                                     + blockListTask.weekList + blockListTask.monthList +
-                                    blockListTask.restList).toMutableList())
+                                    blockListTask.restList).toMutableList(), 0)
                         })
                     }
                 }
@@ -325,7 +325,7 @@ class FilterFragment : Fragment(){
                             blockListTask.planner()
                             adapter.setData((blockListTask.todayList + blockListTask.tomorrowList
                                     + blockListTask.weekList + blockListTask.monthList +
-                                    blockListTask.restList).toMutableList())
+                                    blockListTask.restList).toMutableList(), 0)
                         })
                     }
                 }
@@ -338,7 +338,7 @@ class FilterFragment : Fragment(){
                             blockListTask.planner()
                             adapter.setData((blockListTask.todayList + blockListTask.tomorrowList
                                     + blockListTask.weekList + blockListTask.monthList +
-                                    blockListTask.restList).toMutableList())
+                                    blockListTask.restList).toMutableList(), 0)
                         })
                     }
                 }
@@ -361,7 +361,7 @@ class FilterFragment : Fragment(){
                             blockListTask.planner()
                             adapter.setData((blockListTask.todayList + blockListTask.tomorrowList
                                     + blockListTask.weekList + blockListTask.monthList +
-                                    blockListTask.restList).toMutableList())
+                                    blockListTask.restList).toMutableList(), 0)
                         })
                     }
                 }
@@ -376,7 +376,7 @@ class FilterFragment : Fragment(){
             blockListTask.planner()
             adapter.setData((blockListTask.todayList + blockListTask.tomorrowList
                     + blockListTask.weekList + blockListTask.monthList +
-                    blockListTask.restList).toMutableList())
+                    blockListTask.restList).toMutableList(), 0)
         })
         return view
     }

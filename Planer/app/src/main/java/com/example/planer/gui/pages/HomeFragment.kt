@@ -109,18 +109,18 @@ class HomeFragment : Fragment() {
         rv5.layoutManager = LinearLayoutManager(requireContext())
 
         val io = IO()
-        io.newDay(requireContext())
+        val work = io.newDay(requireContext())
 
 
         userViewModel = ViewModelProvider(this)[TaskViewModel::class.java]
         userViewModel.readAllData.observe(viewLifecycleOwner, Observer {
-            val blockListTask = BlockListTask(it, 60)
+            val blockListTask = BlockListTask(it, work)
             blockListTask.planner()
-            adapter.setData(blockListTask.todayList)
-            adapter2.setData(blockListTask.tomorrowList)
-            adapter3.setData(blockListTask.weekList)
-            adapter4.setData(blockListTask.monthList)
-            adapter5.setData(blockListTask.restList)
+            adapter.setData(blockListTask.todayList, 1)
+            adapter2.setData(blockListTask.tomorrowList, 0)
+            adapter3.setData(blockListTask.weekList, 0)
+            adapter4.setData(blockListTask.monthList, 0)
+            adapter5.setData(blockListTask.restList, 0)
         })
 
 
