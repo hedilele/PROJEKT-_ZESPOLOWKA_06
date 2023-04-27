@@ -18,6 +18,7 @@ import com.example.planer.R
 import com.example.planer.ViewModel.HabitViewModel
 import com.example.planer.ViewModel.TaskViewModel
 import com.example.planer.algorithm.BlockListTask
+import com.example.planer.algorithm.IO
 import com.example.planer.databinding.FragmentHomeBinding
 import com.example.planer.entities.Habits
 import com.example.planer.entities.Tasks
@@ -48,7 +49,6 @@ class HomeFragment : Fragment() {
 
 
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -108,10 +108,13 @@ class HomeFragment : Fragment() {
         rv5.adapter = adapter5
         rv5.layoutManager = LinearLayoutManager(requireContext())
 
+        //val io = IO()
+        //io.newDay(requireContext())
+
 
         userViewModel = ViewModelProvider(this)[TaskViewModel::class.java]
         userViewModel.readAllData.observe(viewLifecycleOwner, Observer {
-            val blockListTask = BlockListTask(it)
+            val blockListTask = BlockListTask(it, 60)
             blockListTask.planner()
             adapter.setData(blockListTask.todayList)
             adapter2.setData(blockListTask.tomorrowList)

@@ -1,18 +1,14 @@
 package com.example.planer.algorithm
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import com.example.planer.entities.Tasks
 import java.time.LocalDate
-import java.util.Queue
-
-const val WORK_LIMIT = 60
 
 /**
  * Klasa, która rozdziela listę tasków na poszczególne przedziały czasowe.
  */
 class BlockListTask (
-    var list : List<Tasks>
+    var list : List<Tasks>,
+    var WORK_LIMIT : Int
 ){
     private val tasks = list
     var todayList = mutableListOf<Tasks>()
@@ -25,7 +21,6 @@ class BlockListTask (
     /**
      * Funkcja układająca plan użytkownikowi
      */
-    @RequiresApi(Build.VERSION_CODES.O)
     fun planner(){
 
         val deadlines = mutableSetOf<Tasks>()       //zbiór tasków do określonego dnia

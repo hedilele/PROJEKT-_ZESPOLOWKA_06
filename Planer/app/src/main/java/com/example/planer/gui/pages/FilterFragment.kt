@@ -66,7 +66,7 @@ class FilterFragment : Fragment(){
                     CoroutineScope(Dispatchers.Main).launch {
                         userViewModel.readTasksWithSearchEdit(searchQuery)
                             .observe(viewLifecycleOwner, Observer {
-                                val blockListTask = BlockListTask(it)
+                                val blockListTask = BlockListTask(it, 60)
                                 blockListTask.planner()
                                 adapter.setData(
                                     (blockListTask.todayList + blockListTask.tomorrowList
@@ -232,7 +232,7 @@ class FilterFragment : Fragment(){
                     && endYear.text.isBlank())
                 {
                     userViewModel.readAllData.observe(viewLifecycleOwner, Observer {
-                        val blockListTask = BlockListTask(it)
+                        val blockListTask = BlockListTask(it, 60)
                         blockListTask.planner()
                         adapter.setData((blockListTask.todayList + blockListTask.tomorrowList
                                 + blockListTask.weekList + blockListTask.monthList +
@@ -245,7 +245,7 @@ class FilterFragment : Fragment(){
                 {
                     CoroutineScope(Dispatchers.Main).launch{
                         userViewModel.readTasksWithTypes(typeIds).observe(viewLifecycleOwner, Observer {
-                            val blockListTask = BlockListTask(it)
+                            val blockListTask = BlockListTask(it, 60)
                             blockListTask.planner()
                             adapter.setData((blockListTask.todayList + blockListTask.tomorrowList
                                     + blockListTask.weekList + blockListTask.monthList +
@@ -258,7 +258,7 @@ class FilterFragment : Fragment(){
                 {
                     CoroutineScope(Dispatchers.Main).launch{
                         userViewModel.readTasksWithDuration(finishIds).observe(viewLifecycleOwner, Observer {
-                            val blockListTask = BlockListTask(it)
+                            val blockListTask = BlockListTask(it, 60)
                             blockListTask.planner()
                             adapter.setData((blockListTask.todayList + blockListTask.tomorrowList
                                     + blockListTask.weekList + blockListTask.monthList +
@@ -279,7 +279,7 @@ class FilterFragment : Fragment(){
                     val endDateStringFormatted = dateFormat.format(endDate)
                     CoroutineScope(Dispatchers.Main).launch{
                         userViewModel.readTasksWithDate(startDateStringFormatted, endDateStringFormatted).observe(viewLifecycleOwner, Observer {
-                            val blockListTask = BlockListTask(it)
+                            val blockListTask = BlockListTask(it, 60)
                             blockListTask.planner()
                             adapter.setData((blockListTask.todayList + blockListTask.tomorrowList
                                     + blockListTask.weekList + blockListTask.monthList +
@@ -300,7 +300,7 @@ class FilterFragment : Fragment(){
                     val endDateStringFormatted = dateFormat.format(endDate)
                     CoroutineScope(Dispatchers.Main).launch{
                         userViewModel.readTasksWithDurationAndDate(finishIds,startDateStringFormatted, endDateStringFormatted).observe(viewLifecycleOwner, Observer {
-                            val blockListTask = BlockListTask(it)
+                            val blockListTask = BlockListTask(it, 60)
                             blockListTask.planner()
                             adapter.setData((blockListTask.todayList + blockListTask.tomorrowList
                                     + blockListTask.weekList + blockListTask.monthList +
@@ -321,7 +321,7 @@ class FilterFragment : Fragment(){
                     val endDateStringFormatted = dateFormat.format(endDate)
                     CoroutineScope(Dispatchers.Main).launch{
                         userViewModel.readTasksWithTypesAndDate(typeIds,startDateStringFormatted, endDateStringFormatted).observe(viewLifecycleOwner, Observer {
-                            val blockListTask = BlockListTask(it)
+                            val blockListTask = BlockListTask(it, 60)
                             blockListTask.planner()
                             adapter.setData((blockListTask.todayList + blockListTask.tomorrowList
                                     + blockListTask.weekList + blockListTask.monthList +
@@ -334,7 +334,7 @@ class FilterFragment : Fragment(){
                 {
                     CoroutineScope(Dispatchers.Main).launch{
                         userViewModel.readTasksWithTypesAndDuration(typeIds,finishIds).observe(viewLifecycleOwner, Observer {
-                            val blockListTask = BlockListTask(it)
+                            val blockListTask = BlockListTask(it, 60)
                             blockListTask.planner()
                             adapter.setData((blockListTask.todayList + blockListTask.tomorrowList
                                     + blockListTask.weekList + blockListTask.monthList +
@@ -357,7 +357,7 @@ class FilterFragment : Fragment(){
                     CoroutineScope(Dispatchers.Main).launch{
                         userViewModel.readTasksWithTypesAndDurationAndDate(typeIds,finishIds,startDateStringFormatted, endDateStringFormatted)
                             .observe(viewLifecycleOwner, Observer {
-                            val blockListTask = BlockListTask(it)
+                            val blockListTask = BlockListTask(it, 60)
                             blockListTask.planner()
                             adapter.setData((blockListTask.todayList + blockListTask.tomorrowList
                                     + blockListTask.weekList + blockListTask.monthList +
@@ -372,7 +372,7 @@ class FilterFragment : Fragment(){
 
         //Ustawianie wyswietlania taskow w recycle view do listowania
         userViewModel.readAllData.observe(viewLifecycleOwner, Observer {
-            val blockListTask = BlockListTask(it)
+            val blockListTask = BlockListTask(it, 60)
             blockListTask.planner()
             adapter.setData((blockListTask.todayList + blockListTask.tomorrowList
                     + blockListTask.weekList + blockListTask.monthList +
