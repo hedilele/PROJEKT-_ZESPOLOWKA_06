@@ -115,8 +115,8 @@ class HomeFragment : Fragment() {
         rv5.adapter = adapter5
         rv5.layoutManager = LinearLayoutManager(requireContext())
 
-        //val io = IO()
-        //io.newDay(requireContext())
+        val io = IO()
+        io.newDay(requireContext())
 
 
         userViewModel = ViewModelProvider(this)[TaskViewModel::class.java]
