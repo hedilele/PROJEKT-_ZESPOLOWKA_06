@@ -1,10 +1,12 @@
 package com.example.planer.gui.settings
 
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.View
 import android.widget.LinearLayout
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.aminography.primecalendar.PrimeCalendar
 import com.aminography.primecalendar.civil.CivilCalendar
 import com.aminography.primedatepicker.picker.PrimeDatePicker
@@ -15,36 +17,26 @@ import com.example.planer.databinding.ActivityUserSettingsBinding
 import com.example.planer.entities.ExcludedDate
 import com.example.planer.entities.Settings
 import com.example.planer.entities.Types
+import com.github.dhaval2404.colorpicker.MaterialColorPickerDialog
+import com.github.dhaval2404.colorpicker.model.ColorShape
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.activity_user_settings.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.time.Instant
 import java.time.ZoneId
 
 import java.util.*
 
 
-class UserSettingsActivity : AppCompatActivity(), View.OnClickListener {
+class UserSettingsActivity : AppCompatActivity(), View.OnClickListener,
+    TypeAdapter.OnButtonClickListener {
     private lateinit var binding: ActivityUserSettingsBinding
+    private lateinit var typeAdapter: TypeAdapter
 
     private val settingsViewModel: SettingsViewModel by viewModels()
     private var localSettings: Settings = Settings()
     private var localTypes: List<Types> = emptyList()
-
-    var week_hours = 0
-    var weekend_hours = 0
-    var type_1 = ""
-    var type_2 = ""
-    var type_3 = ""
-    var type_4 = ""
-
-    var type_1_color = 1
-    var type_2_color = 1
-    var type_3_color = 1
-    var type_4_color = 1
 
     private lateinit var dbDates: List<PrimeCalendar>
     private var markedDatePickerList: MutableList<PrimeCalendar> = mutableListOf()
@@ -57,24 +49,11 @@ class UserSettingsActivity : AppCompatActivity(), View.OnClickListener {
         binding = ActivityUserSettingsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.type1Col1.setOnClickListener(this)
-        binding.type1Col2.setOnClickListener(this)
-        binding.type1Col3.setOnClickListener(this)
-        binding.type1Col4.setOnClickListener(this)
+        typeAdapter = TypeAdapter(emptyList())
+        typeAdapter.setOnItemClickListener(this)
 
-        binding.type2Col1.setOnClickListener(this)
-        binding.type2Col2.setOnClickListener(this)
-        binding.type2Col3.setOnClickListener(this)
-        binding.type2Col4.setOnClickListener(this)
-        binding.type3Col1.setOnClickListener(this)
-        binding.type3Col2.setOnClickListener(this)
-        binding.type3Col3.setOnClickListener(this)
-        binding.type3Col4.setOnClickListener(this)
-
-        binding.type4Col1.setOnClickListener(this)
-        binding.type4Col2.setOnClickListener(this)
-        binding.type4Col3.setOnClickListener(this)
-        binding.type4Col4.setOnClickListener(this)
+        binding.typesRecyclerView.adapter = typeAdapter
+        binding.typesRecyclerView.layoutManager = LinearLayoutManager(this)
 
         binding.pickExcludedDatesButton.setOnClickListener(this)
 
@@ -110,12 +89,12 @@ class UserSettingsActivity : AppCompatActivity(), View.OnClickListener {
         }
 
         settingsViewModel.readTypesFromDb().observe(this) { types ->
-            if (types == null) {
+            if (types.isEmpty()) {
                 CoroutineScope(Dispatchers.IO).launch {
                     settingsViewModel.createTypesIfDontExist() //TODO DO MAIN
                 }
             } else {
-                //TODO adapter typów zadań
+                typeAdapter.updateList(types)
             }
         }
 
@@ -169,217 +148,21 @@ class UserSettingsActivity : AppCompatActivity(), View.OnClickListener {
 
             }
 
-            // TODO Adapter tego wszystkiego
-
-            //typ 1
-            R.id.type1_col1 -> {
-                uncheckType(1, type_1_color)
-                binding.type1Col1.setImageResource(R.drawable.radio_checked)
-                //binding.type1Col1.setColorFilter(ContextCompat.getColor(this, R.color.brown_important_urgent_off), PorterDuff.Mode.SRC_ATOP)
-                type_1_color = 1
-            }
-
-            R.id.type1_col2 -> {
-                uncheckType(1, type_1_color)
-                binding.type1Col2.setImageResource(R.drawable.radio_checked)
-                type_1_color = 2
-
-            }
-
-            R.id.type1_col3 -> {
-                uncheckType(1, type_1_color)
-                binding.type1Col3.setImageResource(R.drawable.radio_checked)
-                type_1_color = 3
-
-            }
-
-            R.id.type1_col4 -> {
-                uncheckType(1, type_1_color)
-                binding.type1Col4.setImageResource(R.drawable.radio_checked)
-                type_1_color = 4
-
-            }
-
-            //typ 2
-            R.id.type2_col1 -> {
-                uncheckType(2, type_2_color)
-                binding.type2Col1.setImageResource(R.drawable.radio_checked)
-                type_2_color = 1
-
-            }
-            R.id.type2_col2 -> {
-                uncheckType(2, type_2_color)
-                binding.type2Col2.setImageResource(R.drawable.radio_checked)
-                type_2_color = 2
-
-            }
-
-            R.id.type2_col3 -> {
-                uncheckType(2, type_2_color)
-                binding.type2Col3.setImageResource(R.drawable.radio_checked)
-                type_2_color = 3
-
-            }
-
-            R.id.type2_col4 -> {
-                uncheckType(2, type_2_color)
-                binding.type2Col4.setImageResource(R.drawable.radio_checked)
-                type_2_color = 4
-
-            }
-
-            //typ 3
-            R.id.type3_col1 -> {
-                uncheckType(3, type_3_color)
-                binding.type3Col1.setImageResource(R.drawable.radio_checked)
-                type_3_color = 1
-
-            }
-            R.id.type3_col2 -> {
-                uncheckType(3, type_3_color)
-                binding.type3Col2.setImageResource(R.drawable.radio_checked)
-                type_3_color = 2
-
-            }
-
-            R.id.type3_col3 -> {
-                uncheckType(3, type_3_color)
-                binding.type3Col3.setImageResource(R.drawable.radio_checked)
-                type_3_color = 3
-
-            }
-
-            R.id.type3_col4 -> {
-                uncheckType(3, type_3_color)
-                binding.type3Col4.setImageResource(R.drawable.radio_checked)
-                type_3_color = 4
-
-            }
-
-            //typ 4
-            R.id.type4_col1 -> {
-                uncheckType(4, type_4_color)
-                binding.type4Col1.setImageResource(R.drawable.radio_checked)
-                type_4_color = 1
-
-            }
-            R.id.type4_col2 -> {
-                uncheckType(4, type_4_color)
-                binding.type4Col2.setImageResource(R.drawable.radio_checked)
-                type_4_color = 2
-
-            }
-
-            R.id.type4_col3 -> {
-                uncheckType(4, type_4_color)
-                binding.type4Col3.setImageResource(R.drawable.radio_checked)
-                type_4_color = 3
-
-            }
-
-            R.id.type4_col4 -> {
-                uncheckType(4, type_4_color)
-                binding.type4Col4.setImageResource(R.drawable.radio_checked)
-                type_4_color = 4
-
-            }
-
         }
-
 
         binding.slider.setLabelFormatter { value -> //It is just an example
             if (value == 3.0f) "TEST" else java.lang.String.format(Locale.US, "%.0f", value)
         }
     }
 
-    private fun uncheckType(type: Int, color: Int) {
-        when (type) {
-            1 -> {
-                when (color) {
-                    1 -> {
-                        binding.type1Col1.setImageResource(R.drawable.radio_unchecked)
-
-                    }
-                    2 -> {
-                        binding.type1Col2.setImageResource(R.drawable.radio_unchecked)
-
-                    }
-                    3 -> {
-                        binding.type1Col3.setImageResource(R.drawable.radio_unchecked)
-
-                    }
-                    4 -> {
-                        binding.type1Col4.setImageResource(R.drawable.radio_unchecked)
-
-                    }
-                }
+    override suspend fun onChosenColorButtonClick(type: Types, holder: TypeAdapter.ViewHolder) {
+        MaterialColorPickerDialog
+            .Builder(this)
+            .setColors(arrayListOf("#f6e58d", "#ffbe76", "#ff7979", "#badc58", "#dff9fb", "#7ed6df", "#e056fd", "#686de0", "#30336b", "#95afc0"))
+            .setColorListener { color, colorhex ->
+                holder.chosenColorButton.backgroundTintList = ColorStateList.valueOf(color)
             }
-
-            2 -> {
-                when (color) {
-                    1 -> {
-                        binding.type2Col1.setImageResource(R.drawable.radio_unchecked)
-
-                    }
-                    2 -> {
-                        binding.type2Col2.setImageResource(R.drawable.radio_unchecked)
-
-                    }
-                    3 -> {
-                        binding.type2Col3.setImageResource(R.drawable.radio_unchecked)
-
-                    }
-                    4 -> {
-                        binding.type2Col4.setImageResource(R.drawable.radio_unchecked)
-
-                    }
-                }
-
-            }
-
-            3 -> {
-                when (color) {
-                    1 -> {
-                        binding.type3Col1.setImageResource(R.drawable.radio_unchecked)
-
-                    }
-                    2 -> {
-                        binding.type3Col2.setImageResource(R.drawable.radio_unchecked)
-
-                    }
-                    3 -> {
-                        binding.type3Col3.setImageResource(R.drawable.radio_unchecked)
-
-                    }
-                    4 -> {
-                        binding.type3Col4.setImageResource(R.drawable.radio_unchecked)
-
-                    }
-                }
-
-            }
-
-            4 -> {
-                when (color) {
-                    1 -> {
-                        binding.type4Col1.setImageResource(R.drawable.radio_unchecked)
-
-                    }
-                    2 -> {
-                        binding.type4Col2.setImageResource(R.drawable.radio_unchecked)
-
-                    }
-                    3 -> {
-                        binding.type4Col3.setImageResource(R.drawable.radio_unchecked)
-
-                    }
-                    4 -> {
-                        binding.type4Col4.setImageResource(R.drawable.radio_unchecked)
-
-                    }
-                }
-
-            }
-        }
+            .setColorShape(ColorShape.SQAURE)
+            .show()
     }
 }

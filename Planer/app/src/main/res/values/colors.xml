@@ -44,4 +44,8 @@
 
     <color name="pr1_pomodoro_green">#BFDC80</color>
 
+    <color name="positiveButtonTextColor">@color/green400</color>
+    <color name="negativeButtonTextColor">@color/red400</color>
+    <color name="bottomSheetDividerColor">#F5F5F5</color>
+
 </resources>
