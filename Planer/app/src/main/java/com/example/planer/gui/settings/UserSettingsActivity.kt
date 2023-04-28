@@ -1,4 +1,4 @@
-package com.example.planer.gui.pages
+package com.example.planer.gui.settings
 
 import android.os.Bundle
 import android.view.View

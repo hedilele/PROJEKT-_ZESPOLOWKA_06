@@ -45,7 +45,7 @@
         </activity>
 
         <activity
-            android:name=".gui.pages.UserSettingsActivity"
+            android:name=".gui.settings.UserSettingsActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"

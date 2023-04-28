@@ -1,6 +1,5 @@
 package com.example.planer
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
@@ -13,6 +12,7 @@ import com.example.planer.databinding.ActivityMainBinding
 import com.example.planer.gui.AddingTaskActivity
 import com.example.planer.gui.HideNextPage
 import com.example.planer.gui.pages.*
+import com.example.planer.gui.settings.UserSettingsActivity
 import com.example.planer.scope.ScopeMode
 import kotlinx.coroutines.launch
 

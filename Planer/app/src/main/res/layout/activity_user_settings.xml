@@ -7,7 +7,7 @@
     android:background="@color/white"
     android:orientation="vertical"
     android:paddingHorizontal="10dp"
-    tools:context=".gui.pages.UserSettingsActivity">
+    tools:context=".gui.settings.UserSettingsActivity">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -22,13 +22,11 @@
             android:orientation="vertical">
 
 
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
-                android:orientation="vertical"
-                >
+                android:orientation="vertical">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -39,33 +37,48 @@
                     android:textColor="#99000000"
                     android:textSize="20sp" />
 
-                <Button
-                    android:id="@+id/pick_excluded_dates_button"
-                    style="@style/Widget.AppCompat.Button.Colored"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginVertical="8dp"
-                    android:text="Wybierz daty"
-                    app:icon="@drawable/icon_calendar" />
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/pick_excluded_dates_button"
+                        style="@style/Widget.AppCompat.Button.Colored"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="8dp"
+                        android:layout_weight="1"
+                        android:text="Wybierz daty"
+                        app:icon="@drawable/icon_calendar" />
+
+                    <Button
+                        android:id="@+id/reset_unavailable_dates_button"
+                        style="@style/Widget.MaterialComponents.Button"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="8dp"
+                        android:layout_weight="6"
+                        android:backgroundTint="@color/hard_red"
+                        app:icon="@drawable/delete_icon"
+                        app:iconPadding="8dp" />
+
+                </LinearLayout>
 
 
             </LinearLayout>
-
-
-
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
-                android:orientation="vertical"
-                >
+                android:orientation="vertical">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingLeft="5dp"
                     android:layout_marginVertical="5dp"
+                    android:paddingLeft="5dp"
                     android:text="Ilość wolnych godzin w tygodniu:"
                     android:textColor="#99000000"
                     android:textSize="20sp" />
@@ -95,256 +108,25 @@
 
                 </LinearLayout>
 
-
-
-
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:paddingLeft="5dp"
-                    android:layout_marginVertical="5dp"
-                    android:text="typy zadań: "
-                    android:textColor="#99000000"
-                    android:textSize="20sp" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:layout_width="40dp"
-                        android:layout_height="match_parent"
-                        android:text="1: "
-                        android:padding="5dp"
-                        android:textSize="25dp"
-                        />
-                    <androidx.appcompat.widget.AppCompatEditText
-                        android:id="@+id/type1"
-                        android:layout_width="160dp"
-                        android:layout_height="50dp"
-                        android:hint="Dom"
-                        android:inputType="textCapSentences"
-                        android:padding="5dp"
-                        android:singleLine="true"
-                        android:gravity="center"
-                        android:textColor="#99000000"
-                        android:textSize="20sp"
-                        />
-
-                    <ImageView
-                        android:id="@+id/type1_col1"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:src="@drawable/radio_checked"
-                        app:tint="#81A969"
-                        />
-
-                    <ImageView
-                        android:id="@+id/type1_col2"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:src="@drawable/radio_unchecked"
-                        app:tint="#43B14B" />
-
-                    <ImageView
-                        android:id="@+id/type1_col3"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:src="@drawable/radio_unchecked"
-                        app:tint="#68902B" />
-
-                    <ImageView
-                        android:id="@+id/type1_col4"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:src="@drawable/radio_unchecked"
-                        app:tint="#29741D" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:layout_width="40dp"
-                        android:layout_height="match_parent"
-                        android:text="2: "
-                        android:padding="5dp"
-                        android:textSize="25dp"
-                        />
-                    <androidx.appcompat.widget.AppCompatEditText
-                        android:id="@+id/type2"
-                        android:layout_width="160dp"
-                        android:layout_height="50dp"
-                        android:hint="Szkoła"
-                        android:inputType="textCapSentences"
-                        android:padding="5dp"
-                        android:singleLine="true"
-                        android:gravity="center"
-                        android:textColor="#99000000"
-                        android:textSize="20sp"
-                        />
-
-                    <ImageView
-                        android:id="@+id/type2_col1"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:src="@drawable/radio_checked"
-                        app:tint="#88A9C3" />
-
-                    <ImageView
-                        android:id="@+id/type2_col2"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:src="@drawable/radio_unchecked"
-                        app:tint="#00A8A8"
-                        />
-
-                    <ImageView
-                        android:id="@+id/type2_col3"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:src="@drawable/radio_unchecked"
-                        app:tint="#1B7895" />
-
-                    <ImageView
-                        android:id="@+id/type2_col4"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:src="@drawable/radio_unchecked"
-                        app:tint="#0C6980" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:layout_width="40dp"
-                        android:layout_height="match_parent"
-                        android:text="3: "
-                        android:padding="5dp"
-                        android:textSize="25dp"
-                        />
-                    <androidx.appcompat.widget.AppCompatEditText
-                        android:id="@+id/type3"
-                        android:layout_width="160dp"
-                        android:layout_height="50dp"
-                        android:hint="Komputer"
-                        android:inputType="textCapSentences"
-                        android:padding="5dp"
-                        android:singleLine="true"
-                        android:gravity="center"
-                        android:textColor="#99000000"
-                        android:textSize="20sp"
-                        />
-
-                    <ImageView
-                        android:id="@+id/type3_col1"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:src="@drawable/radio_checked"
-                        app:tint="#FFEB5B" />
-
-                    <ImageView
-                        android:id="@+id/type3_col2"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:src="@drawable/radio_unchecked"
-                        app:tint="#FAD02C" />
-
-                    <ImageView
-                        android:id="@+id/type3_col3"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:src="@drawable/radio_unchecked"
-                        app:tint="#FAA94A" />
-
-                    <ImageView
-                        android:id="@+id/type3_col4"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:src="@drawable/radio_unchecked"
-                        app:tint="#F27C22" />
-
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:layout_width="40dp"
-                        android:layout_height="match_parent"
-                        android:text="4: "
-                        android:padding="5dp"
-                        android:textSize="25dp"
-                        />
-                    <androidx.appcompat.widget.AppCompatEditText
-                        android:id="@+id/type4"
-                        android:layout_width="160dp"
-                        android:layout_height="50dp"
-                        android:hint="Rozrywka"
-                        android:inputType="textCapSentences"
-                        android:padding="5dp"
-                        android:singleLine="true"
-                        android:gravity="center"
-                        android:textColor="#99000000"
-                        android:textSize="20sp"
-                        />
-
-                    <ImageView
-                        android:id="@+id/type4_col1"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:src="@drawable/radio_checked"
-                        app:tint="#FFC0CB" />
-
-                    <ImageView
-                        android:id="@+id/type4_col2"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:src="@drawable/radio_unchecked"
-                        app:tint="#D0C3F1" />
-
-                    <ImageView
-                        android:id="@+id/type4_col3"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:src="@drawable/radio_unchecked"
-                        app:tint="#830C4F" />
-
-                    <ImageView
-                        android:id="@+id/type4_col4"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:src="@drawable/radio_unchecked"
-                        app:tint="#633058" />
-
-                </LinearLayout>
-
             </LinearLayout>
 
+            <TextView
+                android:id="@+id/typy_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="5dp"
+                android:paddingHorizontal="5dp"
+                android:text="Kolory typów zadań:"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="#99000000"
+                android:textSize="20sp" />
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/typesRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:itemCount="4"
+                tools:listitem="@layout/settings_type_color_selection" />
 
 
         </LinearLayout>
@@ -366,7 +148,7 @@
             android:backgroundTint="@color/pr1_green_text"
             android:padding="10dp"
             android:text="zapisz"
-            android:textColor="#99ffffff"
+            android:textColor="@color/white"
             android:textSize="18dp"
             android:textStyle="bold" />
 
