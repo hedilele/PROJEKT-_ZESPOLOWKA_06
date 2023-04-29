@@ -10,6 +10,9 @@ interface TypeDAO
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertType(types: Types)
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertTypes(types: List<Types>)
+
     @Update
     suspend fun updateType(type: Types)
 
