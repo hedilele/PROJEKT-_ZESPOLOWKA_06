@@ -22,6 +22,10 @@ interface TasksDAO
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertSubtask(subtasks: Subtasks)
 
+    @Transaction
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertTaskWithNote(task: Tasks, note: Notes)
+
     @Update
     suspend fun update(tasks: Tasks)
 

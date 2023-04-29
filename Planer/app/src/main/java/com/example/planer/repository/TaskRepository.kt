@@ -2,6 +2,7 @@ package com.example.planer.repository
 
 import androidx.lifecycle.LiveData
 import com.example.planer.DAOs.TasksDAO
+import com.example.planer.entities.Notes
 import com.example.planer.entities.Tasks
 import java.text.SimpleDateFormat
 
@@ -100,6 +101,10 @@ class TaskRepository(private val tasksDAO: TasksDAO)
     fun readTasksWithSearchEdit(searchName: String): LiveData<List<Tasks>>
     {
         return tasksDAO.readTasksWithSearchName(searchName)
+    }
+
+    suspend fun insertTaskWithNote(task: Tasks, note: Notes) {
+        return tasksDAO.insertTaskWithNote(task, note)
     }
 
 }
