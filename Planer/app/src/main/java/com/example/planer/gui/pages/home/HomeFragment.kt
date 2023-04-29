@@ -1,14 +1,12 @@
-package com.example.planer.gui.pages
+package com.example.planer.gui.pages.home
 
 import android.app.AlertDialog
 import android.graphics.Color
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -18,12 +16,11 @@ import com.example.planer.R
 import com.example.planer.ViewModel.HabitViewModel
 import com.example.planer.ViewModel.TaskViewModel
 import com.example.planer.algorithm.BlockListTask
-import com.example.planer.algorithm.IO
 import com.example.planer.databinding.FragmentHomeBinding
 import com.example.planer.entities.Habits
 import com.example.planer.entities.Tasks
-import com.example.planer.gui.AdapterHabits
-import com.example.planer.gui.AdapterTasks
+import com.example.planer.gui.pages.home.habits.AdapterHabits
+import com.example.planer.gui.pages.home.tasks.AdapterTasks
 import kotlinx.android.synthetic.main.dialog_habit.view.*
 import kotlinx.android.synthetic.main.fragment_home.view.*
 

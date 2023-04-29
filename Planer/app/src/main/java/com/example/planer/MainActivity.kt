@@ -6,118 +6,105 @@ import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.viewpager.widget.ViewPager
+import androidx.viewpager2.widget.ViewPager2
+import com.example.planer.ViewModel.NoteViewModel
 import com.example.planer.databinding.ActivityMainBinding
-import com.example.planer.gui.AddingTaskActivity
-import com.example.planer.gui.HideNextPage
+import com.example.planer.entities.Notes
+import com.example.planer.gui.ViewPager2Adapter
+import com.example.planer.gui.pages.home.tasks.AddingTaskActivity
 import com.example.planer.gui.pages.*
-import com.example.planer.gui.settings.UserSettingsActivity
+import com.example.planer.gui.pages.filter.FilterFragment
+import com.example.planer.gui.pages.home.HomeFragment
+import com.example.planer.gui.pages.pomodoro.PomodoroActivity
+import com.example.planer.gui.pages.pomodoro.PomodoroFragment
+import com.example.planer.gui.pages.settings.UserSettingsActivity
 import com.example.planer.scope.ScopeMode
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+    private lateinit var noteViewModel: NoteViewModel
+
     lateinit var toggle: ActionBarDrawerToggle
 
-    private lateinit var db : AppDatabase
+    // private var pomodoroRecentlyOpened = false
 
-    private lateinit var pagerAdapters: PagerAdapters
+
+    //private lateinit var pagerAdapters: PagerAdapters
 
     var byDrawer = 0
+    var pomodoroSeries: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        //val db = Room.databaseBuilder(applicationContext, AppDatabase::class.java, "TOP.sqlite")
 
-        // dodanie fragmentów do listy
-        pagerAdapters = PagerAdapters(supportFragmentManager)
-        pagerAdapters.addFragment(HomeFragment())       // 0
-        pagerAdapters.addFragment(CalendarFragment())   // 1
-        pagerAdapters.addFragment(FilterFragment())     // 2
-        pagerAdapters.addFragment(FilterFragment())     // 3        //TODO DO ZMIANY
-        pagerAdapters.addFragment(PomodoroFragment())     // 4
+        val viewPager: ViewPager2 = binding.pagerView
 
-        // przypisanie adaptera zajmującego się fragmentami do adaptera pagerView
-        binding.pagerView.adapter = pagerAdapters
+        val fragments: ArrayList<Fragment> = arrayListOf(
+            HomeFragment(),         // 0
+            CalendarFragment(),     // 1
+            FilterFragment()           //2
+        )
+
+
+        val adapter = ViewPager2Adapter(fragments, supportFragmentManager, lifecycle)
+        viewPager.adapter = adapter
 
 
         // nawigacja - po kliknięciu na odpowiednią ikonę przenosi nas do danego fragmentu
         // strona główna (z recyclerView)
-        binding.buttonHome.setOnClickListener{
-            byDrawer = 0
-
-            //możliwosc scrollowania wlaczona
-            binding.pagerView.setOnTouchListener { arg0, arg1 -> false }
-            binding.pagerView.currentItem = 0
+        binding.buttonHome.setOnClickListener {
+            binding.pagerView.setCurrentItem(0)
         }
 
         // menu boczne - wysuwanie
-        binding.buttonMenu.setOnClickListener{
-            //binding.myPagerView.setCurrentItem(1)
+        binding.buttonMenu.setOnClickListener {
             binding.drawerLayout.openDrawer(GravityCompat.START);
-            //byDrawer = 0
         }
 
         // kalendarz
-        binding.buttonCalendar.setOnClickListener{
-
-            //możliwosc scrollowania wlaczona
-            binding.pagerView.setOnTouchListener { arg0, arg1 -> false }
+        binding.buttonCalendar.setOnClickListener {
             binding.pagerView.setCurrentItem(1)
-
-            byDrawer = 0
         }
 
         // dodanie tasków - przekierowanie do nowej aktywności
-        binding.buttonAdd.setOnClickListener{
-            byDrawer = 0
-
-            //możliwosc scrollowania wlaczona
-            binding.pagerView.setOnTouchListener { arg0, arg1 -> false }
+        binding.buttonAdd.setOnClickListener {
 
             lifecycleScope.launch {
                 val intent = Intent(applicationContext, AddingTaskActivity::class.java)
                 startActivity(intent)
             }
-
-
         }
 
+        //var pomodoroNote: Notes
+        noteViewModel = ViewModelProvider(this).get(NoteViewModel::class.java)
 
-        binding.pagerView.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
-            override fun onPageScrollStateChanged(state: Int) {
-                // This method will be invoked when the scroll state changes.
-            }
-
-            override fun onPageScrolled(
-                position: Int,
-                positionOffset: Float,
-                positionOffsetPixels: Int
-            ) {
-                // This method will be invoked when the current page is scrolled.
-                if (position == 1 && byDrawer == 0)
-                {
-                    binding.pagerView.setCurrentItem(1)
-                    binding.pagerView.setPageTransformer(false, HideNextPage())
-                    return
+        lifecycleScope.launch {
+            withContext(Dispatchers.IO) {
+                var pomodoroNote: Notes? = noteViewModel.getNoteById(1)
+                if (pomodoroNote?.noteContent != "pomodoro") {
+                    noteViewModel.addNote(
+                        Notes(
+                            noteId = 1,
+                            noteTitle = "pomodoro",
+                            noteContent = "",
+                            photo = null
+                        )
+                    )
                 }
             }
-
-            override fun onPageSelected(position: Int) {
-                // This method will be invoked when a new page becomes selected.
-
-            }
-        })
-
-
-
-
+        }
 
         // menu boczne - mechanizm odpowiedzialny za wysuwanie
         binding.apply {
@@ -134,57 +121,51 @@ class MainActivity : AppCompatActivity() {
 
             binding?.navigation?.setNavigationItemSelectedListener {
                 when (it.itemId) {
-                    R.id.item1 -> {
-                        Toast.makeText(this@MainActivity, "111", Toast.LENGTH_SHORT).show()
-                        binding.pagerView.setCurrentItem(2)
+                    R.id.filter -> {
 
-                        //możliwosc scrollowania wylaczona
-                        binding.pagerView.setOnTouchListener { arg0, arg1 -> true }
-
-                        byDrawer = 1
-
-                        //supportFragmentManager.beginTransaction().replace(R.id.ll_ftagments, FilterFragment()).commitAllowingStateLoss()
-
-                        binding.drawerLayout.closeDrawer(GravityCompat.START);
-                    }
-                    R.id.item2 -> {
-                        //Toast.makeText(this@MainActivity, "222", Toast.LENGTH_SHORT).show()
-
-                        binding.pagerView.setCurrentItem(3)
-
-                        //możliwosc scrollowania wylaczona
-                        binding.pagerView.setOnTouchListener { arg0, arg1 -> true }
-
-                        byDrawer = 1
-                        binding.drawerLayout.closeDrawer(GravityCompat.START);
-                    }
-                    R.id.item3 -> {
-                        //Toast.makeText(this@MainActivity, "333", Toast.LENGTH_SHORT).show()
-
-                        binding.pagerView.setCurrentItem(4)
-
-                        //możliwosc scrollowania wylaczona
-                        binding.pagerView.setOnTouchListener { arg0, arg1 -> true }
-
-                        byDrawer = 1
+                        //val intent = Intent(applicationContext, FilterActivity::class.java)
+                        //startActivity(intent)
+                        pagerView.setCurrentItem(2)
+//                        viewPager.isUserInputEnabled = false // disable swiping
                         binding.drawerLayout.closeDrawer(GravityCompat.START);
 
                     }
 
-                    R.id.item4 -> {
+                    // pomodoro
+                    R.id.pomodoro -> {
+
+//                        if (isActivityRunningInForeground(applicationContext, PomodoroActivity::class.java)) {
+//                            val intent = Intent(applicationContext, PomodoroActivity::class.java)
+//                            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+//                            startActivity(intent)
+//                        }
+//                        else
+//                        {
+                        val intent = Intent(applicationContext, PomodoroActivity::class.java)
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent)
+
+
+                        //}
+
+                        binding.drawerLayout.closeDrawer(GravityCompat.START);
+
+                    }
+
+
+                    R.id.settings -> {
 
                         val intent = Intent(applicationContext, UserSettingsActivity::class.java)
                         startActivity(intent)
 
                     }
 
-                    R.id.item5 -> {
+                    R.id.scope_mode -> {
 
                         val intent = Intent(applicationContext, ScopeMode::class.java)
                         startActivity(intent)
 
                     }
-
                 }
                 true
             }

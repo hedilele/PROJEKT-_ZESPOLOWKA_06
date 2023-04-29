@@ -7,7 +7,7 @@
     android:background="@color/white"
     android:orientation="vertical"
     android:paddingHorizontal="10dp"
-    tools:context=".gui.AddingTaskActivity">
+    tools:context=".gui.pages.home.tasks.AddingTaskActivity">
 
     <ScrollView
         android:layout_width="match_parent"

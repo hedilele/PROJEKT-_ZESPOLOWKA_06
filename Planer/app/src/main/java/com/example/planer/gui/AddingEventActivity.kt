@@ -13,23 +13,12 @@ import android.view.KeyEvent
 import android.view.View
 import android.view.View.OnFocusChangeListener
 import android.widget.*
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import com.example.planer.MainActivity
 import com.example.planer.R
 import com.example.planer.ViewModel.CalendarViewModel
-import com.example.planer.databinding.ActivityAddingTaskBinding
 import com.example.planer.databinding.AddEventToCalendarBinding
-import com.example.planer.gui.AddingEventActivity
-
-import com.example.planer.entities.Tasks
-import com.example.planer.gui.pages.CalendarFragment
-import kotlinx.android.synthetic.main.activity_adding_task.*
-import kotlinx.android.synthetic.main.dialog_edit_event.*
 import java.text.SimpleDateFormat
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 import java.util.*
 
 class AddingEventActivity : AppCompatActivity(), View.OnClickListener {

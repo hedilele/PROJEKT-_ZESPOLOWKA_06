@@ -2,27 +2,22 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/item1"
+        android:id="@+id/filter"
         android:title="Filtrowanie"
         />
 
     <item
-        android:id="@+id/item2"
-        android:title="Nawyki"
-        />
-
-    <item
-        android:id="@+id/item3"
+        android:id="@+id/pomodoro"
         android:title="Pomodoro"
         />
 
     <item
-        android:id="@+id/item4"
+        android:id="@+id/settings"
         android:title="Ustawienia"
         />
 
     <item
-        android:id="@+id/item5"
+        android:id="@+id/scope_mode"
         android:title="Scope mode"
         />
 

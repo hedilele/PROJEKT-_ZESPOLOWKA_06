@@ -7,7 +7,7 @@
     android:background="@color/white"
     android:orientation="vertical"
     android:paddingHorizontal="10dp"
-    tools:context=".gui.settings.UserSettingsActivity">
+    tools:context=".gui.pages.settings.UserSettingsActivity">
 
     <ScrollView
         android:layout_width="match_parent"

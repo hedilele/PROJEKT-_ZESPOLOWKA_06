@@ -1,4 +1,4 @@
-package com.example.planer.gui.settings
+package com.example.planer.gui.pages.settings
 
 import android.content.res.ColorStateList
 import android.graphics.Color

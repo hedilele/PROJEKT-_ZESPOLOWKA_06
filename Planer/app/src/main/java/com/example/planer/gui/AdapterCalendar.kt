@@ -23,8 +23,7 @@ import com.example.planer.databinding.SingleEventBinding
 import com.example.planer.databinding.SingleTaskBinding
 import com.example.planer.entities.Calendar
 import com.example.planer.entities.Tasks
-import kotlinx.android.synthetic.main.single_event.view.*
-import kotlinx.android.synthetic.main.single_task.view.*
+
 import kotlinx.coroutines.NonDisposableHandle.parent
 import kotlinx.coroutines.currentCoroutineContext
 import java.text.SimpleDateFormat
@@ -38,8 +37,6 @@ class AdapterCalendar (
 ) : RecyclerView.Adapter<AdapterCalendar.ViewHolder>() {
 
 
-
-
     class ViewHolder(itemView: CardView) : RecyclerView.ViewHolder(itemView) {
 
     }
@@ -51,6 +48,7 @@ class AdapterCalendar (
 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+      /*
         val item = list[position]
         holder.itemView.title_event.text = item.name
         holder.itemView.date_event.text = item.startDate
@@ -443,6 +441,8 @@ class AdapterCalendar (
 
         }
 
+
+       */
     }
 
     override fun getItemCount(): Int {

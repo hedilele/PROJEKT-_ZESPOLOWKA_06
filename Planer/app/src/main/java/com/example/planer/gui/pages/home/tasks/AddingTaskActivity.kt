@@ -1,19 +1,14 @@
-package com.example.planer.gui
+package com.example.planer.gui.pages.home.tasks
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.KeyEvent
 import android.view.View
 import android.view.View.OnFocusChangeListener
 import android.widget.*
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.get
 import androidx.lifecycle.ViewModelProvider
 import com.example.planer.MainActivity
 import com.example.planer.R

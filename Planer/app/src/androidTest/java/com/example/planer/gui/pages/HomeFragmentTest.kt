@@ -13,6 +13,7 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.isClickable
 import androidx.test.espresso.matcher.ViewMatchers.isFocusable
 import androidx.test.filters.LargeTest
+import com.example.planer.gui.pages.home.HomeFragment
 import org.junit.Before
 
 @RunWith(AndroidJUnit4::class)

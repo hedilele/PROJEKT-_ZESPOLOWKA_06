@@ -1,4 +1,4 @@
-package com.example.planer.gui
+package com.example.planer.gui.pages.home.tasks
 
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog

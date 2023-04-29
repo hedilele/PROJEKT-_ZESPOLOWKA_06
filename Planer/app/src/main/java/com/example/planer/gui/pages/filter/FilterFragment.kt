@@ -1,4 +1,4 @@
-package com.example.planer.gui.pages
+package com.example.planer.gui.pages.filter
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
@@ -23,7 +23,7 @@ import com.example.planer.R
 import com.example.planer.ViewModel.TaskViewModel
 import com.example.planer.algorithm.BlockListTask
 import com.example.planer.entities.Tasks
-import com.example.planer.gui.AdapterTasks
+import com.example.planer.gui.pages.home.tasks.AdapterTasks
 import kotlinx.android.synthetic.main.dialog_task_info.*
 import kotlinx.android.synthetic.main.fragment_filter.*
 import kotlinx.android.synthetic.main.fragment_filter.view.*

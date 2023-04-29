@@ -1,15 +1,12 @@
-package com.example.planer.gui
+package com.example.planer.gui.pages.home.tasks
 
 import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import com.example.planer.R
 
-class EditDialogFragment: DialogFragment() {
+class EditTaskDialogFragment: DialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let{

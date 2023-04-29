@@ -96,7 +96,6 @@ import com.example.planer.databinding.ActivityCalendarBinding
 import com.example.planer.entities.Calendar
 import com.example.planer.gui.AdapterCalendar
 import com.example.planer.gui.AddingEventActivity
-import kotlinx.android.synthetic.main.activity_calendar.view.*
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
@@ -119,6 +118,7 @@ class CalendarFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.activity_calendar, container, false)
 
+        /*
         // initialize selected date to current date
         selectedDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
 
@@ -148,6 +148,8 @@ class CalendarFragment : Fragment() {
             adapter.notifyDataSetChanged()
         })
 
+         */
+
         /*  calview.setOnDayClickListener(object : OnDayClickListener {
               override fun onDayClick(eventDay: EventDay) {
                   val calendar: java.util.Calendar = eventDay.calendar
@@ -174,6 +176,7 @@ class CalendarFragment : Fragment() {
           })
   */
 
+        /*
         calview.setOnDateChangeListener { _, year, month, dayOfMonth ->
             val calendar = java.util.Calendar.getInstance()
             calendar.set(year, month, dayOfMonth, 0, 0, 0)
@@ -192,6 +195,7 @@ class CalendarFragment : Fragment() {
                 }
                 adapter.notifyDataSetChanged()
             }
+
         }
 
         view.add_event_to_calendar.setOnClickListener {
@@ -202,6 +206,7 @@ class CalendarFragment : Fragment() {
             }
         }
 
+        */
         return view
     }
 }

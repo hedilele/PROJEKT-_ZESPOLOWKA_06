@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".gui.AddingTaskActivity"
+    tools:context=".gui.pages.home.tasks.AddingTaskActivity"
     android:layout_marginTop="40dp"
     android:orientation="vertical"
     android:paddingHorizontal="10dp">

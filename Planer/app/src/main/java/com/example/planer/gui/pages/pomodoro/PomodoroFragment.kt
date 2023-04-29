@@ -1,4 +1,4 @@
-package com.example.planer.gui.pages
+package com.example.planer.gui.pages.pomodoro
 
 import android.app.AlertDialog
 import android.content.Context
@@ -9,14 +9,11 @@ import androidx.fragment.app.Fragment
 import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.TextView
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.planer.R
 import com.example.planer.ViewModel.NoteViewModel
-import com.example.planer.databinding.FragmentHomeBinding
-import com.example.planer.databinding.FragmentPomodoroBinding
 import com.example.planer.entities.Notes
 import kotlinx.android.synthetic.main.dialog_note_pomodoro.view.*
 import kotlinx.android.synthetic.main.fragment_pomodoro.view.*
@@ -50,7 +47,8 @@ class PomodoroFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_pomodoro, container, false)
+
+     /*   val view = inflater.inflate(R.layout.fragment_pomodoro, container, false)
         noteViewModel = ViewModelProvider(this).get(NoteViewModel::class.java)
 
 
@@ -163,6 +161,8 @@ class PomodoroFragment : Fragment() {
             }
         }
 
+
+      */
         return view
 
     }

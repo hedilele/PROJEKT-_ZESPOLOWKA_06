@@ -1,12 +1,8 @@
 package com.example.planer
 
-import android.content.Context
-import android.content.Intent
-import androidx.core.content.ContextCompat.startActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
-import com.example.planer.gui.AddingTaskActivity
 
 
 class PagerAdapters(sFM:FragmentManager)

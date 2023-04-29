@@ -16,7 +16,6 @@ import kotlinx.coroutines.*
 class NoteViewModel(application: Application): AndroidViewModel(application)
 {
     val readAllData: LiveData<List<Notes>>
-    val findPomodoro: LiveData<Notes>
     private val repository: NoteRepository
 
     //To zawsze pierwsze bedzie sie wykonywalo kiedy callujemy UserViewModel
@@ -25,7 +24,6 @@ class NoteViewModel(application: Application): AndroidViewModel(application)
         val notesDAO = AppDatabase.getDatabase(application).notesDAO()
         repository = NoteRepository(notesDAO)
         readAllData = repository.readAllData
-        findPomodoro = repository.findPomodoro
     }
 
     //Zla praktyka jest uruchamiac zapytania z bazy w watku glownym!
@@ -45,6 +43,20 @@ class NoteViewModel(application: Application): AndroidViewModel(application)
         }
     }
 
+    fun deleteNoteById(id: Int)
+    {
+        viewModelScope.launch(Dispatchers.IO) //Odpali sie w oddzielnym watku w tle
+        {
+            repository.deleteNoteById(id)
+        }
+    }
+
+    fun getNoteById(id: Int): Notes
+    {
+        return repository.getNoteById(id)
+
+    }
+
     fun updateNote(notes: Notes)
     {
         viewModelScope.launch(Dispatchers.IO) //Odpali sie w oddzielnym watku w tle
@@ -53,14 +65,13 @@ class NoteViewModel(application: Application): AndroidViewModel(application)
         }
     }
 
-    fun findPomodoroNote()
+    fun updateNoteById(id: Int, context: String)
     {
         viewModelScope.launch(Dispatchers.IO) //Odpali sie w oddzielnym watku w tle
         {
-           repository.findPomodoroNote()
+            repository.updateNoteById(id, context)
         }
     }
-
 
     fun readAllData()
     {

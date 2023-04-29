@@ -17,14 +17,21 @@ interface NotesDAO
     @Delete
     suspend fun delete(notes: Notes)
 
+    @Query("DELETE FROM `Notes` WHERE id = :id")
+    fun deleteByID(id: Int)
+
     @Query("SELECT * FROM `Notes`")
     fun readAllData(): LiveData<List<Notes>>
 
-    @Query("SELECT * FROM `Notes` WHERE note_title = '#pomodoro#'")
-    fun findPomoddoroNote(): LiveData<Notes>
+    @Query("UPDATE Notes SET note_content = :context WHERE id = :id")
+    fun updateNoteById(id: Int, context: String)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertNote(notes: Notes)
+
+    @Transaction
+    @Query("SELECT * FROM Notes WHERE id = :id")
+    fun getNoteById(id: Int): Notes
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertTask(tasks: Tasks)
@@ -35,10 +42,6 @@ interface NotesDAO
     @Transaction
     @Query("SELECT * FROM Notes WHERE id = :id")
     suspend fun getNoteAndTaskWithId(id: Int) : List<NoteAndTask>
-
-    @Transaction
-    @Query("SELECT * FROM Notes WHERE id = :id")
-    fun getNoteById(id: Int) : LiveData<List<Notes>>
 
     @Transaction
     @Query("SELECT * FROM Notes WHERE id = :id")
