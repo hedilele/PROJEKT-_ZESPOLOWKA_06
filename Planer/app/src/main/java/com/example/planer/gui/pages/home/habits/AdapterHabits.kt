@@ -52,9 +52,9 @@ class AdapterHabits(
         holder.itemView.habit_title.setText(item.name)
 
         holder.itemView.setOnClickListener {
+            updateListener(item)
             deleteListener(item)
         }
-
 
     }
 }

@@ -45,7 +45,6 @@ class HomeFragment : Fragment() {
     var delete_clicked = 0
 
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
