@@ -3,12 +3,17 @@ package com.example.planer.DAOs
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.example.planer.entities.Calendar
+import com.example.planer.entities.Notes
+
 @Dao
 interface CalendarDAO
 {
     //Insertowanie do kalendarza wszystkich rzeczy
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(calendar: Calendar)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertCalendarWithNote(calendar: Calendar, note: Notes)
 
     //Delete po parametrach
     @Delete

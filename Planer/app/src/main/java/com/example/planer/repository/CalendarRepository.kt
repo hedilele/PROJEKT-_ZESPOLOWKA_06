@@ -3,6 +3,7 @@ package com.example.planer.repository
 import androidx.lifecycle.LiveData
 import com.example.planer.DAOs.CalendarDAO
 import com.example.planer.entities.Calendar
+import com.example.planer.entities.Notes
 
 
 class CalendarRepository(private val calendarDAO: CalendarDAO)
@@ -13,6 +14,10 @@ class CalendarRepository(private val calendarDAO: CalendarDAO)
     suspend fun addCalendarDate(calendar: Calendar)
     {
         calendarDAO.insert(calendar)
+    }
+
+    suspend fun addCalendarWithNote(calendar: Calendar, note: Notes) {
+        calendarDAO.insertCalendarWithNote(calendar, note)
     }
 
     //Rozne usuwania
