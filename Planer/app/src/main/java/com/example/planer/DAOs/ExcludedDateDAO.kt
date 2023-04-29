@@ -11,6 +11,9 @@ interface ExcludedDateDAO {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(excludedDate: ExcludedDate)
 
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insertDates(excludedDates: List<ExcludedDate>)
+
     @Update
     suspend fun update(excludedDate: ExcludedDate)
 

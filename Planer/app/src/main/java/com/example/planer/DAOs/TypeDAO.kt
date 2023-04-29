@@ -13,6 +13,9 @@ interface TypeDAO
     @Update
     suspend fun updateType(type: Types)
 
+    @Update
+    suspend fun updateTypes(types: List<Types>)
+
     @Transaction
     @Query("SELECT * FROM Types")
     fun getAllTypes() : LiveData<List<Types>>

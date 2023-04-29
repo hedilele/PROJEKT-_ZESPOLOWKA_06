@@ -14,6 +14,10 @@ class ExcludedDateRepository(private val excludedDateDAO: ExcludedDateDAO) {
         excludedDateDAO.insert(excludedDate)
     }
 
+    suspend fun addExcludedDates(excludedDates: List<ExcludedDate>) {
+        excludedDateDAO.insertDates(excludedDates)
+    }
+
     suspend fun removeExcludedDate(excludedDate: ExcludedDate) {
         excludedDateDAO.deleteByDate(excludedDate.excludedDate)
     }

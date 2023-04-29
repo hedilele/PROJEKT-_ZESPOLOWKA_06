@@ -34,15 +34,12 @@ class SettingsViewModel(application: Application): AndroidViewModel(application)
     }
 
     suspend fun saveSettings(settings: Settings, types: List<Types>, markedDates: List<ExcludedDate>) {
+
+        typeRepository.updateTypes(types)
         settingsRepository.updateSettings(settings)
-        // TODO zapytanie sql które to zrobi ładniej
-        for (type in types) {
-            typeRepository.updateType(type)
-        }
-        for (date in markedDates) {
-            excludedDateRepository.addExcludedDate(date)
-        }
+        excludedDateRepository.addExcludedDates(markedDates)
         excludedDateRepository.removeDatesNotInList(markedDates)
+
     }
 
     suspend fun createSettingsIfDontExist() {

@@ -12,5 +12,5 @@ data class Types(
     @ColumnInfo(name = "name")
     val name: String,
     @ColumnInfo(name = "colour")
-    val colour: String
+    var colour: String
 )

@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.LinearLayout
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.aminography.primecalendar.PrimeCalendar
@@ -27,17 +28,20 @@ import kotlinx.coroutines.launch
 import java.time.ZoneId
 
 import java.util.*
+import kotlin.properties.Delegates
 
 
 class UserSettingsActivity : AppCompatActivity(), View.OnClickListener,
     TypeAdapter.OnButtonClickListener {
+
     private lateinit var binding: ActivityUserSettingsBinding
+    private var unsavedSettings by Delegates.notNull<Boolean>()
+
     private lateinit var typeAdapter: TypeAdapter
-
     private val settingsViewModel: SettingsViewModel by viewModels()
-    private var localSettings: Settings = Settings()
-    private var localTypes: List<Types> = emptyList()
 
+    private var localSettings: Settings = Settings()
+    private var changedTypes: MutableList<Types> = mutableListOf()
     private lateinit var dbDates: List<PrimeCalendar>
     private var markedDatePickerList: MutableList<PrimeCalendar> = mutableListOf()
 
@@ -49,6 +53,8 @@ class UserSettingsActivity : AppCompatActivity(), View.OnClickListener,
         binding = ActivityUserSettingsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        unsavedSettings = false
+
         typeAdapter = TypeAdapter(emptyList())
         typeAdapter.setOnItemClickListener(this)
 
@@ -56,8 +62,20 @@ class UserSettingsActivity : AppCompatActivity(), View.OnClickListener,
         binding.typesRecyclerView.layoutManager = LinearLayoutManager(this)
 
         binding.pickExcludedDatesButton.setOnClickListener(this)
-
         binding.btnSave.setOnClickListener(this)
+
+        binding.resetUnavailableDatesButton.setOnClickListener {
+            val builder = AlertDialog.Builder(this)
+            builder.setTitle("Czy chcesz usunąć wszystkie wybrane dni?")
+            builder.setPositiveButton("Tak") { _, _ ->
+                markedDatePickerList.clear()
+                unsavedSettings = true
+            }
+            builder.setNegativeButton("Nie") { dialog, _ ->
+                dialog.dismiss()
+            }
+            builder.show()
+        }
 
         val yesterday = CivilCalendar(TimeZone.getDefault(), Locale("pl", "PL"))
         yesterday.add(Calendar.DAY_OF_YEAR,-1)
@@ -126,7 +144,7 @@ class UserSettingsActivity : AppCompatActivity(), View.OnClickListener,
                         ExcludedDate(excludedDate = localDate)
                     }
 
-                    settingsViewModel.saveSettings(localSettings, localTypes, selectedDates)
+                    settingsViewModel.saveSettings(localSettings, changedTypes, selectedDates)
 
                     savedNotif.show()
                 }
@@ -135,7 +153,10 @@ class UserSettingsActivity : AppCompatActivity(), View.OnClickListener,
             R.id.pick_excluded_dates_button -> {
 
                 val callback = MultipleDaysPickCallback { days ->
-                    markedDatePickerList = days
+                    if (markedDatePickerList.sorted() != days.sorted()) {
+                        markedDatePickerList = days
+                        unsavedSettings = true
+                    }
                 }
 
                 val datePicker = PrimeDatePicker.dialogWith(calendar)
@@ -161,6 +182,9 @@ class UserSettingsActivity : AppCompatActivity(), View.OnClickListener,
             .setColors(arrayListOf("#f6e58d", "#ffbe76", "#ff7979", "#badc58", "#dff9fb", "#7ed6df", "#e056fd", "#686de0", "#30336b", "#95afc0"))
             .setColorListener { color, colorhex ->
                 holder.chosenColorButton.backgroundTintList = ColorStateList.valueOf(color)
+                // Jeśli jest element z takim id to zamienia kolor, jeśli nie ma to dodaje typ ze zmienionym kolorem
+                changedTypes.firstOrNull { it.id == type.id }?.apply { this.colour = colorhex } ?: changedTypes.add(Types(type.id, type.name, colorhex))
+                unsavedSettings = true
             }
             .setColorShape(ColorShape.SQAURE)
             .show()

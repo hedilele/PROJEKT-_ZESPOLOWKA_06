@@ -7,9 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.planer.R
 import com.example.planer.entities.Types
+import com.example.planer.gui.callBacks.TypeDiffCallback
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -64,7 +66,8 @@ class TypeAdapter(typeList: List<Types>) :
     }
 
     fun updateList(newTypes: List<Types>) {
+        val diffResult = DiffUtil.calculateDiff(TypeDiffCallback(types, newTypes))
         types = newTypes
-        notifyDataSetChanged() // debug
+        diffResult.dispatchUpdatesTo(this)
     }
 }
