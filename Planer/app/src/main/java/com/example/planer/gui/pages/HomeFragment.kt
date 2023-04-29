@@ -2,13 +2,13 @@ package com.example.planer.gui.pages
 
 import android.app.AlertDialog
 import android.graphics.Color
-import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -24,10 +24,25 @@ import com.example.planer.entities.Habits
 import com.example.planer.entities.Tasks
 import com.example.planer.gui.AdapterHabits
 import com.example.planer.gui.AdapterTasks
-import kotlinx.android.synthetic.main.dialog_habit.view.*
-import kotlinx.android.synthetic.main.fragment_home.view.*
+import kotlinx.android.synthetic.main.dialog_habit.view.btn_create
+import kotlinx.android.synthetic.main.dialog_habit.view.habit_title
+import kotlinx.android.synthetic.main.fragment_home.view.habits_add
+import kotlinx.android.synthetic.main.fragment_home.view.habits_delete
+import kotlinx.android.synthetic.main.fragment_home.view.habits_list
+import kotlinx.android.synthetic.main.fragment_home.view.month_task_list
+import kotlinx.android.synthetic.main.fragment_home.view.month_title
+import kotlinx.android.synthetic.main.fragment_home.view.rest_task_list
+import kotlinx.android.synthetic.main.fragment_home.view.rest_title
+import kotlinx.android.synthetic.main.fragment_home.view.today_task_list
+import kotlinx.android.synthetic.main.fragment_home.view.today_title
+import kotlinx.android.synthetic.main.fragment_home.view.tomorrow_task_list
+import kotlinx.android.synthetic.main.fragment_home.view.tomorrow_title
+import kotlinx.android.synthetic.main.fragment_home.view.week_task_list
+import kotlinx.android.synthetic.main.fragment_home.view.week_title
+import java.util.concurrent.atomic.AtomicBoolean
 
 
+var somethingWasDone = AtomicBoolean()
 class HomeFragment : Fragment() {
 
     // połączenie z xml
@@ -55,7 +70,7 @@ class HomeFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_home, container, false)
         binding = FragmentHomeBinding.inflate(layoutInflater)
-
+        somethingWasDone.set(true)
         userViewModel = ViewModelProvider(this).get(TaskViewModel::class.java)
 
         //TODO - podlaczanie taskow pod wyswietlanie
@@ -108,20 +123,7 @@ class HomeFragment : Fragment() {
         rv5.adapter = adapter5
         rv5.layoutManager = LinearLayoutManager(requireContext())
 
-        val io = IO()
-        val work = io.newDay(requireContext())
-
-
-        userViewModel = ViewModelProvider(this)[TaskViewModel::class.java]
-        userViewModel.readAllData.observe(viewLifecycleOwner, Observer {
-            val blockListTask = BlockListTask(it, work)
-            blockListTask.planner()
-            adapter.setData(blockListTask.todayList, 1)
-            adapter2.setData(blockListTask.tomorrowList, 0)
-            adapter3.setData(blockListTask.weekList, 0)
-            adapter4.setData(blockListTask.monthList, 0)
-            adapter5.setData(blockListTask.restList, 0)
-        })
+        plan(adapter, adapter2, adapter3, adapter4, adapter5)
 
 
         view.today_title.setOnClickListener {
@@ -210,10 +212,44 @@ class HomeFragment : Fragment() {
 
         }
 
+        /*
+        val mainHandler = Handler(Looper.getMainLooper())
 
-
+        Thread {
+            val previous = AtomicBoolean()
+            previous.set(true)
+            while (true) {
+                if (previous != somethingWasDone) {
+                    somethingWasDone.set(true)
+                    val myRunnable = Runnable {
+                        @Override
+                        fun run() {
+                            Toast.makeText(requireContext(), "TASK WAS DONE", Toast.LENGTH_SHORT)
+                                .show()
+                        }
+                    }
+                    mainHandler.post(myRunnable)
+                }
+            }
+        }.start()
+*/
         return view
 
+    }
+
+    fun plan(adapter: AdapterTasks, adapter2: AdapterTasks, adapter3: AdapterTasks, adapter4: AdapterTasks, adapter5: AdapterTasks){
+        val io = IO()
+        val work = io.newDay(requireContext())
+
+        userViewModel.readAllData.observe(viewLifecycleOwner, Observer {
+            val blockListTask = BlockListTask(it, work)
+            blockListTask.planner()
+            adapter.setData(blockListTask.todayList, 1)
+            adapter2.setData(blockListTask.tomorrowList, 0)
+            adapter3.setData(blockListTask.weekList, 0)
+            adapter4.setData(blockListTask.monthList, 0)
+            adapter5.setData(blockListTask.restList, 0)
+        })
     }
 
 

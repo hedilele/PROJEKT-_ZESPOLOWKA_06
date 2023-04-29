@@ -41,7 +41,6 @@ class IO {
             work = data[1].toInt()
             //Toast.makeText(context, "ten sam dzien", Toast.LENGTH_SHORT).show()
         }
-        Toast.makeText(context, "praca do wykonania: $work", Toast.LENGTH_SHORT).show()
         return work
     }
 
