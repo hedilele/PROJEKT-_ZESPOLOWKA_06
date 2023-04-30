@@ -36,6 +36,9 @@ interface NotesDAO
     @Query("SELECT * FROM Notes WHERE id = :id")
     fun getNoteById(id: Int): Notes
 
+    @Query("SELECT * FROM Notes")
+    fun getAllNotesList(): List<Notes>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertTask(tasks: Tasks)
 

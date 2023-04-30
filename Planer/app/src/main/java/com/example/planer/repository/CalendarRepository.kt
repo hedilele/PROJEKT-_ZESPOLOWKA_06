@@ -56,4 +56,8 @@ class CalendarRepository(private val calendarDAO: CalendarDAO)
     {
         calendarDAO.getAllDates()
     }
+
+    fun getAllList(): List<Calendar> {
+        return calendarDAO.getAllDatesList()
+    }
 }

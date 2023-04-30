@@ -2,7 +2,6 @@ package com.example.planer.repository
 
 import androidx.lifecycle.LiveData
 import com.example.planer.DAOs.NotesDAO
-import com.example.planer.entities.Habits
 import com.example.planer.entities.Notes
 
 class NoteRepository(private val notesDAO: NotesDAO)
@@ -44,6 +43,10 @@ class NoteRepository(private val notesDAO: NotesDAO)
     fun getNoteById(id: Int): Notes
     {
         return notesDAO.getNoteById(id)
+    }
+
+    fun getAllNotesList(): List<Notes> {
+        return notesDAO.getAllNotesList()
     }
 
 }

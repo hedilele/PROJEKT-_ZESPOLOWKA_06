@@ -46,6 +46,10 @@ interface CalendarDAO
     @Query("SELECT * FROM Calendar")
     fun getAllDates():LiveData<List<Calendar>>
 
+    //Zwraca wszystkie daty do listy do exportu
+    @Query("SELECT * FROM Calendar")
+    fun getAllDatesList(): List<Calendar>
+
     //Podaje date w string i wypluwa wydarzenia występujące podczas tej daty
     // query_date musi być date (yyyy-mm-dd) a nie datetime
     @Query("SELECT * FROM Calendar WHERE :query_date BETWEEN date(start_date) AND date(end_date)")

@@ -23,4 +23,7 @@ interface TypeDAO
     @Query("SELECT * FROM Types")
     fun getAllTypes() : LiveData<List<Types>>
 
+    @Query("SELECT * FROM Types")
+    fun getAllTypesList() : List<Types>
+
 }

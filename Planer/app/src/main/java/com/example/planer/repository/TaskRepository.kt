@@ -107,4 +107,8 @@ class TaskRepository(private val tasksDAO: TasksDAO)
         return tasksDAO.insertTaskWithNote(task, note)
     }
 
+    fun getTasksList(): List<Tasks> {
+        return tasksDAO.getTasksList()
+    }
+
 }

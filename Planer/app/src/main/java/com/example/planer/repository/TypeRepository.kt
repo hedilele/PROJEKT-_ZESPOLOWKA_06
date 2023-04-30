@@ -10,6 +10,10 @@ class TypeRepository(private val typeDAO: TypeDAO) {
         return typeDAO.getAllTypes()
     }
 
+    fun getAllTypesList(): List<Types> {
+        return typeDAO.getAllTypesList()
+    }
+
     suspend fun updateType(type: Types) {
         typeDAO.updateType(type)
     }

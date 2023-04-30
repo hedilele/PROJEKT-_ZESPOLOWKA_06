@@ -10,6 +10,10 @@ class SettingsRepository(private val settingsDAO: SettingsDAO) {
         return settingsDAO.getSettings()
     }
 
+    fun getSettings(): Settings {
+        return settingsDAO.getSettingsState()
+    }
+
     suspend fun updateSettings(settings: Settings) {
         settingsDAO.update(settings)
     }
