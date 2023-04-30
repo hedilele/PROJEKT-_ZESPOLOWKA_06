@@ -1,5 +1,7 @@
 package com.example.planer
 
+import android.app.NotificationManager
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
@@ -36,9 +38,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var toggle: ActionBarDrawerToggle
 
     // private var pomodoroRecentlyOpened = false
-
-
-    //private lateinit var pagerAdapters: PagerAdapters
+//private lateinit var pagerAdapters: PagerAdapters
 
     var byDrawer = 0
     var pomodoroSeries: Int = 0
@@ -172,6 +172,12 @@ class MainActivity : AppCompatActivity() {
         }
 
 
+    }
+    //Do wylaczania trybu cichego kiedy ktos zamknie apke
+    override fun onDestroy() {
+        super.onDestroy()
+        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.setInterruptionFilter(NotificationManager.INTERRUPTION_FILTER_ALL)
     }
 }
 

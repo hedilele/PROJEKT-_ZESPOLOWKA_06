@@ -58,7 +58,8 @@ class FilterFragment : Fragment(){
         userViewModel = ViewModelProvider(this)[TaskViewModel::class.java]
         //Ustawiam flage, zeby mozna bylo po filtrowaniu nadasl wyszukiwac po naziwe
         search.addTextChangedListener(object : TextWatcher{
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int)
             {
                     //Pobieram to co jest w textview

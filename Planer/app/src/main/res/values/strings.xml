@@ -17,4 +17,5 @@
 
     <string name="material_dialog_title">Wybierz kolor</string>
     <string name="title_recent_colors">Ostatnio wybierane kolory</string>
+    <string name="notification_channel_id">my_notification_channel</string>
 </resources>
