@@ -10,6 +10,10 @@ class ExcludedDateRepository(private val excludedDateDAO: ExcludedDateDAO) {
         return excludedDateDAO.getExcludedDates()
     }
 
+    fun getExcludedDatesList(): List<ExcludedDate> {
+        return excludedDateDAO.getExcludedDatesList()
+    }
+
     suspend fun addExcludedDate(excludedDate: ExcludedDate) {
         excludedDateDAO.insert(excludedDate)
     }

@@ -13,6 +13,9 @@ interface SettingsDAO {
     @Query("SELECT * FROM Settings WHERE id=1")
     fun getSettings(): LiveData<Settings>
 
+    @Query("SELECT * FROM Settings WHERE id=1")
+    fun getSettingsState(): Settings
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(settings: Settings)
 

@@ -20,6 +20,9 @@ interface ExcludedDateDAO {
     @Query("SELECT * FROM ExcludedDate")
     fun getExcludedDates(): LiveData<List<ExcludedDate>>
 
+    @Query("SELECT * FROM ExcludedDate")
+    fun getExcludedDatesList(): List<ExcludedDate>
+
     @Query("SELECT * FROM ExcludedDate WHERE id=:id")
     fun getExcludedDateById(id: Int): LiveData<ExcludedDate>
 

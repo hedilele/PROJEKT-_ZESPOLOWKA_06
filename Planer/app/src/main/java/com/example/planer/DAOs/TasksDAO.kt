@@ -40,6 +40,9 @@ interface TasksDAO
     @Query("SELECT * FROM Tasks WHERE deadline = '31-03-2023'")
     suspend fun getCurrentDays(): List<Tasks>
 
+    @Query("SELECT * FROM Tasks")
+    fun getTasksList(): List<Tasks>
+
     @Query("SELECT * FROM `tasks`")
     fun fetchAll(): Flow<List<Tasks>>
 

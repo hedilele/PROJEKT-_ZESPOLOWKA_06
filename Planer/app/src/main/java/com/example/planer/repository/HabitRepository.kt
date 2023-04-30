@@ -37,6 +37,10 @@ class HabitRepository(private val habitsDAO: HabitsDAO)
         habitsDAO.readActiveHabits()
     }
 
+    fun getHabitsList(): List<Habits> {
+        return habitsDAO.getAllHabitsList()
+    }
+
     suspend fun readAllDataa()
     {
         habitsDAO.readActiveHabits()
