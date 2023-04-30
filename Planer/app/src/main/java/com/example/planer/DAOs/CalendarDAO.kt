@@ -13,7 +13,14 @@ interface CalendarDAO
     suspend fun insert(calendar: Calendar)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertCalendarWithNote(calendar: Calendar, note: Notes)
+    suspend fun insertNote(note: Notes): Long
+
+    @Transaction
+    suspend fun insertCalendarWithNote(calendar: Calendar, note: Notes) {
+        val noteId = insertNote(note)
+        calendar.noteId = noteId.toInt()
+        insert(calendar)
+    }
 
     //Delete po parametrach
     @Delete

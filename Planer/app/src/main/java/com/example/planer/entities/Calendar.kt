@@ -22,7 +22,7 @@ data class Calendar (
     @ColumnInfo("repeat_id") // co 0- wcale 1 - tydzień, miesiąc, rok , (np. na 5 lat wprzód)
     val repeatId: Int=0,
     @ColumnInfo("note_id")
-    val noteId: Int=0,
+    var noteId: Int=0,
     @ColumnInfo("name")
     val name: String=""
 )

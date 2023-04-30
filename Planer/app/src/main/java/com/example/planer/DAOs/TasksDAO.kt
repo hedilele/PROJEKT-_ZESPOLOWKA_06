@@ -17,14 +17,20 @@ interface TasksDAO
     suspend fun insert(tasks: Tasks)
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insertNote(note: Notes): Long
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertFinished(finished: Finished)
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertSubtask(subtasks: Subtasks)
 
     @Transaction
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertTaskWithNote(task: Tasks, note: Notes)
+    suspend fun insertTaskWithNote(task: Tasks, note: Notes) {
+        val noteId = insertNote(note)
+        task.noteId = noteId.toInt()
+        insert(task)
+    }
 
     @Update
     suspend fun update(tasks: Tasks)
