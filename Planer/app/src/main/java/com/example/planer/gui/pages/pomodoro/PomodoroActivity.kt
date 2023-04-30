@@ -109,6 +109,7 @@ class PomodoroActivity : AppCompatActivity() {
         val pendingIntent = PendingIntent.getBroadcast(this, 0, notificationIntent, PendingIntent.FLAG_IMMUTABLE)
         //Tutaj kod do obslugi tryb nocnego
         binding.btnPlayPause.setOnClickListener {
+
             if(isEnabled)
             {
                 disableDoNotDisturbMode()
@@ -118,7 +119,6 @@ class PomodoroActivity : AppCompatActivity() {
                 enableDoNotDisturbMode()
             }
             pendingIntent.send()
-            startTimerSetup()
         }
 
         binding.ibReset.setOnClickListener {
@@ -423,13 +423,13 @@ class PomodoroActivity : AppCompatActivity() {
     //Wlaczanie
     private fun enableDoNotDisturbMode() {
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-
         // Check if the user has granted access to Do Not Disturb settings
         if (!notificationManager.isNotificationPolicyAccessGranted) {
             // If access has not been granted, redirect the user to the settings page to grant access
             val intent = Intent(Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS)
             startActivity(intent)
         } else {
+            startTimerSetup()
             // If access has been granted, enable Do Not Disturb mode
             notificationManager.setInterruptionFilter(NotificationManager.INTERRUPTION_FILTER_NONE)
         }
@@ -443,6 +443,7 @@ class PomodoroActivity : AppCompatActivity() {
             val intent = Intent(Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS)
             startActivity(intent)
         } else {
+            startTimerSetup()
             notificationManager.setInterruptionFilter(NotificationManager.INTERRUPTION_FILTER_ALL)
         }
         isEnabled = false
