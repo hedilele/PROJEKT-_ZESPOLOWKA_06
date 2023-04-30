@@ -40,8 +40,9 @@
             android:id="@+id/rv_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:listitem="@layout/single_task"
-            android:layout_below="@+id/ll_filters"/>
+            android:layout_below="@+id/ll_filters"
+            android:layout_marginTop="2dp"
+            tools:listitem="@layout/single_task" />
 
     </RelativeLayout>
 
