@@ -2,9 +2,7 @@ package com.example.planer.gui.pages.home
 
 import android.app.AlertDialog
 import android.content.res.ColorStateList
-import android.graphics.Color
 import android.os.Bundle
-import android.provider.ContactsContract.CommonDataKinds.Note
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,10 +25,25 @@ import com.example.planer.entities.Notes
 import com.example.planer.entities.Tasks
 import com.example.planer.gui.pages.home.habits.AdapterHabits
 import com.example.planer.gui.pages.home.tasks.AdapterTasks
-import kotlinx.android.synthetic.main.dialog_habit.view.*
-import kotlinx.android.synthetic.main.fragment_home.view.*
+import kotlinx.android.synthetic.main.dialog_habit.view.btn_create
+import kotlinx.android.synthetic.main.dialog_habit.view.habit_title
+import kotlinx.android.synthetic.main.fragment_home.view.habits_add
+import kotlinx.android.synthetic.main.fragment_home.view.habits_delete
+import kotlinx.android.synthetic.main.fragment_home.view.habits_list
+import kotlinx.android.synthetic.main.fragment_home.view.month_task_list
+import kotlinx.android.synthetic.main.fragment_home.view.month_title
+import kotlinx.android.synthetic.main.fragment_home.view.rest_task_list
+import kotlinx.android.synthetic.main.fragment_home.view.rest_title
+import kotlinx.android.synthetic.main.fragment_home.view.today_task_list
+import kotlinx.android.synthetic.main.fragment_home.view.today_title
+import kotlinx.android.synthetic.main.fragment_home.view.tomorrow_task_list
+import kotlinx.android.synthetic.main.fragment_home.view.tomorrow_title
+import kotlinx.android.synthetic.main.fragment_home.view.week_task_list
+import kotlinx.android.synthetic.main.fragment_home.view.week_title
+import java.util.concurrent.atomic.AtomicBoolean
 
 
+var somethingWasDone = AtomicBoolean()
 class HomeFragment : Fragment() {
 
     // połączenie z xml
@@ -57,7 +70,7 @@ class HomeFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_home, container, false)
         binding = FragmentHomeBinding.inflate(layoutInflater)
-
+        somethingWasDone.set(true)
         userViewModel = ViewModelProvider(this).get(TaskViewModel::class.java)
         noteViewModel = ViewModelProvider(this).get(NoteViewModel::class.java)
 

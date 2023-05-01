@@ -22,10 +22,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.planer.R
 import com.example.planer.ViewModel.UserViewModel
 import com.example.planer.algorithm.IO
-import com.example.planer.entities.Habits
 import com.example.planer.entities.Notes
 import com.example.planer.entities.Tasks
-import com.example.planer.gui.callBacks.HabitDiffCallback
 import com.example.planer.gui.callBacks.NoteDiffCallback
 import com.example.planer.gui.callBacks.TaskDiffCallback
 import com.google.android.material.snackbar.Snackbar
