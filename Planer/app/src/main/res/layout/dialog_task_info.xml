@@ -45,27 +45,19 @@
             android:text="Typ: "
             android:textSize="16dp" />
 
-        <TextView
-            android:id="@+id/duration"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginVertical="5dp"
-            android:text="Trwanie"
-            android:textSize="16dp" />
 
         <TextView
             android:id="@+id/note"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="5dp"
+            android:layout_marginTop="5dp"
             android:text="Notatka: "
-            android:textSize="16dp" />
+            android:textSize="18dp" />
 
         <TextView
             android:id="@+id/note_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="5dp"
             android:text="zawartosc notatki"
             android:textSize="16dp" />
     </LinearLayout>

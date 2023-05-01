@@ -17,10 +17,16 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.planer.R
 import com.example.planer.ViewModel.UserViewModel
+import com.example.planer.entities.Habits
+import com.example.planer.entities.Notes
 import com.example.planer.entities.Tasks
+import com.example.planer.gui.callBacks.HabitDiffCallback
+import com.example.planer.gui.callBacks.NoteDiffCallback
+import com.example.planer.gui.callBacks.TaskDiffCallback
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_adding_task.view.*
 import kotlinx.android.synthetic.main.dialog_task_info.view.*
@@ -32,15 +38,11 @@ import java.util.*
 // klasa odpowiedzialna za umieszczanie pojedynczych tasków w recyclerView
 class AdapterTasks(
     var list: MutableList<Tasks>,
-    private val deleteListener: (id: Int) -> Unit,
-    private val updateListener: (task: Tasks, note: String) -> Unit
+    var notesList: MutableList<Notes>,
+    private val deleteListener: (idTast: Int, idNote: Int) -> Unit,
+    private val updateListener: (task: Tasks, note: Notes) -> Unit
 ): RecyclerView.Adapter<AdapterTasks.ViewHolder>() {
 
-    //var list = emptyList<Tasks>()
-    private lateinit var userViewModel: UserViewModel
-
-
-    var pos: Tasks? = null
 
     class ViewHolder(itemView: CardView): RecyclerView.ViewHolder(itemView) {  }
 
@@ -59,17 +61,20 @@ class AdapterTasks(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = list[position]
+        val itemsNote = notesList.find { notes -> notes.noteId == item.noteId }
 
         //pos = item
 
         holder.itemView.task_title.text = item.title
         // 0123456789012345
         // yyyy-mm-dd hh:mm
-        holder.itemView.task_date.text =
-            item.deadline.substring(8, 10) + '.' +
-            item.deadline.substring(5, 7) + '.' +
-            item.deadline.substring(0, 4) +' ' +
-            item.deadline.substring(11)
+
+        val dateTmp = item.deadline.substring(8, 10) + '.' +
+                item.deadline.substring(5, 7) + '.' +
+                item.deadline.substring(0, 4) +' ' +
+                item.deadline.substring(11)
+
+        holder.itemView.task_date.text = dateTmp
 
         holder.itemView.done.setOnClickListener {
 
@@ -96,7 +101,7 @@ class AdapterTasks(
             Handler().postDelayed({
                 if(clicked == 0)
                 {
-                    deleteListener(item.id)
+                    deleteListener(item.id, item.noteId!!)
                 }
                 holder.itemView.done.setImageDrawable(ContextCompat.getDrawable(holder.itemView.context, R.drawable.icon_checkbox_empty))
                 //holder.itemView.done.setColorFilter(R.color.brown_important_urgent_off)
@@ -108,7 +113,7 @@ class AdapterTasks(
 
 
         holder.itemView.btn_delete.setOnClickListener {
-            deleteListener(item.id)
+            deleteListener(item.id, item.noteId!!)
 
             //TODO uruchomic algo?
         }
@@ -126,12 +131,8 @@ class AdapterTasks(
             var duration: Int = item.timeToFinish
             var isActive: Int = item.isActive
             var typeId: Int = item.typeId
-            var noteId: Int = 0
-            var note: String = ""
 
             var specyfic_date: Int = 0
-
-
 
 
             //var dialog = EditDialogFragment()
@@ -183,6 +184,7 @@ class AdapterTasks(
 
             //ustawianie wartosci taska
             task_title.setText(item.title)
+            task_note.setText(itemsNote?.noteContent)
 
 
             when(item.importance)
@@ -617,15 +619,6 @@ class AdapterTasks(
                 }
             }
 
-            if(!task_note.text.toString().isEmpty())
-            {
-                note = task_note.text.toString()
-            }
-            else
-            {
-                note = ""       //??????
-            }
-
 
             val alertDialog = builder.create()
             alertDialog.show()
@@ -644,17 +637,16 @@ class AdapterTasks(
                     duration,
                     isActive,
                     typeId,
-                    0,
+                    item.noteId,
                     date = if (specyfic_date == 1) "$deadline_day $deadline_time" else null
                 )
 
-                updateListener(task, note)
+                updateListener(task, Notes(item.noteId!!, task_title.text.toString(), task_note.text.toString(), null))
 
                 //alertDialog.hide()
                 alertDialog.cancel()
 
             }
-
 
         }
 
@@ -672,7 +664,6 @@ class AdapterTasks(
             val title = dialogView.findViewById<TextView>(R.id.title)
             val date = dialogView.findViewById<TextView>(R.id.date)
             val type = dialogView.findViewById<TextView>(R.id.type)
-            val duration = dialogView.findViewById<TextView>(R.id.duration)
             val note_cont = dialogView.findViewById<TextView>(R.id.note_content)
             val note = dialogView.findViewById<TextView>(R.id.note)
 
@@ -680,7 +671,14 @@ class AdapterTasks(
             builder.setView(dialogView) //Podlaczanie xmla
 
             title.setText(item.title)
-            date.setText(item.deadline)
+            title.setTextColor(ContextCompat.getColor(holder.itemView.context, R.color.pr1_green_text))
+
+            val dateTmp = item.deadline.substring(8, 10) + '.' +
+                    item.deadline.substring(5, 7) + '.' +
+                    item.deadline.substring(0, 4) +' ' +
+                    item.deadline.substring(11)
+
+            date.setText(dateTmp)
 
             if(item.typeId != 0)
             {
@@ -691,19 +689,23 @@ class AdapterTasks(
                 type.visibility = View.GONE
             }
 
-            duration.setText("Trwanie: " + item.timeToFinish.toString())
 
-            if(item.noteId != 0)
-            {
-                note_cont.setText(item.noteId.toString())       // TODO zrobić to dobrze
-            }
-            else
-            {
-                note.visibility = View.GONE
-                note_cont.visibility = View.GONE
-            }
+            note.visibility = View.VISIBLE
+            note_cont.visibility = View.VISIBLE
+            note_cont.setText(itemsNote?.noteContent)
 
-            //TODO zrobic dla notatki
+
+            //
+//            if(item.noteId != 0)
+//            {
+//                note_cont.setText(item.noteId.toString())       // TODO zrobić to dobrze
+//            }
+//            else
+//            {
+//                note.visibility = View.GONE
+//                note_cont.visibility = View.GONE
+//            }
+//
 
             val alertDialog = builder.create()
             alertDialog.show()
@@ -742,11 +744,20 @@ class AdapterTasks(
 
     }
 
-
-    fun setData(task: MutableList<Tasks>){
-        this.list = task
-        notifyDataSetChanged()
+    fun updateList(newTask: MutableList<Tasks>) {
+        val diffResult = DiffUtil.calculateDiff(
+            TaskDiffCallback(this.list, newTask)
+        )
+        this.list = newTask
+        diffResult.dispatchUpdatesTo(this)
     }
 
+    fun updateListOfNotes(newNote: MutableList<Notes>) {
+        val diffResult = DiffUtil.calculateDiff(
+            NoteDiffCallback(this.notesList, newNote)
+        )
+        this.notesList = newNote
+        diffResult.dispatchUpdatesTo(this)
+    }
 
 }

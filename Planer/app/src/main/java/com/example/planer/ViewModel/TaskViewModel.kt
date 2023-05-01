@@ -6,8 +6,10 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import com.example.planer.AppDatabase
+import com.example.planer.entities.Notes
 import com.example.planer.repository.TaskRepository
 import com.example.planer.entities.Tasks
+import com.example.planer.repository.NoteRepository
 import kotlinx.coroutines.*
 
 //Referencja do aplikacji
@@ -15,12 +17,15 @@ class TaskViewModel(application: Application): AndroidViewModel(application)
 {
     val readAllData: LiveData<List<Tasks>>
     private val repository: TaskRepository
+    private val repositoryNote: NoteRepository
 
     //To zawsze pierwsze bedzie sie wykonywalo kiedy callujemy UserViewModel
     init
     {
         val taskDAO = AppDatabase.getDatabase(application).tasksDAO()
+        val notesDAO = AppDatabase.getDatabase(application).notesDAO()
         repository = TaskRepository(taskDAO)
+        repositoryNote = NoteRepository(notesDAO)
         readAllData = repository.readAllData
     }
 
@@ -33,6 +38,14 @@ class TaskViewModel(application: Application): AndroidViewModel(application)
         }
     }
 
+    fun insertTaskWithNote(task: Tasks, note: Notes)
+    {
+        viewModelScope.launch(Dispatchers.IO) //Odpali sie w oddzielnym watku w tle
+        {
+            repository.insertTaskWithNote(task, note)
+        }
+    }
+
     fun deleteTask(tasks: Tasks)
     {
         viewModelScope.launch(Dispatchers.IO) //Odpali sie w oddzielnym watku w tle
@@ -41,11 +54,12 @@ class TaskViewModel(application: Application): AndroidViewModel(application)
         }
     }
 
-    fun deleteTaskById(id: Int)
+    fun deleteTaskAndNoteById(idTask: Int, idNote: Int)
     {
         viewModelScope.launch(Dispatchers.IO) //Odpali sie w oddzielnym watku w tle
         {
-            repository.deleteTaskById(id)
+            repository.deleteTaskById(idTask)
+            repositoryNote.deleteNoteById(idNote)
         }
     }
 
@@ -57,11 +71,12 @@ class TaskViewModel(application: Application): AndroidViewModel(application)
         }
     }
 
-    fun updateTask(task: Tasks)
+    fun updateTaskAndNote(task: Tasks, note: Notes)
     {
         viewModelScope.launch(Dispatchers.IO) //Odpali sie w oddzielnym watku w tle
         {
             repository.updateTask(task)
+            repositoryNote.updateNote(note)
         }
     }
 

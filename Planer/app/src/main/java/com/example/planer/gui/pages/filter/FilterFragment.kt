@@ -25,8 +25,10 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.planer.R
+import com.example.planer.ViewModel.NoteViewModel
 import com.example.planer.ViewModel.TaskViewModel
 import com.example.planer.algorithm.BlockListTask
+import com.example.planer.entities.Notes
 import com.example.planer.entities.Tasks
 import com.example.planer.gui.pages.home.tasks.AdapterTasks
 import kotlinx.android.synthetic.main.dialog_task_info.*
@@ -42,8 +44,12 @@ import java.util.*
 class FilterFragment() : Fragment() {
     //Podlaczanie xmla dialog_filter
     private lateinit var userViewModel: TaskViewModel
+    private lateinit var noteViewModel: NoteViewModel
+
     // lista tasków do recyclerView
     var list = mutableListOf<Tasks>()
+    var listNotes = mutableListOf<Notes>()
+
     @SuppressLint("MissingInflatedId", "NotifyDataSetChanged")
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
@@ -53,16 +59,24 @@ class FilterFragment() : Fragment() {
         val view: View = inflater.inflate(R.layout.fragment_filter, container, false)
         //Do wyszukiwania po nazwie
         val search = view.findViewById<AppCompatEditText>(R.id.search)
+
+        noteViewModel = ViewModelProvider(this)[NoteViewModel::class.java]
+        userViewModel = ViewModelProvider(this)[TaskViewModel::class.java]
+
+
         val rv = view.rv_list
         val adapter = AdapterTasks(
             list,
-            {deleteId -> userViewModel.deleteTaskById(deleteId) },
-            {updateTask, note -> userViewModel.updateTask(updateTask) }
+            listNotes,
+            { deleteTaskId, deleteNoteId -> userViewModel.deleteTaskAndNoteById(deleteTaskId, deleteNoteId) },
+            { updateTask, updateNote -> userViewModel.updateTaskAndNote(updateTask, updateNote) }
         )
         rv?.adapter = adapter
         rv?.layoutManager = LinearLayoutManager(requireContext())
-        userViewModel = ViewModelProvider(this)[TaskViewModel::class.java]
         //Ustawiam flage, zeby mozna bylo po filtrowaniu nadasl wyszukiwac po naziwe
+
+
+
         search.addTextChangedListener(object : TextWatcher{
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
@@ -74,7 +88,7 @@ class FilterFragment() : Fragment() {
                     CoroutineScope(Dispatchers.Main).launch {
                         userViewModel.readTasksWithSearchEdit(searchQuery)
                             .observe(getViewLifecycleOwner(), Observer { //Tutaj zmiana kazdego na this@FilterFragment chyba
-                                adapter.setData(it.toMutableList())
+                                adapter.updateList(it.toMutableList())
                             })
                         adapter.notifyDataSetChanged()
                 }
@@ -220,7 +234,11 @@ class FilterFragment() : Fragment() {
                     && endYear.text.isBlank())
                 {
                     userViewModel.readAllData.observe(viewLifecycleOwner, Observer {
-                        adapter.setData(it.toMutableList())
+                        adapter.updateList(it.toMutableList())
+                    })
+
+                    noteViewModel.readAllData.observe(viewLifecycleOwner, Observer {
+                        adapter.updateListOfNotes(it.toMutableList())
                     })
                 }
                 //Po typie
@@ -228,7 +246,7 @@ class FilterFragment() : Fragment() {
                 {
                     CoroutineScope(Dispatchers.Main).launch{
                         userViewModel.readTasksWithTypes(typeIds).observe(viewLifecycleOwner, Observer {
-                            adapter.setData(it.toMutableList())
+                            adapter.updateList(it.toMutableList())
                         })
                     }
                 }
@@ -237,7 +255,7 @@ class FilterFragment() : Fragment() {
                 {
                     CoroutineScope(Dispatchers.Main).launch{
                         userViewModel.readTasksWithDuration(finishIds).observe(viewLifecycleOwner, Observer {
-                            adapter.setData(it.toMutableList())
+                            adapter.updateList(it.toMutableList())
                         })
                     }
                 }
@@ -254,7 +272,7 @@ class FilterFragment() : Fragment() {
                     val endDateStringFormatted = dateFormat.format(endDate)
                     CoroutineScope(Dispatchers.Main).launch{
                         userViewModel.readTasksWithDate(startDateStringFormatted, endDateStringFormatted).observe(viewLifecycleOwner, Observer {
-                            adapter.setData(it.toMutableList())
+                            adapter.updateList(it.toMutableList())
                         })
                     }
                 }
@@ -271,7 +289,7 @@ class FilterFragment() : Fragment() {
                     val endDateStringFormatted = dateFormat.format(endDate)
                     CoroutineScope(Dispatchers.Main).launch{
                         userViewModel.readTasksWithDurationAndDate(finishIds,startDateStringFormatted, endDateStringFormatted).observe(viewLifecycleOwner, Observer {
-                            adapter.setData(it.toMutableList())
+                            adapter.updateList(it.toMutableList())
                         })
                     }
                 }
@@ -288,7 +306,7 @@ class FilterFragment() : Fragment() {
                     val endDateStringFormatted = dateFormat.format(endDate)
                     CoroutineScope(Dispatchers.Main).launch{
                         userViewModel.readTasksWithTypesAndDate(typeIds,startDateStringFormatted, endDateStringFormatted).observe(viewLifecycleOwner, Observer {
-                            adapter.setData(it.toMutableList())
+                            adapter.updateList(it.toMutableList())
                         })
                     }
                 }
@@ -297,7 +315,7 @@ class FilterFragment() : Fragment() {
                 {
                     CoroutineScope(Dispatchers.Main).launch{
                         userViewModel.readTasksWithTypesAndDuration(typeIds,finishIds).observe(viewLifecycleOwner, Observer {
-                            adapter.setData(it.toMutableList())
+                            adapter.updateList(it.toMutableList())
                         })
                     }
                 }
@@ -316,7 +334,7 @@ class FilterFragment() : Fragment() {
                     CoroutineScope(Dispatchers.Main).launch{
                         userViewModel.readTasksWithTypesAndDurationAndDate(typeIds,finishIds,startDateStringFormatted, endDateStringFormatted)
                             .observe(viewLifecycleOwner, Observer {
-                                adapter.setData(it.toMutableList())
+                                adapter.updateList(it.toMutableList())
                         })
                     }
                 }
@@ -327,7 +345,11 @@ class FilterFragment() : Fragment() {
 
         //Ustawianie wyswietlania taskow w recycle view do listowania
         userViewModel.readAllData.observe(viewLifecycleOwner, Observer {
-            adapter.setData(it.toMutableList())
+            adapter.updateList(it.toMutableList())
+        })
+
+        noteViewModel.readAllData.observe(viewLifecycleOwner, Observer {
+            adapter.updateListOfNotes(it.toMutableList())
         })
         return view
     }

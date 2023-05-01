@@ -14,6 +14,7 @@ import com.example.planer.MainActivity
 import com.example.planer.R
 import com.example.planer.ViewModel.TaskViewModel
 import com.example.planer.databinding.ActivityAddingTaskBinding
+import com.example.planer.entities.Notes
 
 import com.example.planer.entities.Tasks
 import java.util.*
@@ -290,7 +291,7 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
                     {
                         for(i in 1..chosenItems.size-1)
                         {
-                            taskViewModel.addTask(
+                            taskViewModel.insertTaskWithNote(
                                 Tasks(
                                     title = binding.taskTitle.text.toString(),
                                     importance = important,
@@ -303,7 +304,8 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
                                     noteId = 0,
                                     //date = Calendar.getInstance().time //Ustawianie czasu na domyslny
                                     date = chosenItems[i]+ " " + setUpTime(hour.toInt(), minute.toInt())
-                                )
+                                ),
+                                Notes(noteTitle = binding.taskTitle.text.toString(), noteContent = binding.note.text.toString(), photo = null)
                             )
                         }
 
@@ -312,7 +314,7 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
                     {
                         for(i in 1..chosenItems.size-1)
                         {
-                            taskViewModel.addTask(
+                            taskViewModel.insertTaskWithNote(
                                 Tasks(
                                     title = binding.taskTitle.text.toString(),
                                     importance = important,
@@ -325,7 +327,8 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
                                     noteId = 0,
                                     //date = Calendar.getInstance().time //Ustawianie czasu na domyslny
                                     date = null
-                                )
+                                ),
+                                Notes(noteTitle = binding.taskTitle.text.toString(), noteContent = binding.note.text.toString(), photo = null)
                             )
                         }
                     }
@@ -335,7 +338,7 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
                 {
                     if(specyficDate == 1)       //size=2 i specyficDate=1
                     {
-                            taskViewModel.addTask(
+                            taskViewModel.insertTaskWithNote(
                                 Tasks(
                                     title = binding.taskTitle.text.toString(),
                                     importance = important,
@@ -348,13 +351,14 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
                                     noteId = 0,
                                     //date = Calendar.getInstance().time //Ustawianie czasu na domyslny
                                     date = chosenItems[1]+ " " + setUpTime(hour.toInt(), minute.toInt())
-                                )
+                                ),
+                                Notes(noteTitle = binding.taskTitle.text.toString(), noteContent = binding.note.text.toString(), photo = null)
                             )
 
                     }
                     else                        //size>2 i specyficDate=0
                     {
-                            taskViewModel.addTask(
+                            taskViewModel.insertTaskWithNote(
                                 Tasks(
                                     title = binding.taskTitle.text.toString(),
                                     importance = important,
@@ -367,7 +371,8 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
                                     noteId = 0,
                                     //date = Calendar.getInstance().time //Ustawianie czasu na domyslny
                                     date = null
-                                )
+                                ),
+                                Notes(noteTitle = binding.taskTitle.text.toString(), noteContent = binding.note.text.toString(), photo = null)
                             )
 
                     }

@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
+import android.provider.ContactsContract.CommonDataKinds.Note
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,10 +17,12 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.planer.R
 import com.example.planer.ViewModel.HabitViewModel
+import com.example.planer.ViewModel.NoteViewModel
 import com.example.planer.ViewModel.TaskViewModel
 import com.example.planer.algorithm.BlockListTask
 import com.example.planer.databinding.FragmentHomeBinding
 import com.example.planer.entities.Habits
+import com.example.planer.entities.Notes
 import com.example.planer.entities.Tasks
 import com.example.planer.gui.pages.home.habits.AdapterHabits
 import com.example.planer.gui.pages.home.tasks.AdapterTasks
@@ -34,15 +37,15 @@ class HomeFragment : Fragment() {
 
     private lateinit var userViewModel: TaskViewModel
     private lateinit var habitViewModel: HabitViewModel
+    private lateinit var noteViewModel: NoteViewModel
 
     private lateinit var adapterhh: AdapterHabits
-
-
 
 
     // lista tasków do recyclerView
     var list = mutableListOf<Tasks>()
     var listHab = mutableListOf<Habits>()
+    var listNotes = mutableListOf<Notes>()
 
     var delete_clicked = 0
 
@@ -55,6 +58,7 @@ class HomeFragment : Fragment() {
         binding = FragmentHomeBinding.inflate(layoutInflater)
 
         userViewModel = ViewModelProvider(this).get(TaskViewModel::class.java)
+        noteViewModel = ViewModelProvider(this).get(NoteViewModel::class.java)
 
         //TODO - podlaczanie taskow pod wyswietlanie
         /*
@@ -63,8 +67,9 @@ class HomeFragment : Fragment() {
         val rv = view.today_task_list
         val adapter = AdapterTasks(
             list,
-            { deleteId -> userViewModel.deleteTaskById(deleteId) },
-            { updateTask, note -> userViewModel.updateTask(updateTask) }
+            listNotes,
+            { deleteTaskId, deleteNoteId -> userViewModel.deleteTaskAndNoteById(deleteTaskId, deleteNoteId) },
+            { updateTask, updateNote -> userViewModel.updateTaskAndNote(updateTask, updateNote) }
         )
         rv.adapter = adapter
         rv.layoutManager = LinearLayoutManager(requireContext())
@@ -73,8 +78,9 @@ class HomeFragment : Fragment() {
         val rv2 = view.tomorrow_task_list
         val adapter2 = AdapterTasks(
             list,
-            { deleteId -> userViewModel.deleteTaskById(deleteId) },
-            { updateTask, note -> userViewModel.updateTask(updateTask) }
+            listNotes,
+            { deleteTaskId, deleteNoteId -> userViewModel.deleteTaskAndNoteById(deleteTaskId, deleteNoteId) },
+            { updateTask, updateNote -> userViewModel.updateTaskAndNote(updateTask, updateNote) }
         )
         rv2.adapter = adapter2
         rv2.layoutManager = LinearLayoutManager(requireContext())
@@ -82,8 +88,9 @@ class HomeFragment : Fragment() {
         val rv3 = view.week_task_list
         val adapter3 = AdapterTasks(
             list,
-            { deleteId -> userViewModel.deleteTaskById(deleteId) },
-            { updateTask, note -> userViewModel.updateTask(updateTask) }
+            listNotes,
+            { deleteTaskId, deleteNoteId -> userViewModel.deleteTaskAndNoteById(deleteTaskId, deleteNoteId) },
+            { updateTask, updateNote -> userViewModel.updateTaskAndNote(updateTask, updateNote) }
         )
         rv3.adapter = adapter3
         rv3.layoutManager = LinearLayoutManager(requireContext())
@@ -91,8 +98,9 @@ class HomeFragment : Fragment() {
         val rv4 = view.month_task_list
         val adapter4 = AdapterTasks(
             list,
-            { deleteId -> userViewModel.deleteTaskById(deleteId) },
-            { updateTask, note -> userViewModel.updateTask(updateTask) }
+            listNotes,
+            { deleteTaskId, deleteNoteId -> userViewModel.deleteTaskAndNoteById(deleteTaskId, deleteNoteId) },
+            { updateTask, updateNote -> userViewModel.updateTaskAndNote(updateTask, updateNote) }
         )
         rv4.adapter = adapter4
         rv4.layoutManager = LinearLayoutManager(requireContext())
@@ -100,8 +108,9 @@ class HomeFragment : Fragment() {
         val rv5 = view.rest_task_list
         val adapter5 = AdapterTasks(
             list,
-            { deleteId -> userViewModel.deleteTaskById(deleteId) },
-            { updateTask, note -> userViewModel.updateTask(updateTask) }
+            listNotes,
+            { deleteTaskId, deleteNoteId -> userViewModel.deleteTaskAndNoteById(deleteTaskId, deleteNoteId) },
+            { updateTask, updateNote -> userViewModel.updateTaskAndNote(updateTask, updateNote) }
         )
         rv5.adapter = adapter5
         rv5.layoutManager = LinearLayoutManager(requireContext())
@@ -114,11 +123,20 @@ class HomeFragment : Fragment() {
         userViewModel.readAllData.observe(viewLifecycleOwner, Observer {
             val blockListTask = BlockListTask(it, 60)
             blockListTask.planner()
-            adapter.setData(blockListTask.todayList)
-            adapter2.setData(blockListTask.tomorrowList)
-            adapter3.setData(blockListTask.weekList)
-            adapter4.setData(blockListTask.monthList)
-            adapter5.setData(blockListTask.restList)
+            adapter.updateList(blockListTask.todayList)
+            adapter2.updateList(blockListTask.tomorrowList)
+            adapter3.updateList(blockListTask.weekList)
+            adapter4.updateList(blockListTask.monthList)
+            adapter5.updateList(blockListTask.restList)
+        })
+
+        noteViewModel = ViewModelProvider(this)[NoteViewModel::class.java]
+        noteViewModel.readAllData.observe(viewLifecycleOwner, Observer {
+            adapter.updateListOfNotes(it.toMutableList())
+            adapter2.updateListOfNotes(it.toMutableList())
+            adapter3.updateListOfNotes(it.toMutableList())
+            adapter4.updateListOfNotes(it.toMutableList())
+            adapter5.updateListOfNotes(it.toMutableList())
         })
 
 
@@ -145,11 +163,7 @@ class HomeFragment : Fragment() {
 
 
 
-
-        //habits
-
-        var habit_clicked = 0
-        var habitid = 0
+        // HABITS
 
         val rvh = view.habits_list
         val adapterhh = AdapterHabits(
@@ -195,7 +209,7 @@ class HomeFragment : Fragment() {
             }
 
         }
-        
+
 
         view.habits_delete.setOnClickListener {
             if (delete_clicked == 0) {
