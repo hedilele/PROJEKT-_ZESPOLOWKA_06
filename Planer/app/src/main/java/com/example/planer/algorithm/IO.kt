@@ -25,21 +25,16 @@ class IO {
             file.appendText(today)
             file.appendText("\n60")
             work = 60
-            //Toast.makeText(context, "tworze plik", Toast.LENGTH_SHORT).show()
         }
         //plik juz istnial
         else{
             var data = file.readLines()
-            //for(i in data)
-                //Toast.makeText(context, i, Toast.LENGTH_SHORT).show()
             if(data[0] != today){
                 file.writeText(today)
                 file.appendText("\n60")
-                //Toast.makeText(context, "nowy dzien", Toast.LENGTH_SHORT).show()
             }
             data = file.readLines()
             work = data[1].toInt()
-            //Toast.makeText(context, "ten sam dzien", Toast.LENGTH_SHORT).show()
         }
         return work
     }

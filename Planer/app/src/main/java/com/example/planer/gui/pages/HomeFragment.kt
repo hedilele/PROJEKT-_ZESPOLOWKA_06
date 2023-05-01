@@ -1,6 +1,7 @@
 package com.example.planer.gui.pages
 
 import android.app.AlertDialog
+import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
@@ -9,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -41,8 +43,6 @@ import kotlinx.android.synthetic.main.fragment_home.view.week_task_list
 import kotlinx.android.synthetic.main.fragment_home.view.week_title
 import java.util.concurrent.atomic.AtomicBoolean
 
-
-var somethingWasDone = AtomicBoolean()
 class HomeFragment : Fragment() {
 
     // połączenie z xml
@@ -70,7 +70,6 @@ class HomeFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_home, container, false)
         binding = FragmentHomeBinding.inflate(layoutInflater)
-        somethingWasDone.set(true)
         userViewModel = ViewModelProvider(this).get(TaskViewModel::class.java)
 
         //TODO - podlaczanie taskow pod wyswietlanie
@@ -123,7 +122,15 @@ class HomeFragment : Fragment() {
         rv5.adapter = adapter5
         rv5.layoutManager = LinearLayoutManager(requireContext())
 
-        plan(adapter, adapter2, adapter3, adapter4, adapter5)
+        userViewModel.readAllData.observe(viewLifecycleOwner, Observer {
+            val blockListTask = BlockListTask(it, requireContext())
+            blockListTask.planner()
+            adapter.setData(blockListTask.todayList, 1)
+            adapter2.setData(blockListTask.tomorrowList, 0)
+            adapter3.setData(blockListTask.weekList, 0)
+            adapter4.setData(blockListTask.monthList, 0)
+            adapter5.setData(blockListTask.restList, 0)
+        })
 
 
         view.today_title.setOnClickListener {
@@ -173,7 +180,7 @@ class HomeFragment : Fragment() {
         })
 
 
-        Toast.makeText(requireContext(), listHab.size.toString(), Toast.LENGTH_SHORT).show()
+        //Toast.makeText(requireContext(), listHab.size.toString(), Toast.LENGTH_SHORT).show()
 
 
 
@@ -212,45 +219,10 @@ class HomeFragment : Fragment() {
 
         }
 
-        /*
-        val mainHandler = Handler(Looper.getMainLooper())
-
-        Thread {
-            val previous = AtomicBoolean()
-            previous.set(true)
-            while (true) {
-                if (previous != somethingWasDone) {
-                    somethingWasDone.set(true)
-                    val myRunnable = Runnable {
-                        @Override
-                        fun run() {
-                            Toast.makeText(requireContext(), "TASK WAS DONE", Toast.LENGTH_SHORT)
-                                .show()
-                        }
-                    }
-                    mainHandler.post(myRunnable)
-                }
-            }
-        }.start()
-*/
         return view
 
     }
 
-    fun plan(adapter: AdapterTasks, adapter2: AdapterTasks, adapter3: AdapterTasks, adapter4: AdapterTasks, adapter5: AdapterTasks){
-        val io = IO()
-        val work = io.newDay(requireContext())
-
-        userViewModel.readAllData.observe(viewLifecycleOwner, Observer {
-            val blockListTask = BlockListTask(it, work)
-            blockListTask.planner()
-            adapter.setData(blockListTask.todayList, 1)
-            adapter2.setData(blockListTask.tomorrowList, 0)
-            adapter3.setData(blockListTask.weekList, 0)
-            adapter4.setData(blockListTask.monthList, 0)
-            adapter5.setData(blockListTask.restList, 0)
-        })
-    }
 
 
 }

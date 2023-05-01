@@ -8,6 +8,7 @@ import android.os.Handler
 import android.transition.Slide
 import android.transition.Transition
 import android.transition.TransitionManager
+import android.util.Log
 import android.view.*
 import android.widget.Button
 import android.widget.ImageView
@@ -21,7 +22,6 @@ import com.example.planer.R
 import com.example.planer.ViewModel.UserViewModel
 import com.example.planer.algorithm.IO
 import com.example.planer.entities.Tasks
-import com.example.planer.gui.pages.somethingWasDone
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_adding_task.view.*
 import kotlinx.android.synthetic.main.dialog_task_info.view.*
@@ -101,14 +101,13 @@ class AdapterTasks(
                     if(isToday == 1){
                         val io = IO()
                         io.updateWork(holder.itemView.context, item.timeToFinish)
-                        somethingWasDone.set(false)
                     }
                     deleteListener(item.id)
                 }
                 holder.itemView.done.setImageDrawable(ContextCompat.getDrawable(holder.itemView.context, R.drawable.icon_checkbox_empty))
                 //holder.itemView.done.setColorFilter(R.color.brown_important_urgent_off)
                 holder.itemView.done.setColorFilter(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_off), PorterDuff.Mode.SRC_ATOP)
-
+                Log.d("klog", "lista: $list")
             }, 2000) // opóźnienie wynosi 5000 milisekund, czyli 5 sekund
 
         }
