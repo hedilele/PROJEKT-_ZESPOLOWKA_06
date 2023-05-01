@@ -1,46 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/cardView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="16dp"
+    android:layout_marginVertical="150dp"
+    android:layout_marginHorizontal="15dp"
+    app:cardCornerRadius="10dp"
     android:elevation="8dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+        android:orientation="vertical"
+        android:background="@color/pr1_beige_background"
+        >
 
             <TextView
                 android:id="@+id/titleTextView"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:padding="16dp"
+                android:textColor="@color/pr1_green_text"
                 android:text="Tytuł"
+                android:padding="15dp"
+                android:textSize="22sp"
                 android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
             <TextView
                 android:id="@+id/deadlineTextView"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:text="deadline"
+                android:textSize="18sp"
+                android:paddingHorizontal="15dp"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small" />
-        </LinearLayout>
 
         <TextView
             android:id="@+id/noteTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:text="opis"
+            android:layout_marginTop="10dp"
+            android:padding="15dp"
+            android:textSize="18dp"
+            android:text="Opis:"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
         <Space
@@ -55,11 +57,13 @@
 
             <Button
                 android:id="@+id/postponeButton"
-                android:layout_width="wrap_content"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:maxWidth="320dp"
                 android:layout_margin="16dp"
+                android:textColor="#E6000000"
+                android:backgroundTint="@color/pr1_green_button"
                 android:text="Potem" />
 
             <Space
@@ -69,11 +73,13 @@
 
             <Button
                 android:id="@+id/doneButton"
-                android:layout_width="wrap_content"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:maxWidth="320dp"
+                android:backgroundTint="@color/pr1_green_button"
                 android:layout_margin="16dp"
+                android:textColor="#E6000000"
                 android:text="Zrobione" />
         </LinearLayout>
     </LinearLayout>

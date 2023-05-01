@@ -54,7 +54,9 @@ class CardAdapter(taskList: Map<Tasks, List<Notes>>) :
 
         viewHolder.titleText.text = oneTask.title
         viewHolder.deadlineText.text = oneTask.deadline
-        viewHolder.noteText.text = oneNote?.noteContent ?: ""
+        var noteTmp = oneNote?.noteContent ?: "" //"Notatka:\n"
+        noteTmp = "Notatka:\n" + noteTmp
+        viewHolder.noteText.text = noteTmp
 
         viewHolder.laterButton.setOnClickListener {
             CoroutineScope(Dispatchers.IO).launch {

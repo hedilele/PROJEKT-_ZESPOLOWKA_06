@@ -9,7 +9,6 @@ import android.os.Handler
 import android.transition.Slide
 import android.transition.Transition
 import android.transition.TransitionManager
-import android.util.Log
 import android.view.*
 import android.widget.Button
 import android.widget.ImageView
@@ -21,8 +20,6 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.planer.R
-import com.example.planer.ViewModel.UserViewModel
-import com.example.planer.algorithm.IO
 import com.example.planer.entities.Notes
 import com.example.planer.entities.Tasks
 import com.example.planer.gui.callBacks.NoteDiffCallback
@@ -43,12 +40,6 @@ class AdapterTasks(
     private val updateListener: (task: Tasks, note: Notes) -> Unit
 ): RecyclerView.Adapter<AdapterTasks.ViewHolder>() {
 
-    //var list = emptyList<Tasks>()
-    private lateinit var userViewModel: UserViewModel
-
-    var isToday = 0
-
-    var pos: Tasks? = null
 
     class ViewHolder(itemView: CardView): RecyclerView.ViewHolder(itemView) {  }
 
@@ -107,10 +98,6 @@ class AdapterTasks(
             Handler().postDelayed({
                 if(clicked == 0)
                 {
-                    if(isToday == 1){
-                        val io = IO()
-                        io.updateWork(holder.itemView.context, item.timeToFinish)
-                    }
                     deleteListener(item.id, item.noteId!!)
                 }
                 holder.itemView.done.setImageDrawable(ContextCompat.getDrawable(holder.itemView.context, R.drawable.icon_checkbox_empty))
@@ -144,10 +131,7 @@ class AdapterTasks(
 
             var specyfic_date: Int = 0
 
-
-            //var dialog = EditDialogFragment()
             val builder = AlertDialog.Builder(holder.itemView.context) //TODO
-            //builder.setView(R.layout.activity_adding_task)
 
             val inflater = LayoutInflater.from(holder.itemView.context)
             val dialogView = inflater.inflate(R.layout.dialog_editing_task, null)
@@ -382,6 +366,7 @@ class AdapterTasks(
 
                 val dpd = DatePickerDialog(
                     holder.itemView.context,
+                    R.style.MyDatePickerStyle,
                     DatePickerDialog.OnDateSetListener { view, sel_year, sel_month, sel_day ->
 
                         deadline_day = setUpDate(sel_day, sel_month, sel_year)
@@ -404,6 +389,7 @@ class AdapterTasks(
 
                 var tpd = TimePickerDialog(
                     holder.itemView.context,
+                    R.style.MyDatePickerStyle,
                     TimePickerDialog.OnTimeSetListener { view, sel_hour, sel_minutes ->
 
                         deadline_time = setUpTime(sel_hour, sel_minutes)
@@ -754,13 +740,11 @@ class AdapterTasks(
 
     }
 
-
-    fun updateList(newTask: MutableList<Tasks>, isToday: Int) {
+    fun updateList(newTask: MutableList<Tasks>) {
         val diffResult = DiffUtil.calculateDiff(
             TaskDiffCallback(this.list, newTask)
         )
         this.list = newTask
-        this.isToday = isToday
         diffResult.dispatchUpdatesTo(this)
     }
 

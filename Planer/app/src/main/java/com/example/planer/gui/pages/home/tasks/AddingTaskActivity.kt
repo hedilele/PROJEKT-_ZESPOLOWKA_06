@@ -45,8 +45,8 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
     val today_year = calendar.get(Calendar.YEAR)
     val today_month = calendar.get(Calendar.MONTH)
     val today_day = calendar.get(Calendar.DAY_OF_MONTH)
-    val today_hour = calendar.get(Calendar.HOUR_OF_DAY)
-    val today_minute = calendar.get((Calendar.MINUTE))
+    val today_hour = 12//calendar.get(Calendar.HOUR_OF_DAY)
+    val today_minute = 0//calendar.get((Calendar.MINUTE))
 
     var chosenItems = mutableListOf<String>()
 
@@ -54,7 +54,6 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //setContentView(R.layout.activity_adding_task)
 
         binding = ActivityAddingTaskBinding.inflate(layoutInflater)
         setContentView(binding?.root)

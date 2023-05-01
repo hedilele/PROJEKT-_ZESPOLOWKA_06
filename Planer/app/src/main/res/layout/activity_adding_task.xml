@@ -611,8 +611,7 @@
             android:text="utwórz"
             android:textColor="#E6000000"
             android:backgroundTint="@color/pr1_green_button"
-            android:textSize="18dp"
-            android:textStyle="bold" />
+            android:textSize="18dp" />
 
         <!--
         90be6d - zielony
@@ -627,8 +626,7 @@
             android:padding="10dp"
             android:text="anuluj"
             android:textColor="#E6000000"
-            android:textSize="18dp"
-            android:textStyle="bold" />
+            android:textSize="18dp" />
     </LinearLayout>
 
 

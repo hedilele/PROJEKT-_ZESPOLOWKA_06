@@ -279,7 +279,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:background="#33e8cba8"
-                android:gravity="center">
+                android:gravity="center"
+                android:layout_marginBottom="10dp">
 
                 <TextView
                     android:id="@+id/to_this_day"
@@ -572,8 +573,7 @@
             android:text="edytuj"
             android:textColor="#E6000000"
             android:backgroundTint="@color/pr1_green_button"
-            android:textSize="15dp"
-            android:textStyle="bold" />
+            android:textSize="15dp" />
 
         <!--
         90be6d - zielony
@@ -585,12 +585,10 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="15dp"
             android:backgroundTint="@color/pr1_green_button"
-            android:fontFamily="More Fonts..."
             android:padding="10dp"
             android:text="anuluj"
             android:textColor="#E6000000"
-            android:textSize="15dp"
-            android:textStyle="bold" />
+            android:textSize="15dp" />
     </LinearLayout>
 
 

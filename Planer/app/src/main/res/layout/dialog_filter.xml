@@ -15,7 +15,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
-            android:background="@color/home_background4"
+            android:background="@color/pr1_beige_background"
             android:text="Data:"
             android:textSize="25dp" />
 
@@ -40,7 +40,7 @@
                 android:layout_gravity="center"
                 android:layout_margin="10dp"
                 android:background="@drawable/calendar"
-                android:backgroundTint="@color/black"
+                android:backgroundTint="@color/pr1_brown_dark"
                 android:scaleX="2"
                 android:scaleY="2" />
 
@@ -124,7 +124,7 @@
                 android:layout_gravity="center"
                 android:layout_margin="10dp"
                 android:background="@drawable/calendar"
-                android:backgroundTint="@color/black"
+                android:backgroundTint="@color/pr1_brown_dark"
                 android:scaleX="2"
                 android:scaleY="2" />
 
@@ -205,7 +205,9 @@
                 android:text="Chcę zrobić do danego dnia"
                 android:textAlignment="center"
                 android:textColor="@color/brown_important_urgent_on"
-                android:textSize="12dp"
+                android:autoSizeMaxTextSize="12sp"
+                android:autoSizeMinTextSize="8sp"
+                android:autoSizeTextType="uniform"
                 android:textStyle="bold" />
 
             <!--                    android:background="#e8cba8"-->
@@ -220,8 +222,9 @@
                 android:text="Chcę zrobić danego dnia"
                 android:textAlignment="center"
                 android:textColor="#66000000"
-                android:textSize="12dp"
-                android:textStyle="bold" />
+                android:autoSizeMaxTextSize="12sp"
+                android:autoSizeMinTextSize="8sp"
+                android:autoSizeTextType="uniform"                android:textStyle="bold" />
 
 
         </LinearLayout>
@@ -240,7 +243,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
-            android:background="@color/home_background4"
+            android:background="@color/pr1_beige_background"
             android:text="Czas trwania:"
             android:textSize="25dp" />
 
@@ -382,7 +385,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
-            android:background="@color/home_background4"
+            android:background="@color/pr1_beige_background"
             android:text="Typ:"
             android:textSize="25dp" />
 
@@ -452,9 +455,13 @@
 
     <Button
         android:id="@+id/sortButton"
-        android:layout_width="match_parent"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:backgroundTint="@color/pr1_green_button"
         android:text="Sortuj" />
+
 
 
 </LinearLayout>

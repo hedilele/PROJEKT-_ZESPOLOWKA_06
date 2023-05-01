@@ -14,22 +14,23 @@
             android:id="@+id/ll_filters"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_margin="10dp">
 
             <ImageView
                 android:id="@+id/searchView"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_margin="5dp"
-                android:background="@drawable/icon_filter_24" />
+                android:background="@drawable/icon_filter_24"
+                android:backgroundTint="#99A66A2C"/>
 
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/search"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:hint="Szukaj"
-                android:layout_margin="5dp"
                 android:singleLine="true"
+                android:backgroundTint="@color/pr1_brown_lines"
                 android:textColor="#99000000"
                 android:textSize="25dp" />
 
@@ -41,7 +42,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/ll_filters"
-            android:layout_marginTop="2dp"
+            android:paddingHorizontal="10dp"
             tools:listitem="@layout/single_task" />
 
     </RelativeLayout>
