@@ -111,12 +111,15 @@ dependencies {
     // Timber
     implementation 'com.jakewharton.timber:timber:4.7.1'
 
-    // Datepicker
+    // Datepicker (APACHE2)
     implementation 'com.aminography:primedatepicker:3.6.0'
     implementation 'com.aminography:primecalendar:1.7.0'
 
-    // ColorPicker
+    // ColorPicker (APACHE 2)
     implementation 'com.github.Dhaval2404:ColorPicker:2.3'
+
+    // Room backup (MIT) https://github.com/rafi0101/Android-Room-Database-Backup
+    implementation 'de.raphaelebner:roomdatabasebackup:1.0.0-beta12'
 
     // Local Unit Tests
     implementation "androidx.test:core:1.5.0"

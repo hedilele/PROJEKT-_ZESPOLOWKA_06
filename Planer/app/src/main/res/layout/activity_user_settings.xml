@@ -128,6 +128,31 @@
                 tools:itemCount="4"
                 tools:listitem="@layout/settings_type_color_selection" />
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/exportButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="8dp"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/medium_yellow"
+                    android:onClick="onExportButtonClicked"
+                    android:text="Backup"
+                    app:icon="@android:drawable/ic_menu_save" />
+
+                <Button
+                    android:id="@+id/importButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_weight="1"
+                    android:onClick="onImportButtonClicked"
+                    android:text="Import"
+                    app:icon="@android:drawable/ic_menu_upload" />
+            </LinearLayout>
 
         </LinearLayout>
 
