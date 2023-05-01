@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.planer.R
 import com.example.planer.ViewModel.UserViewModel
+import com.example.planer.algorithm.IO
 import com.example.planer.entities.Habits
 import com.example.planer.entities.Notes
 import com.example.planer.entities.Tasks
@@ -43,6 +44,12 @@ class AdapterTasks(
     private val updateListener: (task: Tasks, note: Notes) -> Unit
 ): RecyclerView.Adapter<AdapterTasks.ViewHolder>() {
 
+    //var list = emptyList<Tasks>()
+    private lateinit var userViewModel: UserViewModel
+
+    var isToday = 0
+
+    var pos: Tasks? = null
 
     class ViewHolder(itemView: CardView): RecyclerView.ViewHolder(itemView) {  }
 
@@ -101,6 +108,10 @@ class AdapterTasks(
             Handler().postDelayed({
                 if(clicked == 0)
                 {
+                    if(isToday == 1){
+                        val io = IO()
+                        io.updateWork(holder.itemView.context, item.timeToFinish)
+                    }
                     deleteListener(item.id, item.noteId!!)
                 }
                 holder.itemView.done.setImageDrawable(ContextCompat.getDrawable(holder.itemView.context, R.drawable.icon_checkbox_empty))
@@ -744,11 +755,13 @@ class AdapterTasks(
 
     }
 
-    fun updateList(newTask: MutableList<Tasks>) {
+
+    fun updateList(newTask: MutableList<Tasks>, isToday: Int) {
         val diffResult = DiffUtil.calculateDiff(
             TaskDiffCallback(this.list, newTask)
         )
         this.list = newTask
+        this.isToday = isToday
         diffResult.dispatchUpdatesTo(this)
     }
 

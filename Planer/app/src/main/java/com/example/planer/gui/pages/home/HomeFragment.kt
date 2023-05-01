@@ -20,6 +20,7 @@ import com.example.planer.ViewModel.HabitViewModel
 import com.example.planer.ViewModel.NoteViewModel
 import com.example.planer.ViewModel.TaskViewModel
 import com.example.planer.algorithm.BlockListTask
+import com.example.planer.algorithm.IO
 import com.example.planer.databinding.FragmentHomeBinding
 import com.example.planer.entities.Habits
 import com.example.planer.entities.Notes
@@ -116,18 +117,18 @@ class HomeFragment : Fragment() {
         rv5.layoutManager = LinearLayoutManager(requireContext())
 
         val io = IO()
-        io.newDay(requireContext())
+        val work = io.newDay(requireContext())
 
 
         userViewModel = ViewModelProvider(this)[TaskViewModel::class.java]
         userViewModel.readAllData.observe(viewLifecycleOwner, Observer {
-            val blockListTask = BlockListTask(it, 60)
+            val blockListTask = BlockListTask(it, work)
             blockListTask.planner()
-            adapter.updateList(blockListTask.todayList)
-            adapter2.updateList(blockListTask.tomorrowList)
-            adapter3.updateList(blockListTask.weekList)
-            adapter4.updateList(blockListTask.monthList)
-            adapter5.updateList(blockListTask.restList)
+            adapter.updateList(blockListTask.todayList, 1)
+            adapter2.updateList(blockListTask.tomorrowList, 0)
+            adapter3.updateList(blockListTask.weekList, 0)
+            adapter4.updateList(blockListTask.monthList, 0)
+            adapter5.updateList(blockListTask.restList, 0)
         })
 
         noteViewModel = ViewModelProvider(this)[NoteViewModel::class.java]
