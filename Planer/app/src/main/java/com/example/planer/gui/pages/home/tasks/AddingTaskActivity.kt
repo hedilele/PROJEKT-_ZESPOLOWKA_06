@@ -423,6 +423,7 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
             R.id.btn_deadline -> {
                 val dpd = DatePickerDialog(
                     this,
+                    R.style.MyDatePickerStyle,
                     DatePickerDialog.OnDateSetListener { view, sel_year, sel_month, sel_day ->
 
                         date = setUpDate(sel_day, sel_month, sel_year)
@@ -437,6 +438,7 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
             R.id.btn_deadline_time -> {
                 var tpd = TimePickerDialog(
                     this,
+                    R.style.MyDatePickerStyle,
                     TimePickerDialog.OnTimeSetListener { view, sel_hour, sel_minutes ->
 
                         time = setUpTime(sel_hour, sel_minutes)
@@ -452,6 +454,7 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
 
                 val dpd = DatePickerDialog(
                     this,
+                    R.style.MyDatePickerStyle,
                     DatePickerDialog.OnDateSetListener { view, sel_year, sel_month, sel_day ->
 
                         //date = setUpDate(sel_day, sel_month, sel_year)

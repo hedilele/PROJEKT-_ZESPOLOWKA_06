@@ -36,16 +36,15 @@
     <color name="pr1_brown_warm">#B3A66A2C</color>
     <color name="pr1_brown_light">#66A66A2C</color>
     <color name="pr1_beige_background">#99F3DEBA</color>
+    <color name="pr1_beige_background2">#B3F3DEBA</color>
     <color name="pr1_green_text">#4f904c</color>
     <color name="pr1_this_day_off">#66000000</color>
+    <color name="pr1_green_button">#90be6d</color>
 
     <color name="pr1_pomodoro_yellow_off">#4DFFEB5B</color>
     <color name="pr1_pomodoro_yellow_on">#B3FFEB5B</color>
 
     <color name="pr1_pomodoro_green">#BFDC80</color>
-
-    <color name="positiveButtonTextColor">@color/green400</color>
-    <color name="negativeButtonTextColor">@color/red400</color>
-    <color name="bottomSheetDividerColor">#F5F5F5</color>
+    <color name="pr1_delete_red">#26832508</color>
 
 </resources>

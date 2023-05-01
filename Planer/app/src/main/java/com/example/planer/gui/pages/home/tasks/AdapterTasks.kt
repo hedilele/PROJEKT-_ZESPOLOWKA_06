@@ -3,6 +3,7 @@ package com.example.planer.gui.pages.home.tasks
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.content.res.ColorStateList
 import android.graphics.PorterDuff
 import android.os.Handler
 import android.transition.Slide
@@ -186,14 +187,15 @@ class AdapterTasks(
 
             when(item.importance)
             {
-                0 -> { important0.setBackgroundColor(R.color.brown_important_urgent_on) }
-                1 -> { important1.setBackgroundColor(R.color.brown_important_urgent_on) }
+                //view.habits_delete.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.pr1_beige_background2))
+                0 -> { important0.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_on)) }
+                1 -> { important1.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_on)) }
             }
 
             when(item.urgency)
             {
-                0 -> { urgent0.setBackgroundColor(R.color.brown_important_urgent_on) }
-                1 -> { urgent1.setBackgroundColor(R.color.brown_important_urgent_on) }
+                0 -> { urgent0.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_on)) }
+                1 -> { urgent1.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_on)) }
             }
 
 
@@ -299,27 +301,28 @@ class AdapterTasks(
 
             important0.setOnClickListener {
                 uncheckImportance()
-                important0.setBackgroundColor(R.color.brown_important_urgent_on)
+                important0.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_on))
                 importance = 0
             }
 
             important1.setOnClickListener {
                 uncheckImportance()
-                important1.setBackgroundColor(R.color.brown_important_urgent_on)
+                important1.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_on))
                 importance = 1
             }
 
             urgent0.setOnClickListener {
                 uncheckUrgency()
-                urgent0.setBackgroundColor(R.color.brown_important_urgent_on)
+                urgent0.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_on))
                 urgency = 0
             }
 
             urgent1.setOnClickListener {
                 uncheckUrgency()
-                urgent1.setBackgroundColor(R.color.brown_important_urgent_on)
+                urgent1.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_on))
                 urgency = 1
             }
+
 
             fun setUpDate(d: Int, m: Int, y: Int): String {
                 var month = m.toString()

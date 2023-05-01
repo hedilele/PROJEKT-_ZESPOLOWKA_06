@@ -12,7 +12,11 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
-        <item name="android:fontFamily">@font/poppins_semibold</item>
+        <item name="android:fontFamily">@font/lora</item>
+    </style>
+
+    <style name="MyDatePickerStyle" parent="Theme.AppCompat.Light.Dialog">
+        <item name="colorAccent">@color/pr1_green_text</item>
     </style>
 
     <style name="Widget.App.Tooltip" parent="Widget.MaterialComponents.Tooltip">

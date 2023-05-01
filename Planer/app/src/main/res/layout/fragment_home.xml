@@ -17,7 +17,6 @@
 
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
                     android:orientation="vertical">
 
                         <TextView
@@ -26,7 +25,7 @@
                             android:layout_height="40dp"
                             android:background="#99F3DEBA"
                             android:paddingHorizontal="10dp"
-                            android:text="Nawyki"
+                            android:text="Rutyna"
                             android:textColor="#543C38"
                             android:textSize="25dp" />
 
@@ -41,7 +40,8 @@
                                     android:layout_width="30dp"
                                     android:layout_height="30dp"
                                     android:layout_marginTop="5dp"
-                                    android:background="#99F3DEBA"
+                                    android:background="@drawable/shape_navigartion_button2"
+                                    android:backgroundTint="@color/pr1_beige_background2"
                                     android:src="@drawable/navigation_add" />
 
                                 <ImageView
@@ -50,7 +50,8 @@
                                     android:layout_height="30dp"
                                     android:layout_marginHorizontal="10dp"
                                     android:layout_marginTop="5dp"
-                                    android:background="#99F3DEBA"
+                                    android:background="@drawable/shape_navigartion_button2"
+                                    android:backgroundTint="@color/pr1_beige_background2"
                                     android:src="@drawable/icon_remove" />
 
                         </LinearLayout>

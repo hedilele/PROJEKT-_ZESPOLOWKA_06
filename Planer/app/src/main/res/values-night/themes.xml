@@ -12,14 +12,22 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
-
-        <item name="android:fontFamily">@font/poppins_semibold</item>
-
+        <item name="android:fontFamily">@font/lora</item>
     </style>
 
+    <style name="MyDatePickerStyle" parent="Theme.AppCompat.Light.Dialog">
+        <item name="colorAccent">@color/pr1_green_text</item>
+    </style>
 
     <style name="Widget.App.Tooltip" parent="Widget.MaterialComponents.Tooltip">
         <item name="backgroundTint">#90be6d</item>
+    </style>
+
+<!--    ??????????????????????          -->
+    <style name="CalendarDateStyle">
+        <item name="android:textColor">@color/brown_important_urgent_on</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:background">@drawable/calendardatebackground</item>
     </style>
 
 </resources>

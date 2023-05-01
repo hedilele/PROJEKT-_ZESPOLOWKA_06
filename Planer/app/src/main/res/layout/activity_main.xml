@@ -31,8 +31,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1"
-                android:background="#B3F3DEBA"
+                android:layout_weight="0.9"
+                android:background="@color/pr1_beige_background2"
                 android:gravity="center"
                 android:orientation="horizontal"
                 android:paddingHorizontal="45dp">
@@ -52,7 +52,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:src="@drawable/navigation_menu"
-                        app:tint="#543C38" />
+                        app:tint="@color/pr1_brown_dark" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -69,7 +69,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:src="@drawable/icon_house"
-                        app:tint="#543C38" />
+                        app:tint="@color/pr1_brown_dark" />
 
 
                 </LinearLayout>
@@ -88,7 +88,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:src="@drawable/navigation_calendar"
-                        app:tint="#543C38" />
+                        app:tint="@color/pr1_brown_dark" />
                 </LinearLayout>
 
 
@@ -106,7 +106,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:src="@drawable/navigation_add"
-                        app:tint="#543C38" />
+                        app:tint="@color/pr1_brown_dark" />
                     />
                 </LinearLayout>
 

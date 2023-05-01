@@ -21,22 +21,22 @@
             android:gravity="top"
             android:orientation="vertical">
 
-            <androidx.appcompat.widget.AppCompatEditText
+            <EditText
                 android:id="@+id/task_title"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
+                android:backgroundTint="@color/brown_important_urgent_on"
                 android:hint="Tytuł"
                 android:inputType="textCapSentences"
                 android:padding="5dp"
                 android:singleLine="true"
                 android:textColor="#99000000"
                 android:textSize="25dp"
-                />
+                android:layout_marginBottom="5dp"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                >
+                android:layout_height="50dp">
 
                 <TextView
                     android:layout_width="120dp"
@@ -86,8 +86,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                >
+                android:layout_height="50dp">
 
                 <TextView
                     android:layout_width="120dp"
@@ -283,34 +282,36 @@
                 android:layout_height="40dp"
                 android:background="#33e8cba8"
                 android:gravity="center"
-                >
+                android:layout_marginVertical="10dp">
 
                 <TextView
                     android:id="@+id/to_this_day"
                     android:layout_width="0dp"
-                    android:layout_height="25dp"
+                    android:layout_height="match_parent"
                     android:layout_marginHorizontal="8dp"
                     android:layout_weight="1"
+                    android:autoSizeMaxTextSize="12sp"
+                    android:autoSizeMinTextSize="8sp"
+                    android:autoSizeTextType="uniform"
+                    android:gravity="center"
                     android:paddingVertical="5dp"
                     android:text="Chcę zrobić do danego dnia"
-                    android:textAlignment="center"
                     android:textColor="@color/brown_important_urgent_on"
-                    android:textSize="12dp"
                     android:textStyle="bold" />
-
-                <!--                    android:background="#e8cba8"-->
 
                 <TextView
                     android:id="@+id/at_this_day"
                     android:layout_width="0dp"
-                    android:layout_height="25dp"
+                    android:layout_height="match_parent"
                     android:layout_marginHorizontal="8dp"
                     android:layout_weight="1"
+                    android:autoSizeMaxTextSize="12sp"
+                    android:autoSizeMinTextSize="8sp"
+                    android:autoSizeTextType="uniform"
+                    android:gravity="center"
                     android:paddingVertical="5dp"
                     android:text="Chcę zrobić danego dnia"
-                    android:textAlignment="center"
                     android:textColor="#66000000"
-                    android:textSize="12dp"
                     android:textStyle="bold" />
 
 
@@ -320,8 +321,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:gravity="center_vertical"
-                >
+                android:gravity="center_vertical">
 
                 <TextView
                     android:layout_width="120dp"
@@ -492,8 +492,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                >
+                android:layout_height="50dp">
 
                 <TextView
                     android:layout_width="120dp"
@@ -582,22 +581,12 @@
                     android:id="@+id/note"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
+                    android:backgroundTint="@color/brown_important_urgent_on"
                     android:ems="10"
                     android:gravity="start|top"
                     android:inputType="textMultiLine|textCapSentences"
-                    android:textSize="15dp"
-                    android:layout_marginBottom="10dp"/>
-
-
-                <!--
-                                <androidx.appcompat.widget.AppCompatEditText
-                                    android:id="@+id/note"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:inputType="textCapSentences"
-                                    android:padding="5dp"
-                                    android:textSize="20dp" />
-                                -->
+                    android:textSize="18dp" />
 
 
             </LinearLayout>
@@ -618,10 +607,10 @@
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="15dp"
-            android:backgroundTint="@color/pr1_green_text"
             android:padding="10dp"
             android:text="utwórz"
-            android:textColor="#99ffffff"
+            android:textColor="#E6000000"
+            android:backgroundTint="@color/pr1_green_button"
             android:textSize="18dp"
             android:textStyle="bold" />
 
@@ -634,10 +623,10 @@
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="15dp"
-            android:backgroundTint="#90be6d"
+            android:backgroundTint="@color/pr1_green_button"
             android:padding="10dp"
             android:text="anuluj"
-            android:textColor="#99000000"
+            android:textColor="#E6000000"
             android:textSize="18dp"
             android:textStyle="bold" />
     </LinearLayout>

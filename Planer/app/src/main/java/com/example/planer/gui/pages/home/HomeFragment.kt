@@ -1,12 +1,14 @@
 package com.example.planer.gui.pages.home
 
 import android.app.AlertDialog
+import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -193,17 +195,18 @@ class HomeFragment : Fragment() {
             }
 
         }
+        
 
         view.habits_delete.setOnClickListener {
             if (delete_clicked == 0) {
-                view.habits_delete.setBackgroundColor(Color.parseColor("#33832508"))
+                view.habits_delete.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.pr1_delete_red))
+                //view.habits_delete.setBackgroundColor(Color.parseColor("#33832508"))
                 delete_clicked = 1
             } else {
-                view.habits_delete.setBackgroundColor(Color.parseColor("#99F3DEBA"))
+                view.habits_delete.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.pr1_beige_background2))
+                //view.habits_delete.setBackgroundColor(Color.parseColor("#99F3DEBA"))
                 delete_clicked = 0
             }
-
-
         }
 
 
