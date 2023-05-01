@@ -2,19 +2,24 @@ package com.example.planer.gui.pages.filter
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
+import android.content.ContentProvider
 import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Filter
 import android.widget.TextView
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatEditText
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -30,10 +35,11 @@ import kotlinx.android.synthetic.main.fragment_filter.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.security.AccessController.getContext
 import java.text.SimpleDateFormat
 import java.util.*
 
-class FilterFragment : Fragment(){
+class FilterFragment() : Fragment() {
     //Podlaczanie xmla dialog_filter
     private lateinit var userViewModel: TaskViewModel
     // lista tasków do recyclerView
@@ -64,17 +70,13 @@ class FilterFragment : Fragment(){
             {
                     //Pobieram to co jest w textview
                     val searchQuery = s.toString().trim()
+
                     CoroutineScope(Dispatchers.Main).launch {
                         userViewModel.readTasksWithSearchEdit(searchQuery)
-                            .observe(viewLifecycleOwner, Observer {
-                                val blockListTask = BlockListTask(it, 60)
-                                blockListTask.planner()
-                                adapter.setData(
-                                    (blockListTask.todayList + blockListTask.tomorrowList
-                                            + blockListTask.weekList + blockListTask.monthList +
-                                            blockListTask.restList).toMutableList()
-                                )
+                            .observe(getViewLifecycleOwner(), Observer { //Tutaj zmiana kazdego na this@FilterFragment chyba
+                                adapter.setData(it.toMutableList())
                             })
+                        adapter.notifyDataSetChanged()
                 }
 
             }
@@ -84,12 +86,10 @@ class FilterFragment : Fragment(){
 
         //Po kliknieciu na lejek ImageView
         view.searchView.setOnClickListener{
-            val builder = AlertDialog.Builder(context)
+            val builder = AlertDialog.Builder(context) //this
             val inflater = LayoutInflater.from(context)
             val dialogView = inflater.inflate(R.layout.dialog_filter, null)
-
             builder.setView(dialogView) //Podlaczanie xmla
-
             //Obsluga po wyjsciu z okna
 
             //TODO - przyciski i cala obsluga okna
@@ -118,8 +118,6 @@ class FilterFragment : Fragment(){
             //Button do sortowania - pozniej moze byc czyms innym
             val sortButton = dialogView.findViewById<Button>(R.id.sortButton)
 
-            //var typ: Int? = null
-            //var durationn: Int? = null
             val typeIds = mutableListOf<Int>()
             val finishIds = mutableListOf<Int>()
 
@@ -216,29 +214,13 @@ class FilterFragment : Fragment(){
             //Sortowanie po kliknieciu w przycisk
             sortButton.setOnClickListener{
                 view.search.clearFocus()
-                val rv = view.rv_list
-                val adapter = AdapterTasks(
-                    list,
-                    {deleteId -> userViewModel.deleteTaskById(deleteId) },
-                    {updateTask, note -> userViewModel.updateTask(updateTask) }
-                )
-                rv?.adapter = adapter
-                rv?.layoutManager = LinearLayoutManager(requireContext())
-                //Do parsowania daty
-
-                userViewModel = ViewModelProvider(this)[TaskViewModel::class.java]
                 //Jesli jest pusto
                 if(finishIds.isEmpty() && typeIds.isEmpty() && startDay.text.isBlank() && startMonth.text.isBlank()
                     && startYear.text.isBlank() && endDay.text.isBlank() && endMonth.text.isBlank()
                     && endYear.text.isBlank())
                 {
                     userViewModel.readAllData.observe(viewLifecycleOwner, Observer {
-                        val blockListTask = BlockListTask(it, 60)
-                        blockListTask.planner()
-                        adapter.setData((blockListTask.todayList + blockListTask.tomorrowList
-                                + blockListTask.weekList + blockListTask.monthList +
-                                blockListTask.restList).toMutableList())
-                        adapter.notifyDataSetChanged()
+                        adapter.setData(it.toMutableList())
                     })
                 }
                 //Po typie
@@ -246,11 +228,7 @@ class FilterFragment : Fragment(){
                 {
                     CoroutineScope(Dispatchers.Main).launch{
                         userViewModel.readTasksWithTypes(typeIds).observe(viewLifecycleOwner, Observer {
-                            val blockListTask = BlockListTask(it, 60)
-                            blockListTask.planner()
-                            adapter.setData((blockListTask.todayList + blockListTask.tomorrowList
-                                    + blockListTask.weekList + blockListTask.monthList +
-                                    blockListTask.restList).toMutableList())
+                            adapter.setData(it.toMutableList())
                         })
                     }
                 }
@@ -259,11 +237,7 @@ class FilterFragment : Fragment(){
                 {
                     CoroutineScope(Dispatchers.Main).launch{
                         userViewModel.readTasksWithDuration(finishIds).observe(viewLifecycleOwner, Observer {
-                            val blockListTask = BlockListTask(it, 60)
-                            blockListTask.planner()
-                            adapter.setData((blockListTask.todayList + blockListTask.tomorrowList
-                                    + blockListTask.weekList + blockListTask.monthList +
-                                    blockListTask.restList).toMutableList())
+                            adapter.setData(it.toMutableList())
                         })
                     }
                 }
@@ -280,11 +254,7 @@ class FilterFragment : Fragment(){
                     val endDateStringFormatted = dateFormat.format(endDate)
                     CoroutineScope(Dispatchers.Main).launch{
                         userViewModel.readTasksWithDate(startDateStringFormatted, endDateStringFormatted).observe(viewLifecycleOwner, Observer {
-                            val blockListTask = BlockListTask(it, 60)
-                            blockListTask.planner()
-                            adapter.setData((blockListTask.todayList + blockListTask.tomorrowList
-                                    + blockListTask.weekList + blockListTask.monthList +
-                                    blockListTask.restList).toMutableList())
+                            adapter.setData(it.toMutableList())
                         })
                     }
                 }
@@ -301,11 +271,7 @@ class FilterFragment : Fragment(){
                     val endDateStringFormatted = dateFormat.format(endDate)
                     CoroutineScope(Dispatchers.Main).launch{
                         userViewModel.readTasksWithDurationAndDate(finishIds,startDateStringFormatted, endDateStringFormatted).observe(viewLifecycleOwner, Observer {
-                            val blockListTask = BlockListTask(it, 60)
-                            blockListTask.planner()
-                            adapter.setData((blockListTask.todayList + blockListTask.tomorrowList
-                                    + blockListTask.weekList + blockListTask.monthList +
-                                    blockListTask.restList).toMutableList())
+                            adapter.setData(it.toMutableList())
                         })
                     }
                 }
@@ -322,11 +288,7 @@ class FilterFragment : Fragment(){
                     val endDateStringFormatted = dateFormat.format(endDate)
                     CoroutineScope(Dispatchers.Main).launch{
                         userViewModel.readTasksWithTypesAndDate(typeIds,startDateStringFormatted, endDateStringFormatted).observe(viewLifecycleOwner, Observer {
-                            val blockListTask = BlockListTask(it, 60)
-                            blockListTask.planner()
-                            adapter.setData((blockListTask.todayList + blockListTask.tomorrowList
-                                    + blockListTask.weekList + blockListTask.monthList +
-                                    blockListTask.restList).toMutableList())
+                            adapter.setData(it.toMutableList())
                         })
                     }
                 }
@@ -335,11 +297,7 @@ class FilterFragment : Fragment(){
                 {
                     CoroutineScope(Dispatchers.Main).launch{
                         userViewModel.readTasksWithTypesAndDuration(typeIds,finishIds).observe(viewLifecycleOwner, Observer {
-                            val blockListTask = BlockListTask(it, 60)
-                            blockListTask.planner()
-                            adapter.setData((blockListTask.todayList + blockListTask.tomorrowList
-                                    + blockListTask.weekList + blockListTask.monthList +
-                                    blockListTask.restList).toMutableList())
+                            adapter.setData(it.toMutableList())
                         })
                     }
                 }
@@ -358,11 +316,7 @@ class FilterFragment : Fragment(){
                     CoroutineScope(Dispatchers.Main).launch{
                         userViewModel.readTasksWithTypesAndDurationAndDate(typeIds,finishIds,startDateStringFormatted, endDateStringFormatted)
                             .observe(viewLifecycleOwner, Observer {
-                            val blockListTask = BlockListTask(it, 60)
-                            blockListTask.planner()
-                            adapter.setData((blockListTask.todayList + blockListTask.tomorrowList
-                                    + blockListTask.weekList + blockListTask.monthList +
-                                    blockListTask.restList).toMutableList())
+                                adapter.setData(it.toMutableList())
                         })
                     }
                 }
@@ -373,11 +327,7 @@ class FilterFragment : Fragment(){
 
         //Ustawianie wyswietlania taskow w recycle view do listowania
         userViewModel.readAllData.observe(viewLifecycleOwner, Observer {
-            val blockListTask = BlockListTask(it, 60)
-            blockListTask.planner()
-            adapter.setData((blockListTask.todayList + blockListTask.tomorrowList
-                    + blockListTask.weekList + blockListTask.monthList +
-                    blockListTask.restList).toMutableList())
+            adapter.setData(it.toMutableList())
         })
         return view
     }

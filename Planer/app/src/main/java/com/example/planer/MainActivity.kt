@@ -173,7 +173,7 @@ class MainActivity : AppCompatActivity() {
 
 
     }
-    //Do wylaczania trybu cichego kiedy ktos zamknie apke
+    //Do wylaczania trybu cichego kiedy ktos zamknie apkee
     override fun onDestroy() {
         super.onDestroy()
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
