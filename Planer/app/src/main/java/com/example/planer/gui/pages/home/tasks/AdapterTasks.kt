@@ -9,6 +9,7 @@ import android.os.Handler
 import android.transition.Slide
 import android.transition.Transition
 import android.transition.TransitionManager
+import android.util.Log
 import android.view.*
 import android.widget.Button
 import android.widget.ImageView

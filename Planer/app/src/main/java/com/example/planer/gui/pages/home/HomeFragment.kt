@@ -2,12 +2,15 @@ package com.example.planer.gui.pages.home
 
 import android.app.AlertDialog
 import android.content.res.ColorStateList
+import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -42,8 +45,6 @@ import kotlinx.android.synthetic.main.fragment_home.view.week_task_list
 import kotlinx.android.synthetic.main.fragment_home.view.week_title
 import java.util.concurrent.atomic.AtomicBoolean
 
-
-var somethingWasDone = AtomicBoolean()
 class HomeFragment : Fragment() {
 
     // połączenie z xml
@@ -70,7 +71,6 @@ class HomeFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_home, container, false)
         binding = FragmentHomeBinding.inflate(layoutInflater)
-        somethingWasDone.set(true)
         userViewModel = ViewModelProvider(this).get(TaskViewModel::class.java)
         noteViewModel = ViewModelProvider(this).get(NoteViewModel::class.java)
 
@@ -197,7 +197,7 @@ class HomeFragment : Fragment() {
         })
 
 
-        Toast.makeText(requireContext(), listHab.size.toString(), Toast.LENGTH_SHORT).show()
+        //Toast.makeText(requireContext(), listHab.size.toString(), Toast.LENGTH_SHORT).show()
 
 
 
@@ -242,6 +242,7 @@ class HomeFragment : Fragment() {
         return view
 
     }
+
 
 
 }

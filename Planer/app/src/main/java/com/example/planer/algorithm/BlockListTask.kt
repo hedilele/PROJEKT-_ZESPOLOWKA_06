@@ -1,5 +1,6 @@
 package com.example.planer.algorithm
 
+import android.content.Context
 import com.example.planer.entities.Tasks
 import java.time.LocalDate
 
@@ -8,9 +9,11 @@ import java.time.LocalDate
  */
 class BlockListTask (
     var list : List<Tasks>,
-    var TODAY_WORK : Int
+    var context : Context
 ){
+    val io = IO()
     private val tasks = list
+    var TODAY_WORK = io.newDay(context)
     var TOMORROW_WORK = 60
     var todayList = mutableListOf<Tasks>()
     var tomorrowList = mutableListOf<Tasks>()
