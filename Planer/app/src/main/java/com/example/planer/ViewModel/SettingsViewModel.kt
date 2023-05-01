@@ -8,37 +8,23 @@ import com.example.planer.AppDatabase
 import com.example.planer.entities.ExcludedDate
 import com.example.planer.entities.Settings
 import com.example.planer.entities.Types
-import com.example.planer.gui.pages.settings.DbExport
-import com.example.planer.repository.CalendarRepository
 import com.example.planer.repository.ExcludedDateRepository
-import com.example.planer.repository.HabitRepository
-import com.example.planer.repository.NoteRepository
 import com.example.planer.repository.SettingsRepository
-import com.example.planer.repository.TaskRepository
 import com.example.planer.repository.TypeRepository
-import com.google.gson.Gson
-import kotlinx.coroutines.CoroutineScope
+import de.raphaelebner.roomdatabasebackup.core.RoomBackup
+import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import java.io.File
+import kotlinx.coroutines.withContext
 
-class SettingsViewModel(application: Application): AndroidViewModel(application) {
+class SettingsViewModel(application: Application) : AndroidViewModel(application) {
 
     private val settingsDAO = AppDatabase.getDatabase((application)).settingsDAO()
     private val typesDAO = AppDatabase.getDatabase((application)).typesDAO()
     private val excludedDateDAO = AppDatabase.getDatabase((application)).excludedDateDAO()
-    private val calendarDAO = AppDatabase.getDatabase((application)).calendarDAO()
-    private val habitsDAO = AppDatabase.getDatabase((application)).habitsDAO()
-    private val notesDAO = AppDatabase.getDatabase((application)).notesDAO()
-    private val tasksDAO = AppDatabase.getDatabase((application)).tasksDAO()
 
     private val settingsRepository = SettingsRepository(settingsDAO)
     private val typeRepository = TypeRepository(typesDAO)
     private val excludedDateRepository = ExcludedDateRepository(excludedDateDAO)
-    private val calendarRepository = CalendarRepository(calendarDAO)
-    private val habitsRepository = HabitRepository(habitsDAO)
-    private val notesRepository = NoteRepository(notesDAO)
-    private val taskRepository = TaskRepository(tasksDAO)
 
     fun readSettingsFromDb(): LiveData<Settings> {
         return settingsRepository.readSettings()
@@ -52,7 +38,11 @@ class SettingsViewModel(application: Application): AndroidViewModel(application)
         return excludedDateRepository.readExcludedDates()
     }
 
-    suspend fun saveSettings(settings: Settings, types: List<Types>, markedDates: List<ExcludedDate>) {
+    suspend fun saveSettings(
+        settings: Settings,
+        types: List<Types>,
+        markedDates: List<ExcludedDate>
+    ) {
 
         typeRepository.updateTypes(types)
         settingsRepository.updateSettings(settings)
@@ -61,16 +51,20 @@ class SettingsViewModel(application: Application): AndroidViewModel(application)
 
     }
 
-    suspend fun createSettingsIfDontExist() {
-        settingsRepository.setSettings(Settings()) // domyślny konstruktor
-    }
-
-    suspend fun createTypesIfDontExist() {
-        typeRepository.addType(Types(1, "Dom", "#81A969"))
-        typeRepository.addType(Types(2, "Szkoła", "#88A9C3"))
-        typeRepository.addType(Types(3, "Komputer", "#FFEB5B"))
-        typeRepository.addType(Types(4, "Rozrywka", "#FFC0CB"))
-    }
+    suspend fun exportDb(backup: RoomBackup, context: Context): Boolean =
+        withContext(Dispatchers.IO) {
+            val deferred = CompletableDeferred<Boolean>()
+            backup
+                .database(AppDatabase.getDatabase(context))
+                .backupLocation(RoomBackup.BACKUP_FILE_LOCATION_CUSTOM_DIALOG)
+                .apply {
+                    onCompleteListener { success, message, exitCode ->
+                        deferred.complete(success)
+                    }
+                }
+                .backup()
+            return@withContext deferred.await()
+        }
 
     fun getHours(): LiveData<Int>{
         return settingsRepository.readHours()
@@ -99,4 +93,19 @@ class SettingsViewModel(application: Application): AndroidViewModel(application)
         }
     }
 
+
+    suspend fun importDb(backup: RoomBackup, context: Context): Boolean =
+        withContext(Dispatchers.IO) {
+            val deferred = CompletableDeferred<Boolean>()
+            backup
+                .database(AppDatabase.getDatabase(context))
+                .backupLocation(RoomBackup.BACKUP_FILE_LOCATION_CUSTOM_DIALOG)
+                .apply {
+                    onCompleteListener { success, message, exitCode ->
+                        deferred.complete(success)
+                    }
+                }
+                .restore()
+            return@withContext deferred.await()
+        }
 }

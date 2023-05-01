@@ -4,9 +4,11 @@ import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.View
 import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.aminography.primecalendar.PrimeCalendar
 import com.aminography.primecalendar.civil.CivilCalendar
@@ -22,6 +24,7 @@ import com.github.dhaval2404.colorpicker.MaterialColorPickerDialog
 import com.github.dhaval2404.colorpicker.model.ColorShape
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
+import de.raphaelebner.roomdatabasebackup.core.RoomBackup
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -39,11 +42,11 @@ class UserSettingsActivity : AppCompatActivity(), View.OnClickListener,
 
     private lateinit var typeAdapter: TypeAdapter
     private val settingsViewModel: SettingsViewModel by viewModels()
-
     private var localSettings: Settings = Settings()
     private var changedTypes: MutableList<Types> = mutableListOf()
     private lateinit var dbDates: List<PrimeCalendar>
     private var markedDatePickerList: MutableList<PrimeCalendar> = mutableListOf()
+    private val backup = RoomBackup(this)
 
     private val calendar = CivilCalendar(TimeZone.getDefault(), Locale("pl", "PL"))
 
@@ -107,6 +110,27 @@ class UserSettingsActivity : AppCompatActivity(), View.OnClickListener,
         }
 
     }
+
+    fun onExportButtonClicked(view: View) {
+        lifecycleScope.launch {
+            if (settingsViewModel.exportDb(backup, this@UserSettingsActivity)) {
+                Toast.makeText(this@UserSettingsActivity, "Eksport udany!", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this@UserSettingsActivity, "Niepowodzenie", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    fun onImportButtonClicked(view: View) {
+        lifecycleScope.launch {
+            if (settingsViewModel.importDb(backup, this@UserSettingsActivity)) {
+                Toast.makeText(this@UserSettingsActivity, "Import udany!", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this@UserSettingsActivity, "Niepowodzenie", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
 
     override fun onClick(v: View?) {
         when (v?.id) {
