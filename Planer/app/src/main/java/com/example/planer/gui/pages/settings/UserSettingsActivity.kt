@@ -78,28 +78,24 @@ class UserSettingsActivity : AppCompatActivity(), View.OnClickListener,
         }
 
         val yesterday = CivilCalendar(TimeZone.getDefault(), Locale("pl", "PL"))
-        yesterday.add(Calendar.DAY_OF_YEAR,-1)
+        yesterday.add(Calendar.DAY_OF_YEAR, -1)
 
         settingsViewModel.readSettingsFromDb().observe(this) { settings ->
-            if (settings == null) {
-                CoroutineScope(Dispatchers.IO).launch {
-                    settingsViewModel.createSettingsIfDontExist() // TODO TO POWINNO BYĆ W MAIN
-                }
-            } else {
-                localSettings = settings
-                binding.slider.value = localSettings.dailyAvailableHours.toFloat()
-            }
+            localSettings = settings
+            binding.slider.value = localSettings.dailyAvailableHours.toFloat()
         }
 
         settingsViewModel.readExcludedDatesFromDb().observe(this) { exdates ->
             dbDates = exdates.map {
                 val a = CivilCalendar()
-                a.setTime(Date.from(
-                    it.excludedDate
-                        .atStartOfDay()
-                        .atZone(ZoneId.systemDefault())
-                        .toInstant()
-                ))
+                a.setTime(
+                    Date.from(
+                        it.excludedDate
+                            .atStartOfDay()
+                            .atZone(ZoneId.systemDefault())
+                            .toInstant()
+                    )
+                )
                 a
             }
             // Automatycznie usuwa stare daty również potem w bazie
@@ -107,17 +103,8 @@ class UserSettingsActivity : AppCompatActivity(), View.OnClickListener,
         }
 
         settingsViewModel.readTypesFromDb().observe(this) { types ->
-            if (types.isEmpty()) {
-                CoroutineScope(Dispatchers.IO).launch {
-                    settingsViewModel.createTypesIfDontExist() //TODO DO MAIN
-                }
-            } else {
-                typeAdapter.updateList(types)
-            }
+            typeAdapter.updateList(types)
         }
-
-        binding.slider.value = localSettings.dailyAvailableHours.toFloat()
-
 
     }
 
@@ -126,7 +113,8 @@ class UserSettingsActivity : AppCompatActivity(), View.OnClickListener,
 
             R.id.btn_save -> {
                 val buttns = findViewById<LinearLayout>(R.id.button_layout)
-                val savedNotif = Snackbar.make(buttns, "Zapisane!", BaseTransientBottomBar.LENGTH_SHORT)
+                val savedNotif =
+                    Snackbar.make(buttns, "Zapisane!", BaseTransientBottomBar.LENGTH_SHORT)
                 savedNotif.anchorView = buttns
 
                 // Pobieram wartość dostępnych godzin ze slidera
@@ -179,11 +167,25 @@ class UserSettingsActivity : AppCompatActivity(), View.OnClickListener,
     override suspend fun onChosenColorButtonClick(type: Types, holder: TypeAdapter.ViewHolder) {
         MaterialColorPickerDialog
             .Builder(this)
-            .setColors(arrayListOf("#f6e58d", "#ffbe76", "#ff7979", "#badc58", "#dff9fb", "#7ed6df", "#e056fd", "#686de0", "#30336b", "#95afc0"))
+            .setColors(
+                arrayListOf(
+                    "#f6e58d",
+                    "#ffbe76",
+                    "#ff7979",
+                    "#badc58",
+                    "#dff9fb",
+                    "#7ed6df",
+                    "#e056fd",
+                    "#686de0",
+                    "#30336b",
+                    "#95afc0"
+                )
+            )
             .setColorListener { color, colorhex ->
                 holder.chosenColorButton.backgroundTintList = ColorStateList.valueOf(color)
                 // Jeśli jest element z takim id to zamienia kolor, jeśli nie ma to dodaje typ ze zmienionym kolorem
-                changedTypes.firstOrNull { it.id == type.id }?.apply { this.colour = colorhex } ?: changedTypes.add(Types(type.id, type.name, colorhex))
+                changedTypes.firstOrNull { it.id == type.id }?.apply { this.colour = colorhex }
+                    ?: changedTypes.add(Types(type.id, type.name, colorhex))
                 unsavedSettings = true
             }
             .setColorShape(ColorShape.SQAURE)

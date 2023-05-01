@@ -2,7 +2,6 @@ package com.example.planer.ViewModel
 
 import android.app.Application
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import com.example.planer.AppDatabase
