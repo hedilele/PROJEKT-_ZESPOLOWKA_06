@@ -24,7 +24,9 @@ import com.example.planer.entities.typeconverters.LocalDateTypeConverter
         LastAccess::class,
         Types::class
     ],
-    version = 17)
+    exportSchema = true,
+    version = 17
+)
 @TypeConverters(LocalDateTypeConverter::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun habitsDAO() : HabitsDAO
