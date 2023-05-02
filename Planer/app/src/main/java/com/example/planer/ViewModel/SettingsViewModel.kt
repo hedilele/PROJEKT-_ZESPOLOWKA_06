@@ -42,12 +42,13 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
         settings: Settings,
         types: List<Types>,
         markedDates: List<ExcludedDate>
-    ) {
+    ): Boolean {
 
         typeRepository.updateTypes(types)
         settingsRepository.updateSettings(settings)
         excludedDateRepository.addExcludedDates(markedDates)
         excludedDateRepository.removeDatesNotInList(markedDates)
+        return true
 
     }
 

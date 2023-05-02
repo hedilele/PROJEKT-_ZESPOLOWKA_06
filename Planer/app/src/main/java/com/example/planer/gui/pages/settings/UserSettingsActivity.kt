@@ -3,11 +3,14 @@ package com.example.planer.gui.pages.settings
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.aminography.primecalendar.PrimeCalendar
@@ -22,6 +25,7 @@ import com.example.planer.entities.Settings
 import com.example.planer.entities.Types
 import com.github.dhaval2404.colorpicker.MaterialColorPickerDialog
 import com.github.dhaval2404.colorpicker.model.ColorShape
+import com.google.android.material.slider.Slider
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import de.raphaelebner.roomdatabasebackup.core.RoomBackup
@@ -31,14 +35,13 @@ import kotlinx.coroutines.launch
 import java.time.ZoneId
 
 import java.util.*
-import kotlin.properties.Delegates
 
 
 class UserSettingsActivity : AppCompatActivity(), View.OnClickListener,
     TypeAdapter.OnButtonClickListener {
 
     private lateinit var binding: ActivityUserSettingsBinding
-    private var unsavedSettings by Delegates.notNull<Boolean>()
+    private var unsavedSettings: MutableLiveData<Boolean> = MutableLiveData(false)
 
     private lateinit var typeAdapter: TypeAdapter
     private val settingsViewModel: SettingsViewModel by viewModels()
@@ -56,8 +59,6 @@ class UserSettingsActivity : AppCompatActivity(), View.OnClickListener,
         binding = ActivityUserSettingsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        unsavedSettings = false
-
         typeAdapter = TypeAdapter(emptyList())
         typeAdapter.setOnItemClickListener(this)
 
@@ -67,12 +68,17 @@ class UserSettingsActivity : AppCompatActivity(), View.OnClickListener,
         binding.pickExcludedDatesButton.setOnClickListener(this)
         binding.btnSave.setOnClickListener(this)
 
+        binding.slider.addOnChangeListener { slider: Slider, fl: Float, b: Boolean ->
+            if (slider.value != localSettings.dailyAvailableHours.toFloat()) {
+                unsavedSettings.setValue(true)
+            }
+        }
         binding.resetUnavailableDatesButton.setOnClickListener {
             val builder = AlertDialog.Builder(this)
             builder.setTitle("Czy chcesz usunąć wszystkie wybrane dni?")
             builder.setPositiveButton("Tak") { _, _ ->
                 markedDatePickerList.clear()
-                unsavedSettings = true
+                unsavedSettings.setValue(true)
             }
             builder.setNegativeButton("Nie") { dialog, _ ->
                 dialog.dismiss()
@@ -82,6 +88,14 @@ class UserSettingsActivity : AppCompatActivity(), View.OnClickListener,
 
         val yesterday = CivilCalendar(TimeZone.getDefault(), Locale("pl", "PL"))
         yesterday.add(Calendar.DAY_OF_YEAR, -1)
+
+        unsavedSettings.observe(this) {
+            if (it) {
+                binding.unsavedChangesText.visibility = VISIBLE
+            } else {
+                binding.unsavedChangesText.visibility = GONE
+            }
+        }
 
         settingsViewModel.readSettingsFromDb().observe(this) { settings ->
             localSettings = settings
@@ -156,9 +170,10 @@ class UserSettingsActivity : AppCompatActivity(), View.OnClickListener,
                         ExcludedDate(excludedDate = localDate)
                     }
 
-                    settingsViewModel.saveSettings(localSettings, changedTypes, selectedDates)
-
-                    savedNotif.show()
+                     if (settingsViewModel.saveSettings(localSettings, changedTypes, selectedDates)) {
+                         savedNotif.show()
+                         unsavedSettings.postValue(false)
+                     }
                 }
             }
 
@@ -167,7 +182,7 @@ class UserSettingsActivity : AppCompatActivity(), View.OnClickListener,
                 val callback = MultipleDaysPickCallback { days ->
                     if (markedDatePickerList.sorted() != days.sorted()) {
                         markedDatePickerList = days
-                        unsavedSettings = true
+                        unsavedSettings.setValue(true)
                     }
                 }
 
@@ -180,11 +195,6 @@ class UserSettingsActivity : AppCompatActivity(), View.OnClickListener,
                 datePicker.show(supportFragmentManager, "Tak")
 
             }
-
-        }
-
-        binding.slider.setLabelFormatter { value -> //It is just an example
-            if (value == 3.0f) "TEST" else java.lang.String.format(Locale.US, "%.0f", value)
         }
     }
 
@@ -210,7 +220,7 @@ class UserSettingsActivity : AppCompatActivity(), View.OnClickListener,
                 // Jeśli jest element z takim id to zamienia kolor, jeśli nie ma to dodaje typ ze zmienionym kolorem
                 changedTypes.firstOrNull { it.id == type.id }?.apply { this.colour = colorhex }
                     ?: changedTypes.add(Types(type.id, type.name, colorhex))
-                unsavedSettings = true
+                unsavedSettings.setValue(true)
             }
             .setColorShape(ColorShape.SQAURE)
             .show()

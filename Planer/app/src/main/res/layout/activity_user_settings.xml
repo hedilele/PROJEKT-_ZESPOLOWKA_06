@@ -130,7 +130,8 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="5dp">
 
                 <Button
                     android:id="@+id/exportButton"
@@ -159,28 +160,45 @@
     </ScrollView>
 
     <LinearLayout
-        android:id="@+id/button_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
-        <Button
-            android:id="@+id/btn_save"
-            android:layout_width="150dp"
+        <TextView
+            android:id="@+id/unsavedChangesText"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="15dp"
-            android:backgroundTint="@color/pr1_green_text"
-            android:padding="10dp"
-            android:text="zapisz"
-            android:textColor="@color/white"
-            android:textSize="18sp"
-            android:textStyle="bold" />
+            android:layout_marginVertical="5dp"
+            android:gravity="center_horizontal"
+            android:text="Masz niezapisane zmiany!"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@color/hard_red"
+            android:visibility="gone" />
 
-        <!--
+        <LinearLayout
+            android:id="@+id/button_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btn_save"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="15dp"
+                android:backgroundTint="@color/pr1_green_text"
+                android:padding="10dp"
+                android:text="zapisz"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <!--
         90be6d - zielony
         -->
 
+        </LinearLayout>
     </LinearLayout>
 
 
