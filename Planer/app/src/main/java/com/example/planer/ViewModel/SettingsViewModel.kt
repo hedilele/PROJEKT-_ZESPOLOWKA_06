@@ -10,6 +10,8 @@ import com.example.planer.entities.Types
 import com.example.planer.repository.ExcludedDateRepository
 import com.example.planer.repository.SettingsRepository
 import com.example.planer.repository.TypeRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 class SettingsViewModel(application: Application): AndroidViewModel(application) {
 
@@ -51,6 +53,10 @@ class SettingsViewModel(application: Application): AndroidViewModel(application)
         typeRepository.addType(Types(2, "Szkoła", "#88A9C3"))
         typeRepository.addType(Types(3, "Komputer", "#FFEB5B"))
         typeRepository.addType(Types(4, "Rozrywka", "#FFC0CB"))
+    }
+
+    fun getHours(): LiveData<Int>{
+        return settingsRepository.readHours()
     }
 
 }

@@ -22,4 +22,6 @@ interface SettingsDAO {
     @Query("DELETE FROM Settings WHERE id=:id")
     suspend fun deleteById(id: Int)
 
+    @Query ("SELECT daily_available_hours FROM Settings WHERE id=1")
+    fun getHours(): LiveData<Int>
 }

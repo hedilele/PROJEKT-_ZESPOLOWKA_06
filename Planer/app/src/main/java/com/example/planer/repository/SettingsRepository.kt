@@ -17,4 +17,8 @@ class SettingsRepository(private val settingsDAO: SettingsDAO) {
     suspend fun setSettings(settings: Settings) {
         settingsDAO.insert(settings)
     }
+
+    fun readHours(): LiveData<Int> {
+        return settingsDAO.getHours()
+    }
 }

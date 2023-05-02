@@ -9,7 +9,8 @@ import java.time.LocalDate
  */
 class BlockListTask (
     var list : List<Tasks>,
-    var context : Context
+    var context : Context,
+    val hours : Int
 ){
     val io = IO()
     private val tasks = list

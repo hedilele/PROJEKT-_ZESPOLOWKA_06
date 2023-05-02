@@ -2,26 +2,24 @@ package com.example.planer.gui.pages.home
 
 import android.app.AlertDialog
 import android.content.res.ColorStateList
-import android.content.Context
-import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.content.ContextCompat
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.planer.R
 import com.example.planer.ViewModel.HabitViewModel
 import com.example.planer.ViewModel.NoteViewModel
+import com.example.planer.ViewModel.SettingsViewModel
 import com.example.planer.ViewModel.TaskViewModel
 import com.example.planer.algorithm.BlockListTask
-import com.example.planer.algorithm.IO
 import com.example.planer.databinding.FragmentHomeBinding
 import com.example.planer.entities.Habits
 import com.example.planer.entities.Notes
@@ -43,7 +41,6 @@ import kotlinx.android.synthetic.main.fragment_home.view.tomorrow_task_list
 import kotlinx.android.synthetic.main.fragment_home.view.tomorrow_title
 import kotlinx.android.synthetic.main.fragment_home.view.week_task_list
 import kotlinx.android.synthetic.main.fragment_home.view.week_title
-import java.util.concurrent.atomic.AtomicBoolean
 
 class HomeFragment : Fragment() {
 
@@ -53,6 +50,7 @@ class HomeFragment : Fragment() {
     private lateinit var userViewModel: TaskViewModel
     private lateinit var habitViewModel: HabitViewModel
     private lateinit var noteViewModel: NoteViewModel
+    private val settingViewModel: SettingsViewModel by viewModels()
 
     private lateinit var adapterhh: AdapterHabits
 
@@ -129,15 +127,19 @@ class HomeFragment : Fragment() {
         rv5.adapter = adapter5
         rv5.layoutManager = LinearLayoutManager(requireContext())
 
+
         userViewModel = ViewModelProvider(this)[TaskViewModel::class.java]
-        userViewModel.readAllData.observe(viewLifecycleOwner, Observer {
-            val blockListTask = BlockListTask(it, requireContext())
-            blockListTask.planner()
-            adapter.updateList(blockListTask.todayList, 1)
-            adapter2.updateList(blockListTask.tomorrowList, 0)
-            adapter3.updateList(blockListTask.weekList, 0)
-            adapter4.updateList(blockListTask.monthList, 0)
-            adapter5.updateList(blockListTask.restList, 0)
+        userViewModel.readAllData.observe(viewLifecycleOwner, Observer { tasks ->
+            settingViewModel.getHours().observe(viewLifecycleOwner, Observer { h ->
+                val blockListTask = BlockListTask(tasks, requireContext(), h)
+                blockListTask.planner()
+                adapter.updateList(blockListTask.todayList, 1)
+                adapter2.updateList(blockListTask.tomorrowList, 0)
+                adapter3.updateList(blockListTask.weekList, 0)
+                adapter4.updateList(blockListTask.monthList, 0)
+                adapter5.updateList(blockListTask.restList, 0)
+                Log.d("h", "godziny: $h")
+            })
         })
 
         noteViewModel = ViewModelProvider(this)[NoteViewModel::class.java]
