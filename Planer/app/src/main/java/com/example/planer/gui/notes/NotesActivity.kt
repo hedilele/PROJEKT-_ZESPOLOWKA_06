@@ -5,6 +5,7 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.ViewGroup
 import android.view.Window
 import android.view.WindowManager
 import android.widget.Button
@@ -87,6 +88,8 @@ class NotesActivity : AppCompatActivity() {
             val alertDialog = builder.create()
             alertDialog.show()
 
+            content.setText("")
+
             content.requestFocus()
             val window: Window? = alertDialog.getWindow()
             window?.clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM)
@@ -95,6 +98,8 @@ class NotesActivity : AppCompatActivity() {
             btn_edit.setOnClickListener {
                 noteViewModel.addNote(Notes(noteTitle = "0short", noteContent = content.text.toString(), photo = null))
                 alertDialog.cancel()
+                val parentView = dialogView.parent as ViewGroup
+                parentView?.removeView(dialogView)
             }
 
 
