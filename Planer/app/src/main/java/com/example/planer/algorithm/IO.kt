@@ -44,7 +44,16 @@ class IO {
         }
         //plik juz istnial
         else{
-            val data = file.readLines()
+            var data = file.readLines()
+            if(data.size < 3){
+                file.writeText(data[0])
+                file.appendText("\n${data[1]}")
+                file.appendText("\n$work")
+                Log.d("work", "w przypadku starej wersji programu, do odrobienia: $work")
+            }
+
+            data = file.readLines()
+
             //jeżeli mamy nowy dzień
             if(data[0] != today){
                 file.writeText(today)
