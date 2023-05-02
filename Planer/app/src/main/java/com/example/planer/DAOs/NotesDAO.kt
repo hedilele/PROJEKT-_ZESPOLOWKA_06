@@ -23,6 +23,9 @@ interface NotesDAO
     @Query("SELECT * FROM `Notes`")
     fun readAllData(): LiveData<List<Notes>>
 
+    @Query("SELECT * FROM `Notes` WHERE note_title = '0short'")
+    fun readAllShortNotes(): LiveData<List<Notes>>
+
     @Query("UPDATE Notes SET note_content = :context WHERE id = :id")
     fun updateNoteById(id: Int, context: String)
 

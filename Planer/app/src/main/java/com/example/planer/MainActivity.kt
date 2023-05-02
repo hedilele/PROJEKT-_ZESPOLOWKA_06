@@ -4,11 +4,15 @@ import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.Window
 import android.view.WindowManager
+import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatEditText
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -23,6 +27,7 @@ import com.example.planer.gui.pages.home.tasks.AddingTaskActivity
 import com.example.planer.gui.pages.*
 import com.example.planer.gui.pages.filter.FilterFragment
 import com.example.planer.gui.pages.home.HomeFragment
+import com.example.planer.gui.pages.home.notes.NotesActivity
 import com.example.planer.gui.pages.pomodoro.PomodoroActivity
 import com.example.planer.gui.pages.pomodoro.PomodoroFragment
 import com.example.planer.gui.pages.settings.UserSettingsActivity
@@ -110,6 +115,32 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        binding.buttonAdd.setOnLongClickListener{
+
+            val builder = AlertDialog.Builder(this)
+            val inflater = LayoutInflater.from(this)
+            val dialogView = inflater.inflate(R.layout.dialog_short_note, null)
+            builder.setView(dialogView) //Podlaczanie xmla
+
+            val content = dialogView.findViewById<AppCompatEditText>(R.id.note_content)
+            val btn_edit = dialogView.findViewById<Button>(R.id.btn_edit)
+            btn_edit.setText("Stwórz")
+
+            val alertDialog = builder.create()
+            alertDialog.show()
+
+            content.requestFocus()
+            val window: Window? = alertDialog.getWindow()
+            window?.clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM)
+            window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE)
+
+            btn_edit.setOnClickListener{
+                noteViewModel.addNote(Notes(noteTitle = "0short", noteContent = content.text.toString(), photo = null))
+                alertDialog.cancel()
+            }
+            true
+        }
+
         // menu boczne - mechanizm odpowiedzialny za wysuwanie
         binding.apply {
             toggle = ActionBarDrawerToggle(
@@ -170,6 +201,12 @@ class MainActivity : AppCompatActivity() {
                         startActivity(intent)
 
                     }
+
+                    R.id.short_notes -> {
+                        val intent = Intent(applicationContext, NotesActivity::class.java)
+                        startActivity(intent)
+                    }
+
                 }
                 true
             }

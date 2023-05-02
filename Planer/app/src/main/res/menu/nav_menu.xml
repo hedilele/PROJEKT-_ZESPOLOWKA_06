@@ -21,4 +21,9 @@
         android:title="Scope mode"
         />
 
+    <item
+        android:id="@+id/short_notes"
+        android:title="Notatki"
+        />
+
 </menu>

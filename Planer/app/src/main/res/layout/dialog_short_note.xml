@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/pr1_beige_background">
+
+
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/note_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:backgroundTint="@color/brown_important_urgent_on"
+        android:ems="10"
+        android:hint="Treść"
+        android:gravity="start|top"
+        android:layout_marginHorizontal="10dp"
+        android:inputType="textMultiLine|textCapSentences"
+        android:textSize="20dp" />
+
+
+    <Button
+        android:id="@+id/btn_edit"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:backgroundTint="@color/pr1_green_button"
+        android:text="edytuj" />
+
+
+</LinearLayout>
+

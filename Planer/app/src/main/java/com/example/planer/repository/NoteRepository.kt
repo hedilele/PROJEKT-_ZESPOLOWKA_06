@@ -9,6 +9,7 @@ class NoteRepository(private val notesDAO: NotesDAO)
 {
 
     val readAllData: LiveData<List<Notes>> = notesDAO.readAllData()
+    val readAllShortNotes: LiveData<List<Notes>> = notesDAO.readAllShortNotes()
 
     suspend fun addNote(notes: Notes)
     {

@@ -16,6 +16,7 @@ import kotlinx.coroutines.*
 class NoteViewModel(application: Application): AndroidViewModel(application)
 {
     val readAllData: LiveData<List<Notes>>
+    val readAllShortNotes: LiveData<List<Notes>>
     private val repository: NoteRepository
 
     //To zawsze pierwsze bedzie sie wykonywalo kiedy callujemy UserViewModel
@@ -24,6 +25,7 @@ class NoteViewModel(application: Application): AndroidViewModel(application)
         val notesDAO = AppDatabase.getDatabase(application).notesDAO()
         repository = NoteRepository(notesDAO)
         readAllData = repository.readAllData
+        readAllShortNotes = repository.readAllShortNotes
     }
 
     //Zla praktyka jest uruchamiac zapytania z bazy w watku glownym!

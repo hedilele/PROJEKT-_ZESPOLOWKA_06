@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".gui.pages.home.notes.NotesActivity">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/short_note_list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="10dp"
+        android:layout_weight="1"
+        tools:listitem="@layout/single_short_note" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:gravity="center|right">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/shape_navigartion_button"
+            android:backgroundTint="@color/pr1_beige_background"
+            android:shadowRadius="10"
+            android:layout_margin="10dp">
+
+            <ImageView
+                android:id="@+id/btn_add_note"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:src="@drawable/navigation_add"
+                app:tint="@color/pr1_brown_dark"
+
+                />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>
