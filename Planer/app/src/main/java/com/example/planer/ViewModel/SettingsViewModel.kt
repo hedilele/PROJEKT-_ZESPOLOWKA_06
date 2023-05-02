@@ -70,30 +70,6 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
         return settingsRepository.readHours()
     }
 
-    fun exportDb(context: Context) {
-        CoroutineScope(Dispatchers.IO).launch {
-            val dataList = DbExport(
-                calendar = calendarRepository.getAllList(),
-                excludedDate = excludedDateRepository.getExcludedDatesList(),
-                habits = habitsRepository.getHabitsList(),
-                notes = notesRepository.getAllNotesList(),
-                settings = settingsRepository.getSettings(),
-                tasks = taskRepository.getTasksList(),
-                types = typeRepository.getAllTypesList()
-            )
-            val gson = Gson()
-            val jsonString = gson.toJson(dataList)
-            try {
-                val file = File(context.filesDir,"dbexport.json")
-                file.writeText(jsonString)
-                // return success
-            } catch (e: Exception) {
-                // return failed
-            }
-        }
-    }
-
-
     suspend fun importDb(backup: RoomBackup, context: Context): Boolean =
         withContext(Dispatchers.IO) {
             val deferred = CompletableDeferred<Boolean>()
