@@ -14,8 +14,8 @@ class BlockListTask (
 ){
     val io = IO()
     private val tasks = list
-    var TODAY_WORK = io.newDay(context)
-    var TOMORROW_WORK = 60
+    var TODAY_WORK = io.newDay(context, hours)
+    var TOMORROW_WORK = hours
     var todayList = mutableListOf<Tasks>()
     var tomorrowList = mutableListOf<Tasks>()
     var weekList = mutableListOf<Tasks>()
