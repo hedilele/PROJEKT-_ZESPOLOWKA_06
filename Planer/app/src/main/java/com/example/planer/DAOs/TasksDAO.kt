@@ -81,6 +81,7 @@ interface TasksDAO
     //Wyszukiwanie po nazwie
     @Query("SELECT * FROM Tasks WHERE title LIKE '%' || :searchName || '%'")
     fun readTasksWithSearchName(searchName: String) : LiveData<List<Tasks>>
+
     //Czytanie po typach
     @Query("SELECT * FROM Tasks WHERE type_id IN (:typeIds)")
     fun readTasksWithTypes(typeIds: List<Int>): LiveData<List<Tasks>>
