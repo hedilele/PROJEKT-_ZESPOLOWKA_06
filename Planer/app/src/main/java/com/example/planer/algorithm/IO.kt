@@ -22,16 +22,6 @@ class IO {
         val today = LocalDate.now().format(formatter)
         var work = 60
 
-        when (hours) {
-            1 -> work = 12
-            2 -> work = 24
-            3 -> work = 36
-            4 -> work = 48
-            5 -> work = 60
-            6 -> work = 72
-            7 -> work = 84
-            8 -> work = 96
-        }
 
         val isCreated = file.createNewFile()
         //plik zostal w tej chwili utworzony

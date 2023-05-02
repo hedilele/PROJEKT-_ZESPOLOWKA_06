@@ -12,10 +12,11 @@ class BlockListTask (
     var context : Context,
     val hours : Int
 ){
-    val io = IO()
+    private val h = numToH(hours)
+    private val io = IO()
     private val tasks = list
-    var TODAY_WORK = io.newDay(context, hours)
-    var TOMORROW_WORK = hours
+    private var TODAY_WORK = io.newDay(context, h)
+    private var TOMORROW_WORK = h
     var todayList = mutableListOf<Tasks>()
     var tomorrowList = mutableListOf<Tasks>()
     var weekList = mutableListOf<Tasks>()
@@ -600,4 +601,18 @@ class BlockListTask (
         restList.reverse()
     }
 
+    private fun numToH(number : Int) : Int{
+        var hours = 60
+        when (number) {
+            1 -> hours = 12
+            2 -> hours = 24
+            3 -> hours = 36
+            4 -> hours = 48
+            5 -> hours = 60
+            6 -> hours = 72
+            7 -> hours = 84
+            8 -> hours = 96
+        }
+        return hours
+    }
 }
