@@ -131,7 +131,11 @@ class HomeFragment : Fragment() {
         userViewModel = ViewModelProvider(this)[TaskViewModel::class.java]
         userViewModel.readAllData.observe(viewLifecycleOwner, Observer { tasks ->
             settingViewModel.getHours().observe(viewLifecycleOwner, Observer { h ->
-                val blockListTask = BlockListTask(tasks, requireContext(), h)
+                var hours : Int?
+                hours = h
+                if(hours == null)
+                    hours = 5
+                val blockListTask = BlockListTask(tasks, requireContext(), hours)
                 blockListTask.planner()
                 adapter.updateList(blockListTask.todayList, 1)
                 adapter2.updateList(blockListTask.tomorrowList, 0)
