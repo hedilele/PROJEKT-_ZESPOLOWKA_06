@@ -6,7 +6,6 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.LinearLayout
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -126,21 +125,42 @@ class UserSettingsActivity : AppCompatActivity(), View.OnClickListener,
     }
 
     fun onExportButtonClicked(view: View) {
+        val buttns = findViewById<LinearLayout>(R.id.button_layout)
         lifecycleScope.launch {
             if (settingsViewModel.exportDb(backup, this@UserSettingsActivity)) {
-                Toast.makeText(this@UserSettingsActivity, "Eksport udany!", Toast.LENGTH_SHORT).show()
+                val exportNotif =
+                    Snackbar.make(buttns, "Eksport udany!", Snackbar.LENGTH_SHORT)
+                exportNotif.anchorView = buttns
+                exportNotif.show()
             } else {
-                Toast.makeText(this@UserSettingsActivity, "Niepowodzenie", Toast.LENGTH_SHORT).show()
+                val exportNotif =
+                    Snackbar.make(buttns, "Niepowodzenie!", Snackbar.LENGTH_SHORT)
+                exportNotif.anchorView = buttns
+                exportNotif.show()
             }
         }
     }
 
     fun onImportButtonClicked(view: View) {
         lifecycleScope.launch {
+            val buttns = findViewById<LinearLayout>(R.id.button_layout)
             if (settingsViewModel.importDb(backup, this@UserSettingsActivity)) {
-                Toast.makeText(this@UserSettingsActivity, "Import udany!", Toast.LENGTH_SHORT).show()
+                // w rzeczywisotści restartuję apkę
+                val importNotif =
+                    Snackbar.make(buttns, "Zaimportowano! Restartowanie bazy danych...", Snackbar.LENGTH_SHORT)
+                importNotif.anchorView = buttns
+                importNotif.addCallback(object : BaseTransientBottomBar.BaseCallback<Snackbar>() {
+                    override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
+                        super.onDismissed(transientBottomBar, event)
+                        settingsViewModel.restartApp(backup, this@UserSettingsActivity) // restart po zniknięciu snackbara
+                    }
+                })
+                importNotif.show()
             } else {
-                Toast.makeText(this@UserSettingsActivity, "Niepowodzenie", Toast.LENGTH_SHORT).show()
+                val importNotif =
+                    Snackbar.make(buttns, "Niepowodzenie!", Snackbar.LENGTH_SHORT)
+                importNotif.anchorView = buttns
+                importNotif.show()
             }
         }
     }
@@ -152,7 +172,7 @@ class UserSettingsActivity : AppCompatActivity(), View.OnClickListener,
             R.id.btn_save -> {
                 val buttns = findViewById<LinearLayout>(R.id.button_layout)
                 val savedNotif =
-                    Snackbar.make(buttns, "Zapisane!", BaseTransientBottomBar.LENGTH_SHORT)
+                    Snackbar.make(buttns, "Zapisane!", Snackbar.LENGTH_SHORT)
                 savedNotif.anchorView = buttns
 
                 // Pobieram wartość dostępnych godzin ze slidera
@@ -170,10 +190,15 @@ class UserSettingsActivity : AppCompatActivity(), View.OnClickListener,
                         ExcludedDate(excludedDate = localDate)
                     }
 
-                     if (settingsViewModel.saveSettings(localSettings, changedTypes, selectedDates)) {
-                         savedNotif.show()
-                         unsavedSettings.postValue(false)
-                     }
+                    if (settingsViewModel.saveSettings(
+                            localSettings,
+                            changedTypes,
+                            selectedDates
+                        )
+                    ) {
+                        savedNotif.show()
+                        unsavedSettings.postValue(false)
+                    }
                 }
             }
 

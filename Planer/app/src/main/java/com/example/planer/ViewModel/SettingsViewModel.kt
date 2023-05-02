@@ -2,12 +2,14 @@ package com.example.planer.ViewModel
 
 import android.app.Application
 import android.content.Context
+import android.content.Intent
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import com.example.planer.AppDatabase
 import com.example.planer.entities.ExcludedDate
 import com.example.planer.entities.Settings
 import com.example.planer.entities.Types
+import com.example.planer.gui.pages.settings.UserSettingsActivity
 import com.example.planer.repository.ExcludedDateRepository
 import com.example.planer.repository.SettingsRepository
 import com.example.planer.repository.TypeRepository
@@ -85,4 +87,8 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
                 .restore()
             return@withContext deferred.await()
         }
+
+    fun restartApp(backup: RoomBackup, context: Context) {
+        backup.restartApp(Intent(context, UserSettingsActivity::class.java))
+    }
 }
