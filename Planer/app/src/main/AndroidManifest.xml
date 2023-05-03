@@ -7,10 +7,6 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY" />
-<<<<<<< HEAD
-=======
-
->>>>>>> 3d5908a (Dodanie do manifestu dzialania 'do not disturb' na emulatorze)
 
     <application
         android:allowBackup="true"
