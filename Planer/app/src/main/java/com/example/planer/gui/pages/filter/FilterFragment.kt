@@ -6,22 +6,22 @@ import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.planer.R
 import com.example.planer.ViewModel.NoteViewModel
 import com.example.planer.ViewModel.TaskViewModel
+import com.example.planer.databinding.FragmentFilterBinding
 import com.example.planer.entities.Notes
 import com.example.planer.entities.Tasks
 import com.example.planer.gui.pages.home.tasks.AdapterTasks
@@ -38,7 +38,7 @@ import java.util.*
  * Klasa do listowania, zwraca pelna liste taskow i pozwala wylistowac taski roznymi kategorami
  * (typ, czas trwania, data), dodatkowo pozwala wyszukiwac taski po nazwie
  */
-class FilterFragment : Fragment() {
+class FilterFragment : AppCompatActivity() {
     //Podlaczanie xmla dialog_filter
     private lateinit var userViewModel: TaskViewModel
     private lateinit var noteViewModel: NoteViewModel
@@ -47,22 +47,21 @@ class FilterFragment : Fragment() {
     var list = mutableListOf<Tasks>()
     private var listNotes = mutableListOf<Notes>()
     var filteredList = mutableListOf<Tasks>() //druga lista do wykorzystania
+    private lateinit var binding: FragmentFilterBinding
+
 
     @SuppressLint("MissingInflatedId", "NotifyDataSetChanged")
     @RequiresApi(Build.VERSION_CODES.O)
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        val view: View = inflater.inflate(R.layout.fragment_filter, container, false)
-        //Do wyszukiwania po nazwie
-        val search = view.findViewById<AppCompatEditText>(R.id.search)
+    override fun onCreate(savedInstanceState: Bundle?){
+        super.onCreate(savedInstanceState)
+        binding = FragmentFilterBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        val search = findViewById<AppCompatEditText>(R.id.search) //view.findViewById<AppCompatEditText>(R.id.search)
 
         noteViewModel = ViewModelProvider(this)[NoteViewModel::class.java]
         userViewModel = ViewModelProvider(this)[TaskViewModel::class.java]
 
-
-        val rv = view.rv_list
+        val rv = findViewById<RecyclerView>(R.id.rv_list)
         val adapter = AdapterTasks(
             list,
             listNotes,
@@ -70,7 +69,7 @@ class FilterFragment : Fragment() {
             { updateTask, updateNote -> userViewModel.updateTaskAndNote(updateTask, updateNote) }
         )
         rv?.adapter = adapter
-        rv?.layoutManager = LinearLayoutManager(requireContext())
+        rv?.layoutManager = LinearLayoutManager(this)
 
         search.addTextChangedListener(object : TextWatcher{
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -92,7 +91,7 @@ class FilterFragment : Fragment() {
                 {
                     CoroutineScope(Dispatchers.Main).launch {
                         userViewModel.readTasksWithSearchEdit(searchQuery)
-                            .observe(viewLifecycleOwner, Observer { //Tutaj zmiana kazdego na this@FilterFragment chyba
+                            .observe(this@FilterFragment, Observer { //Tutaj zmiana kazdego na this@FilterFragment chyba
                                 adapter.updateList(it.toMutableList(), 0)
                             })
                         adapter.notifyDataSetChanged()
@@ -111,9 +110,9 @@ class FilterFragment : Fragment() {
 
 
         //Po kliknieciu na lejek ImageView
-        view.searchView.setOnClickListener{
-            val builder = AlertDialog.Builder(context) //this
-            val inflater = LayoutInflater.from(context)
+        searchView.setOnClickListener{
+            val builder = AlertDialog.Builder(this) //this
+            val inflater = LayoutInflater.from(this)
             val dialogView = inflater.inflate(R.layout.dialog_filter, null)
             builder.setView(dialogView) //Podlaczanie xmla
             //Obsluga po wyjsciu z okna
@@ -180,58 +179,58 @@ class FilterFragment : Fragment() {
             //Ustawianie dla duration wyboru, jesli wybrany
             duration1.setOnClickListener{
                 //uncheckDuration()
-                duration1.background.setTint(ContextCompat.getColor(requireContext(),R.color.brown_important_urgent_on))
+                duration1.background.setTint(ContextCompat.getColor(this,R.color.brown_important_urgent_on)) // kazdy requireContext() na this
                 finishIds.add(1)
             }
 
             duration2.setOnClickListener{
                 //uncheckDuration()
-                duration2.background.setTint(ContextCompat.getColor(requireContext(),R.color.brown_important_urgent_on))
+                duration2.background.setTint(ContextCompat.getColor(this,R.color.brown_important_urgent_on))
                 finishIds.add(2)
             }
 
             duration3.setOnClickListener{
                 //uncheckDuration()
-                duration3.background.setTint(ContextCompat.getColor(requireContext(),R.color.brown_important_urgent_on))
+                duration3.background.setTint(ContextCompat.getColor(this,R.color.brown_important_urgent_on))
                 finishIds.add(6)
             }
 
             duration4.setOnClickListener{
                 //uncheckDuration()
-                duration4.background.setTint(ContextCompat.getColor(requireContext(),R.color.brown_important_urgent_on))
+                duration4.background.setTint(ContextCompat.getColor(this,R.color.brown_important_urgent_on))
                 finishIds.add(12)
             }
 
             duration5.setOnClickListener{
                 //uncheckDuration()
-                duration5.background.setTint(ContextCompat.getColor(requireContext(),R.color.brown_important_urgent_on))
+                duration5.background.setTint(ContextCompat.getColor(this,R.color.brown_important_urgent_on))
                 finishIds.add(24)
             }
 
             duration6.setOnClickListener{
                 //uncheckDuration()
-                duration6.background.setTint(ContextCompat.getColor(requireContext(),R.color.brown_important_urgent_on))
+                duration6.background.setTint(ContextCompat.getColor(this,R.color.brown_important_urgent_on))
                 finishIds.add(30)
             }
 
             //Ustawianie dla typu koloru, jesli wybrany
             type1.setOnClickListener{
-                type1.background.setTint(ContextCompat.getColor(requireContext(), R.color.brown_important_urgent_on))
+                type1.background.setTint(ContextCompat.getColor(this, R.color.brown_important_urgent_on))
                 typeIds.add(1)
             }
 
             type2.setOnClickListener{
-                type2.background.setTint(ContextCompat.getColor(requireContext(), R.color.brown_important_urgent_on))
+                type2.background.setTint(ContextCompat.getColor(this, R.color.brown_important_urgent_on))
                 typeIds.add(2)
             }
 
             type3.setOnClickListener{
-                type3.background.setTint(ContextCompat.getColor(requireContext(), R.color.brown_important_urgent_on))
+                type3.background.setTint(ContextCompat.getColor(this, R.color.brown_important_urgent_on))
                 typeIds.add(3)
             }
 
             type4.setOnClickListener{
-                type4.background.setTint(ContextCompat.getColor(requireContext(), R.color.brown_important_urgent_on))
+                type4.background.setTint(ContextCompat.getColor(this, R.color.brown_important_urgent_on))
                 typeIds.add(4)
             }
             val alertDialog = builder.create()
@@ -239,19 +238,19 @@ class FilterFragment : Fragment() {
 
             //Sortowanie po kliknieciu w przycisk
             sortButton.setOnClickListener{
-                view.search.clearFocus()
+                search.clearFocus()
                 //Jesli jest pusto
                 if(finishIds.isEmpty() && typeIds.isEmpty() && startDay.text.isBlank() && startMonth.text.isBlank()
                     && startYear.text.isBlank() && endDay.text.isBlank() && endMonth.text.isBlank()
                     && endYear.text.isBlank())
                 {
                     CoroutineScope(Dispatchers.Main).launch {
-                        userViewModel.readAllData.observe(viewLifecycleOwner, Observer {
+                        userViewModel.readAllData.observe(this@FilterFragment, Observer {
                             filteredList = it.toMutableList()
                             adapter.updateList(filteredList, 0)
                         })
 
-                        noteViewModel.readAllData.observe(viewLifecycleOwner, Observer {
+                        noteViewModel.readAllData.observe(this@FilterFragment, Observer {
                             adapter.updateListOfNotes(it.toMutableList())
                         })
                     }
@@ -261,7 +260,7 @@ class FilterFragment : Fragment() {
                 if(typeIds.isNotEmpty())
                 {
                     CoroutineScope(Dispatchers.Main).launch {
-                        userViewModel.readTasksWithTypes(typeIds).observe(viewLifecycleOwner, Observer {
+                        userViewModel.readTasksWithTypes(typeIds).observe(this@FilterFragment, Observer {
                             filteredList = it.toMutableList()
                             adapter.updateList(filteredList, 0)
                         })
@@ -272,8 +271,9 @@ class FilterFragment : Fragment() {
                 //Po czasie trwania
                 if(finishIds.isNotEmpty())
                 {
+                    //Kazdy viewLifecycleOwner na this@FilterFragment
                     CoroutineScope(Dispatchers.Main).launch {
-                        userViewModel.readTasksWithDuration(finishIds).observe(viewLifecycleOwner, Observer {
+                        userViewModel.readTasksWithDuration(finishIds).observe(this@FilterFragment, Observer {
                             filteredList = it.toMutableList()
                             adapter.updateList(filteredList, 0)
                         })
@@ -293,7 +293,7 @@ class FilterFragment : Fragment() {
                     val startDateStringFormatted = dateFormat.format(startDate)
                     val endDateStringFormatted = dateFormat.format(endDate)
                     CoroutineScope(Dispatchers.Main).launch {
-                        userViewModel.readTasksWithDate(startDateStringFormatted, endDateStringFormatted).observe(viewLifecycleOwner, Observer {
+                        userViewModel.readTasksWithDate(startDateStringFormatted, endDateStringFormatted).observe(this@FilterFragment, Observer {
                             filteredList = it.toMutableList()
                             adapter.updateList(filteredList, 0)
                         })
@@ -313,7 +313,7 @@ class FilterFragment : Fragment() {
                     val startDateStringFormatted = dateFormat.format(startDate)
                     val endDateStringFormatted = dateFormat.format(endDate)
                     CoroutineScope(Dispatchers.Main).launch {
-                        userViewModel.readTasksWithDurationAndDate(finishIds,startDateStringFormatted, endDateStringFormatted).observe(viewLifecycleOwner, Observer {
+                        userViewModel.readTasksWithDurationAndDate(finishIds,startDateStringFormatted, endDateStringFormatted).observe(this@FilterFragment, Observer {
                             filteredList = it.toMutableList()
                             adapter.updateList(filteredList, 0)
                         })
@@ -333,7 +333,7 @@ class FilterFragment : Fragment() {
                     val startDateStringFormatted = dateFormat.format(startDate)
                     val endDateStringFormatted = dateFormat.format(endDate)
                     CoroutineScope(Dispatchers.Main).launch {
-                        userViewModel.readTasksWithTypesAndDate(typeIds,startDateStringFormatted, endDateStringFormatted).observe(viewLifecycleOwner, Observer {
+                        userViewModel.readTasksWithTypesAndDate(typeIds,startDateStringFormatted, endDateStringFormatted).observe(this@FilterFragment, Observer {
                             filteredList = it.toMutableList()
                             adapter.updateList(filteredList, 0)
                         })
@@ -345,7 +345,7 @@ class FilterFragment : Fragment() {
                 if(typeIds.isNotEmpty() && finishIds.isNotEmpty())
                 {
                     CoroutineScope(Dispatchers.Main).launch {
-                        userViewModel.readTasksWithTypesAndDuration(typeIds,finishIds).observe(viewLifecycleOwner, Observer {
+                        userViewModel.readTasksWithTypesAndDuration(typeIds,finishIds).observe(this@FilterFragment, Observer {
                             filteredList = it.toMutableList()
                             adapter.updateList(filteredList, 0)
                         })
@@ -366,7 +366,7 @@ class FilterFragment : Fragment() {
                     val startDateStringFormatted = dateFormat.format(startDate)
                     val endDateStringFormatted = dateFormat.format(endDate)
                     CoroutineScope(Dispatchers.Main).launch {
-                        userViewModel.readTasksWithTypesAndDurationAndDate(typeIds,finishIds,startDateStringFormatted, endDateStringFormatted).observe(viewLifecycleOwner, Observer {
+                        userViewModel.readTasksWithTypesAndDurationAndDate(typeIds,finishIds,startDateStringFormatted, endDateStringFormatted).observe(this@FilterFragment, Observer {
                             filteredList = it.toMutableList()
                             adapter.updateList(filteredList, 0)
                         })
@@ -381,14 +381,14 @@ class FilterFragment : Fragment() {
         }
 
         //Ustawianie wyswietlania taskow w recycle view do listowania
-        userViewModel.readAllData.observe(viewLifecycleOwner, Observer {
+        userViewModel.readAllData.observe(this@FilterFragment, Observer {
             adapter.updateList(it.toMutableList(), 0)
         })
 
-        noteViewModel.readAllData.observe(viewLifecycleOwner, Observer {
+        noteViewModel.readAllData.observe(this@FilterFragment, Observer {
             adapter.updateListOfNotes(it.toMutableList())
         })
-        return view
+        //return view
     }
 
     //Sprawdzam czy editText jest pusty, jesli nie to usuwam

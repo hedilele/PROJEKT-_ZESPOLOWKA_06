@@ -63,7 +63,7 @@ class MainActivity : AppCompatActivity() {
         val fragments: ArrayList<Fragment> = arrayListOf(
             HomeFragment(),         // 0
             CalendarFragment(),     // 1
-            FilterFragment()           //2
+            //FilterFragment()           //2
         )
 
 
@@ -158,9 +158,9 @@ class MainActivity : AppCompatActivity() {
                 when (it.itemId) {
                     R.id.filter -> {
 
-                        //val intent = Intent(applicationContext, FilterActivity::class.java)
-                        //startActivity(intent)
-                        pagerView.setCurrentItem(2)
+                        val intent = Intent(applicationContext, FilterFragment::class.java)
+                        startActivity(intent)
+                        //pagerView.setCurrentItem(2)
 //                        viewPager.isUserInputEnabled = false // disable swiping
                         binding.drawerLayout.closeDrawer(GravityCompat.START);
 
@@ -218,7 +218,8 @@ class MainActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-       // notificationManager.setInterruptionFilter(NotificationManager.INTERRUPTION_FILTER_ALL)
+        //Todo wywala na emulatorze
+        //notificationManager.setInterruptionFilter(NotificationManager.INTERRUPTION_FILTER_ALL)
     }
 
     override fun onResume() {
