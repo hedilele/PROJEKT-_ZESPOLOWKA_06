@@ -74,12 +74,14 @@ class NotesActivity : AppCompatActivity() {
         })
 
 
-        val builder = AlertDialog.Builder(this)
-        val inflater = LayoutInflater.from(this)
-        val dialogView = inflater.inflate(R.layout.dialog_short_note, null)
-        builder.setView(dialogView) //Podlaczanie xmla
+
 
         binding.btnAddNote.setOnClickListener {
+
+            val builder = AlertDialog.Builder(this)
+            val inflater = LayoutInflater.from(this)
+            val dialogView = inflater.inflate(R.layout.dialog_short_note, null)
+            builder.setView(dialogView) //Podlaczanie xmla
 
             val content = dialogView.findViewById<AppCompatEditText>(R.id.note_content)
             val btn_edit = dialogView.findViewById<Button>(R.id.btn_edit)
@@ -98,8 +100,8 @@ class NotesActivity : AppCompatActivity() {
             btn_edit.setOnClickListener {
                 noteViewModel.addNote(Notes(noteTitle = "0short", noteContent = content.text.toString(), photo = null))
                 alertDialog.cancel()
-                val parentView = dialogView.parent as ViewGroup
-                parentView?.removeView(dialogView)
+//                val parentView = dialogView.parent as ViewGroup
+//                parentView?.removeView(dialogView)
             }
 
 
