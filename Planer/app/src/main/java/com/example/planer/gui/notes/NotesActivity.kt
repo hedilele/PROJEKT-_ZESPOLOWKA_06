@@ -134,7 +134,6 @@ class NotesActivity : AppCompatActivity() {
 //                parentView?.removeView(dialogView)
             }
 
-
         }
     }
 }
