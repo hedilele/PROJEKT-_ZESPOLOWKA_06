@@ -6,17 +6,17 @@
     android:background="@color/pr1_beige_background">
 
 
-
     <androidx.appcompat.widget.AppCompatEditText
         android:id="@+id/note_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="10dp"
         android:layout_marginBottom="20dp"
         android:backgroundTint="@color/brown_important_urgent_on"
         android:ems="10"
-        android:hint="Treść"
+        android:fontFamily="@font/poppins_medium"
         android:gravity="start|top"
-        android:layout_marginHorizontal="10dp"
+        android:hint="Treść"
         android:inputType="textMultiLine|textCapSentences"
         android:textSize="20dp" />
 
@@ -27,6 +27,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:backgroundTint="@color/pr1_green_button"
+        android:textColor="#E6000000"
         android:text="edytuj" />
 
 

@@ -2,11 +2,15 @@ package com.example.planer.scope
 
 import android.os.Build
 import android.os.Bundle
+import android.view.View
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
+import android.view.Window
+import android.view.WindowManager
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.recyclerview.widget.RecyclerView
 import com.example.planer.ViewModel.ScopeViewModel
 import com.example.planer.databinding.ActivityScopeModeBinding
@@ -23,6 +27,16 @@ class ScopeMode : AppCompatActivity(), CardAdapter.OnButtonClickListener {
     private lateinit var binding: ActivityScopeModeBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        // Set full screen
+        supportRequestWindowFeature(Window.FEATURE_NO_TITLE)
+        window.setFlags(
+            WindowManager.LayoutParams.FLAG_FULLSCREEN,
+            WindowManager.LayoutParams.FLAG_FULLSCREEN)
+
+        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+
         super.onCreate(savedInstanceState)
 
         binding = ActivityScopeModeBinding.inflate(layoutInflater)

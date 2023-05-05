@@ -564,20 +564,6 @@
         android:gravity="center"
         android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/btn_create"
-            android:layout_width="110dp"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="15dp"
-            android:padding="10dp"
-            android:text="edytuj"
-            android:textColor="#E6000000"
-            android:backgroundTint="@color/pr1_green_button"
-            android:textSize="15dp" />
-
-        <!--
-        90be6d - zielony
-        -->
 
         <Button
             android:id="@+id/btn_cancel"
@@ -589,6 +575,18 @@
             android:text="anuluj"
             android:textColor="#E6000000"
             android:textSize="15dp" />
+
+        <Button
+            android:id="@+id/btn_create"
+            android:layout_width="110dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="15dp"
+            android:padding="10dp"
+            android:text="edytuj"
+            android:textColor="#E6000000"
+            android:backgroundTint="@color/pr1_green_button"
+            android:textSize="15dp" />
+
     </LinearLayout>
 
 

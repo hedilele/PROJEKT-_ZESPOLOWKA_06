@@ -3,8 +3,10 @@ package com.example.planer
 import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.View
 import android.view.Window
 import android.view.WindowManager
 import android.widget.Button
@@ -12,6 +14,7 @@ import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
@@ -32,6 +35,7 @@ import com.example.planer.gui.pages.pomodoro.PomodoroActivity
 import com.example.planer.gui.pages.pomodoro.PomodoroFragment
 import com.example.planer.gui.pages.settings.UserSettingsActivity
 import com.example.planer.scope.ScopeMode
+import kotlinx.android.synthetic.main.dialod_when_title_empty.view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -54,6 +58,13 @@ class MainActivity : AppCompatActivity() {
         window.setFlags(
             WindowManager.LayoutParams.FLAG_FULLSCREEN,
             WindowManager.LayoutParams.FLAG_FULLSCREEN)
+
+        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+
+
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+
+
 
         setContentView(binding.root)
 
@@ -135,8 +146,28 @@ class MainActivity : AppCompatActivity() {
             window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE)
 
             btn_edit.setOnClickListener{
-                noteViewModel.addNote(Notes(noteTitle = "0short", noteContent = content.text.toString(), photo = null))
-                alertDialog.cancel()
+
+                if(content.text.toString().replace(" ", "") == "")
+                {
+                    val builder = AlertDialog.Builder(this)
+                    val inflater = LayoutInflater.from(this)
+                    val dialogView = inflater.inflate(R.layout.dialod_when_title_empty, null)
+                    builder.setView(dialogView) //Podlaczanie xmla
+                    val alertDialog = builder.create()
+                    alertDialog.show()
+
+                    dialogView.btn_ok.setOnClickListener {
+                        alertDialog.cancel()
+                    }
+
+                }
+                else
+                {
+                    noteViewModel.addNote(Notes(noteTitle = "0short", noteContent = content.text.toString(), photo = null))
+                    alertDialog.cancel()
+                }
+
+
             }
             true
         }

@@ -1,7 +1,9 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Theme.Planer" parent="Theme.MaterialComponents.Light.NoActionBar">
+
         <!-- Primary brand color. -->
+        <item name="android:forceDarkAllowed" tools:ignore="NewApi">false</item>
         <item name="colorPrimary">@color/purple_500</item>
         <item name="colorPrimaryVariant">@color/purple_700</item>
         <item name="colorOnPrimary">@color/white</item>
@@ -12,11 +14,12 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
-        <item name="android:fontFamily">@font/lora</item>
+        <item name="android:fontFamily">@font/poppins_medium</item>
     </style>
 
     <style name="MyDatePickerStyle" parent="Theme.AppCompat.Light.Dialog">
         <item name="colorAccent">@color/pr1_green_text</item>
+        <item name="colorOnPrimary">@color/black</item>
     </style>
 
     <style name="Widget.App.Tooltip" parent="Widget.MaterialComponents.Tooltip">

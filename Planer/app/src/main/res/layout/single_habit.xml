@@ -8,13 +8,13 @@
     android:layout_margin="10dp"
     android:orientation="vertical"
     app:cardCornerRadius="5dp"
-    android:backgroundTint="#99F3DEBA"
     >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
+        android:background="#99F3DEBA"
         >
 
         <TextView

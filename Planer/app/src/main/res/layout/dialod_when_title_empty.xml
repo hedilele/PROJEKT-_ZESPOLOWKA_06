@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/pr1_beige_background"
+    android:orientation="vertical"
+    android:padding="10dp"
+    >
+
+    <TextView
+        android:textSize="18sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Należy podać nazwę"
+        android:gravity="center"/>
+
+    <Button
+        android:id="@+id/btn_ok"
+        android:layout_width="70dp"
+        android:layout_height="wrap_content"
+        android:textSize="15sp"
+        android:layout_marginTop="5dp"
+        android:layout_gravity="center"
+        android:backgroundTint="@color/pr1_green_button"
+        android:textColor="#E6000000"
+        android:text="ok" />
+
+
+</LinearLayout>
+

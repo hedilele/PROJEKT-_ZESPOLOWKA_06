@@ -33,6 +33,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:backgroundTint="@color/pr1_green_button"
+        android:textColor="#E6000000"
         android:text="dodaj" />
 
 

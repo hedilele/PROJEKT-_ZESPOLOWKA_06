@@ -25,7 +25,7 @@
                             android:layout_height="40dp"
                             android:background="#99F3DEBA"
                             android:paddingHorizontal="10dp"
-                            android:text="Rutyna"
+                            android:text="Nawyki"
                             android:textColor="#543C38"
                             android:textSize="25dp" />
 

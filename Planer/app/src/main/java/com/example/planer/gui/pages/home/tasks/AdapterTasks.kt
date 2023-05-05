@@ -693,22 +693,19 @@ class AdapterTasks(
             }
 
 
-            note.visibility = View.VISIBLE
-            note_cont.visibility = View.VISIBLE
-            note_cont.setText(itemsNote?.noteContent)
+            if(itemsNote?.noteContent?.replace(" ", "") != "")
+            {
+                note.visibility = View.VISIBLE
+                note_cont.visibility = View.VISIBLE
+                note_cont.setText(itemsNote?.noteContent)
+            }
+            else
+            {
+                note.visibility = View.GONE
+                note_cont.visibility = View.GONE
+            }
 
 
-            //
-//            if(item.noteId != 0)
-//            {
-//                note_cont.setText(item.noteId.toString())       // TODO zrobić to dobrze
-//            }
-//            else
-//            {
-//                note.visibility = View.GONE
-//                note_cont.visibility = View.GONE
-//            }
-//
 
             val alertDialog = builder.create()
             alertDialog.show()

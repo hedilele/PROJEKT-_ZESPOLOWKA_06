@@ -26,6 +26,7 @@ import com.example.planer.entities.Notes
 import com.example.planer.entities.Tasks
 import com.example.planer.gui.pages.home.habits.AdapterHabits
 import com.example.planer.gui.pages.home.tasks.AdapterTasks
+import kotlinx.android.synthetic.main.dialod_when_title_empty.view.*
 import kotlinx.android.synthetic.main.dialog_habit.view.btn_create
 import kotlinx.android.synthetic.main.dialog_habit.view.habit_title
 import kotlinx.android.synthetic.main.fragment_home.view.habits_add
@@ -212,16 +213,30 @@ class HomeFragment : Fragment() {
             alertDialog.show()
 
             dialogView.btn_create.setOnClickListener {
-                if (dialogView.habit_title.text != null) {
-                    //listhab.add(Habits(name = dialogView.habit_title.text.toString(), isActive = 1))
+
+                if(dialogView.habit_title.text.toString().replace(" ", "") == "")
+                {
+                    val builder = androidx.appcompat.app.AlertDialog.Builder(requireContext())
+                    val inflater = LayoutInflater.from(requireContext())
+                    val dialogView = inflater.inflate(R.layout.dialod_when_title_empty, null)
+                    builder.setView(dialogView) //Podlaczanie xmla
+                    val alertDialog = builder.create()
+                    alertDialog.show()
+
+                    dialogView.btn_ok.setOnClickListener {
+                        alertDialog.cancel()
+                    }
+                }
+                else
+                {
                     habitViewModel.addHabit(
                         Habits(
                             name = dialogView.habit_title.text.toString(),
                             isActive = 1
                         )
                     )
+                    alertDialog.cancel()
                 }
-                alertDialog.cancel()
             }
 
         }

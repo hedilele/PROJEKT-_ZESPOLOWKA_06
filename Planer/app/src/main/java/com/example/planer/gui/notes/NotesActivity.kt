@@ -4,13 +4,11 @@ import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.ViewGroup
-import android.view.Window
-import android.view.WindowManager
+import android.view.*
 import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -24,6 +22,8 @@ import com.example.planer.databinding.FragmentHomeBinding
 import com.example.planer.entities.Habits
 import com.example.planer.entities.Notes
 import com.example.planer.gui.pages.home.habits.AdapterHabits
+import kotlinx.android.synthetic.main.dialod_when_title_empty.view.*
+import kotlinx.android.synthetic.main.dialog_habit.view.*
 import kotlinx.android.synthetic.main.dialog_note_pomodoro.view.*
 import kotlinx.android.synthetic.main.fragment_home.view.*
 import kotlinx.android.synthetic.main.single_short_note.view.*
@@ -41,6 +41,18 @@ class NotesActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityNotesBinding.inflate(layoutInflater)
+
+        // Set full screen
+        supportRequestWindowFeature(Window.FEATURE_NO_TITLE)
+        window.setFlags(
+            WindowManager.LayoutParams.FLAG_FULLSCREEN,
+            WindowManager.LayoutParams.FLAG_FULLSCREEN)
+
+        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+
+
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+
         setContentView(binding.root)
 
 
@@ -98,8 +110,26 @@ class NotesActivity : AppCompatActivity() {
             window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE)
 
             btn_edit.setOnClickListener {
-                noteViewModel.addNote(Notes(noteTitle = "0short", noteContent = content.text.toString(), photo = null))
-                alertDialog.cancel()
+
+                if(content.text.toString().replace(" ", "") == "")
+                {
+                    val builder = androidx.appcompat.app.AlertDialog.Builder(applicationContext)
+                    val inflater = LayoutInflater.from(applicationContext)
+                    val dialogView = inflater.inflate(R.layout.dialod_when_title_empty, null)
+                    builder.setView(dialogView) //Podlaczanie xmla
+                    val alertDialog = builder.create()
+                    alertDialog.show()
+
+                    dialogView.btn_ok.setOnClickListener {
+                        alertDialog.cancel()
+                    }
+                }
+                else
+                {
+                    noteViewModel.addNote(Notes(noteTitle = "0short", noteContent = content.text.toString(), photo = null))
+                    alertDialog.cancel()
+                }
+
 //                val parentView = dialogView.parent as ViewGroup
 //                parentView?.removeView(dialogView)
             }

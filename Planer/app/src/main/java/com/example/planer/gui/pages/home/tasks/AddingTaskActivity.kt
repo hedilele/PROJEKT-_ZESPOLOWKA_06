@@ -4,11 +4,13 @@ import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Intent
 import android.os.Bundle
-import android.view.KeyEvent
-import android.view.View
+import android.view.*
 import android.view.View.OnFocusChangeListener
 import android.widget.*
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.appcompat.widget.AppCompatEditText
 import androidx.lifecycle.ViewModelProvider
 import com.example.planer.MainActivity
 import com.example.planer.R
@@ -17,6 +19,7 @@ import com.example.planer.databinding.ActivityAddingTaskBinding
 import com.example.planer.entities.Notes
 
 import com.example.planer.entities.Tasks
+import kotlinx.android.synthetic.main.dialod_when_title_empty.view.*
 import java.util.*
 
 
@@ -51,8 +54,18 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
     var chosenItems = mutableListOf<String>()
 
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
+        // Set full screen
+        supportRequestWindowFeature(Window.FEATURE_NO_TITLE)
+        window.setFlags(
+            WindowManager.LayoutParams.FLAG_FULLSCREEN,
+            WindowManager.LayoutParams.FLAG_FULLSCREEN)
+
+        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+
+
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+
         super.onCreate(savedInstanceState)
 
         binding = ActivityAddingTaskBinding.inflate(layoutInflater)
@@ -267,8 +280,6 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
                 }
 
 
-
-
                 // podłączenie się do bazy i dodanie do niej taska
                 taskViewModel = ViewModelProvider(this).get(TaskViewModel::class.java)
 
@@ -283,60 +294,75 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
 
                 }
 
-
-                if(chosenItems.size > 2)
+                if(binding.taskTitle.text.toString().replace(" ", "") == "")
                 {
-                    if(specyficDate == 1)       //size>2 i specyficDate=1
-                    {
-                        for(i in 1..chosenItems.size-1)
-                        {
-                            taskViewModel.insertTaskWithNote(
-                                Tasks(
-                                    title = binding.taskTitle.text.toString(),
-                                    importance = important,
-                                    /*TODO uwzględnienie pilności w bazie (nieobowiązkowe)*/
-                                    urgency = urgent,
-                                    deadline = chosenItems[i]+ " " + setUpTime(hour.toInt(), minute.toInt()),
-                                    timeToFinish = duration,
-                                    isActive = 1,   //aktywny
-                                    typeId = type,
-                                    noteId = 0,
-                                    //date = Calendar.getInstance().time //Ustawianie czasu na domyslny
-                                    date = chosenItems[i]+ " " + setUpTime(hour.toInt(), minute.toInt())
-                                ),
-                                Notes(noteTitle = binding.taskTitle.text.toString(), noteContent = binding.note.text.toString(), photo = null)
-                            )
-                        }
+                    val builder = AlertDialog.Builder(this)
+                    val inflater = LayoutInflater.from(this)
+                    val dialogView = inflater.inflate(R.layout.dialod_when_title_empty, null)
+                    builder.setView(dialogView) //Podlaczanie xmla
+                    val alertDialog = builder.create()
+                    alertDialog.show()
 
-                    }
-                    else                        //size>2 i specyficDate=0
-                    {
-                        for(i in 1..chosenItems.size-1)
-                        {
-                            taskViewModel.insertTaskWithNote(
-                                Tasks(
-                                    title = binding.taskTitle.text.toString(),
-                                    importance = important,
-                                    /*TODO uwzględnienie pilności w bazie (nieobowiązkowe)*/
-                                    urgency = urgent,
-                                    deadline = chosenItems[i] + " " + setUpTime(hour.toInt(), minute.toInt()),
-                                    timeToFinish = duration,
-                                    isActive = 1,   //aktywny
-                                    typeId = type,
-                                    noteId = 0,
-                                    //date = Calendar.getInstance().time //Ustawianie czasu na domyslny
-                                    date = null
-                                ),
-                                Notes(noteTitle = binding.taskTitle.text.toString(), noteContent = binding.note.text.toString(), photo = null)
-                            )
-                        }
+                    dialogView.btn_ok.setOnClickListener {
+                        alertDialog.cancel()
                     }
 
                 }
                 else
                 {
-                    if(specyficDate == 1)       //size=2 i specyficDate=1
+                    if(chosenItems.size > 2)
                     {
+                        if(specyficDate == 1)       //size>2 i specyficDate=1
+                        {
+                            for(i in 1..chosenItems.size-1)
+                            {
+                                taskViewModel.insertTaskWithNote(
+                                    Tasks(
+                                        title = binding.taskTitle.text.toString(),
+                                        importance = important,
+                                        /*TODO uwzględnienie pilności w bazie (nieobowiązkowe)*/
+                                        urgency = urgent,
+                                        deadline = chosenItems[i]+ " " + setUpTime(hour.toInt(), minute.toInt()),
+                                        timeToFinish = duration,
+                                        isActive = 1,   //aktywny
+                                        typeId = type,
+                                        noteId = 0,
+                                        //date = Calendar.getInstance().time //Ustawianie czasu na domyslny
+                                        date = chosenItems[i]+ " " + setUpTime(hour.toInt(), minute.toInt())
+                                    ),
+                                    Notes(noteTitle = binding.taskTitle.text.toString(), noteContent = binding.note.text.toString(), photo = null)
+                                )
+                            }
+
+                        }
+                        else                        //size>2 i specyficDate=0
+                        {
+                            for(i in 1..chosenItems.size-1)
+                            {
+                                taskViewModel.insertTaskWithNote(
+                                    Tasks(
+                                        title = binding.taskTitle.text.toString(),
+                                        importance = important,
+                                        /*TODO uwzględnienie pilności w bazie (nieobowiązkowe)*/
+                                        urgency = urgent,
+                                        deadline = chosenItems[i] + " " + setUpTime(hour.toInt(), minute.toInt()),
+                                        timeToFinish = duration,
+                                        isActive = 1,   //aktywny
+                                        typeId = type,
+                                        noteId = 0,
+                                        //date = Calendar.getInstance().time //Ustawianie czasu na domyslny
+                                        date = null
+                                    ),
+                                    Notes(noteTitle = binding.taskTitle.text.toString(), noteContent = binding.note.text.toString(), photo = null)
+                                )
+                            }
+                        }
+
+                    }
+                    else
+                    {
+                        if(specyficDate == 1)       //size=2 i specyficDate=1
+                        {
                             taskViewModel.insertTaskWithNote(
                                 Tasks(
                                     title = binding.taskTitle.text.toString(),
@@ -354,9 +380,9 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
                                 Notes(noteTitle = binding.taskTitle.text.toString(), noteContent = binding.note.text.toString(), photo = null)
                             )
 
-                    }
-                    else                        //size>2 i specyficDate=0
-                    {
+                        }
+                        else                        //size>2 i specyficDate=0
+                        {
                             taskViewModel.insertTaskWithNote(
                                 Tasks(
                                     title = binding.taskTitle.text.toString(),
@@ -374,15 +400,17 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
                                 Notes(noteTitle = binding.taskTitle.text.toString(), noteContent = binding.note.text.toString(), photo = null)
                             )
 
+                        }
                     }
+
+
+
+                    Toast.makeText(applicationContext, "record saved", Toast.LENGTH_SHORT).show()
+
+                    //startActivity(intent)
+                    finish()
                 }
 
-
-
-                Toast.makeText(applicationContext, "record saved", Toast.LENGTH_SHORT).show()
-
-                //startActivity(intent)
-                finish()
 
             }
 
