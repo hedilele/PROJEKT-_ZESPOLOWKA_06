@@ -207,6 +207,14 @@
                             android:paddingHorizontal="10dp"
                             tools:listitem="@layout/single_task" />
 
+                        <TextView
+                            android:id="@+id/line_end"
+                            android:layout_width="match_parent"
+                            android:layout_height="10dp"
+                            android:layout_alignParentBottom="true"
+                            android:layout_marginBottom="5dp" />
+
+
                 </RelativeLayout>
 
         </FrameLayout>

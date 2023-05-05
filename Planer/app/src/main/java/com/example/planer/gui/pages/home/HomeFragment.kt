@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -29,19 +30,7 @@ import com.example.planer.gui.pages.home.tasks.AdapterTasks
 import kotlinx.android.synthetic.main.dialod_when_title_empty.view.*
 import kotlinx.android.synthetic.main.dialog_habit.view.btn_create
 import kotlinx.android.synthetic.main.dialog_habit.view.habit_title
-import kotlinx.android.synthetic.main.fragment_home.view.habits_add
-import kotlinx.android.synthetic.main.fragment_home.view.habits_delete
-import kotlinx.android.synthetic.main.fragment_home.view.habits_list
-import kotlinx.android.synthetic.main.fragment_home.view.month_task_list
-import kotlinx.android.synthetic.main.fragment_home.view.month_title
-import kotlinx.android.synthetic.main.fragment_home.view.rest_task_list
-import kotlinx.android.synthetic.main.fragment_home.view.rest_title
-import kotlinx.android.synthetic.main.fragment_home.view.today_task_list
-import kotlinx.android.synthetic.main.fragment_home.view.today_title
-import kotlinx.android.synthetic.main.fragment_home.view.tomorrow_task_list
-import kotlinx.android.synthetic.main.fragment_home.view.tomorrow_title
-import kotlinx.android.synthetic.main.fragment_home.view.week_task_list
-import kotlinx.android.synthetic.main.fragment_home.view.week_title
+import kotlinx.android.synthetic.main.fragment_home.view.*
 
 class HomeFragment : Fragment() {
 
@@ -144,6 +133,17 @@ class HomeFragment : Fragment() {
                 adapter4.updateList(blockListTask.monthList, 0)
                 adapter5.updateList(blockListTask.restList, 0)
                 Log.d("h", "godziny: $h")
+
+                checkIfEmpty(adapter2.list, adapter3.list, adapter4.list, adapter5.list, view)
+
+                hideRestOftasks(0,  view)
+
+
+                //view.week_task_list.visibility = View.GONE
+                //view.month_task_list.visibility = View.GONE
+                //view.rest_task_list.visibility = View.GONE
+
+
             })
         })
 
@@ -157,25 +157,53 @@ class HomeFragment : Fragment() {
         })
 
 
+        //hideRestOftasks(0,  view)
+
+
+
+
+
+//        view.today_title.setOnClickListener {
+//            if (view.today_task_list.isVisible) view.today_task_list.visibility = View.GONE
+//            else view.today_task_list.visibility = View.VISIBLE
+//        }
+//        view.tomorrow_title.setOnClickListener {
+//            if (view.tomorrow_task_list.isVisible) view.tomorrow_task_list.visibility = View.GONE
+//            else view.tomorrow_task_list.visibility = View.VISIBLE
+//        }
+//        view.week_title.setOnClickListener {
+//            if (view.week_task_list.isVisible) view.week_task_list.visibility = View.GONE
+//            else view.week_task_list.visibility = View.VISIBLE
+//        }
+//        view.month_title.setOnClickListener {
+//            if (view.month_task_list.isVisible) view.month_task_list.visibility = View.GONE
+//            else view.month_task_list.visibility = View.VISIBLE
+//        }
+//        view.rest_title.setOnClickListener {
+//            if (view.rest_task_list.isVisible) view.rest_task_list.visibility = View.GONE
+//            else view.rest_task_list.visibility = View.VISIBLE
+//        }
+
         view.today_title.setOnClickListener {
             if (view.today_task_list.isVisible) view.today_task_list.visibility = View.GONE
-            else view.today_task_list.visibility = View.VISIBLE
+            else hideRestOftasks(0,  view)
+
         }
         view.tomorrow_title.setOnClickListener {
             if (view.tomorrow_task_list.isVisible) view.tomorrow_task_list.visibility = View.GONE
-            else view.tomorrow_task_list.visibility = View.VISIBLE
+            else hideRestOftasks(1,  view)
         }
         view.week_title.setOnClickListener {
             if (view.week_task_list.isVisible) view.week_task_list.visibility = View.GONE
-            else view.week_task_list.visibility = View.VISIBLE
+            else hideRestOftasks(2,  view)
         }
         view.month_title.setOnClickListener {
             if (view.month_task_list.isVisible) view.month_task_list.visibility = View.GONE
-            else view.month_task_list.visibility = View.VISIBLE
+            else hideRestOftasks(3,  view)
         }
         view.rest_title.setOnClickListener {
             if (view.rest_task_list.isVisible) view.rest_task_list.visibility = View.GONE
-            else view.rest_task_list.visibility = View.VISIBLE
+            else hideRestOftasks(4,  view)
         }
 
 
@@ -260,6 +288,143 @@ class HomeFragment : Fragment() {
 
     }
 
+    private fun hideRestOftasks(titleClicked: Int, view: View?) {
+
+        when(titleClicked)
+        {
+            //today
+            0 -> {
+                if(view?.today_task_list?.visibility == View.GONE)
+                    view.today_task_list?.visibility = View.VISIBLE
+                if(view?.tomorrow_task_list?.visibility == View.VISIBLE)
+                    view.tomorrow_task_list?.visibility = View.GONE
+                if(view?.week_task_list?.visibility == View.VISIBLE)
+                    view.week_task_list?.visibility = View.GONE
+                if(view?.month_task_list?.visibility == View.VISIBLE)
+                    view.month_task_list?.visibility = View.GONE
+                if(view?.rest_task_list?.visibility == View.VISIBLE)
+                    view.rest_task_list?.visibility = View.GONE
+            }
+
+            //tomorrow
+            1 -> {
+                if(view?.today_task_list?.visibility == View.VISIBLE)
+                    view?.today_task_list?.visibility = View.GONE
+                    view?.tomorrow_task_list?.visibility = View.VISIBLE
+                if(view?.week_task_list?.visibility == View.VISIBLE)
+                    view.week_task_list?.visibility = View.GONE
+                if(view?.month_task_list?.visibility == View.VISIBLE)
+                    view.month_task_list?.visibility = View.GONE
+                if(view?.rest_task_list?.visibility == View.VISIBLE)
+                    view.rest_task_list?.visibility = View.GONE
+            }
+
+            //week
+            2 -> {
+
+                if(view?.today_task_list?.visibility == View.VISIBLE)
+                    view?.today_task_list?.visibility = View.GONE
+                if(view?.tomorrow_task_list?.visibility == View.VISIBLE)
+                    view.tomorrow_task_list?.visibility = View.GONE
+                view?.week_task_list?.visibility = View.VISIBLE
+
+                if(view?.month_task_list?.visibility == View.VISIBLE)
+                    view.month_task_list?.visibility = View.GONE
+                if(view?.rest_task_list?.visibility == View.VISIBLE)
+                    view.rest_task_list?.visibility = View.GONE
+
+            }
+
+            //month
+             3-> {
+                 if(view?.today_task_list?.visibility == View.VISIBLE)
+                     view?.today_task_list?.visibility = View.GONE
+                 if(view?.tomorrow_task_list?.visibility == View.VISIBLE)
+                     view.tomorrow_task_list?.visibility = View.GONE
+                 if(view?.week_task_list?.visibility == View.VISIBLE)
+                     view.week_task_list?.visibility = View.GONE
+                 view?.month_task_list?.visibility = View.VISIBLE
+                 if(view?.rest_task_list?.visibility == View.VISIBLE)
+                     view.rest_task_list?.visibility = View.GONE
+            }
+
+            //rest
+            4 -> {
+                if(view?.today_task_list?.visibility == View.VISIBLE)
+                    view?.today_task_list?.visibility = View.GONE
+                if(view?.tomorrow_task_list?.visibility == View.VISIBLE)
+                    view.tomorrow_task_list?.visibility = View.GONE
+                if(view?.week_task_list?.visibility == View.VISIBLE)
+                    view.week_task_list?.visibility = View.GONE
+                if(view?.month_task_list?.visibility == View.VISIBLE)
+                    view.month_task_list?.visibility = View.GONE
+                view?.rest_task_list?.visibility = View.VISIBLE
+
+            }
+
+        }
+    }
+
+    private fun checkIfEmpty(list2: MutableList<Tasks>, list3: MutableList<Tasks>, list4: MutableList<Tasks>, list5: MutableList<Tasks>, view: View) {
+
+        if(list2.size == 0)
+        {
+            view.tomorrow_task_list.visibility = View.GONE
+            view.tomorrow_title.visibility = View.GONE
+            view.line2.visibility = View.GONE
+        }
+        else
+        {
+            view.tomorrow_task_list.visibility = View.VISIBLE
+            view.tomorrow_title.visibility = View.VISIBLE
+            view.line2.visibility = View.VISIBLE
+        }
+
+        if(list3.size == 0)
+        {
+            view.week_task_list.visibility = View.GONE
+            view.week_title.visibility = View.GONE
+            view.line3.visibility = View.GONE
+        }
+        else
+        {
+            view.week_task_list.visibility = View.VISIBLE
+            view.week_title.visibility = View.VISIBLE
+            view.line3.visibility = View.VISIBLE
+
+        }
+
+        if(list4.size == 0)
+        {
+            view.month_task_list.visibility = View.GONE
+            view.month_title.visibility = View.GONE
+            view.line4.visibility = View.GONE
+
+        }
+        else
+        {
+            view.month_task_list.visibility = View.VISIBLE
+            view.month_title.visibility = View.VISIBLE
+            view.line4.visibility = View.VISIBLE
+
+        }
+
+        if(list5.size == 0)
+        {
+            view.rest_task_list.visibility = View.GONE
+            view.rest_title.visibility = View.GONE
+            view.line5.visibility = View.GONE
+
+        }
+        else
+        {
+            view.rest_task_list.visibility = View.VISIBLE
+            view.rest_title.visibility = View.VISIBLE
+            view.line5.visibility = View.VISIBLE
+
+        }
+
+    }
 
 
 }
