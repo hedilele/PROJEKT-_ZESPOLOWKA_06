@@ -4,7 +4,10 @@ import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.res.ColorStateList
+import android.graphics.BlurMaskFilter
+import android.graphics.Color
 import android.graphics.PorterDuff
+import android.graphics.drawable.GradientDrawable
 import android.os.Handler
 import android.transition.Slide
 import android.transition.Transition
@@ -13,6 +16,7 @@ import android.view.*
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.cardview.widget.CardView
@@ -23,8 +27,10 @@ import com.example.planer.R
 import com.example.planer.algorithm.IO
 import com.example.planer.entities.Notes
 import com.example.planer.entities.Tasks
+import com.example.planer.entities.Types
 import com.example.planer.gui.callBacks.NoteDiffCallback
 import com.example.planer.gui.callBacks.TaskDiffCallback
+import com.example.planer.gui.callBacks.TypeDiffCallback
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_adding_task.view.*
 import kotlinx.android.synthetic.main.dialog_task_info.view.*
@@ -37,6 +43,7 @@ import java.util.*
 class AdapterTasks(
     var list: MutableList<Tasks>,
     var notesList: MutableList<Notes>,
+    var typesList: MutableList<Types>,
     private val deleteListener: (idTast: Int, idNote: Int) -> Unit,
     private val updateListener: (task: Tasks, note: Notes) -> Unit
 ): RecyclerView.Adapter<AdapterTasks.ViewHolder>() {
@@ -61,8 +68,13 @@ class AdapterTasks(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = list[position]
         val itemsNote = notesList.find { notes -> notes.noteId == item.noteId }
+        var itemsType = Types(0, "none", "#e8cba8")
+        //val itemsType = typesList.find { types -> types.id == item.typeId}
+        if(item.typeId != 0)
+        {
+            itemsType = typesList.find { types -> types.id == item.typeId}!!
+        }
 
-        //pos = item
 
         holder.itemView.task_title.text = item.title
         // 0123456789012345
@@ -74,6 +86,15 @@ class AdapterTasks(
                 item.deadline.substring(11)
 
         holder.itemView.task_date.text = dateTmp
+
+
+        val drawable = holder.itemView.task_layout.background as GradientDrawable
+
+        if(item.typeId != 0) {
+            drawable.setStroke(5, Color.parseColor(itemsType?.colour.toString()))
+           // holder.itemView.task_title.setTextColor(Color.parseColor(itemsType?.colour.toString()))
+        }
+        
 
         holder.itemView.done.setOnClickListener {
 
@@ -95,6 +116,10 @@ class AdapterTasks(
 
             snackbar.show()
             holder.itemView.done.setImageDrawable(ContextCompat.getDrawable(holder.itemView.context, R.drawable.icon_checkbox_filled))
+            //holder.itemView.done.setColorFilter(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_off), PorterDuff.Mode.SRC_ATOP)
+            if(item.typeId != 0)
+                holder.itemView.done.setColorFilter(Color.parseColor(itemsType?.colour.toString()), PorterDuff.Mode.SRC_ATOP)
+            else
             holder.itemView.done.setColorFilter(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_off), PorterDuff.Mode.SRC_ATOP)
 
             Handler().postDelayed({
@@ -109,7 +134,11 @@ class AdapterTasks(
                 }
                 holder.itemView.done.setImageDrawable(ContextCompat.getDrawable(holder.itemView.context, R.drawable.icon_checkbox_empty))
                 //holder.itemView.done.setColorFilter(R.color.brown_important_urgent_off)
-                holder.itemView.done.setColorFilter(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_off), PorterDuff.Mode.SRC_ATOP)
+                if(item.typeId != 0)
+                    holder.itemView.done.setColorFilter(Color.parseColor(itemsType?.colour.toString()), PorterDuff.Mode.SRC_ATOP)
+                else
+                    holder.itemView.done.setColorFilter(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_off), PorterDuff.Mode.SRC_ATOP)
+
 
             }, 2000) // opóźnienie wynosi 5000 milisekund, czyli 5 sekund
 
@@ -657,6 +686,10 @@ class AdapterTasks(
         // wyswietlanie info o tasku
         holder.itemView.setOnClickListener{
 
+            //Toast.makeText(holder.itemView.context, itemsType?.colour.toString(), Toast.LENGTH_SHORT).show()
+
+
+
             val builder = AlertDialog.Builder(holder.itemView.context) //TODO
             //builder.setView(R.layout.activity_adding_task)
 
@@ -759,6 +792,14 @@ class AdapterTasks(
             NoteDiffCallback(this.notesList, newNote)
         )
         this.notesList = newNote
+        diffResult.dispatchUpdatesTo(this)
+    }
+
+    fun updateListOfTypes(newTypes: MutableList<Types>) {
+        val diffResult = DiffUtil.calculateDiff(
+            TypeDiffCallback(this.typesList, newTypes)
+        )
+        this.typesList = newTypes
         diffResult.dispatchUpdatesTo(this)
     }
 

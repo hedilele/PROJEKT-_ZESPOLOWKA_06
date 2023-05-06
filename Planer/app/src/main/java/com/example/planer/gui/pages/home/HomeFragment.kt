@@ -16,15 +16,13 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.planer.R
-import com.example.planer.ViewModel.HabitViewModel
-import com.example.planer.ViewModel.NoteViewModel
-import com.example.planer.ViewModel.SettingsViewModel
-import com.example.planer.ViewModel.TaskViewModel
+import com.example.planer.ViewModel.*
 import com.example.planer.algorithm.BlockListTask
 import com.example.planer.databinding.FragmentHomeBinding
 import com.example.planer.entities.Habits
 import com.example.planer.entities.Notes
 import com.example.planer.entities.Tasks
+import com.example.planer.entities.Types
 import com.example.planer.gui.pages.home.habits.AdapterHabits
 import com.example.planer.gui.pages.home.tasks.AdapterTasks
 import kotlinx.android.synthetic.main.dialod_when_title_empty.view.*
@@ -40,6 +38,9 @@ class HomeFragment : Fragment() {
     private lateinit var userViewModel: TaskViewModel
     private lateinit var habitViewModel: HabitViewModel
     private lateinit var noteViewModel: NoteViewModel
+    private lateinit var typeViewModel: TypeViewModel
+
+
     private val settingViewModel: SettingsViewModel by viewModels()
 
     private lateinit var adapterhh: AdapterHabits
@@ -49,6 +50,7 @@ class HomeFragment : Fragment() {
     var list = mutableListOf<Tasks>()
     var listHab = mutableListOf<Habits>()
     var listNotes = mutableListOf<Notes>()
+    var listTypes = mutableListOf<Types>()
 
     var delete_clicked = 0
 
@@ -70,6 +72,7 @@ class HomeFragment : Fragment() {
         val adapter = AdapterTasks(
             list,
             listNotes,
+            listTypes,
             { deleteTaskId, deleteNoteId -> userViewModel.deleteTaskAndNoteById(deleteTaskId, deleteNoteId) },
             { updateTask, updateNote -> userViewModel.updateTaskAndNote(updateTask, updateNote) }
         )
@@ -81,6 +84,7 @@ class HomeFragment : Fragment() {
         val adapter2 = AdapterTasks(
             list,
             listNotes,
+            listTypes,
             { deleteTaskId, deleteNoteId -> userViewModel.deleteTaskAndNoteById(deleteTaskId, deleteNoteId) },
             { updateTask, updateNote -> userViewModel.updateTaskAndNote(updateTask, updateNote) }
         )
@@ -91,6 +95,7 @@ class HomeFragment : Fragment() {
         val adapter3 = AdapterTasks(
             list,
             listNotes,
+            listTypes,
             { deleteTaskId, deleteNoteId -> userViewModel.deleteTaskAndNoteById(deleteTaskId, deleteNoteId) },
             { updateTask, updateNote -> userViewModel.updateTaskAndNote(updateTask, updateNote) }
         )
@@ -101,6 +106,7 @@ class HomeFragment : Fragment() {
         val adapter4 = AdapterTasks(
             list,
             listNotes,
+            listTypes,
             { deleteTaskId, deleteNoteId -> userViewModel.deleteTaskAndNoteById(deleteTaskId, deleteNoteId) },
             { updateTask, updateNote -> userViewModel.updateTaskAndNote(updateTask, updateNote) }
         )
@@ -111,6 +117,7 @@ class HomeFragment : Fragment() {
         val adapter5 = AdapterTasks(
             list,
             listNotes,
+            listTypes,
             { deleteTaskId, deleteNoteId -> userViewModel.deleteTaskAndNoteById(deleteTaskId, deleteNoteId) },
             { updateTask, updateNote -> userViewModel.updateTaskAndNote(updateTask, updateNote) }
         )
@@ -138,12 +145,6 @@ class HomeFragment : Fragment() {
 
                 hideRestOftasks(0,  view)
 
-
-                //view.week_task_list.visibility = View.GONE
-                //view.month_task_list.visibility = View.GONE
-                //view.rest_task_list.visibility = View.GONE
-
-
             })
         })
 
@@ -154,6 +155,16 @@ class HomeFragment : Fragment() {
             adapter3.updateListOfNotes(it.toMutableList())
             adapter4.updateListOfNotes(it.toMutableList())
             adapter5.updateListOfNotes(it.toMutableList())
+        })
+
+
+        typeViewModel = ViewModelProvider(this)[TypeViewModel::class.java]
+        typeViewModel.readAllData.observe(viewLifecycleOwner, Observer {
+            adapter.updateListOfTypes(it.toMutableList())
+            adapter2.updateListOfTypes(it.toMutableList())
+            adapter3.updateListOfTypes(it.toMutableList())
+            adapter4.updateListOfTypes(it.toMutableList())
+            adapter5.updateListOfTypes(it.toMutableList())
         })
 
 

@@ -252,8 +252,10 @@ class UserSettingsActivity : AppCompatActivity(), View.OnClickListener,
                     "#686de0",
                     "#30336b",
                     "#95afc0"
+
                 )
             )
+
             .setColorListener { color, colorhex ->
                 holder.chosenColorButton.backgroundTintList = ColorStateList.valueOf(color)
                 // Jeśli jest element z takim id to zamienia kolor, jeśli nie ma to dodaje typ ze zmienionym kolorem

@@ -25,9 +25,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.planer.R
 import com.example.planer.ViewModel.NoteViewModel
 import com.example.planer.ViewModel.TaskViewModel
+import com.example.planer.ViewModel.TypeViewModel
 import com.example.planer.databinding.FragmentFilterBinding
 import com.example.planer.entities.Notes
 import com.example.planer.entities.Tasks
+import com.example.planer.entities.Types
 import com.example.planer.gui.pages.home.tasks.AdapterTasks
 import kotlinx.android.synthetic.main.dialog_task_info.*
 import kotlinx.android.synthetic.main.fragment_filter.*
@@ -46,10 +48,12 @@ class FilterFragment : AppCompatActivity() {
     //Podlaczanie xmla dialog_filter
     private lateinit var userViewModel: TaskViewModel
     private lateinit var noteViewModel: NoteViewModel
+    private lateinit var typeViewModel: TypeViewModel
 
     // lista tasków do recyclerView
     var list = mutableListOf<Tasks>()
     private var listNotes = mutableListOf<Notes>()
+    private var listTypes = mutableListOf<Types>()
     var filteredList = mutableListOf<Tasks>() //druga lista do wykorzystania
     private lateinit var binding: FragmentFilterBinding
 
@@ -77,11 +81,13 @@ class FilterFragment : AppCompatActivity() {
 
         noteViewModel = ViewModelProvider(this)[NoteViewModel::class.java]
         userViewModel = ViewModelProvider(this)[TaskViewModel::class.java]
+        typeViewModel = ViewModelProvider(this)[TypeViewModel::class.java]
 
         val rv = findViewById<RecyclerView>(R.id.rv_list)
         val adapter = AdapterTasks(
             list,
             listNotes,
+            listTypes,
             { deleteTaskId, deleteNoteId -> userViewModel.deleteTaskAndNoteById(deleteTaskId, deleteNoteId) },
             { updateTask, updateNote -> userViewModel.updateTaskAndNote(updateTask, updateNote) }
         )
@@ -270,6 +276,10 @@ class FilterFragment : AppCompatActivity() {
                         noteViewModel.readAllData.observe(this@FilterFragment, Observer {
                             adapter.updateListOfNotes(it.toMutableList())
                         })
+
+                        typeViewModel.readAllData.observe(this@FilterFragment, Observer {
+                            adapter.updateListOfTypes(it.toMutableList())
+                        })
                     }
                     checkText()
                 }
@@ -405,6 +415,12 @@ class FilterFragment : AppCompatActivity() {
         noteViewModel.readAllData.observe(this@FilterFragment, Observer {
             adapter.updateListOfNotes(it.toMutableList())
         })
+
+
+        typeViewModel.readAllData.observe(this@FilterFragment, Observer {
+            adapter.updateListOfTypes(it.toMutableList())
+        })
+
         //return view
     }
 
