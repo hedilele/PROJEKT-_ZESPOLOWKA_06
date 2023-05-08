@@ -1,43 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_gravity="center"
     android:orientation="vertical"
-    tools:context=".gui.pages.CalendarFragment">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <com.applandeo.materialcalendarview.CalendarView
+        android:id="@+id/calendarView"
+        app:highlightedDaysLabelsColor="@color/purple_calendar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        app:eventsEnabled="true" />
 
-        <!--        <com.applandeo.materialcalendarview.CalendarView-->
-        <CalendarView
-            android:id="@+id/calendarView"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/list_rv"
-            tools:layout_editor_absoluteX="0dp"
-            tools:layout_editor_absoluteY="0dp" />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/list_rv"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintTop_toBottomOf="@id/calendarView"
+        app:layout_constraintBottom_toTopOf="@id/add_event_to_calendar"
+        tools:listitem="@layout/single_event" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/list_rv"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:layout_constraintTop_toBottomOf="@id/calendarView"
-            app:layout_constraintBottom_toTopOf="@+id/add_event_to_calendar"
-            tools:listitem="@layout/single_event" />
+    <Button
+        android:id="@+id/add_event_to_calendar"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:backgroundTint="#90be6d"
+        android:text="Dodaj Wydarzenie" />
 
-        <Button
-            android:id="@+id/add_event_to_calendar"
-            android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:backgroundTint="#90be6d"
-            android:text="Dodaj Wydarzenie"
-            app:layout_constraintBottom_toBottomOf="parent" />
+</LinearLayout>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    <!--<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
+    <!--    xmlns:tools="http://schemas.android.com/tools"-->
+    <!--    android:layout_width="match_parent"-->
+    <!--    android:layout_height="match_parent"-->
+    <!--    android:layout_gravity="center"-->
+    <!--    android:orientation="vertical"-->
+    <!--    tools:context=".gui.pages.CalendarFragment">-->
 
-</FrameLayout>
+    <!--    <androidx.constraintlayout.widget.ConstraintLayout-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="match_parent">-->
+
+    <!--        <com.applandeo.materialcalendarview.CalendarView-->
+    <!--            app:eventsEnabled="true"-->
+    <!--            app:swipeEnabled="true"-->
+    <!--            android:id="@+id/calendarView"-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="0dp"-->
+    <!--            app:layout_constraintTop_toTopOf="parent"-->
+    <!--            app:layout_constraintBottom_toTopOf="@id/list_rv"-->
+    <!--            tools:layout_editor_absoluteX="0dp"-->
+    <!--            tools:layout_editor_absoluteY="0dp" />-->
+
+    <!--        <androidx.recyclerview.widget.RecyclerView-->
+    <!--            android:id="@+id/list_rv"-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="0dp"-->
+    <!--            app:layout_constraintTop_toBottomOf="@id/calendarView"-->
+    <!--            app:layout_constraintBottom_toTopOf="@+id/add_event_to_calendar"-->
+    <!--            tools:listitem="@layout/single_event" />-->
+
+    <!--        <Button-->
+    <!--            android:id="@+id/add_event_to_calendar"-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="70dp"-->
+    <!--            android:backgroundTint="#90be6d"-->
+    <!--            android:text="Dodaj Wydarzenie"-->
+    <!--            app:layout_constraintBottom_toBottomOf="parent" />-->
+
+    <!--    </androidx.constraintlayout.widget.ConstraintLayout>-->
+
+    <!--</FrameLayout>-->

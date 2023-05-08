@@ -21,7 +21,7 @@ import com.example.planer.databinding.AddEventToCalendarBinding
 import java.text.SimpleDateFormat
 import java.util.*
 
-class AddingEventActivity : AppCompatActivity(), View.OnClickListener {
+class   AddingEventActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var binding: AddEventToCalendarBinding
     private lateinit var calendarViewModel: CalendarViewModel
@@ -221,7 +221,7 @@ class AddingEventActivity : AppCompatActivity(), View.OnClickListener {
                 var dayb: String = binding.tvBeginEventDay.text.toString()
                 if (dayb == "") {
                     dayb = today_day.toString()
-                }       //????????????????? komunikat ze puste?
+                }
 
                 var monthb: String = binding.tvBeginEventMonth.text.toString()
                 if (monthb == "") {
@@ -309,6 +309,133 @@ class AddingEventActivity : AppCompatActivity(), View.OnClickListener {
 
                     )
                 )
+
+                if (repeat==1) //na razie powtarzanie przez rok
+                {
+                    for (i in 1..51){
+
+                        var newDate= java.util.Calendar.getInstance()
+                        newDate.set(yearb.toInt(),monthb.toInt()-1,dayb.toInt())
+                        newDate.add(Calendar.WEEK_OF_YEAR, 1*i)
+
+                        var newDateEnd= java.util.Calendar.getInstance()
+                        newDateEnd.set(yeare.toInt(),monthe.toInt()-1,daye.toInt(),houre.toInt(),minutee.toInt())
+                        newDateEnd.add(Calendar.WEEK_OF_YEAR, 1*i)
+
+                        // Toast.makeText(applicationContext, newDate.get(Calendar.DATE).toString(),Toast.LENGTH_LONG).show()
+
+                        calendarViewModel.addCalendarDate(
+                            com.example.planer.entities.Calendar(
+                                startDate = setUpDate(  newDate.get(Calendar.DATE),
+                                    newDate.get(Calendar.MONTH)+1,
+                                    newDate.get(Calendar.YEAR)
+                                ) + " " + setUpTime(hourb.toInt(), minuteb.toInt()),
+
+                                endDate = setUpDate(  newDateEnd.get(Calendar.DATE),
+                                    newDateEnd.get(Calendar.MONTH)+1,
+                                    newDateEnd.get(Calendar.YEAR)
+                                ) + " " + setUpTime(houre.toInt(), minutee.toInt()),
+                                typeId = 0,
+                                reminder = reminder,
+                                location = location,
+                                repeatId = 0,
+                                noteId = 0,
+                                name = binding.eventTitle.text.toString()
+
+
+                            )
+                        )
+
+
+
+                    }
+
+                }
+
+
+                if (repeat==2) //na razie powtarzanie przez rok
+                {
+                    for (i in 1..11){
+
+                        var newDate= java.util.Calendar.getInstance()
+                        newDate.set(yearb.toInt(),monthb.toInt()-1,dayb.toInt())
+                        newDate.add(Calendar.MONTH, 1*i)
+
+                        var newDateEnd= java.util.Calendar.getInstance()
+                        newDateEnd.set(yeare.toInt(),monthe.toInt()-1,daye.toInt(),houre.toInt(),minutee.toInt())
+                        newDateEnd.add(Calendar.MONTH, 1*i)
+
+                        Toast.makeText(applicationContext, newDate.get(Calendar.DATE).toString(),Toast.LENGTH_LONG).show()
+
+                        calendarViewModel.addCalendarDate(
+                            com.example.planer.entities.Calendar(
+                                startDate = setUpDate(  newDate.get(Calendar.DATE),
+                                    newDate.get(Calendar.MONTH)+1,
+                                    newDate.get(Calendar.YEAR)
+                                ) + " " + setUpTime(hourb.toInt(), minuteb.toInt()),
+
+                                endDate = setUpDate(  newDateEnd.get(Calendar.DATE),
+                                    newDateEnd.get(Calendar.MONTH)+1,
+                                    newDateEnd.get(Calendar.YEAR)
+                                ) + " " + setUpTime(houre.toInt(), minutee.toInt()),
+                                typeId = 0,
+                                reminder = reminder,
+                                location = location,
+                                repeatId = 0,
+                                noteId = 0,
+                                name = binding.eventTitle.text.toString()
+
+
+                            )
+                        )
+
+
+
+                    }
+
+                }
+
+                if (repeat==3) //na razie powtarzanie przez rok
+                {
+                    for (i in 1..5){
+
+                        var newDate= java.util.Calendar.getInstance()
+                        newDate.set(yearb.toInt(),monthb.toInt()-1,dayb.toInt())
+                        newDate.add(Calendar.YEAR, 1*i)
+
+                        var newDateEnd= java.util.Calendar.getInstance()
+                        newDateEnd.set(yeare.toInt(),monthe.toInt()-1,daye.toInt(),houre.toInt(),minutee.toInt())
+                        newDateEnd.add(Calendar.YEAR, 1*i)
+
+                        Toast.makeText(applicationContext, newDate.get(Calendar.DATE).toString(),Toast.LENGTH_LONG).show()
+
+                        calendarViewModel.addCalendarDate(
+                            com.example.planer.entities.Calendar(
+                                startDate = setUpDate(  newDate.get(Calendar.DATE),
+                                    newDate.get(Calendar.MONTH)+1,
+                                    newDate.get(Calendar.YEAR)
+                                ) + " " + setUpTime(hourb.toInt(), minuteb.toInt()),
+
+                                endDate = setUpDate(  newDateEnd.get(Calendar.DATE),
+                                    newDateEnd.get(Calendar.MONTH)+1,
+                                    newDateEnd.get(Calendar.YEAR)
+                                ) + " " + setUpTime(houre.toInt(), minutee.toInt()),
+                                typeId = 0,
+                                reminder = reminder,
+                                location = location,
+                                repeatId = 0,
+                                noteId = 0,
+                                name = binding.eventTitle.text.toString()
+
+
+                            )
+                        )
+
+
+
+                    }
+
+                }
                 Toast.makeText(applicationContext, "record saved", Toast.LENGTH_SHORT).show()
 
                 //startActivity(intent)
@@ -323,10 +450,10 @@ class AddingEventActivity : AppCompatActivity(), View.OnClickListener {
                     this,
                     DatePickerDialog.OnDateSetListener { view, sel_year, sel_month, sel_day ->
 
-                        startDate = setUpDate(sel_day, sel_month, sel_year)
+                        startDate = setUpDate(sel_day, sel_month+1, sel_year)
                         setDateBlocks(startDate)
 
-                    }, today_year, today_month, today_day
+                    }, today_year, today_month-1, today_day
                 )
 
                 dpd.show()
@@ -351,10 +478,10 @@ class AddingEventActivity : AppCompatActivity(), View.OnClickListener {
                     this,
                     DatePickerDialog.OnDateSetListener { view, sel_year, sel_month, sel_day ->
 
-                        endDate = setUpDate(sel_day, sel_month, sel_year)
+                        endDate = setUpDate(sel_day, sel_month+1, sel_year)
                         setEndDateBlocks(endDate)
 
-                    }, today_year, today_month, today_day
+                    }, today_year, today_month-1, today_day
                 )
 
                 dpde.show()

@@ -23,6 +23,7 @@ import com.example.planer.databinding.SingleEventBinding
 import com.example.planer.databinding.SingleTaskBinding
 import com.example.planer.entities.Calendar
 import com.example.planer.entities.Tasks
+import kotlinx.android.synthetic.main.single_event.view.*
 
 import kotlinx.coroutines.NonDisposableHandle.parent
 import kotlinx.coroutines.currentCoroutineContext
@@ -32,6 +33,7 @@ import java.util.*
 
 class AdapterCalendar (
     var list: MutableList<Calendar>,
+    var list2: MutableList<Calendar>,
     private val updateListener: (calendar:Calendar) -> Unit,
     private val deleteListener: (id: Long) -> Unit,
 ) : RecyclerView.Adapter<AdapterCalendar.ViewHolder>() {
@@ -48,7 +50,7 @@ class AdapterCalendar (
 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-      /*
+
         val item = list[position]
         holder.itemView.title_event.text = item.name
         holder.itemView.date_event.text = item.startDate
@@ -177,6 +179,12 @@ class AdapterCalendar (
                 monthBegin.setText(table[1])
                 yearBegin.setText(table[0])
             }
+            fun setEndDateBlocks(date: String) {
+                val table = date.split('-')
+                dayEnd.setText(table[2])
+                monthEnd.setText(table[1])
+                yearEnd.setText(table[0])
+            }
 
             fun setUpDate(d: Int, m: Int, y: Int): String {
                 var month = m.toString()
@@ -206,6 +214,13 @@ class AdapterCalendar (
                 minutesBegin.setText(table[1])
             }
 
+            fun setEndTimeBlocks(date: String) {
+                val table = date.split(':')
+                hourEnd.setText(table[0])
+                minutesEnd.setText(table[1])
+            }
+
+
 
             calendarBegin.setOnClickListener {
 
@@ -223,8 +238,26 @@ class AdapterCalendar (
                 dpd.show()
             }
 
+            calendarEnd.setOnClickListener {
 
-            /*clockBegin.setOnClickListener {
+                val dpd = DatePickerDialog(
+                    holder.itemView.context,
+                    DatePickerDialog.OnDateSetListener { view, sel_year, sel_month, sel_day ->
+
+                        enddate_year_month_day = setUpDate(sel_day, sel_month, sel_year)
+
+                        setEndDateBlocks(enddate_year_month_day)
+
+                    }, yearEnd.text.toString().toInt(), monthEnd.text.toString().toInt()-1,dayEnd.text.toString().toInt()
+                )
+
+                dpd.show()
+            }
+
+
+
+
+            clockBegin.setOnClickListener {
 
 
                 var tpd = TimePickerDialog(
@@ -238,7 +271,23 @@ class AdapterCalendar (
                     true
                 )
                 tpd.show()
-            }*/
+            }
+
+            clockEnd.setOnClickListener {
+
+
+                var tpd = TimePickerDialog(
+                    holder.itemView.context,
+                    TimePickerDialog.OnTimeSetListener { view, sel_hour, sel_minutes ->
+
+                        enddate_time = setUpTime(sel_hour, sel_minutes)
+                        setEndTimeBlocks(enddate_time)
+
+                    }, hourEnd.text.toString().toInt(), minutesEnd.text.toString().toInt(),
+                    true
+                )
+                tpd.show()
+            }
 
 
             startdate_year_month_day = yearBegin.text.toString() + '-'+
@@ -424,7 +473,7 @@ class AdapterCalendar (
                     enddate_year_month_day+' '+enddate_time,
                     typeId,
                     remind,
-                    location.toString(),
+                    location="",
                     repeat,
                     noteId,
                     titleEvent.text.toString(),
@@ -442,7 +491,7 @@ class AdapterCalendar (
         }
 
 
-       */
+
     }
 
     override fun getItemCount(): Int {
@@ -460,6 +509,16 @@ class AdapterCalendar (
         diffResult.dispatchUpdatesTo(this)
     }
 
+    fun updateList2(newCalendar: MutableList<Calendar>) {
+        val diffResult = DiffUtil.calculateDiff(
+            com.example.planer.gui.callBacks.CalendarDiffCallback(
+                this.list2,
+                newCalendar
+            )
+        )
+        this.list2 = newCalendar
+        diffResult.dispatchUpdatesTo(this)
+    }
 
 
 
