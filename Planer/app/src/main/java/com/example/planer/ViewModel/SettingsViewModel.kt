@@ -17,6 +17,8 @@ import de.raphaelebner.roomdatabasebackup.core.RoomBackup
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 class SettingsViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -57,9 +59,12 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
     suspend fun exportDb(backup: RoomBackup, context: Context): Boolean =
         withContext(Dispatchers.IO) {
             val deferred = CompletableDeferred<Boolean>()
+            val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+            val current = LocalDateTime.now().format(formatter)
             backup
                 .database(AppDatabase.getDatabase(context))
                 .backupLocation(RoomBackup.BACKUP_FILE_LOCATION_CUSTOM_DIALOG)
+                .customBackupFileName("Backup_$current.sqlite3")
                 .apply {
                     onCompleteListener { success, message, exitCode ->
                         deferred.complete(success)
