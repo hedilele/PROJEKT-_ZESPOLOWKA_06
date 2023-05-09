@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.res.ColorStateList
-import android.graphics.BlurMaskFilter
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.graphics.drawable.GradientDrawable
@@ -16,7 +15,6 @@ import android.view.*
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.cardview.widget.CardView
@@ -66,11 +64,11 @@ class AdapterTasks(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = list[position]
         val itemsNote = notesList.find { notes -> notes.noteId == item.noteId }
-        var itemsType = Types(0, "none", "#e8cba8")
+        var itemsType: Types? = Types(0, "none", "#e8cba8")
         //val itemsType = typesList.find { types -> types.id == item.typeId}
         if(item.typeId != 0)
         {
-            itemsType = typesList.find { types -> types.id == item.typeId}!!
+            itemsType = typesList.find { types -> types.id == item.typeId}
         }
 
 
@@ -89,10 +87,11 @@ class AdapterTasks(
         val drawable = holder.itemView.task_layout.background as GradientDrawable
 
         if(item.typeId != 0) {
-            drawable.setStroke(5, Color.parseColor(itemsType?.colour.toString()))
+            val color = if (itemsType != null) Color.parseColor(itemsType.colour) else ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_off)
+            drawable.setStroke(5, color)
            // holder.itemView.task_title.setTextColor(Color.parseColor(itemsType?.colour.toString()))
         }
-        
+
 
         holder.itemView.done.setOnClickListener {
 
@@ -158,7 +157,7 @@ class AdapterTasks(
 
             var duration: Int = item.timeToFinish
             var isActive: Int = item.isActive
-            var typeId: Int = item.typeId
+            var typeId: Int? = item.typeId
 
             var specyfic_date: Int = 0
 

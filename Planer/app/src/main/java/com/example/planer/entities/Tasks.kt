@@ -22,7 +22,7 @@ data class Tasks(
     @ColumnInfo(name = "is_active")
     var isActive: Int,
     @ColumnInfo(name = "type_id")
-    val typeId: Int,
+    val typeId: Int?,
     @ColumnInfo(name = "note_id")
     var noteId: Int?,
     @ColumnInfo(name = "date")

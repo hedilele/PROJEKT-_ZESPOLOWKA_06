@@ -1,10 +1,7 @@
 package com.example.planer
 
 import android.content.Context
-import androidx.room.Database
-import androidx.room.Room
-import androidx.room.RoomDatabase
-import androidx.room.TypeConverters
+import androidx.room.*
 import com.example.planer.DAOs.*
 import com.example.planer.entities.*
 import com.example.planer.entities.typeconverters.LocalDateTypeConverter
@@ -25,7 +22,10 @@ import com.example.planer.entities.typeconverters.LocalDateTypeConverter
         Types::class
     ],
     exportSchema = true,
-    version = 17
+    autoMigrations = [
+        AutoMigration (from = 17, to = 18)
+    ],
+    version = 18
 )
 @TypeConverters(LocalDateTypeConverter::class)
 abstract class AppDatabase : RoomDatabase() {
