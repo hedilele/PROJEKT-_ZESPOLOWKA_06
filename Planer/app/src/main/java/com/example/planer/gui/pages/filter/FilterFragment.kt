@@ -115,7 +115,7 @@ class FilterFragment : AppCompatActivity() {
                     CoroutineScope(Dispatchers.Main).launch {
                         userViewModel.readTasksWithSearchEdit(searchQuery)
                             .observe(this@FilterFragment, Observer { //Tutaj zmiana kazdego na this@FilterFragment chyba
-                                adapter.updateList(it.toMutableList(), 0)
+                                adapter.updateList(it.toMutableList())
                             })
                         adapter.notifyDataSetChanged()
                     }
@@ -125,7 +125,7 @@ class FilterFragment : AppCompatActivity() {
                     val filteredBySearchList = filteredList.filter {
                         it.title.contains(searchQuery, true)
                     }
-                    adapter.updateList(filteredBySearchList.toMutableList(), 0)
+                    adapter.updateList(filteredBySearchList.toMutableList())
                 }
             }
             override fun afterTextChanged(p0: Editable?) {}
@@ -270,7 +270,7 @@ class FilterFragment : AppCompatActivity() {
                     CoroutineScope(Dispatchers.Main).launch {
                         userViewModel.readAllData.observe(this@FilterFragment, Observer {
                             filteredList = it.toMutableList()
-                            adapter.updateList(filteredList, 0)
+                            adapter.updateList(filteredList)
                         })
 
                         noteViewModel.readAllData.observe(this@FilterFragment, Observer {
@@ -289,7 +289,7 @@ class FilterFragment : AppCompatActivity() {
                     CoroutineScope(Dispatchers.Main).launch {
                         userViewModel.readTasksWithTypes(typeIds).observe(this@FilterFragment, Observer {
                             filteredList = it.toMutableList()
-                            adapter.updateList(filteredList, 0)
+                            adapter.updateList(filteredList)
                         })
 
                     }
@@ -302,7 +302,7 @@ class FilterFragment : AppCompatActivity() {
                     CoroutineScope(Dispatchers.Main).launch {
                         userViewModel.readTasksWithDuration(finishIds).observe(this@FilterFragment, Observer {
                             filteredList = it.toMutableList()
-                            adapter.updateList(filteredList, 0)
+                            adapter.updateList(filteredList)
                         })
 
                     }
@@ -322,7 +322,7 @@ class FilterFragment : AppCompatActivity() {
                     CoroutineScope(Dispatchers.Main).launch {
                         userViewModel.readTasksWithDate(startDateStringFormatted, endDateStringFormatted).observe(this@FilterFragment, Observer {
                             filteredList = it.toMutableList()
-                            adapter.updateList(filteredList, 0)
+                            adapter.updateList(filteredList)
                         })
 
                     }
@@ -342,7 +342,7 @@ class FilterFragment : AppCompatActivity() {
                     CoroutineScope(Dispatchers.Main).launch {
                         userViewModel.readTasksWithDurationAndDate(finishIds,startDateStringFormatted, endDateStringFormatted).observe(this@FilterFragment, Observer {
                             filteredList = it.toMutableList()
-                            adapter.updateList(filteredList, 0)
+                            adapter.updateList(filteredList)
                         })
 
                     }
@@ -362,7 +362,7 @@ class FilterFragment : AppCompatActivity() {
                     CoroutineScope(Dispatchers.Main).launch {
                         userViewModel.readTasksWithTypesAndDate(typeIds,startDateStringFormatted, endDateStringFormatted).observe(this@FilterFragment, Observer {
                             filteredList = it.toMutableList()
-                            adapter.updateList(filteredList, 0)
+                            adapter.updateList(filteredList)
                         })
 
                     }
@@ -374,7 +374,7 @@ class FilterFragment : AppCompatActivity() {
                     CoroutineScope(Dispatchers.Main).launch {
                         userViewModel.readTasksWithTypesAndDuration(typeIds,finishIds).observe(this@FilterFragment, Observer {
                             filteredList = it.toMutableList()
-                            adapter.updateList(filteredList, 0)
+                            adapter.updateList(filteredList)
                         })
 
                     }
@@ -395,7 +395,7 @@ class FilterFragment : AppCompatActivity() {
                     CoroutineScope(Dispatchers.Main).launch {
                         userViewModel.readTasksWithTypesAndDurationAndDate(typeIds,finishIds,startDateStringFormatted, endDateStringFormatted).observe(this@FilterFragment, Observer {
                             filteredList = it.toMutableList()
-                            adapter.updateList(filteredList, 0)
+                            adapter.updateList(filteredList)
                         })
 
                     }
@@ -409,7 +409,7 @@ class FilterFragment : AppCompatActivity() {
 
         //Ustawianie wyswietlania taskow w recycle view do listowania
         userViewModel.readAllData.observe(this@FilterFragment, Observer {
-            adapter.updateList(it.toMutableList(), 0)
+            adapter.updateList(it.toMutableList())
         })
 
         noteViewModel.readAllData.observe(this@FilterFragment, Observer {

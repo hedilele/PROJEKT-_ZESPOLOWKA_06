@@ -134,11 +134,11 @@ class HomeFragment : Fragment() {
                     hours = 5
                 val blockListTask = BlockListTask(tasks, requireContext(), hours)
                 blockListTask.planner()
-                adapter.updateList(blockListTask.todayList, 1)
-                adapter2.updateList(blockListTask.tomorrowList, 0)
-                adapter3.updateList(blockListTask.weekList, 0)
-                adapter4.updateList(blockListTask.monthList, 0)
-                adapter5.updateList(blockListTask.restList, 0)
+                adapter.updateList(blockListTask.todayList)
+                adapter2.updateList(blockListTask.tomorrowList)
+                adapter3.updateList(blockListTask.weekList)
+                adapter4.updateList(blockListTask.monthList)
+                adapter5.updateList(blockListTask.restList)
                 Log.d("h", "godziny: $h")
 
                 checkIfEmpty(adapter2.list, adapter3.list, adapter4.list, adapter5.list, view)
