@@ -117,7 +117,7 @@ interface TasksDAO
         "LEFT JOIN Notes n ON t.note_id = n.id " +
         "WHERE t.is_active = 1 " +
         "AND (strftime('%s', t.deadline) < strftime('%s', 'now') OR (t.importance = 0 AND t.urgency = 0))" +
-            "ORDER BY t.deadline")
+            "ORDER BY t.deadline DESC")
     fun readOverdueTasksWithNotes(): LiveData<Map<Tasks, List<Notes>>>
 
     @Transaction
