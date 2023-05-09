@@ -128,23 +128,24 @@ class HomeFragment : Fragment() {
         userViewModel = ViewModelProvider(this)[TaskViewModel::class.java]
         userViewModel.readAllData.observe(viewLifecycleOwner, Observer { tasks ->
             settingViewModel.getHours().observe(viewLifecycleOwner, Observer { h ->
-                var hours : Int?
-                hours = h
-                if(hours == null)
-                    hours = 5
-                val blockListTask = BlockListTask(tasks, requireContext(), hours)
-                blockListTask.planner()
-                adapter.updateList(blockListTask.todayList)
-                adapter2.updateList(blockListTask.tomorrowList)
-                adapter3.updateList(blockListTask.weekList)
-                adapter4.updateList(blockListTask.monthList)
-                adapter5.updateList(blockListTask.restList)
-                Log.d("h", "godziny: $h")
+                settingViewModel.getExcludedDates().observe(viewLifecycleOwner, Observer {exDates ->
+                    var hours : Int?
+                    hours = h
+                    if(hours == null)
+                        hours = 5
+                    val blockListTask = BlockListTask(tasks, requireContext(), hours, exDates)
+                    blockListTask.planner()
+                    adapter.updateList(blockListTask.todayList)
+                    adapter2.updateList(blockListTask.tomorrowList)
+                    adapter3.updateList(blockListTask.weekList)
+                    adapter4.updateList(blockListTask.monthList)
+                    adapter5.updateList(blockListTask.restList)
+                    Log.d("h", "godziny: $h")
 
-                checkIfEmpty(adapter2.list, adapter3.list, adapter4.list, adapter5.list, view)
+                    checkIfEmpty(adapter2.list, adapter3.list, adapter4.list, adapter5.list, view)
 
-                hideRestOftasks(0,  view)
-
+                    hideRestOftasks(0,  view)
+                })
             })
         })
 

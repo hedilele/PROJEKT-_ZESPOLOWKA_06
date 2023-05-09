@@ -6,7 +6,7 @@ import com.example.planer.entities.ExcludedDate
 
 class ExcludedDateRepository(private val excludedDateDAO: ExcludedDateDAO) {
 
-    fun readExcludedDates(): LiveData<List<ExcludedDate>> {
+    fun readExcludedDates(): LiveData<MutableList<ExcludedDate>> {
         return excludedDateDAO.getExcludedDates()
     }
 

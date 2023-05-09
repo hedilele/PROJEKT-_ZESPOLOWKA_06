@@ -1,6 +1,8 @@
 package com.example.planer.algorithm
 
 import android.content.Context
+import android.util.Log
+import com.example.planer.entities.ExcludedDate
 import com.example.planer.entities.Tasks
 import java.time.LocalDate
 
@@ -10,7 +12,8 @@ import java.time.LocalDate
 class BlockListTask (
     var list : List<Tasks>,
     var context : Context,
-    val hours : Int
+    val hours : Int,
+    val exDates: MutableList<ExcludedDate>
 ){
     private val h = numToH(hours)
     private val io = IO()
@@ -52,8 +55,30 @@ class BlockListTask (
         var tomorrowLimitINU = 0
         var tomorrowLimitNIU = 0
 
+
+        //sortowanie rosnąco po dacie terminów dni wolnych
+        exDates.sortWith(compareBy { it.excludedDate })
+
         //pobranie dzisiejszej daty
         val today = EasyDate(LocalDate.now())
+
+        //przejście po datach dni wolnych
+        for(i in exDates){
+            val d = EasyDate(i.excludedDate)
+            //jeżeli dzisiaj wypada wolny dzień, to godziny do odrobienia dzis = 0
+            if(d.date == today.date){
+                TODAY_WORK = 0
+            }
+            //jeżeli jutro wypada wolny dzień, to godziny do odrobienia jutro = 0
+            else if(d.date == (today+1).date){
+                TOMORROW_WORK = 0
+            }
+            //jeżeli trafiliśmy na datę bardziej odległą niż jutro, to nie ma sensu dalej szukać, więc pętla jest przerwana
+            else if(d.date > (today+1).date){
+                break
+            }
+        }
+
 
         //dziel taski na "do dnia" i "konkretny dzien"
         for(i in tasks){

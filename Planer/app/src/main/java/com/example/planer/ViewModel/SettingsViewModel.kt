@@ -36,7 +36,7 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
         return typeRepository.getAllTypes()
     }
 
-    fun readExcludedDatesFromDb(): LiveData<List<ExcludedDate>> {
+    fun readExcludedDatesFromDb(): LiveData<MutableList<ExcludedDate>> {
         return excludedDateRepository.readExcludedDates()
     }
 
@@ -71,6 +71,10 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
 
     fun getHours(): LiveData<Int>{
         return settingsRepository.readHours()
+    }
+
+    fun getExcludedDates(): LiveData<MutableList<ExcludedDate>>{
+        return excludedDateRepository.readExcludedDates()
     }
 
     suspend fun importDb(backup: RoomBackup, context: Context): Boolean =

@@ -18,7 +18,7 @@ interface ExcludedDateDAO {
     suspend fun update(excludedDate: ExcludedDate)
 
     @Query("SELECT * FROM ExcludedDate")
-    fun getExcludedDates(): LiveData<List<ExcludedDate>>
+    fun getExcludedDates(): LiveData<MutableList<ExcludedDate>>
 
     @Query("SELECT * FROM ExcludedDate")
     fun getExcludedDatesList(): List<ExcludedDate>
