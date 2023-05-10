@@ -301,10 +301,12 @@ class AdapterTasks(
                 when(importance)
                 {
                     0 -> {
-                        important0.setBackgroundColor(android.R.color.transparent)
+                        //important0.setBackgroundColor(android.R.color.transparent)
+                        important0.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_off))
                     }
                     1 -> {
-                        important1.setBackgroundColor(android.R.color.transparent)
+                        //important1.setBackgroundColor(android.R.color.transparent)
+                        important1.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_off))
                     }
                 }
 
@@ -315,10 +317,10 @@ class AdapterTasks(
                 when(urgency)
                 {
                     0 -> {
-                        urgent0.setBackgroundColor(android.R.color.transparent)
+                        urgent0.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_off))
                     }
                     1 -> {
-                        urgent1.setBackgroundColor(android.R.color.transparent)
+                        urgent1.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_off))
                     }
                 }
 
