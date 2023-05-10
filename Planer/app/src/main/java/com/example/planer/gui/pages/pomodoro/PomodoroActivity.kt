@@ -32,6 +32,7 @@ import com.example.planer.databinding.ActivityPomodoroBinding
 import com.example.planer.databinding.FragmentPomodoroBinding
 import com.example.planer.entities.Notes
 import kotlinx.android.synthetic.main.dialog_note_pomodoro.view.*
+import kotlinx.android.synthetic.main.single_short_note.view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -203,6 +204,11 @@ class PomodoroActivity : AppCompatActivity() {
                 noteViewModel.updateNote(Notes(1, "pomodoro", dialogView.et_note.text.toString(), null))
                 alertDialog.cancel()
             }
+
+            dialogView.btn_erase_note.setOnClickListener {
+                noteViewModel.updateNote(Notes(1, "pomodoro", "", null))
+                dialogView.et_note.setText("")
+            }
         }
 
 
@@ -305,7 +311,7 @@ class PomodoroActivity : AppCompatActivity() {
                 var min: Int = (time_selected - time_progress) / 60
                 var sec = (time_selected - time_progress) - min * 60
 
-                timeLeftTv.text = "$min : $sec"
+                timeLeftTv.text = timeFormat(min, sec)
             }
 
             override fun onFinish() {
@@ -350,6 +356,25 @@ class PomodoroActivity : AppCompatActivity() {
     }
 
 
+    fun timeFormat(min: Int, sec: Int): String
+    {
+        var minTmp: String
+        var secTmp: String
+
+        if(min < 10)
+            minTmp = "0" + min
+        else
+            minTmp = min.toString()
+
+
+        if(sec < 10)
+            secTmp = "0" + sec
+        else
+            secTmp = sec.toString()
+
+
+        return "$minTmp : $secTmp"
+    }
 
     private fun checkSeries() {
         when (v / 2) {

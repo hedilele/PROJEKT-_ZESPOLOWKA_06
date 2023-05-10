@@ -242,17 +242,22 @@ class UserSettingsActivity : AppCompatActivity(), View.OnClickListener,
             .Builder(this)
             .setColors(
                 arrayListOf(
-                    "#f6e58d",
-                    "#ffbe76",
-                    "#ff7979",
-                    "#badc58",
-                    "#dff9fb",
-                    "#7ed6df",
-                    "#e056fd",
-                    "#686de0",
-                    "#30336b",
-                    "#95afc0"
-
+                    "#005F73",
+                    "#099396",
+                    "#93D2BD",
+                    "#9FC088",
+                    "#A13333",
+                    "#B04759",
+                    "#7A3E65",
+                    "#BA94D1",
+                    "#F16AA6",
+                    "#F97B22",
+                    "#ED9B00",
+                    "#E7B10A",
+                    "#064635",
+                    "#519259",
+                    "#698269",
+                    "#898121"
                 )
             )
 

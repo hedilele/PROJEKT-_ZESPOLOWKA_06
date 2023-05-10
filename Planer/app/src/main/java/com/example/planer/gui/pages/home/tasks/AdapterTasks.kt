@@ -89,6 +89,7 @@ class AdapterTasks(
         if(item.typeId != 0) {
             val color = if (itemsType != null) Color.parseColor(itemsType.colour) else ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_off)
             drawable.setStroke(5, color)
+            updateListener(item, itemsNote!!)
            // holder.itemView.task_title.setTextColor(Color.parseColor(itemsType?.colour.toString()))
         }
 
@@ -278,7 +279,6 @@ class AdapterTasks(
 
 
 
-
             deadline_day = item.deadline.substring(0, 10)
             deadline_time = item.deadline.substring(11)
 
@@ -291,7 +291,6 @@ class AdapterTasks(
 
             hour.setText(tab_time[0])
             minutes.setText(tab_time[1])
-
 
 
 
