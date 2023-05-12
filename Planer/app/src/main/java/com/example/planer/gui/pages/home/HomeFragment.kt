@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.planer.R
 import com.example.planer.ViewModel.*
 import com.example.planer.algorithm.BlockListTask
+import com.example.planer.algorithm.IO
 import com.example.planer.databinding.FragmentHomeBinding
 import com.example.planer.entities.Habits
 import com.example.planer.entities.Notes
@@ -225,8 +226,14 @@ class HomeFragment : Fragment() {
         val rvh = view.habits_list
         val adapterhh = AdapterHabits(
             listHab,
-            {hab -> if(delete_clicked == 1) habitViewModel.deleteHabit(hab)},
-            {hab -> if(delete_clicked == 0) habitViewModel.updateHabit(Habits(hab.id, hab.name, 0))}
+            {hab -> if(delete_clicked == 1){
+                habitViewModel.deleteHabit(hab)
+                //TODO wywal z zeszytu
+            }},
+            {hab -> if(delete_clicked == 0){
+                habitViewModel.updateHabit(Habits(hab.id, hab.name, 0))
+                //TODO odhacz w zeszycie
+            }}
         )
 
         rvh.adapter = adapterhh
@@ -236,6 +243,9 @@ class HomeFragment : Fragment() {
 
         //habitViewModel = ViewModelProvider(this)[HabitViewModel::class.java]
         habitViewModel.readAllData.observe(viewLifecycleOwner, Observer {
+            //TODO przefiltruj habitsy, zeby wyswietlic te nieodhaczone
+            //val io = IO()
+            //adapterhh.updateList(io.filterHabits(requireContext(), it.toMutableList()))
             adapterhh.updateList(it.toMutableList())
         })
 

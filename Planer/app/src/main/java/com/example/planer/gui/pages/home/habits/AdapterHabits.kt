@@ -1,5 +1,6 @@
 package com.example.planer.gui.pages.home.habits
 
+import android.util.Log
 import android.view.*
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.DiffUtil
