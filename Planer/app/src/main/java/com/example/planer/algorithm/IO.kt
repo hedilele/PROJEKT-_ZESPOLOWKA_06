@@ -20,7 +20,7 @@ class IO {
         val file = File(path, name)
         val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
         val today = LocalDate.now().format(formatter)
-        var work = 60
+        var work = hours
 
 
         val isCreated = file.createNewFile()
@@ -29,8 +29,6 @@ class IO {
             file.appendText(today)
             file.appendText("\n$work")
             file.appendText("\n$work")
-
-            Log.d("work", "utworzon, do odrobienia: $work")
         }
         //plik juz istnial
         else{
@@ -39,7 +37,6 @@ class IO {
                 file.writeText(data[0])
                 file.appendText("\n${data[1]}")
                 file.appendText("\n$work")
-                Log.d("work", "w przypadku starej wersji programu, do odrobienia: $work")
             }
 
             data = file.readLines()
@@ -49,7 +46,6 @@ class IO {
                 file.writeText(today)
                 file.appendText("\n$work")
                 file.appendText("\n$work")
-                Log.d("work", "nowy dzien, do odrobienia: $work")
             }
             //jeżeli w pliku nie ma linii z zapamiętanym limitem
             else if(data[2].toInt() != work){
@@ -60,22 +56,23 @@ class IO {
                     file.appendText("\n$done")
                     file.appendText("\n$work")
                     work = done
-                    Log.d("work", "nowy limit, ale cos robilem, do odrobienia: $work")
                 }
                 //jeżeli nowy limit godzin jest mniejszy od starego i dzisiejszej roboty
                 else {
                     file.appendText("\n$work")
                     file.appendText("\n$work")
-                    Log.d("work", "nowy limit, ale nic nie robilem lub zmniejszylem, do odrobienia: $work")
                 }
             }
             else{
                 work = data[1].toInt()
-                Log.d("work", "limit bez zmian, do odrobienia: $work")
             }
         }
         return work
     }
+
+    //private fun parseHours(hours: Int): Int{
+
+    //}
 
     //zmniejsza liczbe godzin do przepracowania w pliku
     fun updateWork(context: Context, workTime: Int){
@@ -86,5 +83,9 @@ class IO {
         var work = data[1].toInt()
         work -= workTime
         file.writeText(data[0] + "\n" + work.toString() + "\n" +data[2])
+    }
+
+    fun updateHabits(){
+
     }
 }
