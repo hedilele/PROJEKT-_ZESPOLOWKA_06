@@ -240,11 +240,9 @@ class HomeFragment : Fragment() {
             listHab,
             {hab -> if(delete_clicked == 1){
                 habitViewModel.deleteHabit(hab)
-                //TODO wywal z zeszytu
             }},
             {hab -> if(delete_clicked == 0){
                 habitViewModel.updateHabit(Habits(hab.id, hab.name, 0))
-                //TODO odhacz w zeszycie
             }}
         )
 
@@ -254,7 +252,6 @@ class HomeFragment : Fragment() {
 
         //habitViewModel = ViewModelProvider(this)[HabitViewModel::class.java]
         habitViewModel.readAllData.observe(viewLifecycleOwner, Observer {
-            //TODO przefiltruj habitsy, zeby wyswietlic te nieodhaczone
             //val io = IO()
             //adapterhh.updateList(io.filterHabits(requireContext(), it.toMutableList()))
             adapterhh.updateList(it.toMutableList())
