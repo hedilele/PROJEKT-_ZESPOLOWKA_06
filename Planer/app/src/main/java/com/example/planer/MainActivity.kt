@@ -10,7 +10,6 @@ import android.view.View
 import android.view.Window
 import android.view.WindowManager
 import android.widget.Button
-import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -20,11 +19,12 @@ import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.widget.ViewPager2
 import com.example.planer.ViewModel.NoteViewModel
+import com.example.planer.ViewModel.TaskViewModel
 import com.example.planer.databinding.ActivityMainBinding
 import com.example.planer.entities.Notes
+import com.example.planer.entities.Tasks
 import com.example.planer.gui.ViewPager2Adapter
 import com.example.planer.gui.pages.home.tasks.AddingTaskActivity
 import com.example.planer.gui.pages.*
@@ -32,7 +32,6 @@ import com.example.planer.gui.pages.filter.FilterFragment
 import com.example.planer.gui.pages.home.HomeFragment
 import com.example.planer.gui.pages.home.notes.NotesActivity
 import com.example.planer.gui.pages.pomodoro.PomodoroActivity
-import com.example.planer.gui.pages.pomodoro.PomodoroFragment
 import com.example.planer.gui.pages.settings.UserSettingsActivity
 import com.example.planer.scope.ScopeMode
 import kotlinx.android.synthetic.main.dialod_when_title_empty.view.*
@@ -40,11 +39,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var noteViewModel: NoteViewModel
+    private lateinit var taskViewModel: TaskViewModel
 
     lateinit var toggle: ActionBarDrawerToggle
 
@@ -67,7 +66,14 @@ class MainActivity : AppCompatActivity() {
 
 
         setContentView(binding.root)
+        //DO POWIADOMIEŃ
+        taskViewModel = ViewModelProvider(this)[TaskViewModel::class.java]
 
+        taskViewModel.readAllData.observe(this) { tasks ->
+            scheduleNotifications(tasks)
+        }
+        val intent = Intent(applicationContext, NotificationService::class.java)
+        startService(intent)
 
         val viewPager: ViewPager2 = binding.pagerView
 
@@ -255,6 +261,25 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+    }
+
+    //Metody do pobierania powiadomien
+    private fun scheduleNotifications(tasks: List<Tasks>)
+    {
+        // Sprawdzenie, czy lista zadań nie jest pusta
+        if(!tasks.isNullOrEmpty())
+        {
+            for(task in tasks)
+            {
+                scheduleNotification(task.deadline, task.id, task.title)
+            }
+        }
+    }
+
+    private fun scheduleNotification(deadline: String, taskId: Int, taskName: String)
+    {
+        val notificationHelper = NotificationHelper(this)
+        notificationHelper.scheduleNotification(deadline, taskId, taskName)
     }
 }
 

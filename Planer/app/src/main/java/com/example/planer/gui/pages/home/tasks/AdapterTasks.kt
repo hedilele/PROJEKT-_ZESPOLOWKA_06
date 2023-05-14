@@ -59,7 +59,7 @@ class AdapterTasks(
     }
 
     // ustawianie wyglądu i zachowań tasków
-    @SuppressLint("ResourceAsColor")
+    @SuppressLint("ResourceAsColor", "SuspiciousIndentation")
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = list[position]

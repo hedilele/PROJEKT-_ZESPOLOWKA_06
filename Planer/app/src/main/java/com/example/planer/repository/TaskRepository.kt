@@ -2,14 +2,25 @@ package com.example.planer.repository
 
 import androidx.lifecycle.LiveData
 import com.example.planer.DAOs.TasksDAO
+import com.example.planer.NotificationHelper
 import com.example.planer.entities.Notes
 import com.example.planer.entities.Tasks
 import java.text.SimpleDateFormat
 
-class TaskRepository(private val tasksDAO: TasksDAO)
+class TaskRepository(private val tasksDAO: TasksDAO,private val notificationHelper: NotificationHelper)
 {
 
-    val readAllData: LiveData<List<Tasks>> = tasksDAO.readAllData()
+    //val readAllData: LiveData<List<Tasks>> = tasksDAO.readAllData()
+    fun readAllData() : LiveData<List<Tasks>>
+    {
+        val readAllData: LiveData<List<Tasks>> = tasksDAO.readAllData()
+        // Dodaj poniższy kod
+        readAllData.value?.forEach { task ->
+            notificationHelper.scheduleNotification(task.deadline, task.id, task.title)
+        }
+
+        return readAllData
+    }
     //val readDataWithTasks: LiveData<List<Tasks>> = tasksDAO.readTasksWithTypes(typeId = Int)
     //val readP: LiveData<List<Tasks>> = tasksDAO.readP()
 

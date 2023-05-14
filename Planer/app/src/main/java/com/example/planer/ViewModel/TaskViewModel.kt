@@ -6,6 +6,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import com.example.planer.AppDatabase
+import com.example.planer.NotificationHelper
 import com.example.planer.entities.Notes
 import com.example.planer.repository.TaskRepository
 import com.example.planer.entities.Tasks
@@ -18,15 +19,21 @@ class TaskViewModel(application: Application): AndroidViewModel(application)
     val readAllData: LiveData<List<Tasks>>
     private val repository: TaskRepository
     private val repositoryNote: NoteRepository
+    private val notificationHelper: NotificationHelper = NotificationHelper(application)
 
     //To zawsze pierwsze bedzie sie wykonywalo kiedy callujemy UserViewModel
     init
     {
         val taskDAO = AppDatabase.getDatabase(application).tasksDAO()
         val notesDAO = AppDatabase.getDatabase(application).notesDAO()
-        repository = TaskRepository(taskDAO)
+        repository = TaskRepository(taskDAO, notificationHelper)
         repositoryNote = NoteRepository(notesDAO)
-        readAllData = repository.readAllData
+        readAllData = repository.readAllData()
+        readAllData.observeForever { tasks ->
+            tasks?.forEach { task ->
+                notificationHelper.scheduleNotification(task.deadline, task.id, task.title)
+            }
+        }
     }
 
     //Zla praktyka jest uruchamiac zapytania z bazy w watku glownym!

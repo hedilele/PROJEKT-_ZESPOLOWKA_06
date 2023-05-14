@@ -13,15 +13,15 @@ import kotlinx.coroutines.launch
 //Referencja do aplikacji
 class UserViewModel(application: Application): AndroidViewModel(application)
 {
-    val readAllData: LiveData<List<Tasks>>
-    private val repository: TaskRepository
+    //val readAllData: LiveData<List<Tasks>>
+    //private val repository: TaskRepository
 
     //To zawsze pierwsze bedzie sie wykonywalo kiedy callujemy UserViewModel
     init
     {
         val taskDAO = AppDatabase.getDatabase(application).tasksDAO()
-        repository = TaskRepository(taskDAO)
-        readAllData = repository.readAllData
+        //repository = TaskRepository(taskDAO)
+        //readAllData = repository.readAllData
     }
 
     //Zla praktyka jest uruchamiac zapytania z bazy w watku glownym!
@@ -29,7 +29,7 @@ class UserViewModel(application: Application): AndroidViewModel(application)
     {
         viewModelScope.launch(Dispatchers.IO) //Odpali sie w oddzielnym watku w tle
         {
-            repository.addTask(tasks)
+            //repository.addTask(tasks)
         }
     }
 
@@ -37,7 +37,7 @@ class UserViewModel(application: Application): AndroidViewModel(application)
     {
         viewModelScope.launch(Dispatchers.IO) //Odpali sie w oddzielnym watku w tle
         {
-            repository.deleteTask(tasks)
+            //repository.deleteTask(tasks)
         }
     }
 
@@ -45,7 +45,7 @@ class UserViewModel(application: Application): AndroidViewModel(application)
     {
         viewModelScope.launch(Dispatchers.IO) //Odpali sie w oddzielnym watku w tle
         {
-            repository.deleteTaskById(id)
+            //repository.deleteTaskById(id)
         }
     }
 
@@ -53,7 +53,7 @@ class UserViewModel(application: Application): AndroidViewModel(application)
     {
         viewModelScope.launch(Dispatchers.IO) //Odpali sie w oddzielnym watku w tle
         {
-            repository.updateTask(task)
+            //repository.updateTask(task)
         }
     }
 
