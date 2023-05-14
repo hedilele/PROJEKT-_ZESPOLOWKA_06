@@ -6,21 +6,29 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import com.example.planer.AppDatabase
 import com.example.planer.entities.Habits
+import com.example.planer.entities.LastAccess
 import com.example.planer.repository.HabitRepository
+import com.example.planer.repository.LastAccessRepository
 import kotlinx.coroutines.*
+import java.time.LocalDate
 
 //Referencja do aplikacji
 class HabitViewModel(application: Application): AndroidViewModel(application)
 {
     val readAllData: LiveData<List<Habits>>
+    val lastAccessDate: LiveData<LastAccess>
     private val repository: HabitRepository
+    private val lastAccess: LastAccessRepository
 
     //To zawsze pierwsze bedzie sie wykonywalo kiedy callujemy UserViewModel
     init
     {
         val habitDAO = AppDatabase.getDatabase(application).habitsDAO()
+        val lastAccessDAO = AppDatabase.getDatabase(application).lastAccessDAO()
         repository = HabitRepository(habitDAO)
+        lastAccess = LastAccessRepository(lastAccessDAO)
         readAllData = repository.readAllData
+        lastAccessDate = lastAccess.getLastAccessDate()
     }
 
     //Zla praktyka jest uruchamiac zapytania z bazy w watku glownym!
@@ -49,13 +57,26 @@ class HabitViewModel(application: Application): AndroidViewModel(application)
     }
 
 
-//    fun deleteHabitById(id: Int)
-//    {
-//        viewModelScope.launch(Dispatchers.IO) //Odpali sie w oddzielnym watku w tle
-//        {
-//            repository.deleteHabitById(id)
-//        }
-//    }
+    fun updateLastAccessDate()
+    {
+        viewModelScope.launch(Dispatchers.IO)
+        {
+            lastAccess.updateAccessDate(LocalDate.now())
+        }
+    }
+
+    fun activateHabits() {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.activateAllHabits()
+        }
+    }
+
+    fun createLastAccess() {
+        viewModelScope.launch(Dispatchers.IO)
+        {
+            lastAccess.createLastAccess(LocalDate.now())
+        }
+    }
 
 
     fun readAllData()

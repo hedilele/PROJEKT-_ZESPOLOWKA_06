@@ -21,6 +21,10 @@ class HabitRepository(private val habitsDAO: HabitsDAO)
         habitsDAO.update(habits)
     }
 
+    suspend fun activateAllHabits() {
+        habitsDAO.activateHabits()
+    }
+
     suspend fun deleteHabit(habits: Habits)
     {
         habitsDAO.delete(habits)
@@ -41,7 +45,7 @@ class HabitRepository(private val habitsDAO: HabitsDAO)
         return habitsDAO.getAllHabitsList()
     }
 
-    suspend fun readAllDataa()
+    fun readAllDataa()
     {
         habitsDAO.readActiveHabits()
     }

@@ -31,6 +31,7 @@ import kotlinx.android.synthetic.main.dialod_when_title_empty.view.*
 import kotlinx.android.synthetic.main.dialog_habit.view.btn_create
 import kotlinx.android.synthetic.main.dialog_habit.view.habit_title
 import kotlinx.android.synthetic.main.fragment_home.view.*
+import java.time.LocalDate
 
 class HomeFragment : Fragment() {
 
@@ -38,7 +39,7 @@ class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
 
     private lateinit var userViewModel: TaskViewModel
-    private lateinit var habitViewModel: HabitViewModel
+    private val habitViewModel: HabitViewModel by viewModels()
     private lateinit var noteViewModel: NoteViewModel
     private lateinit var typeViewModel: TypeViewModel
 
@@ -224,6 +225,16 @@ class HomeFragment : Fragment() {
 
         // HABITS
 
+        habitViewModel.lastAccessDate.observe(viewLifecycleOwner, Observer {
+            if (it == null) {
+                habitViewModel.createLastAccess()
+                habitViewModel.activateHabits()
+            } else if (it.lastAccessDate.isBefore(LocalDate.now())) {
+                habitViewModel.activateHabits()
+                habitViewModel.updateLastAccessDate()
+            }
+        })
+
         val rvh = view.habits_list
         val adapterhh = AdapterHabits(
             listHab,
@@ -240,7 +251,6 @@ class HomeFragment : Fragment() {
         rvh.adapter = adapterhh
         rvh.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
 
-        habitViewModel = ViewModelProvider(this).get(HabitViewModel::class.java)
 
         //habitViewModel = ViewModelProvider(this)[HabitViewModel::class.java]
         habitViewModel.readAllData.observe(viewLifecycleOwner, Observer {

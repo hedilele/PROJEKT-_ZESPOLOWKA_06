@@ -15,6 +15,9 @@ interface HabitsDAO
     @Update
     suspend fun update(habits: Habits)
 
+    @Query("UPDATE Habits SET is_active=1")
+    suspend fun activateHabits()
+
     //Pobieranie listy habitsow z bazy
     @Query("SELECT * FROM 'Habits'")
     fun getAllHabits(): LiveData<List<Habits>>
