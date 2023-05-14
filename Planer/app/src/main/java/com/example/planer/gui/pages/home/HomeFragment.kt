@@ -26,6 +26,7 @@ import com.example.planer.entities.Tasks
 import com.example.planer.entities.Types
 import com.example.planer.gui.pages.home.habits.AdapterHabits
 import com.example.planer.gui.pages.home.tasks.AdapterTasks
+import com.example.planer.scope.UnscrollableLinearLayoutManager
 import kotlinx.android.synthetic.main.dialod_when_title_empty.view.*
 import kotlinx.android.synthetic.main.dialog_habit.view.btn_create
 import kotlinx.android.synthetic.main.dialog_habit.view.habit_title
@@ -78,7 +79,7 @@ class HomeFragment : Fragment() {
             { updateTask, updateNote -> userViewModel.updateTaskAndNote(updateTask, updateNote) }
         )
         rv.adapter = adapter
-        rv.layoutManager = LinearLayoutManager(requireContext())
+        rv.layoutManager = UnscrollableLinearLayoutManager(requireContext())
 
 
         val rv2 = view.tomorrow_task_list
@@ -90,7 +91,7 @@ class HomeFragment : Fragment() {
             { updateTask, updateNote -> userViewModel.updateTaskAndNote(updateTask, updateNote) }
         )
         rv2.adapter = adapter2
-        rv2.layoutManager = LinearLayoutManager(requireContext())
+        rv2.layoutManager = UnscrollableLinearLayoutManager(requireContext())
 
         val rv3 = view.week_task_list
         val adapter3 = AdapterTasks(
@@ -101,7 +102,7 @@ class HomeFragment : Fragment() {
             { updateTask, updateNote -> userViewModel.updateTaskAndNote(updateTask, updateNote) }
         )
         rv3.adapter = adapter3
-        rv3.layoutManager = LinearLayoutManager(requireContext())
+        rv3.layoutManager = UnscrollableLinearLayoutManager(requireContext())
 
         val rv4 = view.month_task_list
         val adapter4 = AdapterTasks(
@@ -112,7 +113,7 @@ class HomeFragment : Fragment() {
             { updateTask, updateNote -> userViewModel.updateTaskAndNote(updateTask, updateNote) }
         )
         rv4.adapter = adapter4
-        rv4.layoutManager = LinearLayoutManager(requireContext())
+        rv4.layoutManager = UnscrollableLinearLayoutManager(requireContext())
 
         val rv5 = view.rest_task_list
         val adapter5 = AdapterTasks(
@@ -123,7 +124,7 @@ class HomeFragment : Fragment() {
             { updateTask, updateNote -> userViewModel.updateTaskAndNote(updateTask, updateNote) }
         )
         rv5.adapter = adapter5
-        rv5.layoutManager = LinearLayoutManager(requireContext())
+        rv5.layoutManager = UnscrollableLinearLayoutManager(requireContext())
 
 
         userViewModel = ViewModelProvider(this)[TaskViewModel::class.java]
