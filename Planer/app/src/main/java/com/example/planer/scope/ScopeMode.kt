@@ -63,6 +63,10 @@ class ScopeMode : AppCompatActivity(), CardAdapter.OnButtonClickListener {
             }
             adapter.updateList(tasks)
         }
+
+        binding.ivBackToMenu.setOnClickListener {
+            finish()
+        }
     }
 
 

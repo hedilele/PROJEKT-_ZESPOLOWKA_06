@@ -182,6 +182,19 @@
             android:gravity="center"
             android:orientation="horizontal">
 
+
+            <Button
+                android:id="@+id/btn_exit"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="15dp"
+                android:backgroundTint="@color/pr1_green_text"
+                android:padding="10dp"
+                android:text="wyjdź"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
             <Button
                 android:id="@+id/btn_save"
                 android:layout_width="150dp"

@@ -134,6 +134,13 @@ class NotesActivity : AppCompatActivity() {
 //                parentView?.removeView(dialogView)
             }
 
+
+
         }
+
+        binding.ivBackToMenu.setOnClickListener {
+            finish()
+        }
+
     }
 }

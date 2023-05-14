@@ -80,6 +80,7 @@ class UserSettingsActivity : AppCompatActivity(), View.OnClickListener,
 
         binding.pickExcludedDatesButton.setOnClickListener(this)
         binding.btnSave.setOnClickListener(this)
+        binding.btnExit.setOnClickListener(this)
 
         binding.slider.addOnChangeListener { slider: Slider, fl: Float, b: Boolean ->
             if (slider.value != localSettings.dailyAvailableHours.toFloat()) {
@@ -214,6 +215,10 @@ class UserSettingsActivity : AppCompatActivity(), View.OnClickListener,
                         unsavedSettings.postValue(false)
                     }
                 }
+            }
+
+            R.id.btn_exit -> {
+                finish()
             }
 
             R.id.pick_excluded_dates_button -> {

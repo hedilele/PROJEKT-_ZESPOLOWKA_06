@@ -169,14 +169,69 @@
             android:textColor="@color/pr1_brown_dark"
             android:backgroundTint="@color/pr1_pomodoro_yellow_on"/>
 
-        <ImageView
-            android:id="@+id/iv_note"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginHorizontal="20dp"
-            android:layout_gravity="right"
-            android:src="@drawable/icon_note_pomodoro"
-            />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="60dp"
+            android:layout_weight="0">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:background="@drawable/shape_navigartion_button"
+                    android:backgroundTint="@color/pr1_beige_background"
+                    android:shadowRadius="10">
+
+                    <ImageView
+                        android:id="@+id/iv_back_to_menu"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@drawable/icon_arrow_"
+                        app:tint="@color/pr1_brown_dark" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="3" />
+
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:background="@drawable/shape_navigartion_button"
+                    android:backgroundTint="@color/pr1_beige_background"
+                    android:shadowRadius="10">
+
+                    <ImageView
+                        android:id="@+id/iv_note"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@drawable/icon_note_pomodoro"
+                        app:tint="@color/pr1_brown_dark"
+
+                        />
+                </LinearLayout>
+
+            </LinearLayout>
+        </LinearLayout>
 
     </LinearLayout>
 

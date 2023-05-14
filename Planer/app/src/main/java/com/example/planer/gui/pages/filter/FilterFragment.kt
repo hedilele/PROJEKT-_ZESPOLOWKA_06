@@ -421,6 +421,12 @@ class FilterFragment : AppCompatActivity() {
             adapter.updateListOfTypes(it.toMutableList())
         })
 
+
+
+        binding.ivBackToMenu.setOnClickListener {
+            finish()
+        }
+
         //return view
     }
 
