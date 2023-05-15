@@ -32,14 +32,14 @@
             </intent-filter>
         </receiver>
         <receiver
-            android:name=".NotificationReceiver"
+            android:name=".norification.NotificationReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
                 <action android:name="your.package.name.NOTIFICATION_ACTION" />
             </intent-filter>
         </receiver>
-        <service android:name=".NotificationService" />
+        <service android:name=".norification.NotificationService" />
         <activity
             android:name=".MainActivity"
             android:exported="true"

@@ -3,7 +3,6 @@ package com.example.planer
 import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -26,7 +25,6 @@ import com.example.planer.ViewModel.TaskViewModel
 import com.example.planer.databinding.ActivityMainBinding
 import com.example.planer.entities.Calendar
 import com.example.planer.entities.Notes
-import com.example.planer.entities.Tasks
 import com.example.planer.gui.ViewPager2Adapter
 import com.example.planer.gui.pages.home.tasks.AddingTaskActivity
 import com.example.planer.gui.pages.*
@@ -35,6 +33,8 @@ import com.example.planer.gui.pages.home.HomeFragment
 import com.example.planer.gui.pages.home.notes.NotesActivity
 import com.example.planer.gui.pages.pomodoro.PomodoroActivity
 import com.example.planer.gui.pages.settings.UserSettingsActivity
+import com.example.planer.norification.NotificationHelper
+import com.example.planer.norification.NotificationService
 import com.example.planer.scope.ScopeMode
 import kotlinx.android.synthetic.main.dialod_when_title_empty.view.*
 import kotlinx.coroutines.Dispatchers

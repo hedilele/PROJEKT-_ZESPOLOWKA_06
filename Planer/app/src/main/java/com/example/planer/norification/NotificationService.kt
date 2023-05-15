@@ -1,8 +1,9 @@
-package com.example.planer
+package com.example.planer.norification
 
 import android.app.Service
 import android.content.Intent
 import android.os.IBinder
+import com.example.planer.norification.NotificationHelper
 
 /**
  * Klasa odpowiedzialna za wysylanie powiadomien o wydarzeniach z kalendarza po zamknieciu aplikacji

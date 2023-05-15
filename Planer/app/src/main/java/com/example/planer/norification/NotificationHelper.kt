@@ -1,4 +1,4 @@
-package com.example.planer
+package com.example.planer.norification
 
 import android.app.AlarmManager
 import android.app.PendingIntent
