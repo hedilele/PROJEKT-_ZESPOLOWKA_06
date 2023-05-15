@@ -1,41 +1,50 @@
 package com.example.planer.gui.pages
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.*
-import android.widget.Toast
-import androidx.core.view.ViewCompat
+import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.viewpager.widget.ViewPager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
-import com.applandeo.materialcalendarview.CalendarView
-import com.applandeo.materialcalendarview.EventDay
-import com.applandeo.materialcalendarview.listeners.OnCalendarPageChangeListener
-import com.applandeo.materialcalendarview.listeners.OnDayClickListener
 import com.example.planer.R
 import com.example.planer.ViewModel.CalendarViewModel
 import com.example.planer.databinding.ActivityCalendarBinding
 import com.example.planer.entities.Calendar
-import com.example.planer.gui.AdapterCalendar
+import com.example.planer.gui.AdapterCalendarList
 import com.example.planer.gui.AddingEventActivity
+import com.example.planer.gui.CalendarAdapter
+import kotlinx.android.synthetic.main.activity_calendar.*
 import kotlinx.android.synthetic.main.activity_calendar.view.*
-import java.text.ParseException
 import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.YearMonth
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 
 //class CalendarFragment : Fragment() {
-class CalendarFragment : Fragment() {
+class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener, CalendarAdapter.OnLongItemListener {
     private lateinit var binding: ActivityCalendarBinding
     private lateinit var calendarViewModel: CalendarViewModel
-    private var eventsList = mutableListOf<Calendar>() //klikniete eventy
-    private var eventsList2 = mutableListOf<Calendar>() //wszystkie eventy
-    private var eventswithicons = mutableListOf<EventDay>() //wszystkie eventy (do wyświetlania ikon)
-    private var selectedDate: String = ""
-    private var selectedDatel: Long = java.util.Calendar.getInstance().getTimeInMillis()
+    private var eventsListoftheDay = mutableListOf<Calendar>() //klikniete eventy z danego dnia
+    private var eventsListAll = mutableListOf<Calendar>() //wszystkie eventy
+
+    private var monthYearText: TextView? = null
+    private var calendarRecyclerView: RecyclerView? = null
+    private var selectedDatenew: LocalDate? = null
+
+    lateinit var adapter: AdapterCalendarList
+
+
+    private var eventsOfMonthList = mutableListOf<Calendar>() //klikniete eventy
+
 
 
 
@@ -53,18 +62,28 @@ class CalendarFragment : Fragment() {
 
 
 
-        // initialize selected date to current date
-        selectedDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
 
         calendarViewModel = ViewModelProvider(this).get(CalendarViewModel::class.java)
 
-        val calview = view.calendarView
-        // calview.isNestedScrollingEnabled = true
+
+        view.nextMonth.setOnClickListener{
+            selectedDatenew = selectedDatenew!!.plusMonths(1).withDayOfMonth(1)
+
+            setMonthView()
+        }
+        view.previousMonth.setOnClickListener {
+            selectedDatenew = selectedDatenew!!.minusMonths(1).withDayOfMonth(1)
+            setMonthView()
+        }
+
+        initWidgets(view)
+        selectedDatenew = LocalDate.now()
+        setMonthView()
 
 
         val rv = view.list_rv
-        val adapter = AdapterCalendar(
-            eventsList,eventsList2,
+        adapter = AdapterCalendarList(
+            eventsListoftheDay,eventsListAll,
             { updateId -> calendarViewModel.updateCalendar(updateId)},
             { deleteId -> calendarViewModel.deleteCalendarDateById(deleteId)},
         )
@@ -73,109 +92,33 @@ class CalendarFragment : Fragment() {
 
         // observe changes to eventsList and update adapter
         calendarViewModel.getAll.observe(viewLifecycleOwner, Observer {
-            eventsList.clear()
-            eventswithicons.clear()
+            eventsListoftheDay.clear()
             val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
             for (event in it) {
                 val eventDate = sdf.parse(event.startDate)?.let { sdf.format(it) } ?: ""
-                if (eventDate.startsWith(selectedDate)) {
-                    eventsList.add(event)
-
+                if (eventDate.startsWith(selectedDatenew.toString())) {
+                    eventsListoftheDay.add(event)
                 }
-                var calendar1 = java.util.Calendar.getInstance()
-                calendar1.set(event.startDate.substring(0,4).toInt(),event.startDate.substring(5,7).toInt()-1,event.startDate.substring(8, 10).toInt())
 
-                eventswithicons.add(EventDay(calendar1, R.drawable.iconmoon))
 
             }
-            adapter.updateList(eventsList)
+            adapter.updateList(eventsListoftheDay)
             adapter.updateList2(it.toMutableList())
-            calview.setEvents(eventswithicons)
-
-
-
+            //calview.setEvents(eventswithicons)
+            eventsListAll = it.toMutableList()
+            setMonthView()
         })
 
-        // fun onTouch(View v, MotionEvent e) {
-        // if(e.getAction() == MotionEvent.ACTION_DOWN){
-        calview.getParent().requestDisallowInterceptTouchEvent(true)
-        //  }
-
-        calview.setOnPreviousPageChangeListener(object : OnCalendarPageChangeListener {
-            override fun onChange() {
-
-                eventsList.clear()
-                adapter.updateList(eventsList)
-                adapter.notifyDataSetChanged()
-
-
-            }
-        })
-
-
-
-        calview.setOnForwardPageChangeListener(object : OnCalendarPageChangeListener {
-            override fun onChange() {
-                eventsList.clear()
-                adapter.updateList(eventsList)
-                adapter.notifyDataSetChanged()
-
-
-            }
-        })
-
-
-
-
-
-
-
-
-
-        calview.setOnDayClickListener(object : OnDayClickListener {
-            override fun onDayClick(eventDay: EventDay) {
-                val calendar: java.util.Calendar = eventDay.calendar
-                selectedDatel = calendar.timeInMillis
-                selectedDate =
-                    SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(calendar.time)
-                //calview.setDate(calendar)
-                var callist = mutableListOf<java.util.Calendar>()
-                callist.add(calendar)
-
-
-
-
-
-                calview.setHighlightedDays(callist)
-
-                //  calview.setCalendarDays(callist)
-
-
-                calendarViewModel.getAll.observe(viewLifecycleOwner, Observer {
-                    eventsList.clear()
-                    val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
-                    for (event in it) {
-                        try {
-                            val eventDate = sdf.parse(event.startDate)?.let { sdf.format(it) } ?: ""
-                            if (eventDate.startsWith(selectedDate)) {
-                                eventsList.add(event)
-                            }
-                        } catch (e: ParseException) {
-                            e.printStackTrace()
-                        }
-                    }
-                    adapter.notifyDataSetChanged()
-                    // adapter.updateList(eventsList)
-                })
-            }
-        })
 
 
 
         view.add_event_to_calendar.setOnClickListener {
             activity?.let{
                 val intent = Intent(it, AddingEventActivity::class.java)
-                intent.putExtra("selected_date_millis", selectedDatel)
+                val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
+
+                var selectedDatenewinmilis = sdf.parse(selectedDatenew.toString()+" 12:00")?.time
+                intent.putExtra("selected_date", selectedDatenewinmilis)
                 it.startActivity(intent)
             }
         }
@@ -183,6 +126,93 @@ class CalendarFragment : Fragment() {
 
         return view
     }
+
+    private fun monthYearFromDate(date: LocalDate?): String {
+        val formatter = DateTimeFormatter.ofPattern("MMMM yyyy")
+        return date!!.format(formatter)
+    }
+
+
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    override fun onItemClick(position: Int, dayText: String?) {
+        if (dayText != "") {
+            val message = "Selected Date " + dayText + " " + monthYearFromDate(selectedDatenew)
+            selectedDatenew = selectedDatenew?.withDayOfMonth(dayText!!.toInt())
+            val yearMonth = YearMonth.from(selectedDatenew)
+            var isNull = eventsListAll.filter {it.startDate.substring(0,7) ==yearMonth.toString() && it.startDate.substring(8,10).trimStart('0')== dayText}.toMutableList()
+            if (!isNull.isNullOrEmpty()) {
+                adapter.updateList(isNull)
+            }
+
+            else
+            {
+                adapter.updateList(mutableListOf<com.example.planer.entities.Calendar>())
+            }
+        }
+        setMonthView()
+    }
+    @RequiresApi(Build.VERSION_CODES.O)
+
+    override fun onLongItemClick(position: Int, dayText: String?){
+        activity?.let{
+            val intent = Intent(it, AddingEventActivity::class.java)
+            val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
+
+            var selectedDatenewinmilis = sdf.parse(selectedDatenew!!.withDayOfMonth(dayText!!.toInt()).toString()+" 12:00")?.time
+            intent.putExtra("selected_date", selectedDatenewinmilis)
+            it.startActivity(intent)
+        }
+    }
+
+
+    private fun initWidgets(view : View) {
+        calendarRecyclerView = view.findViewById<RecyclerView>(R.id.calendarRecyclerView)
+        monthYearText = view.findViewById<TextView>(R.id.monthYearTV)
+    }
+
+    private fun setMonthView() {
+
+        val calendar = java.util.Calendar.getInstance()
+        calendar.set(java.util.Calendar.MONTH, selectedDatenew!!.monthValue-1)
+
+        val sdf = SimpleDateFormat("LLLL", Locale("pl"))
+        val monthName = sdf.format(calendar.time)
+
+        monthYearText?.text = monthName + " "+ selectedDatenew!!.year.toString()
+        val daysInMonth = daysInMonthArray(selectedDatenew)
+        val yearMonth = YearMonth.from(selectedDatenew)
+
+        eventsOfMonthList = eventsListAll.filter {it.startDate.substring(0,7) ==yearMonth.toString()}.toMutableList()
+
+
+
+        val calendarAdapter = CalendarAdapter(daysInMonth, selectedDatenew.toString(), eventsOfMonthList,this, this)
+        val layoutManager: RecyclerView.LayoutManager = GridLayoutManager(requireContext(), 7)
+        calendarRecyclerView!!.layoutManager = layoutManager
+        calendarRecyclerView!!.adapter = calendarAdapter
+    }
+
+    private fun daysInMonthArray(date: LocalDate?): ArrayList<String> {
+        val daysInMonthArray = ArrayList<String>()
+        val yearMonth = YearMonth.from(date)
+        val daysInMonth = yearMonth.lengthOfMonth()
+        val firstOfMonth = selectedDatenew!!.withDayOfMonth(1)
+        val dayOfWeek = firstOfMonth.dayOfWeek.value-1
+        for (i in 1..42) {
+            if (i <= dayOfWeek || i > daysInMonth + dayOfWeek) {
+                daysInMonthArray.add("")
+            } else {
+                daysInMonthArray.add((i - dayOfWeek).toString())
+            }
+        }
+
+
+
+        return daysInMonthArray
+    }
+
+
 
 }
 

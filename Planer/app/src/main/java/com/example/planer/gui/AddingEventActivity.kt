@@ -53,7 +53,7 @@ class   AddingEventActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
-        val selectedDateMillis = intent.getLongExtra("selected_date_millis", 0L) // 0L is the default value if the key is not found
+        val selectedDateMillis = intent.getLongExtra("selected_date", 0L) // 0L is the default value if the key is not found
         val selectedDate = Date(selectedDateMillis) // create a Date object from the selected date in milliseconds
         val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
         val selectedDateString = dateFormat.format(selectedDate)

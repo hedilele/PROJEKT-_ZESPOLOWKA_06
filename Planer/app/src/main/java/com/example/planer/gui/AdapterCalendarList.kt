@@ -8,35 +8,26 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.view.menu.ActionMenuItemView
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.cardview.widget.CardView
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.planer.R
-import com.example.planer.databinding.SingleEventBinding
-import com.example.planer.databinding.SingleTaskBinding
 import com.example.planer.entities.Calendar
-import com.example.planer.entities.Tasks
 import kotlinx.android.synthetic.main.single_event.view.*
 
-import kotlinx.coroutines.NonDisposableHandle.parent
-import kotlinx.coroutines.currentCoroutineContext
 import java.text.SimpleDateFormat
 import java.util.*
 
 
-class AdapterCalendar (
+class AdapterCalendarList (
     var list: MutableList<Calendar>,
     var list2: MutableList<Calendar>,
     private val updateListener: (calendar:Calendar) -> Unit,
     private val deleteListener: (id: Long) -> Unit,
-) : RecyclerView.Adapter<AdapterCalendar.ViewHolder>() {
+) : RecyclerView.Adapter<AdapterCalendarList.ViewHolder>() {
 
 
     class ViewHolder(itemView: CardView) : RecyclerView.ViewHolder(itemView) {
