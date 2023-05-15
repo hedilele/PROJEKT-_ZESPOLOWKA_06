@@ -2,10 +2,8 @@ package com.example.planer
 
 import android.app.AlarmManager
 import android.app.PendingIntent
-import android.app.Service
 import android.content.Context
 import android.content.Intent
-import android.os.IBinder
 import java.text.SimpleDateFormat
 import java.util.*
 /**
@@ -15,34 +13,52 @@ import java.util.*
 class NotificationHelper(private val context: Context)
 {
     private val alarmManager: AlarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-
-    fun scheduleNotification(deadline: String, taskId: Int, taskName: String)
+    fun scheduleNotification(startDate: String, calendarId: Long,reminder: Int, name: String)
     {
         val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
-        val deadlineDate = dateFormat.parse(deadline)
+        val deadlineDate = dateFormat.parse(startDate)
 
         if(deadlineDate != null)
         {
-            val currentTime = System.currentTimeMillis()
+            var currentTime = System.currentTimeMillis()
             val oneHourBeforeDeadline = deadlineDate.time - (60*60*1000) // odejmuje godzinie w milisekundach
 
-            if(deadlineDate.time > currentTime && deadlineDate.time > oneHourBeforeDeadline)
+            if(deadlineDate.time > currentTime) // && deadlineDate.time > oneHourBeforeDeadline
             {
                 val timeDiff = deadlineDate.time - currentTime
-                val oneHourInMillis = 60 * 60 * 1000
+                //val oneHourInMillis = 60 * 60 * 1000
+                var timeInMillis = 0
+                if(reminder == 0)
+                {
+                    return
+                }
+                else if(reminder == 1)
+                {
+                    timeInMillis = 15 * 60 * 1000
+                }
+                else if(reminder == 2)
+                {
+                    timeInMillis = 60 * 60 * 1000
+                }
+                else if(reminder == 3)
+                {
+                    timeInMillis = 24 * 60 * 60 * 1000
+                }
 
-                if(timeDiff >= oneHourInMillis)
+                if(timeDiff >= timeInMillis)
                 {
                     val notificationIntent = Intent(context, NotificationReceiver::class.java)
-                    notificationIntent.putExtra("taskId", taskId)
-                    notificationIntent.putExtra("taskName", taskName)
+                    notificationIntent.putExtra("calendarId", calendarId)
+                    notificationIntent.putExtra("name", name)
 
+                    //Do wysylania powiadomien
                     val pendingIntent = PendingIntent.getBroadcast(
                         context,
-                        taskId,
+                        calendarId.toInt(),
                         notificationIntent,
                         PendingIntent.FLAG_IMMUTABLE)
-                    alarmManager.set(AlarmManager.RTC_WAKEUP, deadlineDate.time - oneHourInMillis, pendingIntent)
+                    alarmManager.set(AlarmManager.RTC_WAKEUP, deadlineDate.time - timeInMillis, pendingIntent)
+
                 }
             }
         }

@@ -20,9 +20,11 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.widget.ViewPager2
+import com.example.planer.ViewModel.CalendarViewModel
 import com.example.planer.ViewModel.NoteViewModel
 import com.example.planer.ViewModel.TaskViewModel
 import com.example.planer.databinding.ActivityMainBinding
+import com.example.planer.entities.Calendar
 import com.example.planer.entities.Notes
 import com.example.planer.entities.Tasks
 import com.example.planer.gui.ViewPager2Adapter
@@ -44,6 +46,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var noteViewModel: NoteViewModel
     private lateinit var taskViewModel: TaskViewModel
+    private lateinit var calendarViewModel: CalendarViewModel
 
     lateinit var toggle: ActionBarDrawerToggle
 
@@ -67,10 +70,10 @@ class MainActivity : AppCompatActivity() {
 
         setContentView(binding.root)
         //DO POWIADOMIEŃ
-        taskViewModel = ViewModelProvider(this)[TaskViewModel::class.java]
+        calendarViewModel = ViewModelProvider(this)[CalendarViewModel::class.java]
 
-        taskViewModel.readAllData.observe(this) { tasks ->
-            scheduleNotifications(tasks)
+        calendarViewModel.getAll.observe(this) { calendars ->
+            scheduleNotifications(calendars)
         }
         val intent = Intent(applicationContext, NotificationService::class.java)
         startService(intent)
@@ -264,22 +267,22 @@ class MainActivity : AppCompatActivity() {
     }
 
     //Metody do pobierania powiadomien
-    private fun scheduleNotifications(tasks: List<Tasks>)
+    private fun scheduleNotifications(calendars: List<Calendar>) //tasks: List<Tasks>
     {
         // Sprawdzenie, czy lista zadań nie jest pusta
-        if(!tasks.isNullOrEmpty())
+        if(!calendars.isNullOrEmpty())
         {
-            for(task in tasks)
+            for(calendar in calendars)
             {
-                scheduleNotification(task.deadline, task.id, task.title)
+                scheduleNotification(calendar.startDate,calendar.id,calendar.reminder,calendar.name) //task.deadline, task.id, task.title
             }
         }
     }
 
-    private fun scheduleNotification(deadline: String, taskId: Int, taskName: String)
+    private fun scheduleNotification(startDate: String, calendarId: Long, reminder: Int,name: String)
     {
         val notificationHelper = NotificationHelper(this)
-        notificationHelper.scheduleNotification(deadline, taskId, taskName)
+        notificationHelper.scheduleNotification(startDate, calendarId,reminder, name)
     }
 }
 

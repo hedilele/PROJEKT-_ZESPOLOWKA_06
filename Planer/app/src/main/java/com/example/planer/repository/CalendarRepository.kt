@@ -2,14 +2,26 @@ package com.example.planer.repository
 
 import androidx.lifecycle.LiveData
 import com.example.planer.DAOs.CalendarDAO
+import com.example.planer.NotificationHelper
 import com.example.planer.entities.Calendar
 import com.example.planer.entities.Notes
+import com.example.planer.entities.Tasks
 
 
-class CalendarRepository(private val calendarDAO: CalendarDAO)
+class CalendarRepository(private val calendarDAO: CalendarDAO,private val notificationHelper: NotificationHelper)
 {
 
-    val getAll: LiveData<List<Calendar>> = calendarDAO.getAllDates()
+    //val getAll: LiveData<List<Calendar>> = calendarDAO.getAllDates()
+    fun readAllData() : LiveData<List<Calendar>>
+    {
+        val readAllData: LiveData<List<Calendar>> = calendarDAO.getAllDates()
+        // Dodaj poniższy kod
+        readAllData.value?.forEach { calendar ->
+            notificationHelper.scheduleNotification(calendar.startDate, calendar.id,calendar.reminder,calendar.name)
+        }
+
+        return readAllData
+    }
     //Dodawanie daty do kalendarza
     suspend fun addCalendarDate(calendar: Calendar)
     {

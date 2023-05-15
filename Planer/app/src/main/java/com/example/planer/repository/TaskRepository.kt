@@ -16,7 +16,7 @@ class TaskRepository(private val tasksDAO: TasksDAO,private val notificationHelp
         val readAllData: LiveData<List<Tasks>> = tasksDAO.readAllData()
         // Dodaj poniższy kod
         readAllData.value?.forEach { task ->
-            notificationHelper.scheduleNotification(task.deadline, task.id, task.title)
+            //notificationHelper.scheduleNotification(task.deadline, task.id, task.title)
         }
 
         return readAllData

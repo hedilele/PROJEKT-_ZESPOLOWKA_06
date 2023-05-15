@@ -5,7 +5,7 @@ import android.content.Intent
 import android.os.IBinder
 
 /**
- * Klasa odpowiedzialna za wysylanie powiadomien o taskach po zamknieciu aplikacji
+ * Klasa odpowiedzialna za wysylanie powiadomien o wydarzeniach z kalendarza po zamknieciu aplikacji
  */
 class NotificationService: Service()
 {
@@ -21,12 +21,13 @@ class NotificationService: Service()
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        val taskId = intent?.getIntExtra("taskId", -1)
-        val taskName = intent?.getStringExtra("taskName")
-        val deadline = intent?.getStringExtra("deadline")
+        val calendarId = intent?.getLongExtra("calendarId", -1)
+        val name = intent?.getStringExtra("name")
+        val startDate = intent?.getStringExtra("startDate")
+        val reminder = intent?.getIntExtra("reminder", 0)
 
-        if (taskId != null && taskId != -1 && taskName != null && deadline != null) {
-            notificationHelper.scheduleNotification(deadline, taskId, taskName)
+        if (calendarId != null && calendarId.toInt() != -1 && name != null && startDate != null && reminder != null) {
+            notificationHelper.scheduleNotification(startDate, calendarId,reminder, name) //reminder,
         }
         return START_STICKY
     }

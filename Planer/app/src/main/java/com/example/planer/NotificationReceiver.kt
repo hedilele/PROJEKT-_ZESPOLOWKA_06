@@ -10,14 +10,14 @@ import android.net.Uri
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
+
 //Klasa odbiorcy - odbieranie i wysweitlanie powiadomien
 class NotificationReceiver: BroadcastReceiver()
 {
     override fun onReceive(p0: Context, p1: Intent)
     {
-        val taskId = p1.getIntExtra("taskId", -1)
-        //val taskName = p1.getStringExtra("taskName")
-        val taskName = p1.getStringExtra("taskName")
+        val calendarId = p1.getLongExtra("calendarId", -1)
+        val name = p1.getStringExtra("name")
 
         val notificationManager = ContextCompat.getSystemService(
             p0,
@@ -34,19 +34,29 @@ class NotificationReceiver: BroadcastReceiver()
             )
             notificationManager.createNotificationChannel(channel)
         }
+    /*
+    val openAppIntent = Intent(p0, MainActivity::class.java)
+    openAppIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+    val openIntent = PendingIntent.getActivity(
+        p0,
+        taskId,
+        openAppIntent,
+        PendingIntent.FLAG_UPDATE_CURRENT
+    )
+     */
 
-        val notification = buildNotification(p0, taskName ?: "")
-        notificationManager.notify(taskId, notification)
+    val notification = buildNotification(p0, name ?: "")
+    notificationManager.notify(calendarId.toInt(), notification)
+}
 
-    }
-
-    private fun buildNotification(context: Context, taskName: String): Notification {
-        return NotificationCompat.Builder(context, "default_channel_id")
-            .setContentTitle(taskName) // Ustawianie nazwy zadania jako tytułu powiadomienia
-            .setSmallIcon(R.drawable.ic_stat_whatshot)
-            .setSound(Uri.parse("android.resource://" + context.packageName + "/raw/notification_sound.mp3"))
-            .setVibrate(longArrayOf(0, 1000, 500, 1000))
-            .setAutoCancel(true)
-            .build()
+private fun buildNotification(context: Context, name: String): Notification {
+    return NotificationCompat.Builder(context, "default_channel_id")
+        .setContentTitle(name) // Ustawianie nazwy zadania jako tytułu powiadomienia
+        .setSmallIcon(R.drawable.ic_stat_whatshot)
+        .setSound(Uri.parse("android.resource://" + context.packageName + "/raw/notification_sound.mp3"))
+        .setVibrate(longArrayOf(0, 1000, 500, 1000))
+        .setAutoCancel(true)
+        .build()
+    //.setContentIntent(openIntent)
     }
 }

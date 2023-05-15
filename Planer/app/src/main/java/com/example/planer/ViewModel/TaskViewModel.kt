@@ -1,7 +1,6 @@
 package com.example.planer.ViewModel
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
@@ -24,6 +23,7 @@ class TaskViewModel(application: Application): AndroidViewModel(application)
     //To zawsze pierwsze bedzie sie wykonywalo kiedy callujemy UserViewModel
     init
     {
+        //Na razie nie cofam tego, bo moze jednak beda taski
         val taskDAO = AppDatabase.getDatabase(application).tasksDAO()
         val notesDAO = AppDatabase.getDatabase(application).notesDAO()
         repository = TaskRepository(taskDAO, notificationHelper)
@@ -31,7 +31,7 @@ class TaskViewModel(application: Application): AndroidViewModel(application)
         readAllData = repository.readAllData()
         readAllData.observeForever { tasks ->
             tasks?.forEach { task ->
-                notificationHelper.scheduleNotification(task.deadline, task.id, task.title)
+                //notificationHelper.scheduleNotification(task.deadline, task.id, task.title)
             }
         }
     }
