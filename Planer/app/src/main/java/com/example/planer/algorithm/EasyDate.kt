@@ -2,16 +2,12 @@ package com.example.planer.algorithm
 
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
-import java.util.Date
 
 /**
- * Klasa przechowuje daty jako inty
+ * Klasa przechowuje daty jako inty zakodowane według schematu: day + (month * 100) + (year * 10000)
  * Posiada wiele konstruktorów, aby dało się różne typy dat sprowadzić to obiektów tej klasy
  * @param date - data jako int
  */
-// TODO brakuje obsługi błędów i przykładów ekstremalnych
-//(day * 1000000) + (month * 10000) + year          11042023
-//day + (month * 100) + (year * 10000)    20230411
 class EasyDate {
 
     var date : Int = 0
@@ -25,10 +21,6 @@ class EasyDate {
 
     constructor(day : Int, month: Int, year : Int){
         date += (year * 10000) + (month * 100) + day
-    }
-
-    constructor(dateD : Date){
-
     }
 
     constructor(dateL : LocalDate){
@@ -162,7 +154,7 @@ class EasyDate {
             }
             if(flag == 1)
                 break
-        }while (flag == 0);
+        }while (flag == 0)
 
         return EasyDate(day, month, year)
     }
@@ -172,7 +164,7 @@ class EasyDate {
      *  Konwertuje na int za pomocą funkcji convert, która koduje datę następująco:
      *       rok + miesiąc*10000 + dzień*1000000
      */
-    //TODO uwzględnić jeszcze inne przypadki np z godziną
+
     fun convert(str: String): Int {
         var x = 0
         val day : Int

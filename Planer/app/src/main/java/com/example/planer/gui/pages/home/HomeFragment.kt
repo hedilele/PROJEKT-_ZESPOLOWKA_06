@@ -3,22 +3,18 @@ package com.example.planer.gui.pages.home
 import android.app.AlertDialog
 import android.content.res.ColorStateList
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.planer.R
 import com.example.planer.ViewModel.*
 import com.example.planer.algorithm.BlockListTask
-import com.example.planer.algorithm.IO
 import com.example.planer.databinding.FragmentHomeBinding
 import com.example.planer.entities.Habits
 import com.example.planer.entities.Notes
@@ -46,7 +42,6 @@ class HomeFragment : Fragment() {
 
     private val settingViewModel: SettingsViewModel by viewModels()
 
-    private lateinit var adapterhh: AdapterHabits
 
 
     // lista tasków do recyclerView
@@ -64,8 +59,8 @@ class HomeFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_home, container, false)
         binding = FragmentHomeBinding.inflate(layoutInflater)
-        userViewModel = ViewModelProvider(this).get(TaskViewModel::class.java)
-        noteViewModel = ViewModelProvider(this).get(NoteViewModel::class.java)
+        userViewModel = ViewModelProvider(this)[TaskViewModel::class.java]
+        noteViewModel = ViewModelProvider(this)[NoteViewModel::class.java]
 
         //TODO - podlaczanie taskow pod wyswietlanie
         /*
@@ -129,12 +124,12 @@ class HomeFragment : Fragment() {
 
 
         userViewModel = ViewModelProvider(this)[TaskViewModel::class.java]
-        userViewModel.readAllData.observe(viewLifecycleOwner, Observer { tasks ->
-            settingViewModel.getHours().observe(viewLifecycleOwner, Observer { h ->
-                settingViewModel.getExcludedDates().observe(viewLifecycleOwner, Observer {exDates ->
-                    var hours : Int?
+        userViewModel.readAllData.observe(viewLifecycleOwner) { tasks ->
+            settingViewModel.getHours().observe(viewLifecycleOwner) { h ->
+                settingViewModel.getExcludedDates().observe(viewLifecycleOwner) { exDates ->
+                    var hours: Int?
                     hours = h
-                    if(hours == null)
+                    if (hours == null)
                         hours = 5
                     val blockListTask = BlockListTask(tasks, requireContext(), hours, exDates)
                     blockListTask.planner()
@@ -143,33 +138,32 @@ class HomeFragment : Fragment() {
                     adapter3.updateList(blockListTask.weekList)
                     adapter4.updateList(blockListTask.monthList)
                     adapter5.updateList(blockListTask.restList)
-                    Log.d("h", "godziny: $h")
 
                     checkIfEmpty(adapter2.list, adapter3.list, adapter4.list, adapter5.list, view)
 
-                    hideRestOftasks(0,  view)
-                })
-            })
-        })
+                    hideRestOftasks(0, view)
+                }
+            }
+        }
 
         noteViewModel = ViewModelProvider(this)[NoteViewModel::class.java]
-        noteViewModel.readAllData.observe(viewLifecycleOwner, Observer {
+        noteViewModel.readAllData.observe(viewLifecycleOwner) {
             adapter.updateListOfNotes(it.toMutableList())
             adapter2.updateListOfNotes(it.toMutableList())
             adapter3.updateListOfNotes(it.toMutableList())
             adapter4.updateListOfNotes(it.toMutableList())
             adapter5.updateListOfNotes(it.toMutableList())
-        })
+        }
 
 
         typeViewModel = ViewModelProvider(this)[TypeViewModel::class.java]
-        typeViewModel.readAllData.observe(viewLifecycleOwner, Observer {
+        typeViewModel.readAllData.observe(viewLifecycleOwner) {
             adapter.updateListOfTypes(it.toMutableList())
             adapter2.updateListOfTypes(it.toMutableList())
             adapter3.updateListOfTypes(it.toMutableList())
             adapter4.updateListOfTypes(it.toMutableList())
             adapter5.updateListOfTypes(it.toMutableList())
-        })
+        }
 
 
         //hideRestOftasks(0,  view)
@@ -225,7 +219,7 @@ class HomeFragment : Fragment() {
 
         // HABITS
 
-        habitViewModel.lastAccessDate.observe(viewLifecycleOwner, Observer {
+        habitViewModel.lastAccessDate.observe(viewLifecycleOwner) {
             if (it == null) {
                 habitViewModel.createLastAccess()
                 habitViewModel.activateHabits()
@@ -233,7 +227,7 @@ class HomeFragment : Fragment() {
                 habitViewModel.activateHabits()
                 habitViewModel.updateLastAccessDate()
             }
-        })
+        }
 
         val rvh = view.habits_list
         val adapterhh = AdapterHabits(
@@ -251,11 +245,11 @@ class HomeFragment : Fragment() {
 
 
         //habitViewModel = ViewModelProvider(this)[HabitViewModel::class.java]
-        habitViewModel.readAllData.observe(viewLifecycleOwner, Observer {
+        habitViewModel.readAllData.observe(viewLifecycleOwner) {
             //val io = IO()
             //adapterhh.updateList(io.filterHabits(requireContext(), it.toMutableList()))
             adapterhh.updateList(it.toMutableList())
-        })
+        }
 
 
         //Toast.makeText(requireContext(), listHab.size.toString(), Toast.LENGTH_SHORT).show()
@@ -339,7 +333,7 @@ class HomeFragment : Fragment() {
             //tomorrow
             1 -> {
                 if(view?.today_task_list?.visibility == View.VISIBLE)
-                    view?.today_task_list?.visibility = View.GONE
+                    view.today_task_list?.visibility = View.GONE
                     view?.tomorrow_task_list?.visibility = View.VISIBLE
                 if(view?.week_task_list?.visibility == View.VISIBLE)
                     view.week_task_list?.visibility = View.GONE
@@ -353,7 +347,7 @@ class HomeFragment : Fragment() {
             2 -> {
 
                 if(view?.today_task_list?.visibility == View.VISIBLE)
-                    view?.today_task_list?.visibility = View.GONE
+                    view.today_task_list?.visibility = View.GONE
                 if(view?.tomorrow_task_list?.visibility == View.VISIBLE)
                     view.tomorrow_task_list?.visibility = View.GONE
                 view?.week_task_list?.visibility = View.VISIBLE
@@ -368,7 +362,7 @@ class HomeFragment : Fragment() {
             //month
              3-> {
                  if(view?.today_task_list?.visibility == View.VISIBLE)
-                     view?.today_task_list?.visibility = View.GONE
+                     view.today_task_list?.visibility = View.GONE
                  if(view?.tomorrow_task_list?.visibility == View.VISIBLE)
                      view.tomorrow_task_list?.visibility = View.GONE
                  if(view?.week_task_list?.visibility == View.VISIBLE)
@@ -381,7 +375,7 @@ class HomeFragment : Fragment() {
             //rest
             4 -> {
                 if(view?.today_task_list?.visibility == View.VISIBLE)
-                    view?.today_task_list?.visibility = View.GONE
+                    view.today_task_list?.visibility = View.GONE
                 if(view?.tomorrow_task_list?.visibility == View.VISIBLE)
                     view.tomorrow_task_list?.visibility = View.GONE
                 if(view?.week_task_list?.visibility == View.VISIBLE)

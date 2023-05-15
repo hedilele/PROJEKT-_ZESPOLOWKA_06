@@ -1,17 +1,20 @@
 package com.example.planer.algorithm
 
-import android.util.Log
 import android.content.Context
-import com.example.planer.entities.Habits
 import java.io.File
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
+/**
+ * Klasa odpowiedzialna za mechanizm odhaczania tasków.
+ * Posługuje się plikiem w tym celu.
+ */
+
 class IO {
 
-    //jeżeli data w pliku jest inna od dzisiejszej, to odświeża dane w pliku
-    //w każdym przypadku na końcu zwraca liczbę godzin do przepracowania dziś
-    /*
+    /**jeżeli data w pliku jest inna od dzisiejszej, to odświeża dane w pliku
+    w każdym przypadku na końcu zwraca liczbę godzin do przepracowania dziś
+
     5min 10min 30min 1h 2h 2h+ 3h 4h 5h 6h 7h 8h
        1	2    6    12 24 30 36 48 60 72 84 96
      */
@@ -25,13 +28,11 @@ class IO {
 
 
         val isCreated = file.createNewFile()
-        //plik zostal w tej chwili utworzony
         if(isCreated){
             file.appendText(today)
             file.appendText("\n$work")
             file.appendText("\n$work")
         }
-        //plik juz istnial
         else{
             var data = file.readLines()
             if(data.size < 3){
@@ -42,23 +43,19 @@ class IO {
 
             data = file.readLines()
 
-            //jeżeli mamy nowy dzień
             if(data[0] != today){
                 file.writeText(today)
                 file.appendText("\n$work")
                 file.appendText("\n$work")
             }
-            //jeżeli w pliku nie ma linii z zapamiętanym limitem
             else if(data[2].toInt() != work){
                 file.writeText(today)
                 val done = data[1].toInt()
-                //jeżeli się dzisiaj narobiliśmy
                 if(done <= work) {
                     file.appendText("\n$done")
                     file.appendText("\n$work")
                     work = done
                 }
-                //jeżeli nowy limit godzin jest mniejszy od starego i dzisiejszej roboty
                 else {
                     file.appendText("\n$work")
                     file.appendText("\n$work")
@@ -71,7 +68,9 @@ class IO {
         return work
     }
 
-    //zmniejsza liczbe godzin do przepracowania w pliku
+    /**
+     * zmniejsza liczbe godzin do przepracowania w pliku
+     */
     fun updateWork(context: Context, workTime: Int){
         val name = "data.txt"
         val path = context.filesDir

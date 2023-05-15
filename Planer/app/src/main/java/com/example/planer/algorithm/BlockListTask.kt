@@ -1,7 +1,6 @@
 package com.example.planer.algorithm
 
 import android.content.Context
-import android.util.Log
 import com.example.planer.entities.ExcludedDate
 import com.example.planer.entities.Tasks
 import java.time.LocalDate
@@ -626,6 +625,9 @@ class BlockListTask (
         restList.reverse()
     }
 
+    /**
+    Prywatna funkcja do zamiany numeru na jednostkę czasową
+     */
     private fun numToH(number : Int) : Int{
         var hours = 60
         when (number) {

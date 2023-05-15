@@ -30,9 +30,6 @@ import com.example.planer.gui.callBacks.NoteDiffCallback
 import com.example.planer.gui.callBacks.TaskDiffCallback
 import com.example.planer.gui.callBacks.TypeDiffCallback
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.activity_adding_task.view.*
-import kotlinx.android.synthetic.main.dialog_task_info.view.*
-import kotlinx.android.synthetic.main.fragment_home.view.*
 import kotlinx.android.synthetic.main.single_task.view.*
 import kotlinx.android.synthetic.main.single_task.view.task_title
 import java.util.*
@@ -120,6 +117,7 @@ class AdapterTasks(
             else
             holder.itemView.done.setColorFilter(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_off), PorterDuff.Mode.SRC_ATOP)
 
+            //miejsce, w którym odhaczanie zadań jest zapamiętywane
             Handler().postDelayed({
                 if(clicked == 0)
                 {
