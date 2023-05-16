@@ -32,6 +32,9 @@ import com.example.planer.gui.callBacks.TypeDiffCallback
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.single_task.view.*
 import kotlinx.android.synthetic.main.single_task.view.task_title
+import java.text.SimpleDateFormat
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 // klasa odpowiedzialna za umieszczanie pojedynczych tasków w recyclerView
@@ -56,7 +59,6 @@ class AdapterTasks(
     }
 
     // ustawianie wyglądu i zachowań tasków
-    @SuppressLint("ResourceAsColor", "SuspiciousIndentation")
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = list[position]
@@ -73,12 +75,40 @@ class AdapterTasks(
         // 0123456789012345
         // yyyy-mm-dd hh:mm
 
-        val dateTmp = item.deadline.substring(8, 10) + '.' +
-                item.deadline.substring(5, 7) + '.' +
-                item.deadline.substring(0, 4) +' ' +
-                item.deadline.substring(11)
 
-        holder.itemView.task_date.text = dateTmp
+        fun compareDates(date1: String, date2: String): Int     // d1==d2 -> 0  ; d1>d2 -> 1
+        {
+            val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
+            val dateTime1 = dateFormat.parse(date1.replace("e", ""))
+            val dateTime2 = dateFormat.parse(date2.replace("e", ""))
+
+            return dateTime1.compareTo(dateTime2)
+        }
+
+
+
+        val currentDateTime = LocalDateTime.now()
+        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
+
+        if(compareDates(currentDateTime.format(formatter), item.deadline) > 0)
+        {
+            val dateTmp = item.deadline.substring(8, 10) + '.' +
+                    item.deadline.substring(5, 7) + '.' +
+                    item.deadline.substring(0, 4) +' ' +
+                    item.deadline.substring(11) + "  ⚠"
+
+            holder.itemView.task_date.text = dateTmp
+        }
+        else
+        {
+            val dateTmp = item.deadline.substring(8, 10) + '.' +
+                    item.deadline.substring(5, 7) + '.' +
+                    item.deadline.substring(0, 4) +' ' +
+                    item.deadline.substring(11)
+
+            holder.itemView.task_date.text = dateTmp
+        }
+
 
 
         val drawable = holder.itemView.task_layout.background as GradientDrawable
