@@ -12,6 +12,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.lifecycle.ViewModelProvider
+import com.aminography.primecalendar.PrimeCalendar
+import com.aminography.primecalendar.civil.CivilCalendar
+import com.aminography.primedatepicker.picker.PrimeDatePicker
+import com.aminography.primedatepicker.picker.callback.MultipleDaysPickCallback
+import com.aminography.primedatepicker.picker.callback.SingleDayPickCallback
 import com.example.planer.MainActivity
 import com.example.planer.R
 import com.example.planer.ViewModel.TaskViewModel
@@ -20,6 +25,8 @@ import com.example.planer.entities.Notes
 
 import com.example.planer.entities.Tasks
 import kotlinx.android.synthetic.main.dialod_when_title_empty.view.*
+import java.time.LocalDate
+import java.time.ZoneId
 import java.util.*
 
 
@@ -30,11 +37,14 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var binding: ActivityAddingTaskBinding
     private lateinit var taskViewModel: TaskViewModel
 
+    // Lista dat w których task ma być powtarzany
+    private var markedDatePickerList: MutableList<PrimeCalendar> = mutableListOf()
+
 
     // zmienne do stworzenia nowego tasku
     var important: Int = 0
     var urgent: Int = 0
-    var type: Int = 0
+    var type: Int? = null
     var duration: Int = 1
     var periodicity: Int = 0
     var note_txt: Int = 0
@@ -44,6 +54,8 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
 
 
     //calendar - pobranie aktualnego czasu
+    private val primeCalendar = CivilCalendar(TimeZone.getDefault(), Locale("pl", "PL"))
+
     val calendar = Calendar.getInstance()
     val today_year = calendar.get(Calendar.YEAR)
     val today_month = calendar.get(Calendar.MONTH)
@@ -59,7 +71,8 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE)
         window.setFlags(
             WindowManager.LayoutParams.FLAG_FULLSCREEN,
-            WindowManager.LayoutParams.FLAG_FULLSCREEN)
+            WindowManager.LayoutParams.FLAG_FULLSCREEN
+        )
 
         window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
 
@@ -126,7 +139,8 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
             R.id.duration1 -> {
                 uncheckDuration()
                 //binding.duration1.setColorFilter(getResources().getColor(R.color.hard_red));
-                binding.duration1.getBackground().setTint((getResources().getColor(R.color.brown_important_urgent_on)))
+                binding.duration1.getBackground()
+                    .setTint((getResources().getColor(R.color.brown_important_urgent_on)))
 
                 duration = 1
             }
@@ -134,14 +148,14 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
             R.id.duration2 -> {
                 uncheckDuration()
 
-                if(duration == 2)
-                {
+                if (duration == 2) {
                     //binding.duration2.setColorFilter(getResources().getColor(R.color.hard_red));
-                    binding.duration1.getBackground().setTint((getResources().getColor(R.color.brown_important_urgent_on)))
+                    binding.duration1.getBackground()
+                        .setTint((getResources().getColor(R.color.brown_important_urgent_on)))
                     duration = 1
-                }
-                else{
-                    binding.duration2.getBackground().setTint((getResources().getColor(R.color.brown_important_urgent_on)))
+                } else {
+                    binding.duration2.getBackground()
+                        .setTint((getResources().getColor(R.color.brown_important_urgent_on)))
                     duration = 2
                 }
 
@@ -150,14 +164,14 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
 
             R.id.duration3 -> {
                 uncheckDuration()
-                if(duration == 6)
-                {
+                if (duration == 6) {
                     //binding.duration2.setColorFilter(getResources().getColor(R.color.hard_red));
-                    binding.duration1.getBackground().setTint((getResources().getColor(R.color.brown_important_urgent_on)))
+                    binding.duration1.getBackground()
+                        .setTint((getResources().getColor(R.color.brown_important_urgent_on)))
                     duration = 1
-                }
-                else{
-                    binding.duration3.getBackground().setTint((getResources().getColor(R.color.brown_important_urgent_on)))
+                } else {
+                    binding.duration3.getBackground()
+                        .setTint((getResources().getColor(R.color.brown_important_urgent_on)))
                     duration = 6
                 }
 
@@ -166,14 +180,14 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
             R.id.duration4 -> {
                 uncheckDuration()
 
-                if(duration == 12)
-                {
+                if (duration == 12) {
                     //binding.duration2.setColorFilter(getResources().getColor(R.color.hard_red));
-                    binding.duration1.getBackground().setTint((getResources().getColor(R.color.brown_important_urgent_on)))
+                    binding.duration1.getBackground()
+                        .setTint((getResources().getColor(R.color.brown_important_urgent_on)))
                     duration = 1
-                }
-                else{
-                    binding.duration4.getBackground().setTint((getResources().getColor(R.color.brown_important_urgent_on)))
+                } else {
+                    binding.duration4.getBackground()
+                        .setTint((getResources().getColor(R.color.brown_important_urgent_on)))
                     duration = 12
                 }
 
@@ -181,55 +195,58 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
 
             R.id.duration5 -> {
                 uncheckDuration()
-                if(duration == 24)
-                {
+                if (duration == 24) {
                     //binding.duration2.setColorFilter(getResources().getColor(R.color.hard_red));
-                    binding.duration1.getBackground().setTint((getResources().getColor(R.color.brown_important_urgent_on)))
+                    binding.duration1.getBackground()
+                        .setTint((getResources().getColor(R.color.brown_important_urgent_on)))
                     duration = 1
-                }
-                else{
-                    binding.duration5.getBackground().setTint((getResources().getColor(R.color.brown_important_urgent_on)))
+                } else {
+                    binding.duration5.getBackground()
+                        .setTint((getResources().getColor(R.color.brown_important_urgent_on)))
                     duration = 24
                 }
             }
 
             R.id.duration6 -> {
                 uncheckDuration()
-                if(duration == 30)
-                {
+                if (duration == 30) {
                     //binding.duration2.setColorFilter(getResources().getColor(R.color.hard_red));
-                    binding.duration1.getBackground().setTint((getResources().getColor(R.color.brown_important_urgent_on)))
+                    binding.duration1.getBackground()
+                        .setTint((getResources().getColor(R.color.brown_important_urgent_on)))
                     duration = 1
-                }
-                else{
-                    binding.duration6.getBackground().setTint((getResources().getColor(R.color.brown_important_urgent_on)))
+                } else {
+                    binding.duration6.getBackground()
+                        .setTint((getResources().getColor(R.color.brown_important_urgent_on)))
                     duration = 30
                 }
             }
 
 
-
             R.id.type1 -> {
                 uncheckType()
-                binding.type1.getBackground().setTint((getResources().getColor(R.color.brown_important_urgent_on)))
+                binding.type1.getBackground()
+                    .setTint((getResources().getColor(R.color.brown_important_urgent_on)))
                 type = 1
             }
 
             R.id.type2 -> {
                 uncheckType()
-                binding.type2.getBackground().setTint((getResources().getColor(R.color.brown_important_urgent_on)))
+                binding.type2.getBackground()
+                    .setTint((getResources().getColor(R.color.brown_important_urgent_on)))
                 type = 2
             }
 
             R.id.type3 -> {
                 uncheckType()
-                binding.type3.getBackground().setTint((getResources().getColor(R.color.brown_important_urgent_on)))
+                binding.type3.getBackground()
+                    .setTint((getResources().getColor(R.color.brown_important_urgent_on)))
                 type = 3
             }
 
             R.id.type4 -> {
                 uncheckType()
-                binding.type4.getBackground().setTint((getResources().getColor(R.color.brown_important_urgent_on)))
+                binding.type4.getBackground()
+                    .setTint((getResources().getColor(R.color.brown_important_urgent_on)))
                 type = 4
             }
 
@@ -283,7 +300,11 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
                 // podłączenie się do bazy i dodanie do niej taska
                 taskViewModel = ViewModelProvider(this).get(TaskViewModel::class.java)
 
-                val date_final = setUpDate(day.toInt(),month.toInt()-1, year.toInt()) // + " " + setUpTime(hour.toInt(), minute.toInt())
+                val date_final = setUpDate(
+                    day.toInt(),
+                    month.toInt() - 1,
+                    year.toInt()
+                ) // + " " + setUpTime(hour.toInt(), minute.toInt())
                 chosenItems.add(date_final)
 
                 val chosenItemsTemp = chosenItems.distinct()
@@ -294,8 +315,18 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
 
                 }
 
-                if(binding.taskTitle.text.toString().replace(" ", "") == "")
-                {
+                // Lista dat w stringach razem z datą wybraną powyżej
+                val chosenDates: List<String> = markedDatePickerList.map {
+                    val dateString = it.getTime()
+                        .toInstant()
+                        .atZone(ZoneId.systemDefault())
+                        .toLocalDate()
+                        .toString()
+                    dateString
+                } + date_final
+
+
+                if (binding.taskTitle.text.toString().replace(" ", "") == "") {
                     val builder = AlertDialog.Builder(this)
                     val inflater = LayoutInflater.from(this)
                     val dialogView = inflater.inflate(R.layout.dialod_when_title_empty, null)
@@ -307,107 +338,35 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
                         alertDialog.cancel()
                     }
 
-                }
-                else
-                {
-                    if(chosenItems.size > 2)
-                    {
-                        if(specyficDate == 1)       //size>2 i specyficDate=1
-                        {
-                            for(i in 1..chosenItems.size-1)
-                            {
-                                taskViewModel.insertTaskWithNote(
-                                    Tasks(
-                                        title = binding.taskTitle.text.toString(),
-                                        importance = important,
-                                        /*TODO uwzględnienie pilności w bazie (nieobowiązkowe)*/
-                                        urgency = urgent,
-                                        deadline = chosenItems[i]+ " " + setUpTime(hour.toInt(), minute.toInt()),
-                                        timeToFinish = duration,
-                                        isActive = 1,   //aktywny
-                                        typeId = type,
-                                        noteId = 0,
-                                        //date = Calendar.getInstance().time //Ustawianie czasu na domyslny
-                                        date = chosenItems[i]+ " " + setUpTime(hour.toInt(), minute.toInt())
-                                    ),
-                                    Notes(noteTitle = binding.taskTitle.text.toString(), noteContent = binding.note.text.toString(), photo = null)
-                                )
-                            }
+                } else {
+                    for (date in chosenDates) {
+                        val deadline = "$date " + setUpTime(
+                            hour.toInt(),
+                            minute.toInt()
+                        )
+                        val executionDate = if (specyficDate == 1) deadline else null
 
-                        }
-                        else                        //size>2 i specyficDate=0
-                        {
-                            for(i in 1..chosenItems.size-1)
-                            {
-                                taskViewModel.insertTaskWithNote(
-                                    Tasks(
-                                        title = binding.taskTitle.text.toString(),
-                                        importance = important,
-                                        /*TODO uwzględnienie pilności w bazie (nieobowiązkowe)*/
-                                        urgency = urgent,
-                                        deadline = chosenItems[i] + " " + setUpTime(hour.toInt(), minute.toInt()),
-                                        timeToFinish = duration,
-                                        isActive = 1,   //aktywny
-                                        typeId = type,
-                                        noteId = 0,
-                                        //date = Calendar.getInstance().time //Ustawianie czasu na domyslny
-                                        date = null
-                                    ),
-                                    Notes(noteTitle = binding.taskTitle.text.toString(), noteContent = binding.note.text.toString(), photo = null)
-                                )
-                            }
-                        }
-
-                    }
-                    else
-                    {
-                        if(specyficDate == 1)       //size=2 i specyficDate=1
-                        {
-                            taskViewModel.insertTaskWithNote(
-                                Tasks(
-                                    title = binding.taskTitle.text.toString(),
-                                    importance = important,
-                                    /*TODO uwzględnienie pilności w bazie (nieobowiązkowe)*/
-                                    urgency = urgent,
-                                    deadline = chosenItems[1]+ " " + setUpTime(hour.toInt(), minute.toInt()),
-                                    timeToFinish = duration,
-                                    isActive = 1,   //aktywny
-                                    typeId = type,
-                                    noteId = 0,
-                                    //date = Calendar.getInstance().time //Ustawianie czasu na domyslny
-                                    date = chosenItems[1]+ " " + setUpTime(hour.toInt(), minute.toInt())
-                                ),
-                                Notes(noteTitle = binding.taskTitle.text.toString(), noteContent = binding.note.text.toString(), photo = null)
+                        taskViewModel.insertTaskWithNote(
+                            Tasks(
+                                title = binding.taskTitle.text.toString(),
+                                importance = important,
+                                urgency = urgent,
+                                deadline = deadline,
+                                timeToFinish = duration,
+                                isActive = 1,   //aktywny
+                                typeId = type,
+                                noteId = 0,
+                                date = executionDate
+                            ),
+                            Notes(
+                                noteTitle = binding.taskTitle.text.toString(),
+                                noteContent = binding.note.text.toString(),
+                                photo = null
                             )
-
-                        }
-                        else                        //size>2 i specyficDate=0
-                        {
-                            taskViewModel.insertTaskWithNote(
-                                Tasks(
-                                    title = binding.taskTitle.text.toString(),
-                                    importance = important,
-                                    /*TODO uwzględnienie pilności w bazie (nieobowiązkowe)*/
-                                    urgency = urgent,
-                                    deadline = chosenItems[1]+ " " + setUpTime(hour.toInt(), minute.toInt()),
-                                    timeToFinish = duration,
-                                    isActive = 1,   //aktywny
-                                    typeId = type,
-                                    noteId = 0,
-                                    //date = Calendar.getInstance().time //Ustawianie czasu na domyslny
-                                    date = null
-                                ),
-                                Notes(noteTitle = binding.taskTitle.text.toString(), noteContent = binding.note.text.toString(), photo = null)
-                            )
-
-                        }
+                        )
                     }
-
-
 
                     Toast.makeText(applicationContext, "record saved", Toast.LENGTH_SHORT).show()
-
-                    //startActivity(intent)
                     finish()
                 }
 
@@ -415,8 +374,6 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
             }
 
             R.id.btn_cancel -> {
-                val intent = Intent(this, MainActivity::class.java)
-                //startActivity(intent)
                 finish()
             }
 
@@ -451,27 +408,30 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
             }
 
 
-
             R.id.btn_deadline -> {
-                val dpd = DatePickerDialog(
-                    this,
-                    R.style.MyDatePickerStyle,
-                    DatePickerDialog.OnDateSetListener { view, sel_year, sel_month, sel_day ->
 
-                        date = setUpDate(sel_day, sel_month, sel_year)
-                        setDateBlocks(date)
+                val callback = SingleDayPickCallback { day ->
+                    val localDate: LocalDate = day.getTime()
+                        .toInstant()
+                        .atZone(ZoneId.systemDefault())
+                        .toLocalDate()
+                    setDateBlocks(localDate.toString())
+                }
 
-                    }, today_year, today_month, today_day
-                )
+                val datePicker = PrimeDatePicker.dialogWith(primeCalendar)
+                    .pickSingleDay(callback)
+                    .initiallyPickedSingleDay(primeCalendar)
+                    .minPossibleDate(primeCalendar)
+                    .build()
 
-                dpd.show()
+                datePicker.show(supportFragmentManager, "AddingTaskDatePicker")
             }
 
             R.id.btn_deadline_time -> {
-                var tpd = TimePickerDialog(
+                val tpd = TimePickerDialog(
                     this,
                     R.style.MyDatePickerStyle,
-                    TimePickerDialog.OnTimeSetListener { view, sel_hour, sel_minutes ->
+                    { _, sel_hour, sel_minutes ->
 
                         time = setUpTime(sel_hour, sel_minutes)
                         setTimeBlocks(time)
@@ -484,53 +444,31 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
 
             R.id.btn_periodicity -> {
 
-                val dpd = DatePickerDialog(
-                    this,
-                    R.style.MyDatePickerStyle,
-                    DatePickerDialog.OnDateSetListener { view, sel_year, sel_month, sel_day ->
-
-                        //date = setUpDate(sel_day, sel_month, sel_year)
-                        //setDateBlocks(date)
-                        date = setUpDate(sel_day, sel_month, sel_year)
-
-                        chosenItems.add(date)
-
-                        val chosenItemsTemp = chosenItems.distinct()
-
-                        if (chosenItems.size != chosenItemsTemp.size) {
-                            // List contains duplicates
-                            chosenItems.removeLast()
-
-                        }
-
-
-                    }, today_year, today_month, today_day
-                )
-
-                dpd.show()
-
-                val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, chosenItems)
-                binding.spinner.adapter = adapter
-                binding.spinner.setSelection(0)
-                binding.spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                    override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
-                        // remove the selected item from the spinner's adapter
-                        if(!adapter.getItem(position).equals("kliknij aby usunąć"))
-                        {
-                            adapter.remove(adapter.getItem(position))
-                            binding.spinner.setSelection(0)
-                            // notify the adapter that the data set has changed
-                            adapter.notifyDataSetChanged()
-                        }
-
-                    }
-
-                    override fun onNothingSelected(parent: AdapterView<*>) {
-                        binding.spinner.setSelection(0)
-                    }
+                val callback = MultipleDaysPickCallback { days ->
+                    markedDatePickerList = days
                 }
+
+                val datePicker = PrimeDatePicker.dialogWith(primeCalendar)
+                    .pickMultipleDays(callback)
+                    .initiallyPickedMultipleDays(markedDatePickerList)
+                    .minPossibleDate(primeCalendar)
+                    .build()
+
+                datePicker.show(supportFragmentManager, "AddingTaskRepeatPicker")
             }
         }
+    }
+
+    fun onClearRepeatsButtonClicked(view: View) {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Czy chcesz usunąć wszystkie wybrane dni?")
+        builder.setPositiveButton("Tak") { _, _ ->
+            markedDatePickerList.clear()
+        }
+        builder.setNegativeButton("Nie") { dialog, _ ->
+            dialog.dismiss()
+        }
+        builder.show()
     }
 
     // formatowanie daty
@@ -679,7 +617,8 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
         binding.important0.setBackgroundColor(getResources().getColor(R.color.brown_important_urgent_on))
         binding.urgent0.setBackgroundColor(getResources().getColor(R.color.brown_important_urgent_on))
 
-        binding.duration1.getBackground().setTint((getResources().getColor(R.color.brown_important_urgent_on)))
+        binding.duration1.getBackground()
+            .setTint((getResources().getColor(R.color.brown_important_urgent_on)))
 
 
         setOnEnterKey()
@@ -690,19 +629,23 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
     fun uncheckType() {
         when (type) {
             1 -> {
-                binding.type1.getBackground().setTint((getResources().getColor(R.color.brown_important_urgent_off)))
+                binding.type1.getBackground()
+                    .setTint((getResources().getColor(R.color.brown_important_urgent_off)))
             }
 
             2 -> {
-                binding.type2.getBackground().setTint((getResources().getColor(R.color.brown_important_urgent_off)))
+                binding.type2.getBackground()
+                    .setTint((getResources().getColor(R.color.brown_important_urgent_off)))
             }
 
             3 -> {
-                binding.type3.getBackground().setTint((getResources().getColor(R.color.brown_important_urgent_off)))
+                binding.type3.getBackground()
+                    .setTint((getResources().getColor(R.color.brown_important_urgent_off)))
             }
 
             4 -> {
-                binding.type4.getBackground().setTint((getResources().getColor(R.color.brown_important_urgent_off)))
+                binding.type4.getBackground()
+                    .setTint((getResources().getColor(R.color.brown_important_urgent_off)))
             }
         }
     }
@@ -710,28 +653,34 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
     fun uncheckDuration() {
         when (duration) {
             1 -> {
-                binding.duration1.getBackground().setTint((getResources().getColor(R.color.brown_important_urgent_off)))
+                binding.duration1.getBackground()
+                    .setTint((getResources().getColor(R.color.brown_important_urgent_off)))
             }
 
             2 -> {
-                binding.duration2.getBackground().setTint((getResources().getColor(R.color.brown_important_urgent_off)))
+                binding.duration2.getBackground()
+                    .setTint((getResources().getColor(R.color.brown_important_urgent_off)))
             }
 
             6 -> {
-                binding.duration3.getBackground().setTint((getResources().getColor(R.color.brown_important_urgent_off)))
+                binding.duration3.getBackground()
+                    .setTint((getResources().getColor(R.color.brown_important_urgent_off)))
             }
 
             12 -> {
-                binding.duration4.getBackground().setTint((getResources().getColor(R.color.brown_important_urgent_off)))
+                binding.duration4.getBackground()
+                    .setTint((getResources().getColor(R.color.brown_important_urgent_off)))
             }
 
             24 -> {
-                binding.duration5.getBackground().setTint((getResources().getColor(R.color.brown_important_urgent_off)))
+                binding.duration5.getBackground()
+                    .setTint((getResources().getColor(R.color.brown_important_urgent_off)))
 
             }
 
             30 -> {
-                binding.duration6.getBackground().setTint((getResources().getColor(R.color.brown_important_urgent_off)))
+                binding.duration6.getBackground()
+                    .setTint((getResources().getColor(R.color.brown_important_urgent_off)))
             }
         }
     }
@@ -783,7 +732,7 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
         binding.tvDeadlineM.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
             if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
                 binding.tvDeadlineM.clearFocus()
-               // binding.tvDeadlineY.requestFocus()
+                // binding.tvDeadlineY.requestFocus()
 
                 return@OnKeyListener true
             }
@@ -820,7 +769,6 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
         })
 
     }
-
 
 
     fun setOnFocusChange() {
@@ -906,7 +854,7 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
                         )
                         // 0123456789012345
                         // yyyy-mm-dd hh:mm
-                    //binding.tvDeadlineY.clearFocus()
+                        //binding.tvDeadlineY.clearFocus()
                     }
 
                 }
