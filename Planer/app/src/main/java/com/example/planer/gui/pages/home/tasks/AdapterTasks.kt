@@ -12,9 +12,7 @@ import android.transition.Slide
 import android.transition.Transition
 import android.transition.TransitionManager
 import android.view.*
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.cardview.widget.CardView
@@ -207,10 +205,13 @@ class AdapterTasks(
             val duration5 = dialogView.findViewById<TextView>(R.id.duration5)
             val duration6 = dialogView.findViewById<TextView>(R.id.duration6)
 
-            val type1 = dialogView.findViewById<TextView>(R.id.type1)
-            val type2 = dialogView.findViewById<TextView>(R.id.type2)
-            val type3 = dialogView.findViewById<TextView>(R.id.type3)
-            val type4 = dialogView.findViewById<TextView>(R.id.type4)
+//            val type1 = dialogView.findViewById<TextView>(R.id.type1)
+//            val type2 = dialogView.findViewById<TextView>(R.id.type2)
+//            val type3 = dialogView.findViewById<TextView>(R.id.type3)
+//            val type4 = dialogView.findViewById<TextView>(R.id.type4)
+
+            val type_spinner = dialogView.findViewById<Spinner>(R.id.type_spinner)
+
 
             val toThisDay = dialogView.findViewById<TextView>(R.id.to_this_day)
             val atThisDay = dialogView.findViewById<TextView>(R.id.at_this_day)
@@ -263,20 +264,40 @@ class AdapterTasks(
                 }
             }
 
+
+
+            var listOfTypes = mutableListOf<String>()
+            listOfTypes.add("Brak")
+            for(types in typesList) {
+                listOfTypes.add(types.name)
+            }
+
+            val adapter = ArrayAdapter(holder.itemView.context, android.R.layout.simple_spinner_dropdown_item, listOfTypes)
+            type_spinner.adapter = adapter
+            type_spinner.setSelection(0)
+            //typeId = type_spinner.selectedItemPosition
+
+
             when(item.typeId)
             {
-                0 -> {}
+                0 -> {
+                    type_spinner.setSelection(0)
+                }
                 1 -> {
-                    type1.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_on))
+                    //type1.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_on))
+                    type_spinner.setSelection(1)
                 }
                 2 -> {
-                    type2.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_on))
+                    //type2.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_on))
+                    type_spinner.setSelection(2)
                 }
                 3 -> {
-                    type3.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_on))
+                    //type3.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_on))
+                    type_spinner.setSelection(3)
                 }
                 4 -> {
-                    type4.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_on))
+                    //type4.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_on))
+                    type_spinner.setSelection(4)
                 }
             }
 
@@ -584,82 +605,82 @@ class AdapterTasks(
                 }
             }
 
-            fun uncheckType()
-            {
-                when(typeId)
-                {
-                    1 -> {
-                        type1.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_off))
-                    }
-                    2 -> {
-                        type2.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_off))
-                    }
-                    3 -> {
-                        type3.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_off))
-                    }
-                    4 -> {
-                        type4.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_off))
-                    }
-
-                }
-
-            }
-
-            type1.setOnClickListener {
-                uncheckType()
-                if(typeId == 1)
-                {
-                    //type1.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_on))
-                    typeId = 0
-                }
-                else
-                {
-                    type1.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_on))
-                    typeId = 1
-                }
-            }
-
-            type2.setOnClickListener {
-                uncheckType()
-                if(typeId == 2)
-                {
-                    //type1.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_on))
-                    typeId = 0
-                }
-                else
-                {
-                    type2.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_on))
-                    typeId = 2
-                }
-            }
-
-            type3.setOnClickListener {
-                uncheckType()
-                if(typeId == 3)
-                {
-                    //type1.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_on))
-                    typeId = 0
-                }
-                else
-                {
-                    type3.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_on))
-                    typeId = 3
-                }
-            }
-
-            type4.setOnClickListener {
-                uncheckType()
-                if(typeId == 4)
-                {
-                    //type1.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_on))
-                    typeId = 0
-                }
-                else
-                {
-                    type4.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_on))
-                    typeId = 4
-                }
-            }
+//            fun uncheckType()
+//            {
+//                when(typeId)
+//                {
+//                    1 -> {
+//                        type1.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_off))
+//                    }
+//                    2 -> {
+//                        type2.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_off))
+//                    }
+//                    3 -> {
+//                        type3.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_off))
+//                    }
+//                    4 -> {
+//                        type4.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_off))
+//                    }
+//
+//                }
+//
+//            }
+//
+//            type1.setOnClickListener {
+//                uncheckType()
+//                if(typeId == 1)
+//                {
+//                    //type1.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_on))
+//                    typeId = 0
+//                }
+//                else
+//                {
+//                    type1.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_on))
+//                    typeId = 1
+//                }
+//            }
+//
+//            type2.setOnClickListener {
+//                uncheckType()
+//                if(typeId == 2)
+//                {
+//                    //type1.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_on))
+//                    typeId = 0
+//                }
+//                else
+//                {
+//                    type2.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_on))
+//                    typeId = 2
+//                }
+//            }
+//
+//            type3.setOnClickListener {
+//                uncheckType()
+//                if(typeId == 3)
+//                {
+//                    //type1.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_on))
+//                    typeId = 0
+//                }
+//                else
+//                {
+//                    type3.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_on))
+//                    typeId = 3
+//                }
+//            }
+//
+//            type4.setOnClickListener {
+//                uncheckType()
+//                if(typeId == 4)
+//                {
+//                    //type1.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_on))
+//                    typeId = 0
+//                }
+//                else
+//                {
+//                    type4.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_on))
+//                    typeId = 4
+//                }
+//            }
 
 
             val alertDialog = builder.create()
@@ -678,7 +699,7 @@ class AdapterTasks(
                     deadline_day+' '+deadline_time,
                     duration,
                     isActive,
-                    typeId,
+                    type_spinner.selectedItemPosition,
                     item.noteId,
                     date = if (specyfic_date == 1) "$deadline_day $deadline_time" else null
                 )
@@ -726,15 +747,16 @@ class AdapterTasks(
 
             date.setText(dateTmp)
 
-            if(itemsType != null)
+            if(item.typeId != 0)
             {
-                val typeText = "Typ: " + itemsType.name
-                type.text = typeText
+                //type.setText("Typ: " + item.typeId.toString())
+                type.setText("Typ: " + typesList[item.typeId?.minus(1)!!].name)
             }
             else
             {
                 type.visibility = View.GONE
             }
+
 
 
             if(itemsNote?.noteContent?.replace(" ", "") != "")

@@ -20,6 +20,7 @@ import com.aminography.primedatepicker.picker.callback.SingleDayPickCallback
 import com.example.planer.MainActivity
 import com.example.planer.R
 import com.example.planer.ViewModel.TaskViewModel
+import com.example.planer.ViewModel.TypeViewModel
 import com.example.planer.databinding.ActivityAddingTaskBinding
 import com.example.planer.entities.Notes
 
@@ -36,6 +37,8 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var binding: ActivityAddingTaskBinding
     private lateinit var taskViewModel: TaskViewModel
+    private lateinit var typeViewModel: TypeViewModel
+
 
     // Lista dat w których task ma być powtarzany
     private var markedDatePickerList: MutableList<PrimeCalendar> = mutableListOf()
@@ -64,6 +67,7 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
     val today_minute = 0//calendar.get((Calendar.MINUTE))
 
     var chosenItems = mutableListOf<String>()
+    var listOfTypes = mutableListOf<String>()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -116,15 +120,40 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
         binding.duration5.setOnClickListener(this)
         binding.duration6.setOnClickListener(this)
 
-        binding.type1.setOnClickListener(this)
-        binding.type2.setOnClickListener(this)
-        binding.type3.setOnClickListener(this)
-        binding.type4.setOnClickListener(this)
+//        binding.type1.setOnClickListener(this)
+//        binding.type2.setOnClickListener(this)
+//        binding.type3.setOnClickListener(this)
+//        binding.type4.setOnClickListener(this)
 
         setDateBlocks(setUpDate(today_day, today_month, today_year))
         setTimeBlocks(setUpTime(today_hour, today_minute))
 
         chosenItems.add("kliknij aby usunąć")
+
+        typeViewModel = ViewModelProvider(this)[TypeViewModel::class.java]
+        typeViewModel.readAllData.observe(this) {
+
+            listOfTypes = mutableListOf()
+            listOfTypes.add("Brak")
+            for(type in it)
+            {
+                listOfTypes.add(type.name)
+            }
+
+            val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, listOfTypes)
+            binding.typeSpinner.adapter = adapter
+            binding.typeSpinner.setSelection(0)
+            binding.typeSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long)
+                {
+                    type = position
+                }
+
+                override fun onNothingSelected(parent: AdapterView<*>) {
+                    binding.typeSpinner.setSelection(0)
+                }
+            }
+        }
 
 
         setEverything()
@@ -221,34 +250,34 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
                 }
             }
 
-
-            R.id.type1 -> {
-                uncheckType()
-                binding.type1.getBackground()
-                    .setTint((getResources().getColor(R.color.brown_important_urgent_on)))
-                type = 1
-            }
-
-            R.id.type2 -> {
-                uncheckType()
-                binding.type2.getBackground()
-                    .setTint((getResources().getColor(R.color.brown_important_urgent_on)))
-                type = 2
-            }
-
-            R.id.type3 -> {
-                uncheckType()
-                binding.type3.getBackground()
-                    .setTint((getResources().getColor(R.color.brown_important_urgent_on)))
-                type = 3
-            }
-
-            R.id.type4 -> {
-                uncheckType()
-                binding.type4.getBackground()
-                    .setTint((getResources().getColor(R.color.brown_important_urgent_on)))
-                type = 4
-            }
+//
+//            R.id.type1 -> {
+//                uncheckType()
+//                binding.type1.getBackground()
+//                    .setTint((getResources().getColor(R.color.brown_important_urgent_on)))
+//                type = 1
+//            }
+//
+//            R.id.type2 -> {
+//                uncheckType()
+//                binding.type2.getBackground()
+//                    .setTint((getResources().getColor(R.color.brown_important_urgent_on)))
+//                type = 2
+//            }
+//
+//            R.id.type3 -> {
+//                uncheckType()
+//                binding.type3.getBackground()
+//                    .setTint((getResources().getColor(R.color.brown_important_urgent_on)))
+//                type = 3
+//            }
+//
+//            R.id.type4 -> {
+//                uncheckType()
+//                binding.type4.getBackground()
+//                    .setTint((getResources().getColor(R.color.brown_important_urgent_on)))
+//                type = 4
+//            }
 
 
             R.id.at_this_day -> {
@@ -626,29 +655,29 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
 
     }
 
-    fun uncheckType() {
-        when (type) {
-            1 -> {
-                binding.type1.getBackground()
-                    .setTint((getResources().getColor(R.color.brown_important_urgent_off)))
-            }
-
-            2 -> {
-                binding.type2.getBackground()
-                    .setTint((getResources().getColor(R.color.brown_important_urgent_off)))
-            }
-
-            3 -> {
-                binding.type3.getBackground()
-                    .setTint((getResources().getColor(R.color.brown_important_urgent_off)))
-            }
-
-            4 -> {
-                binding.type4.getBackground()
-                    .setTint((getResources().getColor(R.color.brown_important_urgent_off)))
-            }
-        }
-    }
+//    fun uncheckType() {
+//        when (type) {
+//            1 -> {
+//                binding.type1.getBackground()
+//                    .setTint((getResources().getColor(R.color.brown_important_urgent_off)))
+//            }
+//
+//            2 -> {
+//                binding.type2.getBackground()
+//                    .setTint((getResources().getColor(R.color.brown_important_urgent_off)))
+//            }
+//
+//            3 -> {
+//                binding.type3.getBackground()
+//                    .setTint((getResources().getColor(R.color.brown_important_urgent_off)))
+//            }
+//
+//            4 -> {
+//                binding.type4.getBackground()
+//                    .setTint((getResources().getColor(R.color.brown_important_urgent_off)))
+//            }
+//        }
+//    }
 
     fun uncheckDuration() {
         when (duration) {
