@@ -24,10 +24,10 @@ import com.example.planer.gui.pages.home.habits.AdapterHabits
 import com.example.planer.gui.pages.home.tasks.AdapterTasks
 import com.example.planer.scope.UnscrollableLinearLayoutManager
 import kotlinx.android.synthetic.main.dialod_when_title_empty.view.*
-import kotlinx.android.synthetic.main.dialog_habit.view.btn_create
-import kotlinx.android.synthetic.main.dialog_habit.view.habit_title
+import kotlinx.android.synthetic.main.dialog_habit.view.*
 import kotlinx.android.synthetic.main.fragment_home.view.*
 import java.time.LocalDate
+
 
 class HomeFragment : Fragment() {
 
@@ -164,6 +164,8 @@ class HomeFragment : Fragment() {
             adapter4.updateListOfTypes(it.toMutableList())
             adapter5.updateListOfTypes(it.toMutableList())
         }
+
+
 
 
         //hideRestOftasks(0,  view)
@@ -305,6 +307,7 @@ class HomeFragment : Fragment() {
                 delete_clicked = 0
             }
         }
+
 
 
 
