@@ -24,6 +24,7 @@
             android:layout_height="wrap_content"
             android:gravity="center|left"
             android:padding="10dp"
+            android:maxLines="2"
             android:text="Przykladowy tytul"
             android:textColor="@color/pr1_green_text"
             android:textSize="15sp"
