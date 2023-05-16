@@ -116,7 +116,7 @@ class AdapterTasks(
         if(item.typeId != 0) {
             val color = if (itemsType != null) Color.parseColor(itemsType.colour) else ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_off)
             drawable.setStroke(5, color)
-            updateListener(item, itemsNote!!)
+            //updateListener(item, itemsNote!!)
            // holder.itemView.task_title.setTextColor(Color.parseColor(itemsType?.colour.toString()))
         }
 

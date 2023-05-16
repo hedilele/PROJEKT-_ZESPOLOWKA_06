@@ -54,7 +54,7 @@ private fun buildNotification(context: Context, name: String, openIntent: Pendin
     return NotificationCompat.Builder(context, "default_channel_id")
         .setContentTitle(name) // Ustawianie nazwy zadania jako tytułu powiadomienia
         .setSmallIcon(R.drawable.ic_stat_whatshot)
-        .setSound(Uri.parse("android.resource://" + context.packageName + "/raw/notification_sound"))
+        .setSound(Uri.parse("android.resource://" + context.packageName + "/" + R.raw.notification_sound))
         .setVibrate(longArrayOf(0, 1000, 500, 1000))
         .setAutoCancel(true)
         .setContentIntent(openIntent)
