@@ -1,13 +1,16 @@
 package com.example.planer.gui.pages.home.habits
 
+import android.content.res.ColorStateList
 import android.util.Log
 import android.view.*
 import androidx.cardview.widget.CardView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.planer.R
 import com.example.planer.entities.Habits
 import com.example.planer.gui.callBacks.HabitDiffCallback
+import kotlinx.android.synthetic.main.calendar_cell.view.*
 
 import kotlinx.android.synthetic.main.single_habit.view.*
 
@@ -55,6 +58,17 @@ class AdapterHabits(
         holder.itemView.setOnClickListener {
             updateListener(item)
             deleteListener(item)
+        }
+
+        if(item.isActive == 0)
+        {
+            val color = ColorStateList.valueOf(ContextCompat.getColor(holder.itemView.context, R.color.pr1_grey_habit))
+            holder.itemView.habit_background.setBackgroundColor(ContextCompat.getColor(holder.itemView.context, R.color.pr1_grey_habit))
+        }
+        else
+        {
+            val color = ColorStateList.valueOf(ContextCompat.getColor(holder.itemView.context, R.color.pr1_beige_background))
+            holder.itemView.habit_background.setBackgroundColor(ContextCompat.getColor(holder.itemView.context, R.color.pr1_beige_habit))
         }
 
     }

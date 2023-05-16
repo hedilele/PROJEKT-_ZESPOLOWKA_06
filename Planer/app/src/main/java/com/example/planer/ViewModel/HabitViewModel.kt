@@ -13,16 +13,14 @@ import kotlinx.coroutines.*
 import java.time.LocalDate
 
 //Referencja do aplikacji
-class HabitViewModel(application: Application): AndroidViewModel(application)
-{
+class HabitViewModel(application: Application) : AndroidViewModel(application) {
     val readAllData: LiveData<List<Habits>>
     val lastAccessDate: LiveData<LastAccess>
     private val repository: HabitRepository
     private val lastAccess: LastAccessRepository
 
     //To zawsze pierwsze bedzie sie wykonywalo kiedy callujemy UserViewModel
-    init
-    {
+    init {
         val habitDAO = AppDatabase.getDatabase(application).habitsDAO()
         val lastAccessDAO = AppDatabase.getDatabase(application).lastAccessDAO()
         repository = HabitRepository(habitDAO)
@@ -32,24 +30,21 @@ class HabitViewModel(application: Application): AndroidViewModel(application)
     }
 
     //Zla praktyka jest uruchamiac zapytania z bazy w watku glownym!
-    fun addHabit(habit: Habits)
-    {
+    fun addHabit(habit: Habits) {
         viewModelScope.launch(Dispatchers.IO) //Odpali sie w oddzielnym watku w tle
         {
             repository.addHabit(habit)
         }
     }
 
-    fun deleteHabit(habit: Habits)
-    {
+    fun deleteHabit(habit: Habits) {
         viewModelScope.launch(Dispatchers.IO) //Odpali sie w oddzielnym watku w tle
         {
             repository.deleteHabit(habit)
         }
     }
 
-    fun updateHabit(habit: Habits)
-    {
+    fun updateHabit(habit: Habits) {
         viewModelScope.launch(Dispatchers.IO) //Odpali sie w oddzielnym watku w tle
         {
             repository.updateHabit(habit)
@@ -57,8 +52,7 @@ class HabitViewModel(application: Application): AndroidViewModel(application)
     }
 
 
-    fun updateLastAccessDate()
-    {
+    fun updateLastAccessDate() {
         viewModelScope.launch(Dispatchers.IO)
         {
             lastAccess.updateAccessDate(LocalDate.now())
@@ -78,10 +72,14 @@ class HabitViewModel(application: Application): AndroidViewModel(application)
         }
     }
 
+    fun getHabitsList(): List<Habits> {
 
-    fun readAllData()
-    {
-        viewModelScope.launch (Dispatchers.IO )
+        return repository.getHabitsList()
+    }
+
+
+    fun readAllData() {
+        viewModelScope.launch(Dispatchers.IO)
         {
             repository.readAllDataa()
         }
