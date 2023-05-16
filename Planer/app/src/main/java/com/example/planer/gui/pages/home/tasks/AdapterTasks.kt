@@ -63,12 +63,7 @@ class AdapterTasks(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = list[position]
         val itemsNote = notesList.find { notes -> notes.noteId == item.noteId }
-        var itemsType: Types? = Types(0, "none", "#e8cba8")
-        //val itemsType = typesList.find { types -> types.id == item.typeId}
-        if(item.typeId != 0)
-        {
-            itemsType = typesList.find { types -> types.id == item.typeId}
-        }
+        val itemsType: Types? = typesList.find { type -> type.id == item.typeId}
 
 
         holder.itemView.task_title.text = item.title
@@ -84,8 +79,6 @@ class AdapterTasks(
 
             return dateTime1.compareTo(dateTime2)
         }
-
-
 
         val currentDateTime = LocalDateTime.now()
         val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
@@ -109,16 +102,10 @@ class AdapterTasks(
             holder.itemView.task_date.text = dateTmp
         }
 
-
-
         val drawable = holder.itemView.task_layout.background as GradientDrawable
 
-        if(item.typeId != 0) {
-            val color = if (itemsType != null) Color.parseColor(itemsType.colour) else ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_off)
-            drawable.setStroke(5, color)
-            //updateListener(item, itemsNote!!)
-           // holder.itemView.task_title.setTextColor(Color.parseColor(itemsType?.colour.toString()))
-        }
+        val color = if (itemsType != null) Color.parseColor(itemsType.colour) else ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_off)
+        drawable.setStroke(5, color)
 
 
         holder.itemView.done.setOnClickListener {
