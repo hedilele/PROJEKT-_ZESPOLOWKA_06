@@ -7,6 +7,8 @@
     android:background="@color/white"
     android:orientation="vertical"
     android:paddingHorizontal="10dp"
+    android:focusableInTouchMode="true"
+    android:focusable="true"
     tools:context=".gui.pages.settings.UserSettingsActivity">
 
     <ScrollView

@@ -2,11 +2,13 @@ package com.example.planer.gui.pages.settings
 
 import android.content.res.ColorStateList
 import android.graphics.Color
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.TextView
+import android.widget.EditText
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.planer.R
@@ -23,7 +25,7 @@ class TypeAdapter(typeList: List<Types>) :
     private var onButtonClickListener: OnButtonClickListener? = null
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val typeName: TextView
+        val typeName: EditText
         val chosenColorButton: Button
 
         init {
@@ -35,6 +37,8 @@ class TypeAdapter(typeList: List<Types>) :
 
     interface OnButtonClickListener {
         suspend fun onChosenColorButtonClick(type: Types, holder: ViewHolder)
+
+        suspend fun onTypeNameChange(type: Types, holder: ViewHolder)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -51,7 +55,7 @@ class TypeAdapter(typeList: List<Types>) :
 
         val type = types[position]
 
-        holder.typeName.text = type.name
+        holder.typeName.setText(type.name)
         holder.chosenColorButton.backgroundTintList = ColorStateList.valueOf(Color.parseColor(type.colour))
 
         holder.chosenColorButton.setOnClickListener {
@@ -59,6 +63,20 @@ class TypeAdapter(typeList: List<Types>) :
                 onButtonClickListener?.onChosenColorButtonClick(type, holder)
             }
         }
+
+        holder.typeName.addTextChangedListener(object: TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                CoroutineScope(Dispatchers.Main).launch {
+                    type.name = s.toString()
+                    onButtonClickListener?.onTypeNameChange(type, holder)
+                }
+            }
+            override fun afterTextChanged(s: Editable?) {}
+
+        })
+
     }
 
     fun setOnItemClickListener(listener: UserSettingsActivity) {

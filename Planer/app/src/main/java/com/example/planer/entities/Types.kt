@@ -10,7 +10,7 @@ data class Types(
     @ColumnInfo(name = "id")
     val id: Int = 0,
     @ColumnInfo(name = "name")
-    val name: String,
+    var name: String,
     @ColumnInfo(name = "colour")
     var colour: String
 )

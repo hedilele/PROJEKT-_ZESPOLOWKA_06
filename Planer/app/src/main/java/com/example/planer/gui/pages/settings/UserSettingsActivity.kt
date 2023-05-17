@@ -185,6 +185,7 @@ class UserSettingsActivity : AppCompatActivity(), View.OnClickListener,
         when (v?.id) {
 
             R.id.btn_save -> {
+                currentFocus?.clearFocus()
                 val buttns = findViewById<LinearLayout>(R.id.button_layout)
                 val savedNotif =
                     Snackbar.make(buttns, "Zapisane!", Snackbar.LENGTH_SHORT)
@@ -215,6 +216,7 @@ class UserSettingsActivity : AppCompatActivity(), View.OnClickListener,
                         unsavedSettings.postValue(false)
                     }
                 }
+                unsavedSettings.setValue(false)
             }
 
             R.id.btn_exit -> {
@@ -275,5 +277,10 @@ class UserSettingsActivity : AppCompatActivity(), View.OnClickListener,
             }
             .setColorShape(ColorShape.SQAURE)
             .show()
+    }
+
+    override suspend fun onTypeNameChange(type: Types, holder: TypeAdapter.ViewHolder) {
+        changedTypes.firstOrNull {it.id == type.id}?.apply { this.name = type.name }
+            ?: changedTypes.add(type)
     }
 }
