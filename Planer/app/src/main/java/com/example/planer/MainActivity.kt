@@ -45,7 +45,6 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var noteViewModel: NoteViewModel
-    private lateinit var taskViewModel: TaskViewModel
     private lateinit var calendarViewModel: CalendarViewModel
 
     lateinit var toggle: ActionBarDrawerToggle

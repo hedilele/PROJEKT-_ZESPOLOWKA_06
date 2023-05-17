@@ -118,9 +118,9 @@ class PomodoroActivity : AppCompatActivity() {
 
         setTimeFunction(POMODORO_WORK)
         v--
-        val notificationIntent = Intent(this, MyNotificationPublisher::class.java)
-        notificationIntent.action = MyNotificationPublisher.MY_NOTIFICATION_ACTION
-        val pendingIntent = PendingIntent.getBroadcast(this, 0, notificationIntent, PendingIntent.FLAG_IMMUTABLE)
+        //val notificationIntent = Intent(this, MyNotificationPublisher::class.java)
+        //notificationIntent.action = MyNotificationPublisher.MY_NOTIFICATION_ACTION
+        //val pendingIntent = PendingIntent.getBroadcast(this, 0, notificationIntent, PendingIntent.FLAG_IMMUTABLE)
         //Tutaj kod do obslugi tryb nocnego
         binding.btnPlayPause.setOnClickListener {
 
@@ -132,7 +132,7 @@ class PomodoroActivity : AppCompatActivity() {
             {
                 enableDoNotDisturbMode()
             }
-            pendingIntent.send()
+            //pendingIntent.send()
         }
 
         binding.ibReset.setOnClickListener {
