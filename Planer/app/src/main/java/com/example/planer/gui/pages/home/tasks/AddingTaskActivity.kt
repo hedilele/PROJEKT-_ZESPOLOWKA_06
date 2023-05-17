@@ -146,7 +146,7 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
             binding.typeSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long)
                 {
-                    type = position
+                    type = if (position == 0) null else position
                 }
 
                 override fun onNothingSelected(parent: AdapterView<*>) {

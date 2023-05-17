@@ -737,10 +737,10 @@ class AdapterTasks(
 
             date.setText(dateTmp)
 
-            if(item.typeId != 0)
+            if(itemsType != null)
             {
-                //type.setText("Typ: " + item.typeId.toString())
-                type.setText("Typ: " + typesList[item.typeId?.minus(1)!!].name)
+                val typeText = "Typ: " + itemsType.name
+                type.text = typeText
             }
             else
             {
