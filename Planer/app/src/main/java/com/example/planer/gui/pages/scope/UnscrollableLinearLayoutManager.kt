@@ -1,4 +1,4 @@
-package com.example.planer.scope
+package com.example.planer.gui.pages.scope
 
 import android.content.Context
 import androidx.recyclerview.widget.LinearLayoutManager

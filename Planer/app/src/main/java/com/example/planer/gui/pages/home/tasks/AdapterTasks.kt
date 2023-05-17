@@ -120,16 +120,10 @@ class AdapterTasks(
                 clicked = 1
                 //holder.itemView.visibility = View.VISIBLE
                 //holder.itemView.done.setImageDrawable(ContextCompat.getDrawable(holder.itemView.context, R.drawable.icon_checkbox_empty))
-
-
             }
 
             snackbar.show()
             holder.itemView.done.setImageDrawable(ContextCompat.getDrawable(holder.itemView.context, R.drawable.icon_checkbox_filled))
-            //holder.itemView.done.setColorFilter(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_off), PorterDuff.Mode.SRC_ATOP)
-            if(item.typeId != 0)
-                holder.itemView.done.setColorFilter(Color.parseColor(itemsType?.colour.toString()), PorterDuff.Mode.SRC_ATOP)
-            else
             holder.itemView.done.setColorFilter(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_off), PorterDuff.Mode.SRC_ATOP)
 
             //miejsce, w którym odhaczanie zadań jest zapamiętywane
@@ -141,11 +135,7 @@ class AdapterTasks(
                     deleteListener(item.id, item.noteId!!)
                 }
                 holder.itemView.done.setImageDrawable(ContextCompat.getDrawable(holder.itemView.context, R.drawable.icon_checkbox_empty))
-                //holder.itemView.done.setColorFilter(R.color.brown_important_urgent_off)
-                if(item.typeId != 0)
-                    holder.itemView.done.setColorFilter(Color.parseColor(itemsType?.colour.toString()), PorterDuff.Mode.SRC_ATOP)
-                else
-                    holder.itemView.done.setColorFilter(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_off), PorterDuff.Mode.SRC_ATOP)
+                holder.itemView.done.setColorFilter(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_off), PorterDuff.Mode.SRC_ATOP)
 
 
             }, 2000) // opóźnienie wynosi 5000 milisekund, czyli 5 sekund

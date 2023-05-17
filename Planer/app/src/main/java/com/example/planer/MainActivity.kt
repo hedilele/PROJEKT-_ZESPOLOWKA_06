@@ -35,7 +35,7 @@ import com.example.planer.gui.pages.pomodoro.PomodoroActivity
 import com.example.planer.gui.pages.settings.UserSettingsActivity
 import com.example.planer.norification.NotificationHelper
 import com.example.planer.norification.NotificationService
-import com.example.planer.scope.ScopeMode
+import com.example.planer.gui.pages.scope.ScopeMode
 import kotlinx.android.synthetic.main.dialod_when_title_empty.view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

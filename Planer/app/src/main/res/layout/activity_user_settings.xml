@@ -39,29 +39,57 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal">
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
 
-                    <Button
+                    <LinearLayout
                         android:id="@+id/pick_excluded_dates_button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginVertical="8dp"
-                        android:layout_marginRight="16dp"
-                        android:layout_weight="1"
-                        android:text="Wybierz daty"
-                        app:icon="@drawable/icon_calendar" />
+                        android:layout_width="0dp"
+                        android:layout_height="50dp"
+                        android:layout_weight="6"
+                        android:background="@drawable/shape_spinner"
+                        android:layout_marginHorizontal="10dp"
+                        android:layout_marginVertical="15dp"
+                        android:gravity="center"
+                        >
 
-                    <Button
+                        <ImageButton
+                            android:id="@+id/btn_periodicity"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_gravity="center"
+                            android:layout_marginHorizontal="10dp"
+                            android:background="@drawable/calendar"
+                            android:backgroundTint="@color/pr1_brown_dark"
+                            android:padding="8dp"
+                            />
+
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginVertical="8dp"
+                            android:layout_marginRight="20dp"
+                            android:text="WYBIERZ DATY"
+                            android:gravity="center"
+                            android:textSize="18sp"
+                            />
+
+                    </LinearLayout>
+
+
+                    <ImageButton
                         android:id="@+id/reset_unavailable_dates_button"
                         android:layout_width="48dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginVertical="8dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginVertical="15dp"
+                        android:layout_marginHorizontal="10dp"
                         android:layout_weight="0"
-                        android:backgroundTint="@color/hard_red"
-                        app:icon="@drawable/delete_icon"
-                        app:iconGravity="textEnd"
-                        app:iconPadding="0dp" />
+                        android:background="@drawable/shape_spinner"
+                        android:src="@drawable/icon_delete"
+                        android:backgroundTint="#F1997E"
+                        app:tint="@color/pr1_brown_dark" />
 
                 </LinearLayout>
 
@@ -131,26 +159,28 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="5dp">
+                android:layout_marginVertical="5dp"
+                android:gravity="center">
 
                 <Button
                     android:id="@+id/exportButton"
-                    android:layout_width="wrap_content"
+                    android:layout_width="120dp"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="8dp"
                     android:layout_weight="1"
-                    android:backgroundTint="@color/medium_yellow"
+                    android:backgroundTint="@color/brown_important_urgent_on"
                     android:onClick="onExportButtonClicked"
                     android:text="Backup"
                     app:icon="@android:drawable/ic_menu_save" />
 
                 <Button
                     android:id="@+id/importButton"
-                    android:layout_width="wrap_content"
+                    android:layout_width="120dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="8dp"
                     android:layout_weight="1"
                     android:onClick="onImportButtonClicked"
+                    android:backgroundTint="@color/brown_important_urgent_on"
                     android:text="Import"
                     app:icon="@android:drawable/ic_menu_upload" />
             </LinearLayout>
@@ -162,7 +192,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+       >
 
         <TextView
             android:id="@+id/unsavedChangesText"

@@ -89,7 +89,7 @@
         </activity>
 
         <activity
-            android:name=".scope.ScopeMode"
+            android:name=".gui.pages.scope.ScopeMode"
             android:screenOrientation="portrait"
             android:exported="false">
             <meta-data

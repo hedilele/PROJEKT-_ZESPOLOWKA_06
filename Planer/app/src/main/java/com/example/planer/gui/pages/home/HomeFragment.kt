@@ -23,7 +23,7 @@ import com.example.planer.entities.Tasks
 import com.example.planer.entities.Types
 import com.example.planer.gui.pages.home.habits.AdapterHabits
 import com.example.planer.gui.pages.home.tasks.AdapterTasks
-import com.example.planer.scope.UnscrollableLinearLayoutManager
+import com.example.planer.gui.pages.scope.UnscrollableLinearLayoutManager
 import kotlinx.android.synthetic.main.dialod_when_title_empty.view.*
 import kotlinx.android.synthetic.main.dialog_habit.view.*
 import kotlinx.android.synthetic.main.fragment_home.view.*

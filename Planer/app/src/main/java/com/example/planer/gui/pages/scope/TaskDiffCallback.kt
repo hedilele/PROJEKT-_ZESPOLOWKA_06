@@ -1,4 +1,4 @@
-package com.example.planer.scope
+package com.example.planer.gui.pages.scope
 
 import androidx.recyclerview.widget.DiffUtil
 import com.example.planer.entities.Notes

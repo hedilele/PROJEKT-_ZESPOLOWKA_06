@@ -1,4 +1,4 @@
-package com.example.planer.scope
+package com.example.planer.gui.pages.scope
 
 import android.view.LayoutInflater
 import android.view.View

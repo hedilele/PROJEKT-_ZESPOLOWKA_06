@@ -1,4 +1,4 @@
-package com.example.planer.scope
+package com.example.planer.gui.pages.scope
 
 import android.os.Build
 import android.os.Bundle
