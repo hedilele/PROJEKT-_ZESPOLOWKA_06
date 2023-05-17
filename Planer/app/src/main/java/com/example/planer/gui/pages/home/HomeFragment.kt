@@ -180,6 +180,12 @@ class HomeFragment : Fragment() {
             adapter3.updateListOfNotes(it.toMutableList())
             adapter4.updateListOfNotes(it.toMutableList())
             adapter5.updateListOfNotes(it.toMutableList())
+
+            adapter.updateList(list)
+            adapter2.updateList(list)
+            adapter3.updateList(list)
+            adapter4.updateList(list)
+            adapter5.updateList(list)
         }
 
 
@@ -190,6 +196,13 @@ class HomeFragment : Fragment() {
             adapter3.updateListOfTypes(it.toMutableList())
             adapter4.updateListOfTypes(it.toMutableList())
             adapter5.updateListOfTypes(it.toMutableList())
+
+            adapter.updateList(list)
+            adapter2.updateList(list)
+            adapter3.updateList(list)
+            adapter4.updateList(list)
+            adapter5.updateList(list)
+
         }
 
 
