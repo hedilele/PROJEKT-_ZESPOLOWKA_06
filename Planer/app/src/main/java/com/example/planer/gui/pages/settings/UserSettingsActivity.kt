@@ -14,7 +14,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.aminography.primecalendar.PrimeCalendar
 import com.aminography.primecalendar.civil.CivilCalendar
 import com.aminography.primedatepicker.picker.PrimeDatePicker
@@ -25,6 +24,7 @@ import com.example.planer.databinding.ActivityUserSettingsBinding
 import com.example.planer.entities.ExcludedDate
 import com.example.planer.entities.Settings
 import com.example.planer.entities.Types
+import com.example.planer.gui.pages.scope.UnscrollableLinearLayoutManager
 import com.github.dhaval2404.colorpicker.MaterialColorPickerDialog
 import com.github.dhaval2404.colorpicker.model.ColorShape
 import com.google.android.material.slider.Slider
@@ -76,13 +76,13 @@ class UserSettingsActivity : AppCompatActivity(), View.OnClickListener,
         typeAdapter.setOnItemClickListener(this)
 
         binding.typesRecyclerView.adapter = typeAdapter
-        binding.typesRecyclerView.layoutManager = LinearLayoutManager(this)
+        binding.typesRecyclerView.layoutManager = UnscrollableLinearLayoutManager(this)
 
         binding.pickExcludedDatesButton.setOnClickListener(this)
         binding.btnSave.setOnClickListener(this)
         binding.btnExit.setOnClickListener(this)
 
-        binding.slider.addOnChangeListener { slider: Slider, fl: Float, b: Boolean ->
+        binding.slider.addOnChangeListener { slider: Slider, _: Float, _: Boolean ->
             if (slider.value != localSettings.dailyAvailableHours.toFloat()) {
                 unsavedSettings.setValue(true)
             }
