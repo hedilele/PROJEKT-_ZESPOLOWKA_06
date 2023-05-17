@@ -59,8 +59,8 @@ class PomodoroActivity : AppCompatActivity() {
     private lateinit var noteViewModel: NoteViewModel
 
 
-    var POMODORO_WORK = 25 // 25 minut
-    var POMODORO_BREAK = 5  // 5 minut
+    var POMODORO_WORK = 1 // 25 minut
+    var POMODORO_BREAK = 1  // 5 minut
 
     var v: Int = 8      //4 work_time(%2==0) + 4 break_time(%2==1)
 
@@ -122,13 +122,17 @@ class PomodoroActivity : AppCompatActivity() {
         binding.btnPlayPause.setOnClickListener {
             if(isEnabled)
             {
-                disableDoNotDisturbMode()
+               disableDoNotDisturbMode()
             }
             else
             {
                 enableDoNotDisturbMode()
             }
-            startTimerSetup()
+
+            if(work_break.equals("Czas na przerwę"))
+            {
+                turnOff()
+            }
         }
 
         binding.ibReset.setOnClickListener {
@@ -332,7 +336,7 @@ class PomodoroActivity : AppCompatActivity() {
                 if (v > 0) {
                     if (v % 2 == 1) {
                         work_break.setText("Czas na przerwę")
-                        disableDoNotDisturbMode()
+                        turnOff()
 
                         if (v == 1) {
                             v--
@@ -349,7 +353,7 @@ class PomodoroActivity : AppCompatActivity() {
                         v--
                         setTimeFunction(POMODORO_WORK)
                         //actual_time = POMODORO_WORK
-                        enableDoNotDisturbMode()
+                        //enableDoNotDisturbMode()
                     }
                 } else {
                     resetTimeEnd()
@@ -472,7 +476,7 @@ class PomodoroActivity : AppCompatActivity() {
             val intent = Intent(Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS)
             startActivity(intent)
         } else {
-            //startTimerSetup()
+            startTimerSetup()
             // If access has been granted, enable Do Not Disturb mode
             notificationManager.setInterruptionFilter(NotificationManager.INTERRUPTION_FILTER_NONE)
         }
@@ -486,10 +490,23 @@ class PomodoroActivity : AppCompatActivity() {
             val intent = Intent(Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS)
             startActivity(intent)
         } else {
-            //startTimerSetup()
+            startTimerSetup()
             notificationManager.setInterruptionFilter(NotificationManager.INTERRUPTION_FILTER_ALL)
         }
         isEnabled = false
+    }
+
+    private fun turnOff()
+    {
+        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+        if (!notificationManager.isNotificationPolicyAccessGranted) {
+            val intent = Intent(Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS)
+            startActivity(intent)
+        } else {
+            startTimerSetup()
+            notificationManager.setInterruptionFilter(NotificationManager.INTERRUPTION_FILTER_ALL)
+        }
     }
 
 }
