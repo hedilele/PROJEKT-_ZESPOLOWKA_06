@@ -1,8 +1,6 @@
 package com.example.planer.gui.pages.home.tasks
 
-import android.app.DatePickerDialog
 import android.app.TimePickerDialog
-import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import android.view.View.OnFocusChangeListener
@@ -10,14 +8,12 @@ import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.appcompat.widget.AppCompatEditText
 import androidx.lifecycle.ViewModelProvider
 import com.aminography.primecalendar.PrimeCalendar
 import com.aminography.primecalendar.civil.CivilCalendar
 import com.aminography.primedatepicker.picker.PrimeDatePicker
 import com.aminography.primedatepicker.picker.callback.MultipleDaysPickCallback
 import com.aminography.primedatepicker.picker.callback.SingleDayPickCallback
-import com.example.planer.MainActivity
 import com.example.planer.R
 import com.example.planer.ViewModel.TaskViewModel
 import com.example.planer.ViewModel.TypeViewModel

@@ -31,6 +31,7 @@ import com.example.planer.entities.Notes
 import com.example.planer.entities.Tasks
 import com.example.planer.entities.Types
 import com.example.planer.gui.pages.home.tasks.AdapterTasks
+import kotlinx.android.synthetic.main.activity_adding_task.*
 import kotlinx.android.synthetic.main.dialog_task_info.*
 import kotlinx.android.synthetic.main.fragment_filter.*
 import kotlinx.android.synthetic.main.fragment_filter.view.*
@@ -40,11 +41,12 @@ import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
 
+
 /**
  * Klasa do listowania, zwraca pelna liste taskow i pozwala wylistowac taski roznymi kategorami
  * (typ, czas trwania, data), dodatkowo pozwala wyszukiwac taski po nazwie
  */
-class FilterFragment : AppCompatActivity() {
+class FilterFragment : AppCompatActivity(),View.OnClickListener{
     //Podlaczanie xmla dialog_filter
     private lateinit var userViewModel: TaskViewModel
     private lateinit var noteViewModel: NoteViewModel
@@ -56,7 +58,8 @@ class FilterFragment : AppCompatActivity() {
     private var listTypes = mutableListOf<Types>()
     var filteredList = mutableListOf<Tasks>() //druga lista do wykorzystania
     private lateinit var binding: FragmentFilterBinding
-
+    var duration: Int = 1
+    val finishIds = mutableListOf<Int>()
 
     @SuppressLint("MissingInflatedId", "NotifyDataSetChanged")
     @RequiresApi(Build.VERSION_CODES.O)
@@ -167,41 +170,49 @@ class FilterFragment : AppCompatActivity() {
             val sortButton = dialogView.findViewById<Button>(R.id.sortButton)
 
             val typeIds = mutableListOf<Int>()
-            val finishIds = mutableListOf<Int>()
 
-            /*
             //TODO kiedy mam jakis textView i chce go zaznaczyc i odznaczyc
-            fun uncheckDuration()
-            {
-                when(duration)
-                {
-                    duration-> {
-                        duration1.getBackground().setTint(ContextCompat.getColor(requireContext(), R.color.brown_important_urgent_off))
+
+             /*
+            fun uncheckDuration() {
+                when (duration) {
+                    1 -> {
+                        duration1.getBackground()
+                            .setTint((getResources().getColor(R.color.brown_important_urgent_off)))
                     }
+
                     2 -> {
-                        duration2.getBackground().setTint(ContextCompat.getColor(requireContext(), R.color.brown_important_urgent_off))
+                        duration2.getBackground()
+                            .setTint((getResources().getColor(R.color.brown_important_urgent_off)))
                     }
-                    3 -> {
-                        duration3.getBackground().setTint(ContextCompat.getColor(requireContext(), R.color.brown_important_urgent_off))
-                    }
-                    4 -> {
-                        duration4.getBackground().setTint(ContextCompat.getColor(requireContext(), R.color.brown_important_urgent_off))
-                    }
-                    5 -> {
-                        duration5.getBackground().setTint(ContextCompat.getColor(requireContext(), R.color.brown_important_urgent_off))
-                    }
+
                     6 -> {
-                        duration6.getBackground().setTint(ContextCompat.getColor(requireContext(), R.color.brown_important_urgent_off))
+                        duration3.getBackground()
+                            .setTint((getResources().getColor(R.color.brown_important_urgent_off)))
                     }
 
-                }
+                    12 -> {
+                        duration4.getBackground()
+                            .setTint((getResources().getColor(R.color.brown_important_urgent_off)))
+                    }
 
+                    24 -> {
+                        duration5.getBackground()
+                            .setTint((getResources().getColor(R.color.brown_important_urgent_off)))
+
+                    }
+
+                    30 -> {
+                        duration6.getBackground()
+                            .setTint((getResources().getColor(R.color.brown_important_urgent_off)))
+                    }
+                }
             }
-             */
+
+
 
             //Ustawianie dla duration wyboru, jesli wybrany
             duration1.setOnClickListener{
-                //uncheckDuration()
                 duration1.background.setTint(ContextCompat.getColor(this,R.color.brown_important_urgent_on)) // kazdy requireContext() na this
                 finishIds.add(1)
             }
@@ -235,6 +246,7 @@ class FilterFragment : AppCompatActivity() {
                 duration6.background.setTint(ContextCompat.getColor(this,R.color.brown_important_urgent_on))
                 finishIds.add(30)
             }
+         */
 
             //Ustawianie dla typu koloru, jesli wybrany
             type1.setOnClickListener{
@@ -427,7 +439,6 @@ class FilterFragment : AppCompatActivity() {
             finish()
         }
 
-        //return view
     }
 
     //Sprawdzam czy editText jest pusty, jesli nie to usuwam
@@ -439,4 +450,123 @@ class FilterFragment : AppCompatActivity() {
         }
     }
 
+    override fun onClick(p0: View?) {
+        when (p0?.id) {
+            R.id.duration1 -> {
+                    uncheckDuration()
+                    duration1.background.setTint(
+                        ContextCompat.getColor(
+                            this,
+                            R.color.brown_important_urgent_on
+                        )
+                    )
+                    finishIds.add(1)
+                    duration = 1
+            }
+            R.id.duration2 -> {
+                    uncheckDuration()
+                    if (duration == 2) {
+                        duration1.getBackground()
+                            .setTint((getResources().getColor(R.color.brown_important_urgent_on)))
+                        duration = 1
+                    } else {
+                        duration2.getBackground()
+                            .setTint((getResources().getColor(R.color.brown_important_urgent_on)))
+                        duration = 2
+                    }
+                    finishIds.add(2)
+            }
+            R.id.duration3 -> {
+                    uncheckDuration()
+                    if (duration == 6) {
+                        //binding.duration2.setColorFilter(getResources().getColor(R.color.hard_red));
+                        duration1.getBackground()
+                            .setTint((getResources().getColor(R.color.brown_important_urgent_on)))
+                        duration = 1
+                    } else {
+                        duration3.getBackground()
+                            .setTint((getResources().getColor(R.color.brown_important_urgent_on)))
+                        duration = 6
+                    }
+                    finishIds.add(6)
+            }
+            R.id.duration4 -> {
+                    uncheckDuration()
+                    if (duration == 12) {
+                        //binding.duration2.setColorFilter(getResources().getColor(R.color.hard_red));
+                        duration1.getBackground()
+                            .setTint((getResources().getColor(R.color.brown_important_urgent_on)))
+                        duration = 1
+                    } else {
+                        duration4.getBackground()
+                            .setTint((getResources().getColor(R.color.brown_important_urgent_on)))
+                        duration = 12
+                    }
+                    finishIds.add(12)
+            }
+            R.id.duration5 -> {
+                    uncheckDuration()
+                    if (duration == 24) {
+                        //binding.duration2.setColorFilter(getResources().getColor(R.color.hard_red));
+                        duration1.getBackground()
+                            .setTint((getResources().getColor(R.color.brown_important_urgent_on)))
+                        duration = 1
+                    } else {
+                        duration5.getBackground()
+                            .setTint((getResources().getColor(R.color.brown_important_urgent_on)))
+                        duration = 24
+                    }
+                    finishIds.add(24)
+            }
+            R.id.duration6 -> {
+                    uncheckDuration()
+                    if (duration == 30) {
+                        //binding.duration2.setColorFilter(getResources().getColor(R.color.hard_red));
+                        duration1.getBackground()
+                            .setTint((getResources().getColor(R.color.brown_important_urgent_on)))
+                        duration = 1
+                    } else {
+                        duration6.getBackground()
+                            .setTint((getResources().getColor(R.color.brown_important_urgent_on)))
+                        duration = 30
+                    }
+                    finishIds.add(30)
+            }
+    }
+}
+
+    private fun uncheckDuration() {
+        when (duration) {
+            1 -> {
+                duration1.getBackground()
+                    .setTint((getResources().getColor(R.color.brown_important_urgent_off)))
+            }
+
+            2 -> {
+                duration2.getBackground()
+                    .setTint((getResources().getColor(R.color.brown_important_urgent_off)))
+            }
+
+            6 -> {
+                duration3.getBackground()
+                    .setTint((getResources().getColor(R.color.brown_important_urgent_off)))
+            }
+
+            12 -> {
+                duration4.getBackground()
+                    .setTint((getResources().getColor(R.color.brown_important_urgent_off)))
+            }
+
+            24 -> {
+                duration5.getBackground()
+                    .setTint((getResources().getColor(R.color.brown_important_urgent_off)))
+
+            }
+
+            30 -> {
+                duration6.getBackground()
+                    .setTint((getResources().getColor(R.color.brown_important_urgent_off)))
+            }
+        }
+    }
 }
