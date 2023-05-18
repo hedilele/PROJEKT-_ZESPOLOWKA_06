@@ -4,11 +4,13 @@ package com.example.planer.gui
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.cardview.widget.CardView
@@ -440,6 +442,68 @@ class AdapterCalendarList (
             }
 
 
+
+
+        }
+
+        holder.itemView.setOnClickListener{
+
+
+            val builder = AlertDialog.Builder(holder.itemView.context) //TODO
+            //builder.setView(R.layout.activity_adding_task)
+
+            val inflater = LayoutInflater.from(holder.itemView.context)
+            val dialogView = inflater.inflate(R.layout.dialog_event_info, null)
+            builder.setView(dialogView)
+
+            val title = dialogView.findViewById<TextView>(R.id.title)
+            val date = dialogView.findViewById<TextView>(R.id.date)
+            val location = dialogView.findViewById<TextView>(R.id.location)
+            val location_content = dialogView.findViewById<TextView>(R.id.location_content)
+            val note_cont = dialogView.findViewById<TextView>(R.id.note_content)
+            val note = dialogView.findViewById<TextView>(R.id.note)
+
+
+            builder.setView(dialogView)
+
+            title.setText(item.name)
+         //   title.setTextColor(ContextCompat.getColor(holder.itemView.context, R.color.pr1_green_text))
+
+            val dateTmp = item.startDate.substring(8, 10) + '.' +
+                    item.startDate.substring(5, 7) + '.' +
+                    item.startDate.substring(0, 4) +' ' +
+                    item.startDate.substring(11)
+
+            date.setText(dateTmp)
+
+            if(!item.location.isEmpty())
+            {
+                location_content.text = item.location
+            }
+            else
+            {
+                location.visibility = View.GONE
+                location_content.visibility=View.GONE
+            }
+
+
+
+            if(itemsNote?.noteContent?.replace(" ", "") != "")
+            {
+                note.visibility = View.VISIBLE
+                note_cont.visibility = View.VISIBLE
+                note_cont.setText(itemsNote?.noteContent)
+            }
+            else
+            {
+                note.visibility = View.GONE
+                note_cont.visibility = View.GONE
+            }
+
+
+
+            val alertDialog = builder.create()
+            alertDialog.show()
 
 
         }

@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <solid android:color="#97d38d" />
+    <solid android:color="@color/home_background" />
+    <stroke
+        android:width="6dp"
+        android:color="#F3DEBA" >
+    </stroke>
 </shape>

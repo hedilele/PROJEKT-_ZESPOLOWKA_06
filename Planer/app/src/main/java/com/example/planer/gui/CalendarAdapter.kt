@@ -56,7 +56,6 @@ class CalendarAdapter(
 
         }
 
-        // holder.itemView.setBackgroundColor(Color.parseColor("#33832508"))
     }
 
     override fun getItemCount(): Int {

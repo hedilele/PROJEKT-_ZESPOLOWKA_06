@@ -721,6 +721,7 @@ class AdapterTasks(
             val title = dialogView.findViewById<TextView>(R.id.title)
             val date = dialogView.findViewById<TextView>(R.id.date)
             val type = dialogView.findViewById<TextView>(R.id.type)
+            val type_cont = dialogView.findViewById<TextView>(R.id.type_content)
             val note_cont = dialogView.findViewById<TextView>(R.id.note_content)
             val note = dialogView.findViewById<TextView>(R.id.note)
 
@@ -739,12 +740,14 @@ class AdapterTasks(
 
             if(itemsType != null)
             {
-                val typeText = "Typ: " + itemsType.name
-                type.text = typeText
+                type.visibility = View.VISIBLE
+                type_cont.visibility = View.VISIBLE
+                type_cont.setText(itemsType.name)
             }
             else
             {
                 type.visibility = View.GONE
+                type_cont.visibility = View.GONE
             }
 
 

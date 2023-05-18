@@ -49,14 +49,10 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener, CalendarAda
     lateinit var adapter: AdapterCalendarList
 
 
-    private var eventsOfMonthList = mutableListOf<Calendar>() //klikniete eventy
+    private var eventsOfMonthList = mutableListOf<Calendar>() //eventy do pokolorowania
 
 
     var notesList = mutableListOf<Notes>()
-
-
-
-    private lateinit var mViewPager: ViewPager2
 
 
     override fun onCreateView(
@@ -130,8 +126,7 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener, CalendarAda
 
         notesViewModel.readAllData.observe(viewLifecycleOwner, Observer {
             adapter.updateListOfNotes(it.toMutableList())
-            // adapter.updateList(mutableListOf())
-            //adapter.updateList(eventsListoftheDay)
+            adapter.notifyDataSetChanged()
         })
 
         view.add_event_to_calendar.setOnClickListener {

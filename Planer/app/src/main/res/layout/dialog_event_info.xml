@@ -38,21 +38,20 @@
         android:padding="15dp">
 
         <TextView
-            android:id="@+id/type"
+            android:id="@+id/location"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:text="Typ: "
+            android:text="Lokalizacja: "
             android:textSize="16dp"
             android:textColor="@color/pr1_brown_warm"/>
 
         <TextView
-            android:id="@+id/type_content"
+            android:id="@+id/location_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="ytptytytytytyyt"
+            android:text="lokalizacjajajajaja"
             android:textSize="16dp" />
-
 
         <TextView
             android:id="@+id/note"
