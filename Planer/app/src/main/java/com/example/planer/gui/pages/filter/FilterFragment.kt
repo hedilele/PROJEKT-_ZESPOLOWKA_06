@@ -59,7 +59,7 @@ class FilterFragment : AppCompatActivity(),View.OnClickListener{
     var filteredList = mutableListOf<Tasks>() //druga lista do wykorzystania
     private lateinit var binding: FragmentFilterBinding
     var duration: Int = 1
-    val finishIds = mutableListOf<Int>()
+    var finishIds = mutableListOf<Int>()
 
     @SuppressLint("MissingInflatedId", "NotifyDataSetChanged")
     @RequiresApi(Build.VERSION_CODES.O)
@@ -173,38 +173,51 @@ class FilterFragment : AppCompatActivity(),View.OnClickListener{
 
             //TODO kiedy mam jakis textView i chce go zaznaczyc i odznaczyc
 
-             /*
-            fun uncheckDuration() {
-                when (duration) {
+
+            finishIds = mutableListOf()
+
+            fun uncheckDuration(value :Int) {
+                when (value) {
                     1 -> {
                         duration1.getBackground()
                             .setTint((getResources().getColor(R.color.brown_important_urgent_off)))
+
+                        finishIds.removeAll { it == 1 }
                     }
 
                     2 -> {
                         duration2.getBackground()
                             .setTint((getResources().getColor(R.color.brown_important_urgent_off)))
+
+                        finishIds.removeAll { it == 2 }
                     }
 
                     6 -> {
                         duration3.getBackground()
                             .setTint((getResources().getColor(R.color.brown_important_urgent_off)))
+
+                        finishIds.removeAll { it == 6 }
                     }
 
                     12 -> {
                         duration4.getBackground()
                             .setTint((getResources().getColor(R.color.brown_important_urgent_off)))
+
+                        finishIds.removeAll { it == 12}
                     }
 
                     24 -> {
                         duration5.getBackground()
                             .setTint((getResources().getColor(R.color.brown_important_urgent_off)))
 
+                        finishIds.removeAll { it == 24 }
                     }
 
                     30 -> {
                         duration6.getBackground()
                             .setTint((getResources().getColor(R.color.brown_important_urgent_off)))
+
+                        finishIds.removeAll { it == 30 }
                     }
                 }
             }
@@ -213,40 +226,84 @@ class FilterFragment : AppCompatActivity(),View.OnClickListener{
 
             //Ustawianie dla duration wyboru, jesli wybrany
             duration1.setOnClickListener{
-                duration1.background.setTint(ContextCompat.getColor(this,R.color.brown_important_urgent_on)) // kazdy requireContext() na this
-                finishIds.add(1)
+
+                if (finishIds.contains(1))  //is in the list
+                {
+                    uncheckDuration(1)
+                }
+                else
+                {
+                    duration1.background.setTint(ContextCompat.getColor(this,R.color.brown_important_urgent_on)) // kazdy requireContext() na this
+                    finishIds.add(1)
+                }
             }
 
             duration2.setOnClickListener{
-                //uncheckDuration()
-                duration2.background.setTint(ContextCompat.getColor(this,R.color.brown_important_urgent_on))
-                finishIds.add(2)
+
+                if (finishIds.contains(2))  //is in the list
+                {
+                    uncheckDuration(2)
+                }
+                else
+                {
+                    duration2.background.setTint(ContextCompat.getColor(this,R.color.brown_important_urgent_on))
+                    finishIds.add(2)
+                }
+
             }
 
             duration3.setOnClickListener{
-                //uncheckDuration()
-                duration3.background.setTint(ContextCompat.getColor(this,R.color.brown_important_urgent_on))
-                finishIds.add(6)
+                if (finishIds.contains(6))  //is in the list
+                {
+                    uncheckDuration(6)
+                }
+                else
+                {
+                    duration3.background.setTint(ContextCompat.getColor(this,R.color.brown_important_urgent_on))
+                    finishIds.add(6)
+                }
+
             }
 
             duration4.setOnClickListener{
-                //uncheckDuration()
-                duration4.background.setTint(ContextCompat.getColor(this,R.color.brown_important_urgent_on))
-                finishIds.add(12)
+                if (finishIds.contains(12))  //is in the list
+                {
+                    uncheckDuration(12)
+                }
+                else
+                {
+                    duration4.background.setTint(ContextCompat.getColor(this,R.color.brown_important_urgent_on))
+                    finishIds.add(12)
+                }
+
             }
 
             duration5.setOnClickListener{
-                //uncheckDuration()
-                duration5.background.setTint(ContextCompat.getColor(this,R.color.brown_important_urgent_on))
-                finishIds.add(24)
+                if (finishIds.contains(24))  //is in the list
+                {
+                    uncheckDuration(24)
+                }
+                else
+                {
+                    duration5.background.setTint(ContextCompat.getColor(this,R.color.brown_important_urgent_on))
+                    finishIds.add(24)
+                }
+
             }
 
             duration6.setOnClickListener{
-                //uncheckDuration()
-                duration6.background.setTint(ContextCompat.getColor(this,R.color.brown_important_urgent_on))
-                finishIds.add(30)
+                if (finishIds.contains(30))  //is in the list
+                {
+                    uncheckDuration(30)
+                }
+                else
+                {
+                    duration6.background.setTint(ContextCompat.getColor(this,R.color.brown_important_urgent_on))
+                    finishIds.add(30)
+                }
+
             }
-         */
+
 
             //Ustawianie dla typu koloru, jesli wybrany
             type1.setOnClickListener{
