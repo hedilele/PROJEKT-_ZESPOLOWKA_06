@@ -66,17 +66,6 @@ interface TasksDAO
     @Query("SELECT datetime(deadline) FROM Tasks")
     fun readAllDeadlines(): List<String> //Zeby zwracac pojedyncze kolumny to musimy uzyc typu prostego
 
-    //Musze stworzyc zapytania do bazy, ktore beda elastyczne pod wzgledem wyboru i uniwersalne
-    //Przykladowo tutaj dla deadline
-    //PROBLEM - Jak bedzie wygladalo dokladnie takie zapytanie
-    //UPDATE - takie zapytanie zwraca nam te taski z przedzialem
-    //Mozna to ograc takimi zapytaniami SELECT * FROM Tasks WHERE type_id IN (3,1) AND time_to_finish IN(1)
-    //PROBLEM - Jak w zasadzie polaczyc te typy,
-    /*
-    //Query do czytania jednoczesnie typu i czasu trwania
-    @Query("SELECT * FROM Tasks WHERE time_to_finish IN (:timeToFinish) AND type_id IN (:typeId)") //Czysto przykladowo
-    fun readTasksWithDurationAndTypes(timeToFinish: Int, typeId: Int): LiveData<List<Tasks>>
-     */
     //Wyszukiwanie po nazwie
     @Query("SELECT * FROM Tasks WHERE title LIKE '%' || :searchName || '%'")
     fun readTasksWithSearchName(searchName: String) : LiveData<List<Tasks>>

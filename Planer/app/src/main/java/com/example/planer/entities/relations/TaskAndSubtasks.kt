@@ -4,7 +4,6 @@ import androidx.room.Embedded
 import androidx.room.Relation
 import com.example.planer.entities.Subtasks
 import com.example.planer.entities.Tasks
-import com.example.planer.entities.Types
 
 data class TaskAndSubtasks(
     @Embedded

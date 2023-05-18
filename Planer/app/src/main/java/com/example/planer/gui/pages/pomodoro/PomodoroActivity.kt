@@ -1,27 +1,20 @@
 package com.example.planer.gui.pages.pomodoro
 
 import android.app.AlertDialog
-import android.app.NotificationChannel
 import android.app.NotificationManager
-import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.graphics.PorterDuff
 import android.os.*
 import android.provider.Settings
-import android.util.Log
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
 import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.TextView
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.core.app.NavUtils
-import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -29,10 +22,8 @@ import com.example.planer.MainActivity
 import com.example.planer.R
 import com.example.planer.ViewModel.NoteViewModel
 import com.example.planer.databinding.ActivityPomodoroBinding
-import com.example.planer.databinding.FragmentPomodoroBinding
 import com.example.planer.entities.Notes
 import kotlinx.android.synthetic.main.dialog_note_pomodoro.view.*
-import kotlinx.android.synthetic.main.single_short_note.view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -59,8 +50,8 @@ class PomodoroActivity : AppCompatActivity() {
     private lateinit var noteViewModel: NoteViewModel
 
 
-    var POMODORO_WORK = 1 // 25 minut
-    var POMODORO_BREAK = 1  // 5 minut
+    var POMODORO_WORK = 25  // 25 minut
+    var POMODORO_BREAK = 5  // 5 minut
 
     var v: Int = 8      //4 work_time(%2==0) + 4 break_time(%2==1)
 

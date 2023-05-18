@@ -14,5 +14,5 @@ data class Subtasks(
     @ColumnInfo("task_id")
     val taskId: Int,
     @ColumnInfo("is_active")
-    val isActive: Boolean //Boolean albo int, w sqlite nie ma booleana
+    val isActive: Boolean
 )

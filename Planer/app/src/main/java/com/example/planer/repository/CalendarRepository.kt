@@ -10,8 +10,6 @@ import com.example.planer.entities.Tasks
 
 class CalendarRepository(private val calendarDAO: CalendarDAO,private val notificationHelper: NotificationHelper)
 {
-
-    //val getAll: LiveData<List<Calendar>> = calendarDAO.getAllDates()
     fun readAllData() : LiveData<List<Calendar>>
     {
         val readAllData: LiveData<List<Calendar>> = calendarDAO.getAllDates()

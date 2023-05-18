@@ -3,8 +3,6 @@ package com.example.planer.norification
 import android.app.Service
 import android.content.Intent
 import android.os.IBinder
-import com.example.planer.norification.NotificationHelper
-
 /**
  * Klasa odpowiedzialna za wysylanie powiadomien o wydarzeniach z kalendarza po zamknieciu aplikacji
  */
@@ -28,7 +26,7 @@ class NotificationService: Service()
         val reminder = intent?.getIntExtra("reminder", 0)
 
         if (calendarId != null && calendarId.toInt() != -1 && name != null && startDate != null && reminder != null) {
-            notificationHelper.scheduleNotification(startDate, calendarId,reminder, name) //reminder,
+            notificationHelper.scheduleNotification(startDate, calendarId,reminder, name)
         }
         return START_STICKY
     }

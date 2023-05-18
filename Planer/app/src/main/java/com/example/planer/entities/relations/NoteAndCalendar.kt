@@ -4,7 +4,6 @@ import androidx.room.Embedded
 import androidx.room.Relation
 import com.example.planer.entities.Calendar
 import com.example.planer.entities.Notes
-import com.example.planer.entities.Repeat
 
 data class NoteAndCalendar(
     @Embedded

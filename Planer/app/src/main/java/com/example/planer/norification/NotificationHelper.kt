@@ -21,12 +21,10 @@ class NotificationHelper(private val context: Context)
         if(deadlineDate != null)
         {
             var currentTime = System.currentTimeMillis()
-            val oneHourBeforeDeadline = deadlineDate.time - (60*60*1000) // odejmuje godzinie w milisekundach
 
             if(deadlineDate.time > currentTime) // && deadlineDate.time > oneHourBeforeDeadline
             {
                 val timeDiff = deadlineDate.time - currentTime
-                //val oneHourInMillis = 60 * 60 * 1000
                 var timeInMillis = 0
                 if(reminder == 0)
                 {

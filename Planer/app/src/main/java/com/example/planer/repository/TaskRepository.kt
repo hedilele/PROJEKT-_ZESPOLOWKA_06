@@ -9,8 +9,6 @@ import java.text.SimpleDateFormat
 
 class TaskRepository(private val tasksDAO: TasksDAO,private val notificationHelper: NotificationHelper)
 {
-
-    //val readAllData: LiveData<List<Tasks>> = tasksDAO.readAllData()
     fun readAllData() : LiveData<List<Tasks>>
     {
         val readAllData: LiveData<List<Tasks>> = tasksDAO.readAllData()
@@ -21,9 +19,6 @@ class TaskRepository(private val tasksDAO: TasksDAO,private val notificationHelp
 
         return readAllData
     }
-    //val readDataWithTasks: LiveData<List<Tasks>> = tasksDAO.readTasksWithTypes(typeId = Int)
-    //val readP: LiveData<List<Tasks>> = tasksDAO.readP()
-
     //Metoda do parsowania
     fun parsing(startDate: String, endDate: String)
     {

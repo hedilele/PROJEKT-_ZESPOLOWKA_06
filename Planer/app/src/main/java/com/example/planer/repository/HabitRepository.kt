@@ -8,8 +8,6 @@ class HabitRepository(private val habitsDAO: HabitsDAO)
 {
 
     val readAllData: LiveData<List<Habits>> = habitsDAO.readActiveHabits()
-    //val readDataWithTasks: LiveData<List<Tasks>> = tasksDAO.readTasksWithTypes(typeId = Int)
-    //val readP: LiveData<List<Tasks>> = tasksDAO.readP()
 
     suspend fun addHabit(habits: Habits)
     {
@@ -30,12 +28,6 @@ class HabitRepository(private val habitsDAO: HabitsDAO)
         habitsDAO.delete(habits)
     }
 
-//    suspend fun deleteHabitById(id: Int)
-//    {
-//        habitsDAO.delete(habitsDAO.getHabitById(id))
-//    }
-
-
     fun readAllDeadlines()
     {
         habitsDAO.readActiveHabits()
@@ -49,6 +41,4 @@ class HabitRepository(private val habitsDAO: HabitsDAO)
     {
         habitsDAO.readActiveHabits()
     }
-
-
 }

@@ -141,7 +141,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="Czas na przerwę"
+                android:text="Czas na pracę"
                 android:textColor="#667538"
                 android:textSize="20sp" />
         </LinearLayout>
