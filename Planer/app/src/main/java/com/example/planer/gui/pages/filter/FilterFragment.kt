@@ -10,9 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
+import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
@@ -22,6 +20,9 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.aminography.primecalendar.civil.CivilCalendar
+import com.aminography.primedatepicker.picker.PrimeDatePicker
+import com.aminography.primedatepicker.picker.callback.SingleDayPickCallback
 import com.example.planer.R
 import com.example.planer.ViewModel.NoteViewModel
 import com.example.planer.ViewModel.TaskViewModel
@@ -39,6 +40,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.ZoneId
 import java.util.*
 
 
@@ -60,6 +63,9 @@ class FilterFragment : AppCompatActivity(),View.OnClickListener{
     private lateinit var binding: FragmentFilterBinding
     var duration: Int = 1
     var finishIds = mutableListOf<Int>()
+
+    private val primeCalendar = CivilCalendar(TimeZone.getDefault(), Locale("pl", "PL"))
+
 
     @SuppressLint("MissingInflatedId", "NotifyDataSetChanged")
     @RequiresApi(Build.VERSION_CODES.O)
@@ -159,22 +165,73 @@ class FilterFragment : AppCompatActivity(),View.OnClickListener{
             val type4 = dialogView.findViewById<TextView>(R.id.type4)
 
             //Do daty
-            val startDay = dialogView.findViewById<EditText>(R.id.filter_date_start_d)
-            val startMonth = dialogView.findViewById<EditText>(R.id.filter_date_start_m)
-            val startYear = dialogView.findViewById<EditText>(R.id.filter_date_start_y)
-            val endDay = dialogView.findViewById<EditText>(R.id.filter_date_end_d)
-            val endMonth = dialogView.findViewById<EditText>(R.id.filter_date_end_m)
-            val endYear = dialogView.findViewById<EditText>(R.id.filter_date_end_y)
+            val startDate = dialogView.findViewById<TextView>(R.id.filter_date_start)
+            val endDate = dialogView.findViewById<TextView>(R.id.filter_date_end)
+
+            val btn_start_date = dialogView.findViewById<ImageButton>(R.id.date_picker_start)
+            val btn_end_date = dialogView.findViewById<ImageButton>(R.id.date_picker_end)
+
 
             //Button do sortowania - pozniej moze byc czyms innym
             val sortButton = dialogView.findViewById<Button>(R.id.sortButton)
 
-            val typeIds = mutableListOf<Int>()
+            var typeIds = mutableListOf<Int>()
 
             //TODO kiedy mam jakis textView i chce go zaznaczyc i odznaczyc
 
 
             finishIds = mutableListOf()
+            typeIds = mutableListOf()
+
+
+
+            fun setDateBlocks(date: String) : String
+            {
+                val table = date.split('-')
+                return table[2] + " . " + table[1] + " . " + table[0]
+            }
+
+
+            btn_start_date.setOnClickListener {
+
+                val callback = SingleDayPickCallback { day ->
+                    val localDate: LocalDate = day.getTime()
+                        .toInstant()
+                        .atZone(ZoneId.systemDefault())
+                        .toLocalDate()
+                    startDate.setText(setDateBlocks(localDate.toString()))
+                }
+
+                val datePicker = PrimeDatePicker.dialogWith(primeCalendar)
+                    .pickSingleDay(callback)
+
+                    .initiallyPickedSingleDay(primeCalendar)
+                    .minPossibleDate(primeCalendar)
+                    .build()
+
+                datePicker.show(supportFragmentManager, "AddingTaskDatePicker")
+            }
+
+            btn_end_date.setOnClickListener {
+
+                val callback = SingleDayPickCallback { day ->
+                    val localDate: LocalDate = day.getTime()
+                        .toInstant()
+                        .atZone(ZoneId.systemDefault())
+                        .toLocalDate()
+                    endDate.setText(setDateBlocks(localDate.toString()))
+                }
+
+                val datePicker = PrimeDatePicker.dialogWith(primeCalendar)
+                    .pickSingleDay(callback)
+
+                    .initiallyPickedSingleDay(primeCalendar)
+                    .minPossibleDate(primeCalendar)
+                    .build()
+
+                datePicker.show(supportFragmentManager, "AddingTaskDatePicker")
+
+            }
 
             fun uncheckDuration(value :Int) {
                 when (value) {
@@ -304,27 +361,101 @@ class FilterFragment : AppCompatActivity(),View.OnClickListener{
 
             }
 
+            fun uncheckTypes(value :Int) {
+                when (value) {
+                    1 -> {
+                        type1.getBackground()
+                            .setTint((getResources().getColor(R.color.brown_important_urgent_off)))
+
+                        typeIds.removeAll { it == 1 }
+                    }
+
+                    2 -> {
+                        type2.getBackground()
+                            .setTint((getResources().getColor(R.color.brown_important_urgent_off)))
+
+                        typeIds.removeAll { it == 2 }
+                    }
+
+                    3 -> {
+                        type3.getBackground()
+                            .setTint((getResources().getColor(R.color.brown_important_urgent_off)))
+
+                        typeIds.removeAll { it == 3 }
+                    }
+
+                    4 -> {
+                        type4.getBackground()
+                            .setTint((getResources().getColor(R.color.brown_important_urgent_off)))
+
+                        typeIds.removeAll { it == 4 }
+                    }
+
+                }
+            }
+
+            typeViewModel.readAllData.observe(this) {
+                type1.setText(it[0].name)
+                type2.setText(it[1].name)
+                type3.setText(it[2].name)
+                type4.setText(it[3].name)
+            }
+
 
             //Ustawianie dla typu koloru, jesli wybrany
             type1.setOnClickListener{
-                type1.background.setTint(ContextCompat.getColor(this, R.color.brown_important_urgent_on))
-                typeIds.add(1)
+
+                if (typeIds.contains(1))  //is in the list
+                {
+                    uncheckTypes(1)
+                }
+                else
+                {
+                    type1.background.setTint(ContextCompat.getColor(this, R.color.brown_important_urgent_on))
+                    typeIds.add(1)
+                }
+
             }
 
             type2.setOnClickListener{
-                type2.background.setTint(ContextCompat.getColor(this, R.color.brown_important_urgent_on))
-                typeIds.add(2)
+                if (typeIds.contains(2))  //is in the list
+                {
+                    uncheckTypes(2)
+                }
+                else
+                {
+                    type2.background.setTint(ContextCompat.getColor(this, R.color.brown_important_urgent_on))
+                    typeIds.add(2)
+                }
+
             }
 
             type3.setOnClickListener{
-                type3.background.setTint(ContextCompat.getColor(this, R.color.brown_important_urgent_on))
-                typeIds.add(3)
+                if (typeIds.contains(3))  //is in the list
+                {
+                    uncheckTypes(3)
+                }
+                else
+                {
+                    type3.background.setTint(ContextCompat.getColor(this, R.color.brown_important_urgent_on))
+                    typeIds.add(3)
+                }
+
             }
 
             type4.setOnClickListener{
-                type4.background.setTint(ContextCompat.getColor(this, R.color.brown_important_urgent_on))
-                typeIds.add(4)
+                if (typeIds.contains(4))  //is in the list
+                {
+                    uncheckTypes(4)
+                }
+                else
+                {
+                    type4.background.setTint(ContextCompat.getColor(this, R.color.brown_important_urgent_on))
+                    typeIds.add(4)
+                }
+
             }
+
             val alertDialog = builder.create()
             alertDialog.show()
 
@@ -332,9 +463,7 @@ class FilterFragment : AppCompatActivity(),View.OnClickListener{
             sortButton.setOnClickListener{
                 search.clearFocus()
                 //Jesli jest pusto
-                if(finishIds.isEmpty() && typeIds.isEmpty() && startDay.text.isBlank() && startMonth.text.isBlank()
-                    && startYear.text.isBlank() && endDay.text.isBlank() && endMonth.text.isBlank()
-                    && endYear.text.isBlank())
+                if(finishIds.isEmpty() && typeIds.isEmpty() && startDate.text.isBlank() && endDate.text.isBlank())
                 {
                     CoroutineScope(Dispatchers.Main).launch {
                         userViewModel.readAllData.observe(this@FilterFragment, Observer {
@@ -378,11 +507,19 @@ class FilterFragment : AppCompatActivity(),View.OnClickListener{
                     checkText()
                 }
                 //Po dacie
-                if(startDay.text.isNotBlank() && startMonth.text.isNotBlank() && startYear.text.isNotBlank() &&
-                        endDay.text.isNotBlank() && endMonth.text.isNotBlank() && endYear.text.isNotBlank())
+                if(startDate.text.isNotBlank() && endDate.text.isNotBlank())
                 {
-                    val startDateString = "${startYear.text}-${startMonth.text}-${startDay.text}"
-                    val endDateString = "${endYear.text}-${endMonth.text}-${endDay.text}"
+
+                    val startDay = startDate.text.substring(0,2)
+                    val startMonth = startDate.text.substring(5,7)
+                    val startYear = startDate.text.substring(10)
+
+                    val endDay = endDate.text.substring(0,2)
+                    val endMonth = endDate.text.substring(5,7)
+                    val endYear = endDate.text.substring(10)
+
+                    val startDateString = "${startYear}-${startMonth}-${startDay}"
+                    val endDateString = "${endYear}-${endMonth}-${endDay}"
                     val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
                     val startDate = dateFormat.parse(startDateString)?.time ?: 0
                     val endDate = dateFormat.parse(endDateString)?.time ?: 0
@@ -398,11 +535,18 @@ class FilterFragment : AppCompatActivity(),View.OnClickListener{
                     checkText()
                 }
                 //Po dacie i czasie trwania
-                if((startDay.text.isNotBlank() && startMonth.text.isNotBlank() && startYear.text.isNotBlank() &&
-                    endDay.text.isNotBlank() && endMonth.text.isNotBlank() && endYear.text.isNotBlank()) && finishIds.isNotEmpty())
+                if(startDate.text.isNotBlank() && endDate.text.isNotBlank() && finishIds.isNotEmpty())
                 {
-                    val startDateString = "${startYear.text}-${startMonth.text}-${startDay.text}"
-                    val endDateString = "${endYear.text}-${endMonth.text}-${endDay.text}"
+                    val startDay = startDate.text.substring(0,2)
+                    val startMonth = startDate.text.substring(5,7)
+                    val startYear = startDate.text.substring(10)
+
+                    val endDay = endDate.text.substring(0,2)
+                    val endMonth = endDate.text.substring(5,7)
+                    val endYear = endDate.text.substring(10)
+
+                    val startDateString = "${startYear}-${startMonth}-${startDay}"
+                    val endDateString = "${endYear}-${endMonth}-${endDay}"
                     val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
                     val startDate = dateFormat.parse(startDateString)?.time ?: 0
                     val endDate = dateFormat.parse(endDateString)?.time ?: 0
@@ -418,11 +562,18 @@ class FilterFragment : AppCompatActivity(),View.OnClickListener{
                     checkText()
                 }
                 //Po dacie i typie
-                if((startDay.text.isNotBlank() && startMonth.text.isNotBlank() && startYear.text.isNotBlank() &&
-                            endDay.text.isNotBlank() && endMonth.text.isNotBlank() && endYear.text.isNotBlank()) && typeIds.isNotEmpty())
+                if(startDate.text.isNotBlank() && endDate.text.isNotBlank() && typeIds.isNotEmpty())
                 {
-                    val startDateString = "${startYear.text}-${startMonth.text}-${startDay.text}"
-                    val endDateString = "${endYear.text}-${endMonth.text}-${endDay.text}"
+                    val startDay = startDate.text.substring(0,2)
+                    val startMonth = startDate.text.substring(5,7)
+                    val startYear = startDate.text.substring(10)
+
+                    val endDay = endDate.text.substring(0,2)
+                    val endMonth = endDate.text.substring(5,7)
+                    val endYear = endDate.text.substring(10)
+
+                    val startDateString = "${startYear}-${startMonth}-${startDay}"
+                    val endDateString = "${endYear}-${endMonth}-${endDay}"
                     val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
                     val startDate = dateFormat.parse(startDateString)?.time ?: 0
                     val endDate = dateFormat.parse(endDateString)?.time ?: 0
@@ -450,12 +601,18 @@ class FilterFragment : AppCompatActivity(),View.OnClickListener{
                     checkText()
                 }
                 //Po wszystkim
-                if((startDay.text.isNotBlank() && startMonth.text.isNotBlank() && startYear.text.isNotBlank() &&
-                            endDay.text.isNotBlank() && endMonth.text.isNotBlank() && endYear.text.isNotBlank()) && typeIds.isNotEmpty()
-                    && finishIds.isNotEmpty())
+                if(startDate.text.isNotBlank() && endDate.text.isNotBlank() && typeIds.isNotEmpty() && finishIds.isNotEmpty())
                 {
-                    val startDateString = "${startYear.text}-${startMonth.text}-${startDay.text}"
-                    val endDateString = "${endYear.text}-${endMonth.text}-${endDay.text}"
+                    val startDay = startDate.text.substring(0,2)
+                    val startMonth = startDate.text.substring(5,7)
+                    val startYear = startDate.text.substring(10)
+
+                    val endDay = endDate.text.substring(0,2)
+                    val endMonth = endDate.text.substring(5,7)
+                    val endYear = endDate.text.substring(10)
+
+                    val startDateString = "${startYear}-${startMonth}-${startDay}"
+                    val endDateString = "${endYear}-${endMonth}-${endDay}"
                     val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
                     val startDate = dateFormat.parse(startDateString)?.time ?: 0
                     val endDate = dateFormat.parse(endDateString)?.time ?: 0

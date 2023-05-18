@@ -5,19 +5,24 @@
     android:orientation="vertical">
 
     <!--    data    -->
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:background="@color/pr1_beige_background"
+        android:text="Data:"
+        android:textSize="25dp"
+        android:paddingLeft="20dp"/>
+
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="10dp">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:background="@color/pr1_beige_background"
-            android:text="Data:"
-            android:textSize="25dp" />
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -34,7 +39,7 @@
                 android:textSize="20dp" />
 
             <ImageButton
-                android:id="@+id/date_from"
+                android:id="@+id/date_picker_start"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -44,62 +49,71 @@
                 android:scaleX="2"
                 android:scaleY="2" />
 
-            <LinearLayout
+            <TextView
+                android:id="@+id/filter_date_start"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:layout_margin="5dp"
                 android:layout_weight="5"
                 android:gravity="center"
+                android:hint="dd . mm . rrrr"
+                android:text=""
+                android:textSize="18dp"
+                />
 
-                >
+<!--            <LinearLayout-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="50dp"-->
+<!--                android:layout_margin="5dp"-->
+<!--                android:layout_weight="5"-->
+<!--                android:gravity="center"-->
 
-                <EditText
-                    android:id="@+id/filter_date_start_d"
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:inputType="number"
-                    android:text=""
-                    android:hint="dd"
-                    android:textSize="20dp" />
+<!--                >-->
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:gravity="center"
-                    android:text="."
-                    android:textSize="20dp" />
+<!--                <TextView-->
+<!--                    android:id="@+id/filter_date_start_d"-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="50dp"-->
+<!--                    android:layout_weight="1"-->
+<!--                    android:gravity="center"-->
+<!--                    android:hint="dd"-->
+<!--                    android:text=""-->
+<!--                    android:textSize="15dp" />-->
 
-                <EditText
-                    android:id="@+id/filter_date_start_m"
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:inputType="number"
-                    android:text=""
-                    android:hint="mm"
-                    android:textSize="20dp" />
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="50dp"-->
+<!--                    android:gravity="center"-->
+<!--                    android:text="."-->
+<!--                    android:textSize="20dp" />-->
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:gravity="center"
-                    android:text="."
-                    android:textSize="20dp" />
+<!--                <TextView-->
+<!--                    android:id="@+id/filter_date_start_m"-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="50dp"-->
+<!--                    android:layout_weight="1"-->
+<!--                    android:gravity="center"-->
+<!--                    android:hint="mm"-->
+<!--                    android:text=""-->
+<!--                    android:textSize="15dp" />-->
 
-                <EditText
-                    android:id="@+id/filter_date_start_y"
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    android:layout_weight="1.6"
-                    android:gravity="center"
-                    android:inputType="number"
-                    android:text=""
-                    android:hint="rrrr"
-                    android:textSize="20dp" />
-            </LinearLayout>
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="50dp"-->
+<!--                    android:gravity="center"-->
+<!--                    android:text="."-->
+<!--                    android:textSize="20dp" />-->
+
+<!--                <TextView-->
+<!--                    android:id="@+id/filter_date_start_y"-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="50dp"-->
+<!--                    android:layout_weight="1.5"-->
+<!--                    android:gravity="center"-->
+<!--                    android:hint="rrrr"-->
+<!--                    android:text=""-->
+<!--                    android:textSize="15dp" />-->
+<!--            </LinearLayout>-->
 
         </LinearLayout>
 
@@ -118,7 +132,7 @@
                 android:textSize="20dp" />
 
             <ImageButton
-                android:id="@+id/btn_deadline"
+                android:id="@+id/date_picker_end"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -128,72 +142,81 @@
                 android:scaleX="2"
                 android:scaleY="2" />
 
-            <LinearLayout
+            <TextView
+                android:id="@+id/filter_date_end"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:layout_margin="5dp"
                 android:layout_weight="5"
                 android:gravity="center"
+                android:hint="dd . mm . rrrr"
+                android:text=""
+                android:textSize="18dp"
+                />
 
-                >
+<!--            <LinearLayout-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="50dp"-->
+<!--                android:layout_margin="5dp"-->
+<!--                android:layout_weight="5"-->
+<!--                android:gravity="center"-->
 
-                <EditText
-                    android:id="@+id/filter_date_end_d"
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:inputType="number"
-                    android:text=""
-                    android:hint="dd"
-                    android:textSize="20dp" />
+<!--                >-->
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:gravity="center"
-                    android:text="."
-                    android:textSize="20dp" />
+<!--                <TextView-->
+<!--                    android:id="@+id/filter_date_end_d"-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="50dp"-->
+<!--                    android:layout_weight="1"-->
+<!--                    android:gravity="center"-->
+<!--                    android:hint="dd"-->
+<!--                    android:text=""-->
+<!--                    android:textSize="15dp" />-->
 
-                <EditText
-                    android:id="@+id/filter_date_end_m"
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:inputType="number"
-                    android:text=""
-                    android:hint="mm"
-                    android:textSize="20dp" />
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="50dp"-->
+<!--                    android:gravity="center"-->
+<!--                    android:text="."-->
+<!--                    android:textSize="20dp" />-->
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:gravity="center"
-                    android:text="."
-                    android:textSize="20dp" />
+<!--                <TextView-->
+<!--                    android:id="@+id/filter_date_end_m"-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="50dp"-->
+<!--                    android:layout_weight="1"-->
+<!--                    android:gravity="center"-->
+<!--                    android:hint="mm"-->
+<!--                    android:text=""-->
+<!--                    android:textSize="15dp" />-->
 
-                <EditText
-                    android:id="@+id/filter_date_end_y"
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    android:layout_weight="1.6"
-                    android:gravity="center"
-                    android:inputType="number"
-                    android:text=""
-                    android:hint="rrrr"
-                    android:textSize="20dp" />
-            </LinearLayout>
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="50dp"-->
+<!--                    android:gravity="center"-->
+<!--                    android:text="."-->
+<!--                    android:textSize="20dp" />-->
 
+<!--                <TextView-->
+<!--                    android:id="@+id/filter_date_end_y"-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="50dp"-->
+<!--                    android:layout_weight="1.5"-->
+<!--                    android:gravity="center"-->
+<!--                    android:hint="rrrr"-->
+<!--                    android:text=""-->
+<!--                    android:textSize="15dp" />-->
+<!--            </LinearLayout>-->
 
 
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="40dp"
+            android:layout_marginTop="10dp"
             android:background="#33e8cba8"
-            android:gravity="center"
-            android:layout_marginTop="10dp">
+            android:gravity="center">
 
             <TextView
                 android:id="@+id/to_this_day"
@@ -201,13 +224,13 @@
                 android:layout_height="25dp"
                 android:layout_marginHorizontal="8dp"
                 android:layout_weight="1"
+                android:autoSizeMaxTextSize="12sp"
+                android:autoSizeMinTextSize="8sp"
+                android:autoSizeTextType="uniform"
                 android:paddingVertical="5dp"
                 android:text="Chcę zrobić do danego dnia"
                 android:textAlignment="center"
                 android:textColor="@color/brown_important_urgent_on"
-                android:autoSizeMaxTextSize="12sp"
-                android:autoSizeMinTextSize="8sp"
-                android:autoSizeTextType="uniform"
                 android:textStyle="bold" />
 
             <!--                    android:background="#e8cba8"-->
@@ -218,13 +241,14 @@
                 android:layout_height="25dp"
                 android:layout_marginHorizontal="8dp"
                 android:layout_weight="1"
+                android:autoSizeMaxTextSize="12sp"
+                android:autoSizeMinTextSize="8sp"
+                android:autoSizeTextType="uniform"
                 android:paddingVertical="5dp"
                 android:text="Chcę zrobić danego dnia"
                 android:textAlignment="center"
                 android:textColor="#66000000"
-                android:autoSizeMaxTextSize="12sp"
-                android:autoSizeMinTextSize="8sp"
-                android:autoSizeTextType="uniform"                android:textStyle="bold" />
+                android:textStyle="bold" />
 
 
         </LinearLayout>
@@ -233,19 +257,22 @@
     </LinearLayout>
 
     <!--    czas trwania    -->
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:background="@color/pr1_beige_background"
+        android:text="Czas trwania:"
+        android:paddingLeft="20dp"
+        android:textSize="25dp" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="10dp">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:background="@color/pr1_beige_background"
-            android:text="Czas trwania:"
-            android:textSize="25dp" />
 
 
         <LinearLayout
@@ -375,19 +402,23 @@
     </LinearLayout>
 
     <!--    typ     -->
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:background="@color/pr1_beige_background"
+        android:text="Typ:"
+        android:paddingLeft="20dp"
+        android:textSize="25dp" />
+
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="10dp">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:background="@color/pr1_beige_background"
-            android:text="Typ:"
-            android:textSize="25dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -419,8 +450,18 @@
                 android:backgroundTint="@color/brown_important_urgent_off"
                 android:gravity="center"
                 android:text="2"
+                android:maxLines="1"
                 android:textColor="@color/black"
                 android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingHorizontal="40dp">
 
             <TextView
                 android:id="@+id/type3"
@@ -431,6 +472,7 @@
                 android:background="@drawable/shape_periodicity"
                 android:backgroundTint="@color/brown_important_urgent_off"
                 android:gravity="center"
+                android:maxLines="1"
                 android:text="3"
                 android:textColor="@color/black"
                 android:textStyle="bold" />
@@ -460,8 +502,8 @@
         android:layout_gravity="center"
         android:layout_marginTop="10dp"
         android:backgroundTint="@color/pr1_green_button"
-        android:textColor="#E6000000"
-        android:text="Sortuj" />
+        android:text="Sortuj"
+        android:textColor="#E6000000" />
 
 
 </LinearLayout>
