@@ -12,515 +12,523 @@
         android:layout_height="match_parent"
         android:gravity="top"
         android:orientation="vertical"
+        android:padding="10dp"
         >
-        <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/event_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Nazwa Wydarzenia"
-            android:textSize="35dp"
-            android:padding="5dp"
-            android:layout_margin="5dp"
-            android:singleLine="true"
-            />
-
-
-
-
-
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:background="#d8f3dc"
-            >
-            <TextView
-                android:layout_width="120dp"
-                android:layout_height="wrap_content"
-                android:text="Początek: "
-                android:textSize="24dp"
-                android:padding="5dp"
-                android:layout_margin="10dp"
-                />
-            <ImageButton
-                android:id="@+id/btn_begin_event"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:scaleY="2"
-                android:scaleX="2"
-                android:background="@drawable/icon_calendar"
-                android:backgroundTint="@color/black"
-                android:layout_gravity="center"
-                android:layout_margin = "5dp"
-                />
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="50dp"
-                android:layout_weight="5"
-                android:layout_margin="5dp"
-                android:gravity="center"
-
-                >
-                <EditText
-                    android:id="@+id/tv_begin_event_day"
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    android:layout_weight="1"
-                    android:text="dd"
-                    android:inputType="number"
-                    android:gravity="center"
-                    android:textSize="20dp"
-                    />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:text="."
-                    android:textSize="20dp"
-                    android:gravity="center"
-                    />
-
-                <EditText
-                    android:id="@+id/tv_begin_event_month"
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    android:layout_weight="1"
-                    android:text="mm"
-                    android:inputType="number"
-                    android:gravity="center"
-                    android:textSize="20dp"
-                    />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:text="."
-                    android:textSize="20dp"
-                    android:gravity="center"
-                    />
-
-                <EditText
-                    android:id="@+id/tv_begin_event_year"
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    android:layout_weight="1.6"
-                    android:text="rrrr"
-                    android:inputType="number"
-                    android:gravity="center"
-                    android:textSize="20dp"
-                    />
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:background="#d8f3dc"
-            >
-            <TextView
-                android:layout_width="120dp"
-                android:layout_height="wrap_content"
-                android:text=" "
-                android:textSize="25dp"
-                android:padding="5dp"
-                android:layout_margin="10dp"
-                />
-            <ImageButton
-                android:id="@+id/btn_begin_event_time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:scaleY="2"
-                android:scaleX="2"
-                android:background="@drawable/icon_clock"
-                android:backgroundTint="@color/black"
-                android:layout_gravity="center"
-                android:layout_margin = "5dp"
-                />
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="50dp"
-                android:layout_weight="5"
-                android:layout_margin="5dp"
-                android:gravity="center"
-
-                >
-                <EditText
-                    android:id="@+id/tv_begin_event_hour"
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    android:layout_weight="1"
-                    android:text="hh"
-                    android:inputType="number"
-                    android:gravity="center"
-                    android:textSize="20dp"
-                    />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:text=":"
-                    android:textSize="20dp"
-                    android:gravity="center"
-                    />
-
-                <EditText
-                    android:id="@+id/tv_begin_event_min"
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    android:layout_weight="1"
-                    android:text="mm"
-                    android:inputType="number"
-                    android:gravity="center"
-                    android:textSize="20dp"
-                    />
-
-            </LinearLayout>
-
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:background="#d8f3dc"
-            >
-            <TextView
-                android:layout_width="120dp"
-                android:layout_height="wrap_content"
-                android:text="Koniec: "
-                android:textSize="24dp"
-                android:padding="5dp"
-                android:layout_margin="10dp"
-                />
-            <ImageButton
-                android:id="@+id/btn_end_event"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:scaleY="2"
-                android:scaleX="2"
-                android:background="@drawable/icon_calendar"
-                android:backgroundTint="@color/black"
-                android:layout_gravity="center"
-                android:layout_margin = "5dp"
-                />
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="50dp"
-                android:layout_weight="5"
-                android:layout_margin="5dp"
-                android:gravity="center"
-
-                >
-                <EditText
-                    android:id="@+id/tv_end_event_day"
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    android:layout_weight="1"
-                    android:text="dd"
-                    android:inputType="number"
-                    android:gravity="center"
-                    android:textSize="20dp"
-                    />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:text="."
-                    android:textSize="20dp"
-                    android:gravity="center"
-                    />
-
-                <EditText
-                    android:id="@+id/tv_end_event_month"
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    android:layout_weight="1"
-                    android:text="mm"
-                    android:inputType="number"
-                    android:gravity="center"
-                    android:textSize="20dp"
-                    />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:text="."
-                    android:textSize="20dp"
-                    android:gravity="center"
-                    />
-
-                <EditText
-                    android:id="@+id/tv_end_event_year"
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    android:layout_weight="1.6"
-                    android:text="rrrr"
-                    android:inputType="number"
-                    android:gravity="center"
-                    android:textSize="20dp"
-                    />
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:background="#d8f3dc"
-            >
-            <TextView
-                android:layout_width="120dp"
-                android:layout_height="wrap_content"
-                android:text=" "
-                android:textSize="25dp"
-                android:padding="5dp"
-                android:layout_margin="10dp"
-                />
-            <ImageButton
-                android:id="@+id/btn_end_event_time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:scaleY="2"
-                android:scaleX="2"
-                android:background="@drawable/icon_clock"
-                android:backgroundTint="@color/black"
-                android:layout_gravity="center"
-                android:layout_margin = "5dp"
-                />
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="50dp"
-                android:layout_weight="5"
-                android:layout_margin="5dp"
-                android:gravity="center"
-
-                >
-                <EditText
-                    android:id="@+id/tv_end_event_hour"
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    android:layout_weight="1"
-                    android:text="hh"
-                    android:inputType="number"
-                    android:gravity="center"
-                    android:textSize="20dp"
-                    />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:text=":"
-                    android:textSize="20dp"
-                    android:gravity="center"
-                    />
-
-                <EditText
-                    android:id="@+id/tv_end_event_min"
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    android:layout_weight="1"
-                    android:text="mm"
-                    android:inputType="number"
-                    android:gravity="center"
-                    android:textSize="20dp"
-                    />
-
-            </LinearLayout>
-
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            >
-
-            <TextView
-                android:layout_width="130dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:padding="5dp"
-                android:text="Powtarzaj: "
-                android:textSize="23dp" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:gravity="center"
-                >
-
-                <TextView
-                    android:id="@+id/tv_repeat_week"
-                    android:layout_width="0dp"
-                    android:layout_height="40dp"
-                    android:layout_weight="1"
-                    android:layout_margin="2dp"
-
-                    android:background="@drawable/shape_periodicity"
-                    android:backgroundTint="@color/green1"
-                    android:text="tydzień"
-                    android:gravity="center"/>
-
-                <TextView
-                    android:id="@+id/tv_repeat_month"
-                    android:layout_width="0dp"
-                    android:layout_height="40dp"
-                    android:layout_weight="1"
-                    android:layout_margin="2dp"
-
-                    android:background="@drawable/shape_periodicity"
-                    android:backgroundTint="@color/green1"
-                    android:text="miesiąc"
-                    android:gravity="center"/>
-
-                <TextView
-                    android:id="@+id/tv_repeat_year"
-                    android:layout_width="0dp"
-                    android:layout_height="40dp"
-                    android:layout_weight="1"
-                    android:layout_margin="2dp"
-
-                    android:background="@drawable/shape_periodicity"
-                    android:backgroundTint="@color/green1"
-                    android:text="rok"
-                    android:gravity="center"/>
-
-
-
-            </LinearLayout>
-
-
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            >
-            <TextView
-                android:layout_width="130dp"
-                android:layout_height="wrap_content"
-                android:text="Przypomnij: "
-                android:textSize="23dp"
-                android:padding="5dp"
-                android:layout_margin="10dp"
-                />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:gravity="center"
-                >
-
-                <TextView
-                    android:id="@+id/tv_reminder_15min"
-                    android:layout_width="0dp"
-                    android:layout_height="40dp"
-                    android:layout_weight="1"
-                    android:layout_margin="2dp"
-
-                    android:background="@drawable/shape_periodicity"
-                    android:backgroundTint="@color/green1"
-                    android:text="15 min"
-                    android:gravity="center"/>
-
-                <TextView
-                    android:id="@+id/tv_remind_1h"
-                    android:layout_width="0dp"
-                    android:layout_height="40dp"
-                    android:layout_weight="1"
-                    android:layout_margin="2dp"
-
-                    android:background="@drawable/shape_periodicity"
-                    android:backgroundTint="@color/green1"
-                    android:text="1h"
-                    android:gravity="center"/>
-
-                <TextView
-                    android:id="@+id/tv_remind_day"
-                    android:layout_width="0dp"
-                    android:layout_height="40dp"
-                    android:layout_weight="1"
-                    android:layout_margin="2dp"
-
-                    android:background="@drawable/shape_periodicity"
-                    android:backgroundTint="@color/green1"
-                    android:text="1 dzień"
-                    android:gravity="center"/>
-
-
-
-            </LinearLayout>
-
-
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            >
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Lokalizacja: "
-                android:textSize="25dp"
-                android:padding="5dp"
-                android:layout_margin="10dp"
-                />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:gravity="center"
-                >
-                <TextView
-                    android:id="@+id/tv_location"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    />
-
-
-            </LinearLayout>
-
-
-        </LinearLayout>
-
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginTop="20dp"
+            android:gravity="top"
             android:orientation="vertical">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Notatka: "
-                android:textSize="25dp"
-                android:padding="5dp"
-                android:layout_margin="10dp"
-                />
 
             <androidx.appcompat.widget.AppCompatEditText
-                android:id="@+id/tv_note"
+                android:id="@+id/event_title"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
+                android:backgroundTint="@color/brown_important_urgent_on"
+                android:hint="Nazwa Wydarzenia"
+                android:inputType="textCapSentences"
                 android:padding="5dp"
+                android:singleLine="true"
+                android:textColor="#99000000"
                 android:textSize="25dp" />
 
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:gravity="center">
+
+
+                <TextView
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:text="Początek:"
+                    android:textColor="#99000000"
+                    android:textSize="20dp" />
+
+                <ImageButton
+                    android:id="@+id/btn_begin_event"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/calendar"
+                    android:backgroundTint="@color/pr1_brown_dark"
+                    android:scaleX="2"
+                    android:scaleY="2" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_margin="5dp"
+                    android:layout_weight="5"
+                    android:gravity="center"
+
+                    >
+
+                    <EditText
+                        android:id="@+id/tv_begin_event_day"
+                        android:layout_width="0dp"
+                        android:layout_height="50dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:inputType="number"
+                        android:text="dd"
+                        android:textSize="18dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="50dp"
+                        android:gravity="center"
+                        android:text="."
+                        android:textSize="18dp" />
+
+                    <EditText
+                        android:id="@+id/tv_begin_event_month"
+                        android:layout_width="0dp"
+                        android:layout_height="50dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:inputType="number"
+                        android:text="mm"
+                        android:textSize="18dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="50dp"
+                        android:gravity="center"
+                        android:text="."
+                        android:textSize="18dp" />
+
+                    <EditText
+                        android:id="@+id/tv_begin_event_year"
+                        android:layout_width="0dp"
+                        android:layout_height="50dp"
+                        android:layout_weight="1.6"
+                        android:gravity="center"
+                        android:inputType="number"
+                        android:text="rrrr"
+                        android:textSize="18dp" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:gravity="center">
+
+                <TextView
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:text=" "
+                    android:textSize="20dp" />
+
+                <ImageButton
+                    android:id="@+id/btn_begin_event_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/clock"
+                    android:backgroundTint="@color/pr1_brown_dark"
+                    android:scaleX="2"
+                    android:scaleY="2" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:layout_margin="5dp"
+                    android:layout_weight="5"
+                    android:gravity="center"
+
+                    >
+
+                    <EditText
+                        android:id="@+id/tv_begin_event_hour"
+                        android:layout_width="0dp"
+                        android:layout_height="50dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:inputType="number"
+                        android:text="hh"
+                        android:textSize="18dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="50dp"
+                        android:gravity="center"
+                        android:text=":"
+                        android:textSize="18dp" />
+
+                    <EditText
+                        android:id="@+id/tv_begin_event_min"
+                        android:layout_width="0dp"
+                        android:layout_height="50dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:inputType="number"
+                        android:text="mm"
+                        android:textSize="18dp" />
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:gravity="center">
+
+
+                <TextView
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:text="Koniec:"
+                    android:textColor="#99000000"
+                    android:textSize="20dp" />
+
+                <ImageButton
+                    android:id="@+id/btn_end_event"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/calendar"
+                    android:backgroundTint="@color/pr1_brown_dark"
+                    android:scaleX="2"
+                    android:scaleY="2" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_margin="5dp"
+                    android:layout_weight="5"
+                    android:gravity="center"
+
+                    >
+
+                    <EditText
+                        android:id="@+id/tv_end_event_day"
+                        android:layout_width="0dp"
+                        android:layout_height="50dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:inputType="number"
+                        android:text="dd"
+                        android:textSize="18dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="50dp"
+                        android:gravity="center"
+                        android:text="."
+                        android:textSize="18dp" />
+
+                    <EditText
+                        android:id="@+id/tv_end_event_month"
+                        android:layout_width="0dp"
+                        android:layout_height="50dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:inputType="number"
+                        android:text="mm"
+                        android:textSize="18dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="50dp"
+                        android:gravity="center"
+                        android:text="."
+                        android:textSize="18dp" />
+
+                    <EditText
+                        android:id="@+id/tv_end_event_year"
+                        android:layout_width="0dp"
+                        android:layout_height="50dp"
+                        android:layout_weight="1.6"
+                        android:gravity="center"
+                        android:inputType="number"
+                        android:text="rrrr"
+                        android:textSize="18dp" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:gravity="center">
+
+                <TextView
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:text=" "
+                    android:textSize="20dp" />
+
+                <ImageButton
+                    android:id="@+id/btn_end_event_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/clock"
+                    android:backgroundTint="@color/pr1_brown_dark"
+                    android:scaleX="2"
+                    android:scaleY="2" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:layout_margin="5dp"
+                    android:layout_weight="5"
+                    android:gravity="center"
+
+                    >
+
+                    <EditText
+                        android:id="@+id/tv_end_event_hour"
+                        android:layout_width="0dp"
+                        android:layout_height="50dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:inputType="number"
+                        android:text="hh"
+                        android:textSize="18dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="50dp"
+                        android:gravity="center"
+                        android:text=":"
+                        android:textSize="18dp" />
+
+                    <EditText
+                        android:id="@+id/tv_end_event_min"
+                        android:layout_width="0dp"
+                        android:layout_height="50dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:inputType="number"
+                        android:text="mm"
+                        android:textSize="18dp" />
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="130dp"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:text="Przypomnij: "
+                    android:textColor="#99000000"
+                    android:textSize="20dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+
+                    <TextView
+                        android:id="@+id/tv_reminder_15min"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_margin="2dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/shape_periodicity"
+                        android:backgroundTint="@color/brown_important_urgent_off"
+                        android:gravity="center"
+                        android:text="15 min"
+                        android:textColor="@color/black"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tv_remind_1h"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_margin="2dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/shape_periodicity"
+                        android:backgroundTint="@color/brown_important_urgent_off"
+                        android:gravity="center"
+                        android:text="1h"
+                        android:textColor="@color/black"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tv_remind_day"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_margin="2dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/shape_periodicity"
+                        android:backgroundTint="@color/brown_important_urgent_off"
+                        android:gravity="center"
+                        android:text="1 dzień"
+                        android:textColor="@color/black"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="130dp"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:text="Powtarzaj co: "
+                    android:textColor="#99000000"
+                    android:textSize="20dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+
+                    <TextView
+                        android:id="@+id/tv_repeat_week"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_margin="2dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/shape_periodicity"
+                        android:backgroundTint="@color/brown_important_urgent_off"
+                        android:gravity="center"
+                        android:text="tydzień"
+                        android:textColor="@color/black"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tv_repeat_month"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_margin="2dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/shape_periodicity"
+                        android:backgroundTint="@color/brown_important_urgent_off"
+                        android:gravity="center"
+                        android:text="miesiąc"
+                        android:textColor="@color/black"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tv_repeat_year"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_margin="2dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/shape_periodicity"
+                        android:backgroundTint="@color/brown_important_urgent_off"
+                        android:gravity="center"
+                        android:text="rok"
+                        android:textColor="@color/black"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:gravity="bottom|start"
+                    android:layout_height="50dp"
+                    android:paddingHorizontal="5dp"
+                    android:paddingTop="5dp"
+                    android:text="Notatka: "
+                    android:textColor="#99000000"
+                    android:textSize="20dp"
+                    />
+
+                <EditText
+                    android:id="@+id/tv_note"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:backgroundTint="@color/brown_important_urgent_on"
+                    android:ems="10"
+                    android:gravity="start|top"
+                    android:inputType="textMultiLine|textCapSentences"
+                    android:textSize="15dp" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:gravity="bottom|start"
+
+                    android:paddingHorizontal="5dp"
+                    android:paddingTop="5dp"
+                    android:text="Lokalizacja: "
+                    android:textColor="#99000000"
+                    android:textSize="20dp" />
+
+                <EditText
+                    android:id="@+id/tv_location"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:backgroundTint="@color/brown_important_urgent_on"
+                    android:ems="10"
+                    android:gravity="start|top"
+                    android:inputType="textMultiLine|textCapSentences"
+                    android:textSize="15dp" />
+
+            </LinearLayout>
+
         </LinearLayout>
+
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+
+        </LinearLayout>
+
 
 
         <LinearLayout
@@ -530,23 +538,25 @@
             android:gravity="center"
             >
             <Button
-                android:id="@+id/btn_create"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="15dp"
-                android:textSize="20dp"
-                android:text="utwórz"
-                android:padding="10dp"
-                android:backgroundTint="#90be6d"
-                />
-
-            <Button
                 android:id="@+id/btn_cancel"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="15dp"
                 android:textSize="20dp"
-                android:text="anuluj"
+                android:text="Anuluj"
+                android:padding="10dp"
+                android:backgroundTint="#90be6d"
+                android:textColor="@color/black"
+                />
+
+            <Button
+                android:id="@+id/btn_create"
+                android:textColor="@color/black"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                android:textSize="20dp"
+                android:text="Utwórz"
                 android:padding="10dp"
                 android:backgroundTint="#90be6d"
                 />
