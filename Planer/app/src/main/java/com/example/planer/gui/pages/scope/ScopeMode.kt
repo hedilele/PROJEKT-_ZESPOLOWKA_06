@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.recyclerview.widget.RecyclerView
 import com.example.planer.ViewModel.ScopeViewModel
 import com.example.planer.databinding.ActivityScopeModeBinding
+import com.example.planer.entities.Notes
 import com.example.planer.entities.Tasks
 import kotlinx.coroutines.coroutineScope
 import java.time.LocalDateTime
@@ -39,10 +40,14 @@ class ScopeMode : AppCompatActivity(), CardAdapter.OnButtonClickListener {
 
         super.onCreate(savedInstanceState)
 
+        viewModel.getTypes().observe(this) {
+            adapter.updateTypes(it)
+        }
+
         binding = ActivityScopeModeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        adapter = CardAdapter(emptyMap())
+        adapter = CardAdapter(emptyMap(), emptyList())
         adapter.setOnItemClickListener(this)
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = UnscrollableLinearLayoutManager(this)
@@ -69,8 +74,6 @@ class ScopeMode : AppCompatActivity(), CardAdapter.OnButtonClickListener {
         }
     }
 
-
-    @RequiresApi(Build.VERSION_CODES.O)
     override suspend fun onLaterButtonClick(item: Tasks) {
         val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
         if (item.importance == 0 && item.urgency == 0
@@ -83,9 +86,9 @@ class ScopeMode : AppCompatActivity(), CardAdapter.OnButtonClickListener {
         }
     }
 
-    override suspend fun onDoneButtonClick(item: Tasks) {
+    override suspend fun onDoneButtonClick(task: Tasks, note: Notes?) {
         coroutineScope {
-            viewModel.setTaskAsDone(item)
+            viewModel.setTaskAsDone(this@ScopeMode, task, note)
         }
     }
 }

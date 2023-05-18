@@ -10,30 +10,30 @@
     android:elevation="8dp">
 
     <LinearLayout
+        android:id="@+id/scope_card"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:background="@color/pr1_beige_background"
-        >
+        android:background="@drawable/shape_single_task"
+        android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/titleTextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/pr1_green_text"
-                android:text="Tytuł"
-                android:padding="15dp"
-                android:textSize="22sp"
-                android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+        <TextView
+            android:id="@+id/titleTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="15dp"
+            android:text="Tytuł"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            android:textColor="@color/pr1_green_text"
+            android:textSize="22sp" />
 
-            <TextView
-                android:id="@+id/deadlineTextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="deadline"
-                android:textSize="18sp"
-                android:paddingHorizontal="15dp"
-                android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+        <TextView
+            android:id="@+id/deadlineTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="15dp"
+            android:text="deadline"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/noteTextView"
@@ -41,9 +41,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:padding="15dp"
-            android:textSize="18dp"
             android:text="Opis:"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textSize="18dp" />
 
         <Space
             android:layout_width="match_parent"
@@ -59,12 +59,12 @@
                 android:id="@+id/postponeButton"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:maxWidth="320dp"
                 android:layout_margin="16dp"
-                android:textColor="#E6000000"
+                android:layout_weight="1"
                 android:backgroundTint="@color/pr1_green_button"
-                android:text="Potem" />
+                android:maxWidth="320dp"
+                android:text="Potem"
+                android:textColor="#E6000000" />
 
             <Space
                 android:layout_width="wrap_content"
@@ -75,12 +75,12 @@
                 android:id="@+id/doneButton"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:maxWidth="320dp"
-                android:backgroundTint="@color/pr1_green_button"
                 android:layout_margin="16dp"
-                android:textColor="#E6000000"
-                android:text="Zrobione" />
+                android:layout_weight="1"
+                android:backgroundTint="@color/pr1_green_button"
+                android:maxWidth="320dp"
+                android:text="Zrobione"
+                android:textColor="#E6000000" />
         </LinearLayout>
     </LinearLayout>
 

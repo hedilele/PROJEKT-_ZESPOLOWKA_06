@@ -14,4 +14,8 @@ class ScopeRepository(private val tasksDAO: TasksDAO) {
         tasksDAO.update(task)
     }
 
+    suspend fun removeTask(task: Tasks) {
+        tasksDAO.delete(task)
+    }
+
 }
