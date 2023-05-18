@@ -49,7 +49,7 @@ import java.util.*
  * Klasa do listowania, zwraca pelna liste taskow i pozwala wylistowac taski roznymi kategorami
  * (typ, czas trwania, data), dodatkowo pozwala wyszukiwac taski po nazwie
  */
-class FilterFragment : AppCompatActivity(),View.OnClickListener{
+class FilterFragment : AppCompatActivity(){
     //Podlaczanie xmla dialog_filter
     private lateinit var userViewModel: TaskViewModel
     private lateinit var noteViewModel: NoteViewModel
@@ -86,7 +86,7 @@ class FilterFragment : AppCompatActivity(),View.OnClickListener{
 
         setContentView(binding.root)
 
-        val search = findViewById<AppCompatEditText>(R.id.search) //view.findViewById<AppCompatEditText>(R.id.search)
+        val search = findViewById<AppCompatEditText>(R.id.search)
 
         noteViewModel = ViewModelProvider(this)[NoteViewModel::class.java]
         userViewModel = ViewModelProvider(this)[TaskViewModel::class.java]
@@ -108,15 +108,6 @@ class FilterFragment : AppCompatActivity(),View.OnClickListener{
             }
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int)
             {
-                /*
-                CoroutineScope(Dispatchers.Main).launch {
-                    userViewModel.readTasksWithSearchEdit(searchQuery)
-                        .observe(getViewLifecycleOwner(), Observer { //Tutaj zmiana kazdego na this@FilterFragment chyba
-                            adapter.updateList(it.toMutableList(), 0)
-                        })
-                    adapter.notifyDataSetChanged()
-                }
-                 */
                 //Pobieram to co jest w textview
                 val searchQuery = s.toString().trim()
                 if(filteredList.isEmpty())
@@ -171,26 +162,18 @@ class FilterFragment : AppCompatActivity(),View.OnClickListener{
             val btn_start_date = dialogView.findViewById<ImageButton>(R.id.date_picker_start)
             val btn_end_date = dialogView.findViewById<ImageButton>(R.id.date_picker_end)
 
-
             //Button do sortowania - pozniej moze byc czyms innym
             val sortButton = dialogView.findViewById<Button>(R.id.sortButton)
 
             var typeIds = mutableListOf<Int>()
-
-            //TODO kiedy mam jakis textView i chce go zaznaczyc i odznaczyc
-
-
             finishIds = mutableListOf()
             typeIds = mutableListOf()
-
-
 
             fun setDateBlocks(date: String) : String
             {
                 val table = date.split('-')
                 return table[2] + " . " + table[1] + " . " + table[0]
             }
-
 
             btn_start_date.setOnClickListener {
 
@@ -202,8 +185,6 @@ class FilterFragment : AppCompatActivity(),View.OnClickListener{
                     startDate.setText(setDateBlocks(localDate.toString()))
                     endDate.setText(setDateBlocks(localDate.plusYears(10).toString()))
                 }
-
-
 
                 val datePicker = PrimeDatePicker.dialogWith(primeCalendar)
                     .pickSingleDay(callback)
@@ -281,8 +262,6 @@ class FilterFragment : AppCompatActivity(),View.OnClickListener{
                     }
                 }
             }
-
-
 
             //Ustawianie dla duration wyboru, jesli wybrany
             duration1.setOnClickListener{
@@ -403,7 +382,6 @@ class FilterFragment : AppCompatActivity(),View.OnClickListener{
                 type3.setText(it[2].name)
                 type4.setText(it[3].name)
             }
-
 
             //Ustawianie dla typu koloru, jesli wybrany
             type1.setOnClickListener{
@@ -635,7 +613,6 @@ class FilterFragment : AppCompatActivity(),View.OnClickListener{
             }
 
         }
-
         //Ustawianie wyswietlania taskow w recycle view do listowania
         userViewModel.readAllData.observe(this@FilterFragment, Observer {
             adapter.updateList(it.toMutableList())
@@ -657,133 +634,12 @@ class FilterFragment : AppCompatActivity(),View.OnClickListener{
         }
 
     }
-
     //Sprawdzam czy editText jest pusty, jesli nie to usuwam
     private fun checkText()
     {
         if(search.text?.isNotBlank() == true)
         {
             search.setText("")
-        }
-    }
-
-    override fun onClick(p0: View?) {
-        when (p0?.id) {
-            R.id.duration1 -> {
-                    uncheckDuration()
-                    duration1.background.setTint(
-                        ContextCompat.getColor(
-                            this,
-                            R.color.brown_important_urgent_on
-                        )
-                    )
-                    finishIds.add(1)
-                    duration = 1
-            }
-            R.id.duration2 -> {
-                    uncheckDuration()
-                    if (duration == 2) {
-                        duration1.getBackground()
-                            .setTint((getResources().getColor(R.color.brown_important_urgent_on)))
-                        duration = 1
-                    } else {
-                        duration2.getBackground()
-                            .setTint((getResources().getColor(R.color.brown_important_urgent_on)))
-                        duration = 2
-                    }
-                    finishIds.add(2)
-            }
-            R.id.duration3 -> {
-                    uncheckDuration()
-                    if (duration == 6) {
-                        //binding.duration2.setColorFilter(getResources().getColor(R.color.hard_red));
-                        duration1.getBackground()
-                            .setTint((getResources().getColor(R.color.brown_important_urgent_on)))
-                        duration = 1
-                    } else {
-                        duration3.getBackground()
-                            .setTint((getResources().getColor(R.color.brown_important_urgent_on)))
-                        duration = 6
-                    }
-                    finishIds.add(6)
-            }
-            R.id.duration4 -> {
-                    uncheckDuration()
-                    if (duration == 12) {
-                        //binding.duration2.setColorFilter(getResources().getColor(R.color.hard_red));
-                        duration1.getBackground()
-                            .setTint((getResources().getColor(R.color.brown_important_urgent_on)))
-                        duration = 1
-                    } else {
-                        duration4.getBackground()
-                            .setTint((getResources().getColor(R.color.brown_important_urgent_on)))
-                        duration = 12
-                    }
-                    finishIds.add(12)
-            }
-            R.id.duration5 -> {
-                    uncheckDuration()
-                    if (duration == 24) {
-                        //binding.duration2.setColorFilter(getResources().getColor(R.color.hard_red));
-                        duration1.getBackground()
-                            .setTint((getResources().getColor(R.color.brown_important_urgent_on)))
-                        duration = 1
-                    } else {
-                        duration5.getBackground()
-                            .setTint((getResources().getColor(R.color.brown_important_urgent_on)))
-                        duration = 24
-                    }
-                    finishIds.add(24)
-            }
-            R.id.duration6 -> {
-                    uncheckDuration()
-                    if (duration == 30) {
-                        //binding.duration2.setColorFilter(getResources().getColor(R.color.hard_red));
-                        duration1.getBackground()
-                            .setTint((getResources().getColor(R.color.brown_important_urgent_on)))
-                        duration = 1
-                    } else {
-                        duration6.getBackground()
-                            .setTint((getResources().getColor(R.color.brown_important_urgent_on)))
-                        duration = 30
-                    }
-                    finishIds.add(30)
-            }
-    }
-}
-
-    private fun uncheckDuration() {
-        when (duration) {
-            1 -> {
-                duration1.getBackground()
-                    .setTint((getResources().getColor(R.color.brown_important_urgent_off)))
-            }
-
-            2 -> {
-                duration2.getBackground()
-                    .setTint((getResources().getColor(R.color.brown_important_urgent_off)))
-            }
-
-            6 -> {
-                duration3.getBackground()
-                    .setTint((getResources().getColor(R.color.brown_important_urgent_off)))
-            }
-
-            12 -> {
-                duration4.getBackground()
-                    .setTint((getResources().getColor(R.color.brown_important_urgent_off)))
-            }
-
-            24 -> {
-                duration5.getBackground()
-                    .setTint((getResources().getColor(R.color.brown_important_urgent_off)))
-
-            }
-
-            30 -> {
-                duration6.getBackground()
-                    .setTint((getResources().getColor(R.color.brown_important_urgent_off)))
-            }
         }
     }
 }
