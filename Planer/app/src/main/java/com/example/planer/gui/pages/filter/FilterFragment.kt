@@ -200,7 +200,10 @@ class FilterFragment : AppCompatActivity(),View.OnClickListener{
                         .atZone(ZoneId.systemDefault())
                         .toLocalDate()
                     startDate.setText(setDateBlocks(localDate.toString()))
+                    endDate.setText(setDateBlocks(localDate.plusYears(10).toString()))
                 }
+
+
 
                 val datePicker = PrimeDatePicker.dialogWith(primeCalendar)
                     .pickSingleDay(callback)
