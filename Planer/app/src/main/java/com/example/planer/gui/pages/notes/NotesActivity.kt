@@ -83,6 +83,7 @@ class NotesActivity : AppCompatActivity() {
         //habitViewModel = ViewModelProvider(this)[HabitViewModel::class.java]
         noteViewModel.readAllShortNotes.observe(this, Observer {
             adapter.updateList(it.toMutableList())
+            adapter.notifyDataSetChanged()
         })
 
 

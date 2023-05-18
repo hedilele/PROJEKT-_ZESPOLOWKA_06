@@ -1,8 +1,10 @@
 package com.example.planer.gui.pages.home
 
 import android.app.AlertDialog
+import android.content.ContentValues.TAG
 import android.content.res.ColorStateList
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -168,7 +170,7 @@ class HomeFragment : Fragment() {
 
                     checkIfEmpty(adapter2.list, adapter3.list, adapter4.list, adapter5.list, view)
 
-                    hideRestOftasks(view)
+
                 }
             }
         }
@@ -181,11 +183,18 @@ class HomeFragment : Fragment() {
             adapter4.updateListOfNotes(it.toMutableList())
             adapter5.updateListOfNotes(it.toMutableList())
 
-            adapter.updateList(list)
-            adapter2.updateList(list)
-            adapter3.updateList(list)
-            adapter4.updateList(list)
-            adapter5.updateList(list)
+//            adapter.updateList(list)
+//            adapter2.updateList(list)
+//            adapter3.updateList(list)
+//            adapter4.updateList(list)
+//            adapter5.updateList(list)
+
+            adapter.notifyDataSetChanged()
+            adapter2.notifyDataSetChanged()
+            adapter3.notifyDataSetChanged()
+            adapter4.notifyDataSetChanged()
+            adapter5.notifyDataSetChanged()
+
         }
 
 
@@ -197,11 +206,17 @@ class HomeFragment : Fragment() {
             adapter4.updateListOfTypes(it.toMutableList())
             adapter5.updateListOfTypes(it.toMutableList())
 
-            adapter.updateList(list)
-            adapter2.updateList(list)
-            adapter3.updateList(list)
-            adapter4.updateList(list)
-            adapter5.updateList(list)
+//            adapter.updateList(list)
+//            adapter2.updateList(list)
+//            adapter3.updateList(list)
+//            adapter4.updateList(list)
+//            adapter5.updateList(list)
+
+            adapter.notifyDataSetChanged()
+            adapter2.notifyDataSetChanged()
+            adapter3.notifyDataSetChanged()
+            adapter4.notifyDataSetChanged()
+            adapter5.notifyDataSetChanged()
 
         }
 
@@ -209,8 +224,8 @@ class HomeFragment : Fragment() {
 
 
         view.today_title.setOnClickListener {
-            if (view.today_task_list.isVisible) view.today_task_list.visibility = View.GONE
-            else view.today_task_list.visibility = View.VISIBLE
+            //if (view.today_task_list.isVisible) view.today_task_list.visibility = View.GONE
+            //else view.today_task_list.visibility = View.VISIBLE
         }
         view.tomorrow_title.setOnClickListener {
             if (view.tomorrow_task_list.isVisible) view.tomorrow_task_list.visibility = View.GONE
