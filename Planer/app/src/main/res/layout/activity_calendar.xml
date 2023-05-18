@@ -27,6 +27,8 @@
             <TextView
                 android:id="@+id/previousMonth"
                 android:layout_width="0dp"
+                android:textColor="@color/green_calendar"
+
                 android:text="➜"
                 android:gravity="center"
                 android:layout_height="wrap_content"
@@ -43,9 +45,11 @@
                 android:layout_weight="2"
                 android:layout_height="wrap_content"
                 android:text="Feb 2021"
+                android:textStyle="bold"
                 android:textSize="20sp"
+                android:textColor="@color/black"
                 android:textAlignment="center"
-                android:textColor="@color/black"/>
+                />
 
             <TextView
                 android:id="@+id/nextMonth"
@@ -55,6 +59,7 @@
                 android:background="@null"
                 android:textStyle="bold"
                 android:text="➜"
+                android:textColor="@color/green_calendar"
                 android:gravity="center"
                 android:textSize="20sp"/>
 
@@ -72,7 +77,9 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="P"
-                android:textColor="@color/purple_calendar"
+                android:textStyle="bold"
+
+                android:textColor="@color/green_calendar"
                 android:textAlignment="center"
                 android:textSize="16sp"/>
 
@@ -81,7 +88,9 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="W"
-                android:textColor="@color/purple_calendar"
+                android:textStyle="bold"
+
+                android:textColor="@color/green_calendar"
                 android:textAlignment="center"
                 android:textSize="16sp"/>
 
@@ -90,7 +99,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Ś"
-                android:textColor="@color/purple_calendar"
+                android:textStyle="bold"
+                android:textColor="@color/green_calendar"
                 android:textAlignment="center"
                 android:textSize="16sp"/>
 
@@ -99,7 +109,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="C"
-                android:textColor="@color/purple_calendar"
+                android:textStyle="bold"
+                android:textColor="@color/green_calendar"
                 android:textAlignment="center"
                 android:textSize="16sp"/>
 
@@ -108,7 +119,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="P"
-                android:textColor="@color/purple_calendar"
+                android:textStyle="bold"
+                android:textColor="@color/green_calendar"
                 android:textAlignment="center"
                 android:textSize="16sp"/>
 
@@ -117,7 +129,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="S"
-                android:textColor="@color/purple_calendar"
+                android:textStyle="bold"
+                android:textColor="@color/green_calendar"
                 android:textAlignment="center"
                 android:textSize="16sp"/>
             <TextView
@@ -125,7 +138,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="N"
-                android:textColor="@color/purple_calendar"
+                android:textStyle="bold"
+                android:textColor="@color/green_calendar"
                 android:textAlignment="center"
                 android:textSize="16sp"/>
 

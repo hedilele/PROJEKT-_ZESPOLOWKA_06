@@ -13,7 +13,7 @@ data class Calendar (
     val startDate: String="",
     @ColumnInfo("end_date") // użytkownik może zaznaczyć i początek i koniec, domyślnie wydarzenie trwa 1h
     val endDate: String="",
-    @ColumnInfo("type_id")// nieee!!!
+    @ColumnInfo("type_id")// tu przechowuje id parent eventu, moze sie przyda potem
     val typeId: Int=0,
     @ColumnInfo("reminder")
     val reminder: Int=0,
@@ -22,7 +22,7 @@ data class Calendar (
     @ColumnInfo("repeat_id") // co 0- wcale 1 - tydzień, miesiąc, rok , (np. na 5 lat wprzód)
     val repeatId: Int=0,
     @ColumnInfo("note_id")
-    var noteId: Int=0,
+    var noteId: Int,
     @ColumnInfo("name")
     val name: String=""
 )

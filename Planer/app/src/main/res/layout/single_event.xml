@@ -67,13 +67,13 @@
             android:layout_height="match_parent"
             android:layout_margin="5dp"
             android:layout_weight="2"
-            android:background="#F5E7CB"
+            android:background="@drawable/shape_event_title_hour"
             android:gravity="center_vertical"
             android:paddingStart="10dp"
             android:paddingEnd="5dp"
             android:text="Sample Title"
             android:textColor="#4a4a4a"
-            android:textSize="16sp"
+            android:textSize="18sp"
             android:textStyle="bold"/>
 
         <TextView
@@ -82,12 +82,12 @@
             android:layout_height="match_parent"
             android:layout_margin="5dp"
             android:layout_weight="1"
-            android:background="#F5E7CB"
+            android:background="@drawable/shape_event_title_hour"
             android:gravity="center"
             android:text="Oct 12, 2023"
             android:textColor="#4a4a4a"
-            android:textSize="14sp"
-            android:textStyle="italic"/>
+            android:textSize="18sp"
+            />
         <LinearLayout
             android:id="@+id/btn_edit_event"
             android:layout_width="0dp"

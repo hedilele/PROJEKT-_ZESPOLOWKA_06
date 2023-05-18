@@ -3,25 +3,30 @@ package com.example.planer.gui.pages
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.provider.ContactsContract.CommonDataKinds.Note
 import android.view.*
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.example.planer.R
 import com.example.planer.ViewModel.CalendarViewModel
+import com.example.planer.ViewModel.NoteViewModel
 import com.example.planer.databinding.ActivityCalendarBinding
 import com.example.planer.entities.Calendar
+import com.example.planer.entities.Notes
 import com.example.planer.gui.AdapterCalendarList
 import com.example.planer.gui.AddingEventActivity
 import com.example.planer.gui.CalendarAdapter
 import kotlinx.android.synthetic.main.activity_calendar.*
 import kotlinx.android.synthetic.main.activity_calendar.view.*
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.YearMonth
@@ -33,6 +38,7 @@ import java.util.*
 class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener, CalendarAdapter.OnLongItemListener {
     private lateinit var binding: ActivityCalendarBinding
     private lateinit var calendarViewModel: CalendarViewModel
+    private lateinit var notesViewModel: NoteViewModel
     private var eventsListoftheDay = mutableListOf<Calendar>() //klikniete eventy z danego dnia
     private var eventsListAll = mutableListOf<Calendar>() //wszystkie eventy
 
@@ -46,7 +52,7 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener, CalendarAda
     private var eventsOfMonthList = mutableListOf<Calendar>() //klikniete eventy
 
 
-
+    var notesList = mutableListOf<Notes>()
 
 
 
@@ -61,9 +67,8 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener, CalendarAda
         val view = inflater.inflate(R.layout.activity_calendar, container, false)
 
 
-
-
         calendarViewModel = ViewModelProvider(this).get(CalendarViewModel::class.java)
+        notesViewModel = ViewModelProvider(this).get(NoteViewModel::class.java)
 
 
         view.nextMonth.setOnClickListener{
@@ -81,18 +86,31 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener, CalendarAda
         setMonthView()
 
 
+
         val rv = view.list_rv
         adapter = AdapterCalendarList(
-            eventsListoftheDay,eventsListAll,
-            { updateId -> calendarViewModel.updateCalendar(updateId)},
-            { deleteId -> calendarViewModel.deleteCalendarDateById(deleteId)},
+            eventsListoftheDay,
+            eventsListAll,
+            notesList,
+            { updateEvent,updateNote  ->
+                calendarViewModel.updateCalendar(updateEvent)
+                notesViewModel.updateNote(updateNote)
+
+            },
+            { deleteId, noteId ->
+                calendarViewModel.deleteCalendarDateById(deleteId)
+                notesViewModel.deleteNoteById(noteId)
+            },
         )
         rv?.adapter = adapter
         rv?.layoutManager = LinearLayoutManager(requireContext())
 
+
+
+
         // observe changes to eventsList and update adapter
         calendarViewModel.getAll.observe(viewLifecycleOwner, Observer {
-            eventsListoftheDay.clear()
+            eventsListoftheDay = mutableListOf()
             val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
             for (event in it) {
                 val eventDate = sdf.parse(event.startDate)?.let { sdf.format(it) } ?: ""
@@ -100,17 +118,21 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener, CalendarAda
                     eventsListoftheDay.add(event)
                 }
 
-
             }
             adapter.updateList(eventsListoftheDay)
             adapter.updateList2(it.toMutableList())
             //calview.setEvents(eventswithicons)
             eventsListAll = it.toMutableList()
+
             setMonthView()
         })
 
 
-
+        notesViewModel.readAllData.observe(viewLifecycleOwner, Observer {
+            adapter.updateListOfNotes(it.toMutableList())
+            // adapter.updateList(mutableListOf())
+            //adapter.updateList(eventsListoftheDay)
+        })
 
         view.add_event_to_calendar.setOnClickListener {
             activity?.let{
@@ -155,13 +177,21 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener, CalendarAda
     @RequiresApi(Build.VERSION_CODES.O)
 
     override fun onLongItemClick(position: Int, dayText: String?){
-        activity?.let{
-            val intent = Intent(it, AddingEventActivity::class.java)
-            val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
+        if (dayText!!.isEmpty())
+        {
+            return
+        }
+        else {
+            activity?.let {
+                val intent = Intent(it, AddingEventActivity::class.java)
+                val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
 
-            var selectedDatenewinmilis = sdf.parse(selectedDatenew!!.withDayOfMonth(dayText!!.toInt()).toString()+" 12:00")?.time
-            intent.putExtra("selected_date", selectedDatenewinmilis)
-            it.startActivity(intent)
+                var selectedDatenewinmilis = sdf.parse(
+                    selectedDatenew!!.withDayOfMonth(dayText!!.toInt()).toString() + " 12:00"
+                )?.time
+                intent.putExtra("selected_date", selectedDatenewinmilis)
+                it.startActivity(intent)
+            }
         }
     }
 
@@ -184,7 +214,6 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener, CalendarAda
         val yearMonth = YearMonth.from(selectedDatenew)
 
         eventsOfMonthList = eventsListAll.filter {it.startDate.substring(0,7) ==yearMonth.toString()}.toMutableList()
-
 
 
         val calendarAdapter = CalendarAdapter(daysInMonth, selectedDatenew.toString(), eventsOfMonthList,this, this)

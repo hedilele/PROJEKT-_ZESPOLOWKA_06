@@ -6,6 +6,7 @@ import android.app.TimePickerDialog
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
@@ -16,6 +17,9 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.planer.R
 import com.example.planer.entities.Calendar
+import com.example.planer.entities.Notes
+import com.example.planer.gui.callBacks.NoteDiffCallback
+import kotlinx.android.synthetic.main.dialod_when_title_empty.view.*
 import kotlinx.android.synthetic.main.single_event.view.*
 
 import java.text.SimpleDateFormat
@@ -25,8 +29,9 @@ import java.util.*
 class AdapterCalendarList (
     var list: MutableList<Calendar>,
     var list2: MutableList<Calendar>,
-    private val updateListener: (calendar:Calendar) -> Unit,
-    private val deleteListener: (id: Long) -> Unit,
+    var notesList: MutableList<Notes>,
+    private val updateListener: (calendar:Calendar,note: Notes) -> Unit,
+    private val deleteListener: (id: Long, idNote: Int) -> Unit,
 ) : RecyclerView.Adapter<AdapterCalendarList.ViewHolder>() {
 
 
@@ -44,18 +49,18 @@ class AdapterCalendarList (
 
         val item = list[position]
         holder.itemView.title_event.text = item.name
-        holder.itemView.date_event.text = item.startDate
+        holder.itemView.date_event.text = item.startDate.toString().substring(10,16)
+        val itemsNote = notesList.find { notes -> notes.noteId == item.noteId }
 
 
         holder.itemView.btn_delete_event.setOnClickListener {
-            deleteListener(item.id)
+            deleteListener(item.id, item.noteId)
 
         }
 
 
 
         holder.itemView.btn_edit_event.setOnClickListener{
-            var title: String
 
             var startdate_year_month_day: String
             var startdate_time: String
@@ -67,18 +72,16 @@ class AdapterCalendarList (
             var remind: Int = item.reminder
 
             var typeId: Int = item.typeId
-            var noteId: Int = 0
-            var note: String = ""
+            var noteId: Int = item.noteId
+
+            var locationEdited: String = item.location
+
 
 
             val builder = AlertDialog.Builder(holder.itemView.context)
             val inflater = LayoutInflater.from(holder.itemView.context)
-            val dialogView = inflater.inflate(R.layout.dialog_edit_event, null)
+            val dialogView = inflater.inflate(R.layout.dialog_edit_event_new, null)
             builder.setView(dialogView)
-
-            val repeat1 =  dialogView.findViewById<TextView>(R.id.tv_repeat_week)
-            val repeat2 =  dialogView.findViewById<TextView>(R.id.tv_repeat_month)
-            val repeat3 =  dialogView.findViewById<TextView>(R.id.tv_repeat_year)
 
             val remind1 = dialogView.findViewById<TextView>(R.id.tv_reminder_15min)
             val remind2 = dialogView.findViewById<TextView>(R.id.tv_remind_1h)
@@ -104,25 +107,24 @@ class AdapterCalendarList (
             val calendarEnd = dialogView.findViewById<ImageView>(R.id.btn_end_event)
             val clockEnd = dialogView.findViewById<ImageView>(R.id.btn_end_event_time)
 
-            val location = dialogView.findViewById<TextView>(R.id.tv_location)
-            val noteString = dialogView.findViewById<AppCompatEditText>(R.id.tv_note)
+            val location = dialogView.findViewById<EditText>(R.id.tv_location)
+            val noteString = dialogView.findViewById<EditText>(R.id.tv_note)
 
             val cancelEdit = dialogView.findViewById<Button>(R.id.btn_cancel_edit_event)
             val doneEdit = dialogView.findViewById<Button>(R.id.btn_done_edit_event)
 
 
             titleEvent.setText(item.name)
+            noteString.setText(itemsNote?.noteContent)
 
-            when(item.repeatId) {
-                1 -> repeat1.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.hard_red))
-                2 -> repeat2.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.hard_red))
-                3 -> repeat3.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.hard_red))
-            }
+            location.setText(item.location)
+
+
 
             when(item.reminder) {
-                1 -> remind1.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.hard_red))
-                2 -> remind2.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.hard_red))
-                3 -> remind3.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.hard_red))
+                1 -> remind1.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_on))
+                2 -> remind2.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_on))
+                3 -> remind3.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_on))
             }
 
 
@@ -163,6 +165,7 @@ class AdapterCalendarList (
 
             hourEnd.setText(timetoFormatEnd[0])
             minutesEnd.setText(timetoFormatEnd[1])
+
 
             fun setDateBlocks(date: String) {
                 val table = date.split('-')
@@ -291,27 +294,6 @@ class AdapterCalendarList (
                         minutesBegin.text.toString()
 
 
-            fun resetRepeat() {
-                when(repeat)
-                {
-
-
-                    1->
-                    {
-                        repeat1.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.green1))
-                    }
-
-                    2->
-                    {
-                        repeat2.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.green1))
-                    }
-
-                    3->
-                    {
-                        repeat3.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.green1))
-                    }
-                }
-            }
 
 
             fun resetRemind() {
@@ -320,17 +302,17 @@ class AdapterCalendarList (
 
                     1->
                     {
-                        remind1.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.green1))
+                        remind1.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_off))
                     }
 
                     2->
                     {
-                        remind2.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.green1))
+                        remind2.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_off))
                     }
 
                     3->
                     {
-                        remind3.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.green1))
+                        remind3.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_off))
                     }
                 }
             }
@@ -345,7 +327,7 @@ class AdapterCalendarList (
                 else
                 {
                     remind = 1
-                    remind1.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.hard_red))
+                    remind1.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_on))
 
                 }
 
@@ -360,7 +342,7 @@ class AdapterCalendarList (
                 else
                 {
                     remind = 2
-                    remind2.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.hard_red))
+                    remind2.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_on))
 
                 }
             }
@@ -374,55 +356,9 @@ class AdapterCalendarList (
                 else
                 {
                     remind = 3
-                    remind3.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.hard_red))
+                    remind3.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_on))
 
                 }
-            }
-
-            repeat1.setOnClickListener {
-                resetRepeat()
-                if (repeat == 1) // kliknelismy drugi raz w to samo pole
-                {
-                    repeat = 0
-                }
-                else
-                {
-                    repeat = 1
-                    repeat1.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.hard_red))
-
-                }
-
-            }
-
-            repeat2.setOnClickListener {
-                resetRepeat()
-                if (repeat == 2) // kliknelismy drugi raz w to samo pole
-                {
-                    repeat = 0
-                }
-                else
-                {
-                    repeat = 2
-                    repeat2.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.hard_red))
-
-                }
-
-
-            }
-
-            repeat3.setOnClickListener {
-                resetRepeat()
-                if (repeat == 3) // kliknelismy drugi raz w to samo pole
-                {
-                    repeat = 0
-                }
-                else
-                {
-                    repeat = 3
-                    repeat3.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.hard_red))
-
-                }
-
             }
 
             fun compareDates(date1: String, date2: String): Int {
@@ -457,23 +393,50 @@ class AdapterCalendarList (
                     enddate_time = newDate.substring(11,16)
                 }
 
+                locationEdited = location.text.toString()
 
-                var event = Calendar(
-                    item.id,
-                    startdate_year_month_day+' '+startdate_time,
-                    enddate_year_month_day+' '+enddate_time,
-                    typeId,
-                    remind,
-                    location="",
-                    repeat,
-                    noteId,
-                    titleEvent.text.toString(),
+                if(titleEvent.text.toString().replace(" ", "") == "")
+                {
+                    val builder = AlertDialog.Builder(holder.itemView.context)
+                    val inflater = LayoutInflater.from(holder.itemView.context)
+                    val dialogView = inflater.inflate(R.layout.dialod_when_title_empty, null)
+                    builder.setView(dialogView) //Podlaczanie xmla
+                    val alertDialog = builder.create()
+                    alertDialog.show()
 
+                    dialogView.btn_ok.setOnClickListener {
+                        alertDialog.cancel()
+                    }
+
+                }
+                else {
+
+
+                    var event = Calendar(
+                        item.id,
+                        startdate_year_month_day + ' ' + startdate_time,
+                        enddate_year_month_day + ' ' + enddate_time,
+                        typeId,
+                        remind,
+                        location.text.toString(),
+                        repeat,
+                        item.noteId,
+                        titleEvent.text.toString()
                     )
 
-                updateListener(event)
 
-                alertDialog.hide()
+                    updateListener(
+                        event,
+                        Notes(
+                            item.noteId,
+                            titleEvent.text.toString(),
+                            noteString.text.toString(),
+                            null
+                        )
+                    )
+
+                    alertDialog.cancel()
+                }
             }
 
 
@@ -508,6 +471,14 @@ class AdapterCalendarList (
             )
         )
         this.list2 = newCalendar
+        diffResult.dispatchUpdatesTo(this)
+    }
+
+    fun updateListOfNotes(newNote: MutableList<Notes>) {
+        val diffResult = DiffUtil.calculateDiff(
+            NoteDiffCallback(this.notesList, newNote)
+        )
+        this.notesList = newNote
         diffResult.dispatchUpdatesTo(this)
     }
 

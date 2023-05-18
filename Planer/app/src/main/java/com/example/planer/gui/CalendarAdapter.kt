@@ -18,7 +18,7 @@ class CalendarAdapter(
     var eventList: MutableList<Calendar>, //eventy z calego miesiaca
     private val onItemListener: OnItemListener,
     private val onLongItemListener: OnLongItemListener
-    ) :
+) :
     RecyclerView.Adapter<CalendarViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CalendarViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -36,7 +36,7 @@ class CalendarAdapter(
 
         if (todayDate.substring(1,7) == todayDay.substring(1,7) && todayDate.substring(8,10) == holder.itemView.cellDayText.text.toString()) //koloruje dzisiejszy dzien
         {
-            val color = ColorStateList.valueOf(ContextCompat.getColor(holder.itemView.context, R.color.hard_red))
+            val color = ColorStateList.valueOf(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_on))
             holder.itemView.cellDayText.setTextColor(color)
         }
 
@@ -56,7 +56,7 @@ class CalendarAdapter(
 
         }
 
-       // holder.itemView.setBackgroundColor(Color.parseColor("#33832508"))
+        // holder.itemView.setBackgroundColor(Color.parseColor("#33832508"))
     }
 
     override fun getItemCount(): Int {

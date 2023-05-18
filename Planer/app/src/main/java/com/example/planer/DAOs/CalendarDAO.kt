@@ -22,6 +22,16 @@ interface CalendarDAO
         insert(calendar)
     }
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertCalendar(calendar: Calendar): Long
+
+    @Transaction
+    suspend fun insertCalendarWithNoteAndGetId(calendar: Calendar, note: Notes): Long {
+        val noteId = insertNote(note)
+        calendar.noteId = noteId.toInt()
+        return insertCalendar(calendar)
+    }
+
     //Delete po parametrach
     @Delete
     suspend fun delete(calendar: Calendar)

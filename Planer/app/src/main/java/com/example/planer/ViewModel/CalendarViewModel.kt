@@ -6,6 +6,8 @@ import androidx.lifecycle.viewModelScope
 import com.example.planer.AppDatabase
 import com.example.planer.norification.NotificationHelper
 import com.example.planer.entities.Calendar
+import com.example.planer.entities.Notes
+import com.example.planer.entities.Tasks
 import com.example.planer.repository.CalendarRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -82,6 +84,21 @@ class CalendarViewModel(application: Application): AndroidViewModel(application)
         viewModelScope.launch(Dispatchers.IO)
         {
             repository.getAll()
+        }
+    }
+
+    fun insertEventWithNoteAndGetId(event: Calendar, note: Notes, callback: (Long) -> Unit) {
+        viewModelScope.launch {
+            val eventId = repository.insertEventWithNoteAndGetId(event, note)
+            callback(eventId)
+        }
+    }
+
+    fun insertEventWithNote(calendar: Calendar, note:Notes)
+    {
+        viewModelScope.launch(Dispatchers.IO)
+        {
+            repository.insertEventWithNote(calendar, note)
         }
     }
 }

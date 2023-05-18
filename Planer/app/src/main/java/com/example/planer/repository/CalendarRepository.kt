@@ -5,6 +5,7 @@ import com.example.planer.DAOs.CalendarDAO
 import com.example.planer.norification.NotificationHelper
 import com.example.planer.entities.Calendar
 import com.example.planer.entities.Notes
+import com.example.planer.entities.Tasks
 
 
 class CalendarRepository(private val calendarDAO: CalendarDAO,private val notificationHelper: NotificationHelper)
@@ -27,7 +28,7 @@ class CalendarRepository(private val calendarDAO: CalendarDAO,private val notifi
         calendarDAO.insert(calendar)
     }
 
-    suspend fun addCalendarWithNote(calendar: Calendar, note: Notes) {
+    suspend fun insertEventWithNote(calendar: Calendar, note: Notes) {
         calendarDAO.insertCalendarWithNote(calendar, note)
     }
 
@@ -71,4 +72,10 @@ class CalendarRepository(private val calendarDAO: CalendarDAO,private val notifi
     fun getAllList(): List<Calendar> {
         return calendarDAO.getAllDatesList()
     }
+
+    suspend fun insertEventWithNoteAndGetId(event: Calendar, note: Notes): Long {
+        return calendarDAO.insertCalendarWithNoteAndGetId(event, note)
+    }
+
+
 }
