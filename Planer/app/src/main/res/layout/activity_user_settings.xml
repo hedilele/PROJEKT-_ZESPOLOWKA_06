@@ -109,7 +109,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginVertical="5dp"
                     android:paddingHorizontal="5dp"
-                    android:text="Dostępny czas na zadania w godzinach:"
+                    android:text="Dostępny czas na zadania w ciągu dnia:"
                     android:textColor="#99000000"
                     android:textSize="20sp" />
 
@@ -146,7 +146,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="5dp"
                 android:paddingHorizontal="5dp"
-                android:text="Kolory typów zadań:"
+                android:text="Typy zadań:"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textColor="#99000000"
                 android:textSize="20sp" />
@@ -173,7 +173,8 @@
                     android:backgroundTint="@color/brown_important_urgent_on"
                     android:onClick="onExportButtonClicked"
                     android:text="Backup"
-                    app:icon="@android:drawable/ic_menu_save" />
+                    app:icon="@drawable/icon_download"
+                    />
 
                 <Button
                     android:id="@+id/importButton"
@@ -184,7 +185,7 @@
                     android:onClick="onImportButtonClicked"
                     android:backgroundTint="@color/brown_important_urgent_on"
                     android:text="Import"
-                    app:icon="@android:drawable/ic_menu_upload" />
+                    app:icon="@drawable/icon_upload" />
             </LinearLayout>
 
         </LinearLayout>

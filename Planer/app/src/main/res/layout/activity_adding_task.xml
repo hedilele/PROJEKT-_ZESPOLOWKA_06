@@ -26,7 +26,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:backgroundTint="@color/brown_important_urgent_on"
-                android:hint="Tytuł"
+                android:hint="Nazwa zadania"
                 android:inputType="textCapSentences"
                 android:padding="5dp"
                 android:singleLine="true"

@@ -27,6 +27,7 @@ import com.example.planer.entities.Types
 import com.example.planer.gui.pages.scope.UnscrollableLinearLayoutManager
 import com.github.dhaval2404.colorpicker.MaterialColorPickerDialog
 import com.github.dhaval2404.colorpicker.model.ColorShape
+import com.google.android.material.slider.LabelFormatter
 import com.google.android.material.slider.Slider
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
@@ -34,8 +35,8 @@ import de.raphaelebner.roomdatabasebackup.core.RoomBackup
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.lang.String
 import java.time.ZoneId
-
 import java.util.*
 
 
@@ -87,6 +88,11 @@ class UserSettingsActivity : AppCompatActivity(), View.OnClickListener,
                 unsavedSettings.setValue(true)
             }
         }
+
+        binding.slider.setLabelFormatter(LabelFormatter { binding.slider.value.toInt().toString() + " godz" })
+
+
+
         binding.resetUnavailableDatesButton.setOnClickListener {
             val builder = AlertDialog.Builder(this)
             builder.setTitle("Czy chcesz usunąć wszystkie wybrane dni?")
