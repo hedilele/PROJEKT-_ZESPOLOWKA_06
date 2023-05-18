@@ -17,8 +17,12 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.aminography.primecalendar.civil.CivilCalendar
+import com.aminography.primedatepicker.picker.PrimeDatePicker
+import com.aminography.primedatepicker.picker.callback.SingleDayPickCallback
 import com.example.planer.R
 import com.example.planer.algorithm.IO
 import com.example.planer.entities.Notes
@@ -30,13 +34,17 @@ import com.example.planer.gui.callBacks.TypeDiffCallback
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.single_task.view.*
 import kotlinx.android.synthetic.main.single_task.view.task_title
+import kotlinx.coroutines.NonDisposableHandle.parent
 import java.text.SimpleDateFormat
+import java.time.LocalDate
 import java.time.LocalDateTime
+import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.*
 
 // klasa odpowiedzialna za umieszczanie pojedynczych tasków w recyclerView
 class AdapterTasks(
+    val fragmentManager: FragmentManager,
     var list: MutableList<Tasks>,
     var notesList: MutableList<Notes>,
     var typesList: MutableList<Types>,
@@ -416,25 +424,26 @@ class AdapterTasks(
 
 
             calendar.setOnClickListener {
-                val cal = Calendar.getInstance()
-                val today_year = cal.get(Calendar.YEAR)
-                val today_month = cal.get(Calendar.MONTH)
-                val today_day = cal.get(Calendar.DAY_OF_MONTH)
 
-                val dpd = DatePickerDialog(
-                    holder.itemView.context,
-                    R.style.MyDatePickerStyle,
-                    DatePickerDialog.OnDateSetListener { view, sel_year, sel_month, sel_day ->
-
-                        deadline_day = setUpDate(sel_day, sel_month, sel_year)
-                        setDateBlocks(deadline_day)
+                val primeCalendar = CivilCalendar(TimeZone.getDefault(), Locale("pl", "PL"))
 
 
+                val callback = SingleDayPickCallback { day ->
+                    val localDate: LocalDate = day.getTime()
+                        .toInstant()
+                        .atZone(ZoneId.systemDefault())
+                        .toLocalDate()
+                    setDateBlocks(localDate.toString())
+                }
 
-                    }, today_year, today_month, today_day
-                )
+                val datePicker = PrimeDatePicker.dialogWith(primeCalendar)
+                    .pickSingleDay(callback)
+                    .initiallyPickedSingleDay(primeCalendar)
+                    .minPossibleDate(primeCalendar)
+                    .build()
 
-                dpd.show()
+                datePicker.show(fragmentManager, "AddingTaskDatePicker")
+
             }
 
 

@@ -94,6 +94,7 @@ class FilterFragment : AppCompatActivity(){
 
         val rv = findViewById<RecyclerView>(R.id.rv_list)
         val adapter = AdapterTasks(
+            supportFragmentManager,
             list,
             listNotes,
             listTypes,

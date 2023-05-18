@@ -164,7 +164,7 @@
 
                     >
 
-                    <EditText
+                    <TextView
                         android:id="@+id/tv_deadline_d"
                         android:layout_width="0dp"
                         android:layout_height="50dp"
@@ -181,7 +181,7 @@
                         android:text="."
                         android:textSize="18dp" />
 
-                    <EditText
+                    <TextView
                         android:id="@+id/tv_deadline_m"
                         android:layout_width="0dp"
                         android:layout_height="50dp"
@@ -198,11 +198,11 @@
                         android:text="."
                         android:textSize="18dp" />
 
-                    <EditText
+                    <TextView
                         android:id="@+id/tv_deadline_y"
                         android:layout_width="0dp"
                         android:layout_height="50dp"
-                        android:layout_weight="1.6"
+                        android:layout_weight="1.5"
                         android:gravity="center"
                         android:inputType="number"
                         android:text="rrrr"
@@ -240,10 +240,11 @@
                     android:layout_margin="5dp"
                     android:layout_weight="5"
                     android:gravity="center"
+                    android:paddingHorizontal="20dp"
 
                     >
 
-                    <EditText
+                    <TextView
                         android:id="@+id/tv_deadline_h"
                         android:layout_width="0dp"
                         android:layout_height="50dp"
@@ -260,7 +261,7 @@
                         android:text=":"
                         android:textSize="18dp" />
 
-                    <EditText
+                    <TextView
                         android:id="@+id/tv_deadline_min"
                         android:layout_width="0dp"
                         android:layout_height="50dp"

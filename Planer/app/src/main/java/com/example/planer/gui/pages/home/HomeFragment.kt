@@ -1,6 +1,7 @@
 package com.example.planer.gui.pages.home
 
 import android.app.AlertDialog
+import android.app.TimePickerDialog
 import android.content.ContentValues.TAG
 import android.content.res.ColorStateList
 import android.os.Bundle
@@ -8,6 +9,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.*
+import androidx.appcompat.widget.AppCompatEditText
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -15,6 +18,8 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.aminography.primecalendar.civil.CivilCalendar
+import com.aminography.primedatepicker.picker.PrimeDatePicker
 import com.example.planer.R
 import com.example.planer.ViewModel.*
 import com.example.planer.algorithm.BlockListTask
@@ -32,6 +37,8 @@ import kotlinx.android.synthetic.main.fragment_home.view.*
 import kotlinx.coroutines.launch
 import java.lang.Math.abs
 import java.time.LocalDate
+import java.time.ZoneId
+import java.util.*
 
 
 class HomeFragment : Fragment() {
@@ -72,6 +79,7 @@ class HomeFragment : Fragment() {
          */
         val rv = view.today_task_list
         val adapter = AdapterTasks(
+            childFragmentManager,
             list,
             listNotes,
             listTypes,
@@ -81,7 +89,7 @@ class HomeFragment : Fragment() {
                     deleteNoteId
                 )
             },
-            { updateTask, updateNote -> userViewModel.updateTaskAndNote(updateTask, updateNote) }
+            { updateTask, updateNote -> userViewModel.updateTaskAndNote(updateTask, updateNote) },
         )
         rv.adapter = adapter
         rv.layoutManager = UnscrollableLinearLayoutManager(requireContext())
@@ -89,6 +97,7 @@ class HomeFragment : Fragment() {
 
         val rv2 = view.tomorrow_task_list
         val adapter2 = AdapterTasks(
+            childFragmentManager,
             list,
             listNotes,
             listTypes,
@@ -98,13 +107,13 @@ class HomeFragment : Fragment() {
                     deleteNoteId
                 )
             },
-            { updateTask, updateNote -> userViewModel.updateTaskAndNote(updateTask, updateNote) }
-        )
+            { updateTask, updateNote -> userViewModel.updateTaskAndNote(updateTask, updateNote) })
         rv2.adapter = adapter2
         rv2.layoutManager = UnscrollableLinearLayoutManager(requireContext())
 
         val rv3 = view.week_task_list
         val adapter3 = AdapterTasks(
+            childFragmentManager,
             list,
             listNotes,
             listTypes,
@@ -114,13 +123,13 @@ class HomeFragment : Fragment() {
                     deleteNoteId
                 )
             },
-            { updateTask, updateNote -> userViewModel.updateTaskAndNote(updateTask, updateNote) }
-        )
+            { updateTask, updateNote -> userViewModel.updateTaskAndNote(updateTask, updateNote) })
         rv3.adapter = adapter3
         rv3.layoutManager = UnscrollableLinearLayoutManager(requireContext())
 
         val rv4 = view.month_task_list
         val adapter4 = AdapterTasks(
+            childFragmentManager,
             list,
             listNotes,
             listTypes,
@@ -130,13 +139,13 @@ class HomeFragment : Fragment() {
                     deleteNoteId
                 )
             },
-            { updateTask, updateNote -> userViewModel.updateTaskAndNote(updateTask, updateNote) }
-        )
+            { updateTask, updateNote -> userViewModel.updateTaskAndNote(updateTask, updateNote) })
         rv4.adapter = adapter4
         rv4.layoutManager = UnscrollableLinearLayoutManager(requireContext())
 
         val rv5 = view.rest_task_list
         val adapter5 = AdapterTasks(
+            childFragmentManager,
             list,
             listNotes,
             listTypes,
@@ -146,8 +155,7 @@ class HomeFragment : Fragment() {
                     deleteNoteId
                 )
             },
-            { updateTask, updateNote -> userViewModel.updateTaskAndNote(updateTask, updateNote) }
-        )
+            { updateTask, updateNote -> userViewModel.updateTaskAndNote(updateTask, updateNote) })
         rv5.adapter = adapter5
         rv5.layoutManager = UnscrollableLinearLayoutManager(requireContext())
 
@@ -205,12 +213,6 @@ class HomeFragment : Fragment() {
             adapter3.updateListOfTypes(it.toMutableList())
             adapter4.updateListOfTypes(it.toMutableList())
             adapter5.updateListOfTypes(it.toMutableList())
-
-//            adapter.updateList(list)
-//            adapter2.updateList(list)
-//            adapter3.updateList(list)
-//            adapter4.updateList(list)
-//            adapter5.updateList(list)
 
             adapter.notifyDataSetChanged()
             adapter2.notifyDataSetChanged()
@@ -396,6 +398,7 @@ class HomeFragment : Fragment() {
         return view
 
     }
+
 
     private fun hideRestOftasks(view: View?) {
 
