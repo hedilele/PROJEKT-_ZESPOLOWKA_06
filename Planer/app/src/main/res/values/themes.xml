@@ -18,7 +18,7 @@
     </style>
 
     <style name="MyDatePickerStyle" parent="Theme.AppCompat.Light.Dialog">
-        <item name="colorAccent">@color/pr1_green_text</item>
+        <item name="colorAccent">@color/brown_important_urgent_on</item>
         <item name="colorOnPrimary">@color/black</item>
     </style>
 

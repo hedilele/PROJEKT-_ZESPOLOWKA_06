@@ -2,6 +2,7 @@ package com.example.planer.gui.pages.settings
 
 import android.content.res.ColorStateList
 import android.os.Bundle
+import android.util.SparseIntArray
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
@@ -16,8 +17,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
 import com.aminography.primecalendar.PrimeCalendar
 import com.aminography.primecalendar.civil.CivilCalendar
+import com.aminography.primedatepicker.common.BackgroundShapeType
 import com.aminography.primedatepicker.picker.PrimeDatePicker
 import com.aminography.primedatepicker.picker.callback.MultipleDaysPickCallback
+import com.aminography.primedatepicker.picker.theme.LightThemeFactory
 import com.example.planer.R
 import com.example.planer.ViewModel.SettingsViewModel
 import com.example.planer.databinding.ActivityUserSettingsBinding
@@ -231,6 +234,41 @@ class UserSettingsActivity : AppCompatActivity(), View.OnClickListener,
 
             R.id.pick_excluded_dates_button -> {
 
+                val themeFactory = object : LightThemeFactory() {
+
+                    override val pickedDayBackgroundShapeType: BackgroundShapeType
+                        get() = BackgroundShapeType.ROUND_SQUARE
+
+                    override val calendarViewPickedDayBackgroundColor: Int
+                        get() = getColor(R.color.brown_important_urgent_on)
+
+                    override val selectionBarMultipleDaysItemBackgroundColor: Int
+                        get() = getColor(R.color.brown_important_urgent_on)
+
+
+                    override val calendarViewWeekLabelTextColors: SparseIntArray
+                        get() = SparseIntArray(7).apply {
+                            val black = getColor(R.color.black)
+                            put(Calendar.SATURDAY, black)
+                            put(Calendar.SUNDAY, black)
+                            put(Calendar.MONDAY, black)
+                            put(Calendar.TUESDAY, black)
+                            put(Calendar.WEDNESDAY, black)
+                            put(Calendar.THURSDAY, black)
+                            put(Calendar.FRIDAY, black)
+                        }
+
+                    override val calendarViewShowAdjacentMonthDays: Boolean
+                        get() = true
+
+                    override val selectionBarBackgroundColor: Int
+                        get() = getColor(R.color.brown_important_urgent_off)
+
+
+                }
+
+
+
                 val callback = MultipleDaysPickCallback { days ->
                     if (markedDatePickerList.sorted() != days.sorted()) {
                         markedDatePickerList = days
@@ -242,6 +280,8 @@ class UserSettingsActivity : AppCompatActivity(), View.OnClickListener,
                     .pickMultipleDays(callback)
                     .initiallyPickedMultipleDays(markedDatePickerList)
                     .minPossibleDate(calendar)
+                    .firstDayOfWeek(Calendar.MONDAY)
+                    .applyTheme(themeFactory)
                     .build()
 
                 datePicker.show(supportFragmentManager, "Tak")

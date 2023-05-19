@@ -6,6 +6,7 @@ import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.SparseIntArray
 import android.view.LayoutInflater
 import android.view.View
 import android.view.Window
@@ -21,8 +22,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.aminography.primecalendar.civil.CivilCalendar
+import com.aminography.primedatepicker.common.BackgroundShapeType
 import com.aminography.primedatepicker.picker.PrimeDatePicker
 import com.aminography.primedatepicker.picker.callback.SingleDayPickCallback
+import com.aminography.primedatepicker.picker.theme.LightThemeFactory
 import com.example.planer.R
 import com.example.planer.ViewModel.NoteViewModel
 import com.example.planer.ViewModel.TaskViewModel
@@ -177,6 +180,37 @@ class FilterFragment : AppCompatActivity(){
             }
 
             btn_start_date.setOnClickListener {
+                val themeFactory = object : LightThemeFactory() {
+
+                    override val pickedDayBackgroundShapeType: BackgroundShapeType
+                        get() = BackgroundShapeType.ROUND_SQUARE
+
+                    override val calendarViewPickedDayBackgroundColor: Int
+                        get() = getColor(R.color.brown_important_urgent_on)
+
+
+                    override val calendarViewWeekLabelTextColors: SparseIntArray
+                        get() = SparseIntArray(7).apply {
+                            val black = getColor(R.color.black)
+                            put(Calendar.SATURDAY, black)
+                            put(Calendar.SUNDAY, black)
+                            put(Calendar.MONDAY, black)
+                            put(Calendar.TUESDAY, black)
+                            put(Calendar.WEDNESDAY, black)
+                            put(Calendar.THURSDAY, black)
+                            put(Calendar.FRIDAY, black)
+                        }
+
+                    override val calendarViewShowAdjacentMonthDays: Boolean
+                        get() = true
+
+                    override val selectionBarBackgroundColor: Int
+                        get() = getColor(R.color.brown_important_urgent_on)
+
+                    override val selectionBarRangeDaysItemBackgroundColor: Int
+                        get() = getColor(R.color.brown_important_urgent_off)
+                }
+
 
                 val callback = SingleDayPickCallback { day ->
                     val localDate: LocalDate = day.getTime()
@@ -189,15 +223,48 @@ class FilterFragment : AppCompatActivity(){
 
                 val datePicker = PrimeDatePicker.dialogWith(primeCalendar)
                     .pickSingleDay(callback)
-
                     .initiallyPickedSingleDay(primeCalendar)
                     .minPossibleDate(primeCalendar)
+                    .firstDayOfWeek(Calendar.MONDAY)
+                    .applyTheme(themeFactory)
                     .build()
 
                 datePicker.show(supportFragmentManager, "AddingTaskDatePicker")
             }
 
             btn_end_date.setOnClickListener {
+
+                val themeFactory = object : LightThemeFactory() {
+
+                    override val pickedDayBackgroundShapeType: BackgroundShapeType
+                        get() = BackgroundShapeType.ROUND_SQUARE
+
+                    override val calendarViewPickedDayBackgroundColor: Int
+                        get() = getColor(R.color.brown_important_urgent_on)
+
+
+                    override val calendarViewWeekLabelTextColors: SparseIntArray
+                        get() = SparseIntArray(7).apply {
+                            val black = getColor(R.color.black)
+                            put(Calendar.SATURDAY, black)
+                            put(Calendar.SUNDAY, black)
+                            put(Calendar.MONDAY, black)
+                            put(Calendar.TUESDAY, black)
+                            put(Calendar.WEDNESDAY, black)
+                            put(Calendar.THURSDAY, black)
+                            put(Calendar.FRIDAY, black)
+                        }
+
+                    override val calendarViewShowAdjacentMonthDays: Boolean
+                        get() = true
+
+                    override val selectionBarBackgroundColor: Int
+                        get() = getColor(R.color.brown_important_urgent_on)
+
+                    override val selectionBarRangeDaysItemBackgroundColor: Int
+                        get() = getColor(R.color.brown_important_urgent_off)
+                }
+
 
                 val callback = SingleDayPickCallback { day ->
                     val localDate: LocalDate = day.getTime()
@@ -209,9 +276,10 @@ class FilterFragment : AppCompatActivity(){
 
                 val datePicker = PrimeDatePicker.dialogWith(primeCalendar)
                     .pickSingleDay(callback)
-
                     .initiallyPickedSingleDay(primeCalendar)
                     .minPossibleDate(primeCalendar)
+                    .firstDayOfWeek(Calendar.MONDAY)
+                    .applyTheme(themeFactory)
                     .build()
 
                 datePicker.show(supportFragmentManager, "AddingTaskDatePicker")

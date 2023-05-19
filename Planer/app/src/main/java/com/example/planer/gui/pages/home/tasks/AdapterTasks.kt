@@ -11,6 +11,7 @@ import android.os.Handler
 import android.transition.Slide
 import android.transition.Transition
 import android.transition.TransitionManager
+import android.util.SparseIntArray
 import android.view.*
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
@@ -21,8 +22,10 @@ import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.aminography.primecalendar.civil.CivilCalendar
+import com.aminography.primedatepicker.common.BackgroundShapeType
 import com.aminography.primedatepicker.picker.PrimeDatePicker
 import com.aminography.primedatepicker.picker.callback.SingleDayPickCallback
+import com.aminography.primedatepicker.picker.theme.LightThemeFactory
 import com.example.planer.R
 import com.example.planer.algorithm.IO
 import com.example.planer.entities.Notes
@@ -425,6 +428,37 @@ class AdapterTasks(
 
             calendar.setOnClickListener {
 
+                val themeFactory = object : LightThemeFactory() {
+
+                    override val pickedDayBackgroundShapeType: BackgroundShapeType
+                        get() = BackgroundShapeType.ROUND_SQUARE
+
+                    override val calendarViewPickedDayBackgroundColor: Int
+                        get() = getColor(R.color.brown_important_urgent_on)
+
+
+                    override val calendarViewWeekLabelTextColors: SparseIntArray
+                        get() = SparseIntArray(7).apply {
+                            val black = getColor(R.color.black)
+                            put(Calendar.SATURDAY, black)
+                            put(Calendar.SUNDAY, black)
+                            put(Calendar.MONDAY, black)
+                            put(Calendar.TUESDAY, black)
+                            put(Calendar.WEDNESDAY, black)
+                            put(Calendar.THURSDAY, black)
+                            put(Calendar.FRIDAY, black)
+                        }
+
+                    override val calendarViewShowAdjacentMonthDays: Boolean
+                        get() = true
+
+                    override val selectionBarBackgroundColor: Int
+                        get() = getColor(R.color.brown_important_urgent_on)
+
+                    override val selectionBarRangeDaysItemBackgroundColor: Int
+                        get() = getColor(R.color.brown_important_urgent_off)
+                }
+
                 val primeCalendar = CivilCalendar(TimeZone.getDefault(), Locale("pl", "PL"))
 
 
@@ -434,12 +468,16 @@ class AdapterTasks(
                         .atZone(ZoneId.systemDefault())
                         .toLocalDate()
                     setDateBlocks(localDate.toString())
+                    deadline_day= setUpDate(localDate.dayOfMonth,localDate.monthValue-1,localDate.year)
                 }
+
 
                 val datePicker = PrimeDatePicker.dialogWith(primeCalendar)
                     .pickSingleDay(callback)
                     .initiallyPickedSingleDay(primeCalendar)
                     .minPossibleDate(primeCalendar)
+                    .firstDayOfWeek(Calendar.MONDAY)
+                    .applyTheme(themeFactory)
                     .build()
 
                 datePicker.show(fragmentManager, "AddingTaskDatePicker")
@@ -469,14 +507,14 @@ class AdapterTasks(
 
 
 
-            deadline_day =
-                year.text.toString() + '-' +
-                month.text.toString() + '-' +
-                day.text.toString()
-
-            deadline_time =
-                hour.text.toString() + ':' +
-                minutes.text.toString()
+//            deadline_day =
+//                year.text.toString() + '-' +
+//                month.text.toString() + '-' +
+//                day.text.toString()
+//
+//            deadline_time =
+//                hour.text.toString() + ':' +
+//                minutes.text.toString()
 
 
             //TODO konkretna data czy deadline
