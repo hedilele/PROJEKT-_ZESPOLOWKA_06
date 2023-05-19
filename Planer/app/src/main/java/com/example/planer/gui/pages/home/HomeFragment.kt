@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.app.TimePickerDialog
 import android.content.ContentValues.TAG
 import android.content.res.ColorStateList
+import android.graphics.PorterDuff
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -34,6 +35,7 @@ import com.example.planer.gui.pages.scope.UnscrollableLinearLayoutManager
 import kotlinx.android.synthetic.main.dialod_when_title_empty.view.*
 import kotlinx.android.synthetic.main.dialog_habit.view.*
 import kotlinx.android.synthetic.main.fragment_home.view.*
+import kotlinx.android.synthetic.main.single_task.view.*
 import kotlinx.coroutines.launch
 import java.lang.Math.abs
 import java.time.LocalDate
@@ -179,17 +181,14 @@ class HomeFragment : Fragment() {
 
                     checkIfEmpty(adapter2.list, adapter3.list, adapter4.list, adapter5.list, view)
 
-
-
-
                 }
             }
-
             adapter.notifyDataSetChanged()
             adapter2.notifyDataSetChanged()
             adapter3.notifyDataSetChanged()
             adapter4.notifyDataSetChanged()
             adapter5.notifyDataSetChanged()
+
         }
 
         noteViewModel = ViewModelProvider(this)[NoteViewModel::class.java]
@@ -200,11 +199,6 @@ class HomeFragment : Fragment() {
             adapter4.updateListOfNotes(it.toMutableList())
             adapter5.updateListOfNotes(it.toMutableList())
 
-//            adapter.updateList(list)
-//            adapter2.updateList(list)
-//            adapter3.updateList(list)
-//            adapter4.updateList(list)
-//            adapter5.updateList(list)
 
             adapter.notifyDataSetChanged()
             adapter2.notifyDataSetChanged()
@@ -235,24 +229,75 @@ class HomeFragment : Fragment() {
 
 
         view.today_title.setOnClickListener {
-            //if (view.today_task_list.isVisible) view.today_task_list.visibility = View.GONE
-            //else view.today_task_list.visibility = View.VISIBLE
+            if (view.today_task_list.isVisible)
+            {
+                view.today_task_list.visibility = View.GONE
+                view.today_list_arrow.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.icon_expand_list))
+                view.today_list_arrow.setColorFilter(ContextCompat.getColor(requireContext(), R.color.brown_important_urgent_on), PorterDuff.Mode.SRC_ATOP)
+            }
+            else
+            {
+                view.today_task_list.visibility = View.VISIBLE
+                view.today_list_arrow.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.icon_wrap_list))
+                view.today_list_arrow.setColorFilter(ContextCompat.getColor(requireContext(), R.color.brown_important_urgent_on), PorterDuff.Mode.SRC_ATOP)
+            }
         }
         view.tomorrow_title.setOnClickListener {
-            if (view.tomorrow_task_list.isVisible) view.tomorrow_task_list.visibility = View.GONE
-            else view.tomorrow_task_list.visibility = View.VISIBLE
+            if (view.tomorrow_task_list.isVisible)
+            {
+                view.tomorrow_task_list.visibility = View.GONE
+                view.tomorrow_list_arrow.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.icon_expand_list))
+                view.tomorrow_list_arrow.setColorFilter(ContextCompat.getColor(requireContext(), R.color.brown_important_urgent_on), PorterDuff.Mode.SRC_ATOP)
+            }
+            else
+            {
+                view.tomorrow_task_list.visibility = View.VISIBLE
+                view.tomorrow_list_arrow.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.icon_wrap_list))
+                view.tomorrow_list_arrow.setColorFilter(ContextCompat.getColor(requireContext(), R.color.brown_important_urgent_on), PorterDuff.Mode.SRC_ATOP)
+
+            }
         }
         view.week_title.setOnClickListener {
-            if (view.week_task_list.isVisible) view.week_task_list.visibility = View.GONE
-            else view.week_task_list.visibility = View.VISIBLE
+            if (view.week_task_list.isVisible)
+            {
+                view.week_task_list.visibility = View.GONE
+                view.week_list_arrow.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.icon_expand_list))
+                view.week_list_arrow.setColorFilter(ContextCompat.getColor(requireContext(), R.color.brown_important_urgent_on), PorterDuff.Mode.SRC_ATOP)
+            }
+            else
+            {
+                view.week_task_list.visibility = View.VISIBLE
+                view.week_list_arrow.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.icon_wrap_list))
+                view.week_list_arrow.setColorFilter(ContextCompat.getColor(requireContext(), R.color.brown_important_urgent_on), PorterDuff.Mode.SRC_ATOP)
+            }
         }
         view.month_title.setOnClickListener {
-            if (view.month_task_list.isVisible) view.month_task_list.visibility = View.GONE
-            else view.month_task_list.visibility = View.VISIBLE
+            if (view.month_task_list.isVisible)
+            {
+                view.month_task_list.visibility = View.GONE
+                view.month_list_arrow.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.icon_expand_list))
+                view.month_list_arrow.setColorFilter(ContextCompat.getColor(requireContext(), R.color.brown_important_urgent_on), PorterDuff.Mode.SRC_ATOP)
+            }
+            else
+            {
+                view.month_task_list.visibility = View.VISIBLE
+                view.month_list_arrow.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.icon_wrap_list))
+                view.month_list_arrow.setColorFilter(ContextCompat.getColor(requireContext(), R.color.brown_important_urgent_on), PorterDuff.Mode.SRC_ATOP)
+            }
         }
         view.rest_title.setOnClickListener {
-            if (view.rest_task_list.isVisible) view.rest_task_list.visibility = View.GONE
-            else view.rest_task_list.visibility = View.VISIBLE
+            if (view.rest_task_list.isVisible)
+            {
+                view.rest_task_list.visibility = View.GONE
+                view.rest_list_arrow.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.icon_expand_list))
+                view.rest_list_arrow.setColorFilter(ContextCompat.getColor(requireContext(), R.color.brown_important_urgent_on), PorterDuff.Mode.SRC_ATOP)
+            }
+            else
+            {
+                view.rest_task_list.visibility = View.VISIBLE
+                view.rest_list_arrow.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.icon_wrap_list))
+                view.rest_list_arrow.setColorFilter(ContextCompat.getColor(requireContext(), R.color.brown_important_urgent_on), PorterDuff.Mode.SRC_ATOP)
+            }
         }
 
 

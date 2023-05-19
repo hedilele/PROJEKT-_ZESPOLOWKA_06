@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -86,16 +87,33 @@
             </com.example.planer.gui.pages.home.NestedScrollableHost>
 
 
-
-            <TextView
+            <LinearLayout
                 android:id="@+id/today_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/habits_list_ns"
+                >
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:paddingHorizontal="10dp"
                 android:text="Dziś"
                 android:textColor="#543C38"
                 android:textSize="25dp" />
+
+            <ImageView
+                android:id="@+id/today_list_arrow"
+                android:layout_width="wrap_content"
+                android:layout_marginRight="10dp"
+                android:layout_height="match_parent"
+                android:gravity="right"
+                android:src="@drawable/icon_wrap_list"
+                android:layout_toRightOf="@id/today_title"
+                app:tint="@color/brown_important_urgent_on" />
+
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/line1"
@@ -115,15 +133,35 @@
                 android:paddingHorizontal="10dp"
                 tools:listitem="@layout/single_task" />
 
-            <TextView
+
+            <LinearLayout
                 android:id="@+id/tomorrow_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/today_task_list"
-                android:paddingHorizontal="10dp"
-                android:text="Jutro"
-                android:textColor="#543C38"
-                android:textSize="25dp" />
+                >
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:paddingHorizontal="10dp"
+                    android:text="Jutro"
+                    android:textColor="#543C38"
+                    android:textSize="25dp" />
+
+                <ImageView
+                    android:id="@+id/tomorrow_list_arrow"
+                    android:layout_width="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:layout_height="match_parent"
+                    android:gravity="right"
+                    android:src="@drawable/icon_wrap_list"
+                    android:layout_toRightOf="@id/today_title"
+                    app:tint="@color/brown_important_urgent_on" />
+
+            </LinearLayout>
+
 
             <TextView
                 android:id="@+id/line2"
@@ -144,16 +182,34 @@
                 tools:listitem="@layout/single_task" />
 
 
-            <TextView
+            <LinearLayout
                 android:id="@+id/week_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tomorrow_task_list"
-                android:paddingHorizontal="10dp"
+                >
 
-                android:text="Do końca tygodnia"
-                android:textColor="#543C38"
-                android:textSize="25dp" />
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:paddingHorizontal="10dp"
+                    android:text="Do końca tygodnia"
+                    android:textColor="#543C38"
+                    android:textSize="25dp" />
+
+                <ImageView
+                    android:id="@+id/week_list_arrow"
+                    android:layout_width="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:layout_height="match_parent"
+                    android:gravity="right"
+                    android:src="@drawable/icon_wrap_list"
+                    android:layout_toRightOf="@id/today_title"
+                    app:tint="@color/brown_important_urgent_on" />
+
+            </LinearLayout>
+
 
             <TextView
                 android:id="@+id/line3"
@@ -172,16 +228,37 @@
                 android:paddingHorizontal="10dp"
                 tools:listitem="@layout/single_task" />
 
-            <TextView
+
+
+            <LinearLayout
                 android:id="@+id/month_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/week_task_list"
-                android:paddingHorizontal="10dp"
+                >
 
-                android:text="Do końca miesiąca"
-                android:textColor="#543C38"
-                android:textSize="25dp" />
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:paddingHorizontal="10dp"
+                    android:text="Do końca miesiąca"
+                    android:textColor="#543C38"
+                    android:textSize="25dp" />
+
+                <ImageView
+                    android:id="@+id/month_list_arrow"
+                    android:layout_width="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:layout_height="match_parent"
+                    android:gravity="right"
+                    android:src="@drawable/icon_wrap_list"
+                    android:layout_toRightOf="@id/today_title"
+                    app:tint="@color/brown_important_urgent_on" />
+
+            </LinearLayout>
+
+
 
             <TextView
                 android:id="@+id/line4"
@@ -200,16 +277,35 @@
                 android:paddingHorizontal="10dp"
                 tools:listitem="@layout/single_task" />
 
-            <TextView
+
+            <LinearLayout
                 android:id="@+id/rest_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
                 android:layout_below="@+id/month_task_list"
-                android:paddingHorizontal="10dp"
-                android:text="Reszta"
-                android:textColor="#543C38"
-                android:textSize="25dp" />
+                >
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:paddingHorizontal="10dp"
+                    android:text="Reszta"
+                    android:textColor="#543C38"
+                    android:textSize="25dp" />
+
+                <ImageView
+                    android:id="@+id/rest_list_arrow"
+                    android:layout_width="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:layout_height="match_parent"
+                    android:gravity="right"
+                    android:src="@drawable/icon_wrap_list"
+                    android:layout_toRightOf="@id/today_title"
+                    app:tint="@color/brown_important_urgent_on" />
+
+            </LinearLayout>
+
 
             <TextView
                 android:id="@+id/line5"
