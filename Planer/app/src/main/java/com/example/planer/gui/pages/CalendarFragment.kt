@@ -85,6 +85,7 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener, CalendarAda
 
         val rv = view.list_rv
         adapter = AdapterCalendarList(
+            childFragmentManager,
             eventsListoftheDay,
             eventsListAll,
             notesList,

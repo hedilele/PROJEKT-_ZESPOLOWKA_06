@@ -9,18 +9,26 @@ import android.os.Bundle
 import android.os.PersistableBundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.SparseIntArray
 import android.view.*
 import android.view.View.OnFocusChangeListener
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import com.aminography.primecalendar.civil.CivilCalendar
+import com.aminography.primedatepicker.common.BackgroundShapeType
+import com.aminography.primedatepicker.picker.PrimeDatePicker
+import com.aminography.primedatepicker.picker.callback.SingleDayPickCallback
+import com.aminography.primedatepicker.picker.theme.LightThemeFactory
 import com.example.planer.R
 import com.example.planer.ViewModel.CalendarViewModel
 import com.example.planer.databinding.AddEventToCalendarBinding
 import com.example.planer.entities.Notes
 import kotlinx.android.synthetic.main.dialod_when_title_empty.view.*
 import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.ZoneId
 import java.util.*
 
 class   AddingEventActivity : AppCompatActivity(), View.OnClickListener {
@@ -29,6 +37,7 @@ class   AddingEventActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var calendarViewModel: CalendarViewModel
 
 
+    private val primeCalendar = CivilCalendar(TimeZone.getDefault(), Locale("pl", "PL"))
     // zmienne do stworzenia nowego eventu
 
     var startDate : String = ""
@@ -494,22 +503,76 @@ class   AddingEventActivity : AppCompatActivity(), View.OnClickListener {
 
 
             R.id.btn_begin_event -> {
-                val dpd = DatePickerDialog(
-                    this,
-                    DatePickerDialog.OnDateSetListener { view, sel_year, sel_month, sel_day ->
+//                val dpd = DatePickerDialog(
+//                    this,
+//                    DatePickerDialog.OnDateSetListener { view, sel_year, sel_month, sel_day ->
+//
+//                        startDate = setUpDate(sel_day, sel_month+1, sel_year)
+//                        setDateBlocks(startDate)
+//
+//                    }, today_year, today_month-1, today_day
+//                )
+//
+//                dpd.show()
 
-                        startDate = setUpDate(sel_day, sel_month+1, sel_year)
-                        setDateBlocks(startDate)
 
-                    }, today_year, today_month-1, today_day
-                )
 
-                dpd.show()
+                val themeFactory = object : LightThemeFactory() {
+
+                    override val pickedDayBackgroundShapeType: BackgroundShapeType
+                        get() = BackgroundShapeType.ROUND_SQUARE
+
+                    override val calendarViewPickedDayBackgroundColor: Int
+                        get() = getColor(R.color.brown_important_urgent_on)
+
+
+                    override val calendarViewWeekLabelTextColors: SparseIntArray
+                        get() = SparseIntArray(7).apply {
+                            val black = getColor(R.color.black)
+                            put(Calendar.SATURDAY, black)
+                            put(Calendar.SUNDAY, black)
+                            put(Calendar.MONDAY, black)
+                            put(Calendar.TUESDAY, black)
+                            put(Calendar.WEDNESDAY, black)
+                            put(Calendar.THURSDAY, black)
+                            put(Calendar.FRIDAY, black)
+                        }
+
+                    override val calendarViewShowAdjacentMonthDays: Boolean
+                        get() = true
+
+                    override val selectionBarBackgroundColor: Int
+                        get() = getColor(R.color.brown_important_urgent_on)
+
+                    override val selectionBarRangeDaysItemBackgroundColor: Int
+                        get() = getColor(R.color.brown_important_urgent_off)
+
+
+                }
+
+                val callback = SingleDayPickCallback { day ->
+                    val localDate: LocalDate = day.getTime()
+                        .toInstant()
+                        .atZone(ZoneId.systemDefault())
+                        .toLocalDate()
+                    setDateBlocks(localDate.toString())
+                }
+
+                val datePicker = PrimeDatePicker.dialogWith(primeCalendar)
+                    .pickSingleDay(callback)
+                    .initiallyPickedSingleDay(primeCalendar)
+                    .minPossibleDate(primeCalendar)
+                    .firstDayOfWeek(Calendar.MONDAY)
+                    .applyTheme(themeFactory)
+                    .build()
+
+                datePicker.show(supportFragmentManager, "AddingTaskDatePicker")
             }
 
             R.id.btn_begin_event_time -> {
                 var tpd = TimePickerDialog(
                     this,
+                    R.style.MyDatePickerStyle,
                     TimePickerDialog.OnTimeSetListener { view, sel_hour, sel_minutes ->
 
                         startTime = setUpTime(sel_hour, sel_minutes)
@@ -522,22 +585,75 @@ class   AddingEventActivity : AppCompatActivity(), View.OnClickListener {
             }
 
             R.id.btn_end_event -> {
-                val dpde = DatePickerDialog(
-                    this,
-                    DatePickerDialog.OnDateSetListener { view, sel_year, sel_month, sel_day ->
+//                val dpde = DatePickerDialog(
+//                    this,
+//                    DatePickerDialog.OnDateSetListener { view, sel_year, sel_month, sel_day ->
+//
+//                        endDate = setUpDate(sel_day, sel_month+1, sel_year)
+//                        setEndDateBlocks(endDate)
+//
+//                    }, today_year, today_month-1, today_day
+//                )
+//
+//                dpde.show()
 
-                        endDate = setUpDate(sel_day, sel_month+1, sel_year)
-                        setEndDateBlocks(endDate)
 
-                    }, today_year, today_month-1, today_day
-                )
+                val themeFactory = object : LightThemeFactory() {
 
-                dpde.show()
+                    override val pickedDayBackgroundShapeType: BackgroundShapeType
+                        get() = BackgroundShapeType.ROUND_SQUARE
+
+                    override val calendarViewPickedDayBackgroundColor: Int
+                        get() = getColor(R.color.brown_important_urgent_on)
+
+
+                    override val calendarViewWeekLabelTextColors: SparseIntArray
+                        get() = SparseIntArray(7).apply {
+                            val black = getColor(R.color.black)
+                            put(Calendar.SATURDAY, black)
+                            put(Calendar.SUNDAY, black)
+                            put(Calendar.MONDAY, black)
+                            put(Calendar.TUESDAY, black)
+                            put(Calendar.WEDNESDAY, black)
+                            put(Calendar.THURSDAY, black)
+                            put(Calendar.FRIDAY, black)
+                        }
+
+                    override val calendarViewShowAdjacentMonthDays: Boolean
+                        get() = true
+
+                    override val selectionBarBackgroundColor: Int
+                        get() = getColor(R.color.brown_important_urgent_on)
+
+                    override val selectionBarRangeDaysItemBackgroundColor: Int
+                        get() = getColor(R.color.brown_important_urgent_off)
+
+
+                }
+
+                val callback = SingleDayPickCallback { day ->
+                    val localDate: LocalDate = day.getTime()
+                        .toInstant()
+                        .atZone(ZoneId.systemDefault())
+                        .toLocalDate()
+                    setEndDateBlocks(localDate.toString())
+                }
+
+                val datePicker = PrimeDatePicker.dialogWith(primeCalendar)
+                    .pickSingleDay(callback)
+                    .initiallyPickedSingleDay(primeCalendar)
+                    .minPossibleDate(primeCalendar)
+                    .firstDayOfWeek(Calendar.MONDAY)
+                    .applyTheme(themeFactory)
+                    .build()
+
+                datePicker.show(supportFragmentManager, "AddingTaskDatePicker")
             }
 
             R.id.btn_end_event_time -> {
                 var tpde = TimePickerDialog(
                     this,
+                    R.style.MyDatePickerStyle,
                     TimePickerDialog.OnTimeSetListener { view, sel_hour, sel_minutes ->
 
                         endTime = setUpTime(sel_hour, sel_minutes)
