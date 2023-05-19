@@ -123,7 +123,8 @@ class HomeFragment : Fragment() {
                     deleteNoteId
                 )
             },
-            { updateTask, updateNote -> userViewModel.updateTaskAndNote(updateTask, updateNote) })
+            { updateTask, updateNote ->
+                userViewModel.updateTaskAndNote(updateTask, updateNote) })
         rv3.adapter = adapter3
         rv3.layoutManager = UnscrollableLinearLayoutManager(requireContext())
 
@@ -179,8 +180,16 @@ class HomeFragment : Fragment() {
                     checkIfEmpty(adapter2.list, adapter3.list, adapter4.list, adapter5.list, view)
 
 
+
+
                 }
             }
+
+            adapter.notifyDataSetChanged()
+            adapter2.notifyDataSetChanged()
+            adapter3.notifyDataSetChanged()
+            adapter4.notifyDataSetChanged()
+            adapter5.notifyDataSetChanged()
         }
 
         noteViewModel = ViewModelProvider(this)[NoteViewModel::class.java]
@@ -280,6 +289,7 @@ class HomeFragment : Fragment() {
 
         var allHabits = mutableListOf<Habits>()
         var activeHabits = mutableListOf<Habits>()
+        var show_all_clicked = 0
 
 
         //habitViewModel = ViewModelProvider(this)[HabitViewModel::class.java]
@@ -298,10 +308,18 @@ class HomeFragment : Fragment() {
 
             adapterhh.updateList(activeHabits)
             allHabits = it.toMutableList()
+
+            if(show_all_clicked == 1)
+            {
+                adapterhh.updateList(allHabits)
+            }
+            else
+            {
+                adapterhh.updateList(activeHabits)
+            }
+
         }
 
-
-        //Toast.makeText(requireContext(), listHab.size.toString(), Toast.LENGTH_SHORT).show()
 
 
         view.habits_add.setOnClickListener {
@@ -311,6 +329,7 @@ class HomeFragment : Fragment() {
 
             val alertDialog = builder.create()
             alertDialog.show()
+
 
             dialogView.btn_create.setOnClickListener {
 
@@ -335,7 +354,6 @@ class HomeFragment : Fragment() {
                     alertDialog.cancel()
                 }
             }
-
         }
 
 
@@ -361,7 +379,7 @@ class HomeFragment : Fragment() {
             }
         }
 
-        var show_all_clicked = 0
+
 
         view.habits_show_all.setOnClickListener {
             if (show_all_clicked == 0)
