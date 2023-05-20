@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".gui.pages.guide.GuideSettingsFragment2">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:background="@drawable/shape_spinner"
+        android:orientation="vertical"
+        android:padding="5dp">
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Aby nie utracić dodanych przez Ciebie zadań, wydarzeń czy nawyków, możesz zrobić kopię zapasową. Dzięki temu bez problemu przeniesiesz swoje dane na przykład na nowe urządzenie. \n" />
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/brown_important_urgent_on"
+
+            android:text="Zapis wszystkich danych do pliku:" />
+
+        <Button
+            android:id="@+id/exportButton"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/brown_important_urgent_on"
+            android:text="Backup"
+            app:icon="@drawable/icon_download"
+            />
+
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:textColor="@color/brown_important_urgent_on"
+            android:text="Wczytanie zapisanych danych do pliku:" />
+
+
+        <Button
+            android:id="@+id/importButton"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/brown_important_urgent_on"
+            android:text="Import"
+            app:icon="@drawable/icon_upload" />
+
+    </LinearLayout>
+
+</FrameLayout>

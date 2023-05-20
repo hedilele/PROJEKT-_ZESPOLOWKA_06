@@ -10,23 +10,31 @@
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.SET_ALARM" />
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
-        android:screenOrientation="portrait"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
+        android:screenOrientation="portrait"
         android:supportsRtl="true"
         android:theme="@style/Theme.Planer"
         tools:targetApi="31">
+        <activity
+            android:name=".GuideActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:exported="false"
+            android:label="@string/title_activity_guide"
+            android:theme="@style/Theme.Planer.Fullscreen" />
+
         <receiver
             android:name=".gui.pages.pomodoro.MyNotificationPublisher"
             android:enabled="true"
             android:exported="true"
-            android:permission="android.permission.RECEIVE_BOOT_COMPLETED" >
+            android:permission="android.permission.RECEIVE_BOOT_COMPLETED">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
@@ -39,13 +47,15 @@
                 <action android:name="your.package.name.NOTIFICATION_ACTION" />
             </intent-filter>
         </receiver>
+
         <service android:name=".norification.NotificationService" />
+
         <activity
             android:name=".MainActivity"
+            android:alwaysRetainTaskState="true"
             android:exported="true"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait"
-            android:alwaysRetainTaskState="true">
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -54,77 +64,77 @@
         </activity>
         <activity
             android:name=".gui.pages.home.tasks.AddingTaskActivity"
-            android:screenOrientation="portrait"
-            android:exported="false">
+            android:exported="false"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
-
         <activity
             android:name=".gui.AddingEventActivity"
-            android:screenOrientation="portrait"
-            android:exported="false">
+            android:exported="false"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
-
         <activity
             android:name=".gui.pages.filter.FilterFragment"
-            android:screenOrientation="portrait"
-            android:exported="false">
+            android:exported="false"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
-
         <activity
             android:name=".gui.pages.settings.UserSettingsActivity"
-            android:screenOrientation="portrait"
-            android:exported="false">
+            android:exported="false"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
-
         <activity
             android:name=".gui.pages.scope.ScopeMode"
-            android:screenOrientation="portrait"
-            android:exported="false">
+            android:exported="false"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
-
         <activity
             android:name=".gui.pages.home.notes.NotesActivity"
-            android:screenOrientation="portrait"
-            android:exported="false">
+            android:exported="false"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
-
-
         <activity
             android:name=".gui.pages.pomodoro.PomodoroActivity"
-            android:screenOrientation="portrait"
+            android:alwaysRetainTaskState="true"
             android:exported="false"
             android:launchMode="singleInstance"
-            android:alwaysRetainTaskState="true"
-            android:parentActivityName=".MainActivity">
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
+        </activity>
 
+        <activity
+            android:name=".gui.pages.guide.GuideActivity"
+            android:exported="false"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
         </activity>
 
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
-
     </application>
 
-    <uses-permission android:name="android.permission.VIBRATE" />
+
 </manifest>

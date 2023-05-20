@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:context=".gui.pages.guide.GuideSettingsFragment">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:background="@drawable/shape_spinner"
+        android:orientation="vertical"
+        android:padding="5dp">
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Ustawienia:"
+            android:textSize="18dp"
+            android:textColor="@color/pr1_green_text"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Wybór dni wolnych od zadań:"
+            android:textColor="@color/brown_important_urgent_on"
+            />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#FBF4E6"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:id="@+id/pick_excluded_dates_button"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginVertical="15dp"
+
+                android:background="@drawable/shape_spinner"
+                android:gravity="center">
+
+                <ImageButton
+                    android:id="@+id/btn_periodicity"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:layout_marginHorizontal="10dp"
+                    android:background="@drawable/calendar"
+                    android:backgroundTint="@color/pr1_brown_dark"
+                    android:padding="8dp" />
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginVertical="8dp"
+                    android:layout_marginRight="20dp"
+                    android:gravity="center"
+                    android:text="WYBIERZ DATY"
+                    android:textSize="13sp" />
+
+            </LinearLayout>
+
+
+            <ImageButton
+                android:id="@+id/reset_unavailable_dates_button"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginVertical="15dp"
+                android:background="@drawable/shape_spinner"
+                android:backgroundTint="#F1997E"
+                android:src="@drawable/icon_delete"
+                app:tint="@color/pr1_brown_dark" />
+
+        </LinearLayout>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tutaj wybierzesz dni w które nie chcesz wykonywać zadań." />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Za pomocą ikony kosza możesz usunąć wszystkie wybrane daty za jednym razem." />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:textColor="@color/brown_important_urgent_on"
+
+            android:text="Dostępny czas na zadania w ciągu dnia:" />
+
+        <com.google.android.material.slider.Slider
+            android:id="@+id/slider"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:stepSize="1"
+            android:value="5"
+            android:valueFrom="1"
+            android:valueTo="8"
+            app:haloColor="#03000000"
+            app:haloRadius="0dp"
+            app:thumbColor="@color/pr1_brown_warm"
+            app:tickColorInactive="@color/brown_important_urgent_on"
+            app:trackColorActive="@color/pr1_brown_light"
+            app:trackColorInactive="@color/pr1_beige_background" />
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Domyślną wartością jest 5 godzin. Dzięki temu ustawieniu algorytm będzie w stanie lepiej dopasować dzienny plan zadań do Ciebie." />
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:textColor="@color/brown_important_urgent_on"
+
+            android:text="Typy zadań" />
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Tutaj możesz ustawić swoje własne etykiety dla zadań. Wykonywanie zadań wg ich typu może znacznie przyspieszyć ich realozację. W tym miejscu możesz również ustawić kolor dla danego typu."
+            />
+
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:textColor="@color/brown_important_urgent_on"
+            android:text="Przenoszenie danych:" />
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Aby nie utracić dodanych przez Ciebie zadań, wydarzeń czy nawyków, możesz zrobić kopię zapasową. Dzięki temu bez problemu przeniesiesz swoje dane na przykład na nowe urządzenie. \n" />
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Zapis wszystkich danych do pliku:" />
+
+        <Button
+            android:id="@+id/exportButton"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/brown_important_urgent_on"
+            android:text="Backup"
+            app:icon="@drawable/icon_download"
+            />
+
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text="Wczytanie zapisanych danych do pliku:" />
+
+
+        <Button
+            android:id="@+id/importButton"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/brown_important_urgent_on"
+            android:text="Import"
+            app:icon="@drawable/icon_upload" />
+
+
+
+    </LinearLayout>
+
+    </FrameLayout>
+
+
+</ScrollView>

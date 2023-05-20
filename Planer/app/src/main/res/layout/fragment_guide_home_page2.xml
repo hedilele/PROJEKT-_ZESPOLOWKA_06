@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:context=".gui.pages.guide.GuideHomePageFragment2">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:padding="5dp"
+        android:background="@drawable/shape_spinner"
+        android:orientation="vertical">
+
+
+<!--        <TextView-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="Dodawanie zadania:"-->
+<!--            android:textColor="@color/brown_important_urgent_on"/>-->
+
+<!--        <TextView-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="Aby planer mógł optymalnie rozplanować Twoje zadania warto znać pojęcia takie jak:" />-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/important"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text=" - ten atrybut wskazuje jak istotne jest dla Ciebie, aby to zadanie zostało wykoane. Czy konsekwencje jego niewykonania wpłyną na Twoje życie?" />-->
+
+
+<!--        <TextView-->
+<!--            android:id="@+id/urgent"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text=" - ten atrybut wskazuje jak dużo czasu zostało do końca wykonania zadania. Im większa pilność tym mniej czasu zostało na jego wykoanie." />-->
+
+    </LinearLayout>
+
+
+</FrameLayout>

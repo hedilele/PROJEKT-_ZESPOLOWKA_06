@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:context=".gui.pages.guide.GuideNotesFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:padding="5dp"
+        android:background="@drawable/shape_spinner"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Szybkie notatki:"
+            android:textSize="18dp"
+            android:textColor="@color/pr1_green_text"/>
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="W tym miejscu możesz przechowywać te rzeczy, które musisz szybko zapisać, by o nich nie zapomnieć."
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Przytrzymanie notatki pozwoli na wyszukanie jej zawartości w przeglądarce internetowej. Dzięki temu możesz szybko sprawdzić pojęcia czy tytuły, które wcześniej sobie zapisałeś." />
+
+    </LinearLayout>
+
+</FrameLayout>

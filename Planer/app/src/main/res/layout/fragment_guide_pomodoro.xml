@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".gui.pages.guide.GuidePomodoroFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:padding="5dp"
+        android:background="@drawable/shape_spinner"
+        android:orientation="vertical"
+        tools:ignore="ExtraText">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Pomodoro:"
+            android:textSize="18dp"
+            android:textColor="@color/pr1_green_text"/>
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Jest to technika pomagająca skupić się na wykonywanym zadaniu. " />
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Pracujesz przez 25 minut, po czym możesz odpocząć przez 5 minut. Po 4 takich seriach następuje 30 minutowa przerwa. Jeżeli zadanie wymaga więcej czasu, możesz zresetować minutnik i rozpocząć kolejne serie." />
+
+
+        <TextView
+            android:id="@+id/textViewNote"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Postaraj się nie wychodzić z tego trybu, a jeśli podczas pracy przyjdzie Ci do głowy pomysł, zapisz go w notatniku klikając na ikonkę: "
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+
+            android:text="Aby ułatwić Ci skupienie się na zadaniu, podczas czsu pracy włącza się systemowy tryb ''nie przeszkadzać''" />
+
+    </LinearLayout>
+
+</FrameLayout>

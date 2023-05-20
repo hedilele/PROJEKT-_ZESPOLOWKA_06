@@ -26,4 +26,10 @@
         android:title="Notatki"
         />
 
+    <item
+        android:id="@+id/guide"
+        android:title="Poradnik"
+        />
+
+
 </menu>

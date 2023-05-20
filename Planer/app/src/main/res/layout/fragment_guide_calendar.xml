@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:context=".gui.pages.guide.GuideCalendarFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:padding="5dp"
+        android:background="@drawable/shape_spinner"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Kalendarz:"
+            android:textSize="18dp"
+            android:textColor="@color/pr1_green_text"/>
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Tutaj będą się znajdować wszystkie dodane przez Ciebie wydarzenia. Dzięki możliwości ustawienia przypomnienia nie zapomnisz o najważniejszych dla Ciebie dniach. " />
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text="Dodawanie wydarzenia:"
+            android:textColor="@color/brown_important_urgent_on"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Wydarzenie możesz dodać zarówno poprzez naciśnięcie przycisku na dole strony, jak i poprzez przytrzymanie wybranego dnia w kalendarzu." />
+
+
+    </LinearLayout>
+
+</FrameLayout>

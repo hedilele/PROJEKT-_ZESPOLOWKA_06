@@ -23,7 +23,7 @@
     <color name="green1">#588157</color>
 
 
-    <color name = "green_calendar">#00873E</color>
+    <color name="green_calendar">#00873E</color>
 
     <color name="home_background">#80F3DEBA</color>
     <color name="home_background3">#80F4EFCB</color>
@@ -55,5 +55,10 @@
 
     <color name="pr1_grey_habit">#3BE4D1B0</color>
     <color name="pr1_beige_habit">#99F3DEBA</color>
+    <color name="light_blue_600">#FF039BE5</color>
+    <color name="light_blue_900">#FF01579B</color>
+    <color name="light_blue_A200">#FF40C4FF</color>
+    <color name="light_blue_A400">#FF00B0FF</color>
+    <color name="black_overlay">#66000000</color>
 
 </resources>

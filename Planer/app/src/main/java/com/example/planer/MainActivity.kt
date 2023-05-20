@@ -29,6 +29,7 @@ import com.example.planer.gui.ViewPager2Adapter
 import com.example.planer.gui.pages.home.tasks.AddingTaskActivity
 import com.example.planer.gui.pages.*
 import com.example.planer.gui.pages.filter.FilterFragment
+import com.example.planer.gui.pages.guide.GuideActivity
 import com.example.planer.gui.pages.home.HomeFragment
 import com.example.planer.gui.pages.home.notes.NotesActivity
 import com.example.planer.gui.pages.pomodoro.PomodoroActivity
@@ -231,6 +232,8 @@ class MainActivity : AppCompatActivity() {
 
                         val intent = Intent(applicationContext, UserSettingsActivity::class.java)
                         startActivity(intent)
+                        binding.drawerLayout.closeDrawer(GravityCompat.START);
+
 
                     }
 
@@ -238,12 +241,23 @@ class MainActivity : AppCompatActivity() {
 
                         val intent = Intent(applicationContext, ScopeMode::class.java)
                         startActivity(intent)
+                        binding.drawerLayout.closeDrawer(GravityCompat.START);
+
 
                     }
 
                     R.id.short_notes -> {
                         val intent = Intent(applicationContext, NotesActivity::class.java)
                         startActivity(intent)
+                        binding.drawerLayout.closeDrawer(GravityCompat.START);
+
+                    }
+
+                    R.id.guide -> {
+                        val intent = Intent(applicationContext, GuideActivity::class.java)
+                        startActivity(intent)
+                        binding.drawerLayout.closeDrawer(GravityCompat.START);
+
                     }
 
                 }
