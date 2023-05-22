@@ -11,7 +11,6 @@ import com.example.planer.R
 import com.example.planer.entities.Calendar
 import kotlinx.android.synthetic.main.calendar_cell.view.*
 import java.time.LocalDate
-
 class CalendarAdapter(
     private val daysOfMonth: ArrayList<String>,
     var todayDay: String,
@@ -69,7 +68,6 @@ class CalendarAdapter(
     interface OnLongItemListener {
         fun onLongItemClick(position: Int, dayText: String?)
     }
-
 
     fun updateList(newCalendar: MutableList<Calendar>) {
         val diffResult = DiffUtil.calculateDiff(

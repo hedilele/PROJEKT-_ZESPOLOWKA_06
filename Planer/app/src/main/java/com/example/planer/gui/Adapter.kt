@@ -2,10 +2,7 @@ package com.example.planer.gui
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.example.planer.R
 import com.example.planer.databinding.SingleTaskBinding
 import com.example.planer.entities.Tasks
 
@@ -27,8 +24,6 @@ class Adapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-//        var itemView = LayoutInflater.from(parent.context).inflate(R.layout.single_task, parent, false)
-//        return ViewHolder(itemView)
         return ViewHolder(
             SingleTaskBinding.inflate(
                 LayoutInflater.from(parent.context), parent, false
@@ -42,37 +37,6 @@ class Adapter(
 
         holder.title.text = item.title
         holder.deadline.text = item.deadline
-
-        /*
-        when (item.importance) {
-            0 -> holder.importance?.setBackgroundColor(
-                ContextCompat.getColor(
-                    holder.itemView.context,
-                    R.color.neutral_blue
-                )
-            )
-            1 -> holder.importance?.setBackgroundColor(
-                ContextCompat.getColor(
-                    holder.itemView.context,
-                    R.color.easy_green
-                )
-            )
-            2 -> holder.importance?.setBackgroundColor(
-                ContextCompat.getColor(
-                    holder.itemView.context,
-                    R.color.medium_yellow
-                )
-            )
-            3 -> holder.importance?.setBackgroundColor(
-                ContextCompat.getColor(
-                    holder.itemView.context,
-                    R.color.hard_red
-                )
-            )
-        }
-
-         */
-
 
         holder.trash.setOnClickListener {
             deleteListener(item.id)

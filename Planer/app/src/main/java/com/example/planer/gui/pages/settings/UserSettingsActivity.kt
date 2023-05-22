@@ -38,10 +38,8 @@ import de.raphaelebner.roomdatabasebackup.core.RoomBackup
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.lang.String
 import java.time.ZoneId
 import java.util.*
-
 
 class UserSettingsActivity : AppCompatActivity(), View.OnClickListener,
     TypeAdapter.OnButtonClickListener {
@@ -93,8 +91,6 @@ class UserSettingsActivity : AppCompatActivity(), View.OnClickListener,
         }
 
         binding.slider.setLabelFormatter(LabelFormatter { binding.slider.value.toInt().toString() + " godz" })
-
-
 
         binding.resetUnavailableDatesButton.setOnClickListener {
             val builder = AlertDialog.Builder(this)
@@ -189,7 +185,6 @@ class UserSettingsActivity : AppCompatActivity(), View.OnClickListener,
         }
     }
 
-
     override fun onClick(v: View?) {
         when (v?.id) {
 
@@ -266,8 +261,6 @@ class UserSettingsActivity : AppCompatActivity(), View.OnClickListener,
 
 
                 }
-
-
 
                 val callback = MultipleDaysPickCallback { days ->
                     if (markedDatePickerList.sorted() != days.sorted()) {

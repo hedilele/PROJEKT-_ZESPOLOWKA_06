@@ -32,7 +32,6 @@ class DatabaseCallback(private val context: Context) : RoomDatabase.Callback() {
         }
     }
 
-
     // Funkcja ładująca JSON (plik tekstowy) z folderu Assets
     private fun loadJsonFromAsset(filename: String): String {
         val inputStream = context.assets.open(filename)
@@ -58,7 +57,6 @@ class DatabaseCallback(private val context: Context) : RoomDatabase.Callback() {
         }
         return typesList
     }
-
 
     private fun parseJsonToSettings(json: String): Settings {
         val jsonArray = JSONArray(json)

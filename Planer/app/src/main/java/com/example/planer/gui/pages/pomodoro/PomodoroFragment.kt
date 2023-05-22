@@ -1,6 +1,5 @@
 package com.example.planer.gui.pages.pomodoro
 
-import android.app.AlertDialog
 import android.content.Context
 import android.graphics.PorterDuff
 import android.os.*
@@ -10,12 +9,8 @@ import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import com.example.planer.R
 import com.example.planer.ViewModel.NoteViewModel
-import com.example.planer.entities.Notes
-import kotlinx.android.synthetic.main.dialog_note_pomodoro.view.*
 import kotlinx.android.synthetic.main.fragment_pomodoro.view.*
 
 class PomodoroFragment : Fragment() {
@@ -34,137 +29,18 @@ class PomodoroFragment : Fragment() {
 
     private lateinit var noteViewModel: NoteViewModel
 
-
     var POMODORO_WORK = 4
     var POMODORO_BREAK = 3
 
     var v: Int = 8      //4 work_time(%2==0) + 4 break_time(%2==1)
     var actual_time = 4
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-
-     /*   val view = inflater.inflate(R.layout.fragment_pomodoro, container, false)
-        noteViewModel = ViewModelProvider(this).get(NoteViewModel::class.java)
-
-
-        progressBar = view.pbTimer
-        startBtn = view.btnPlayPause
-        resetBtn = view.ib_reset
-        timeLeftTv = view.tvTimeLeft
-        work_break = view.tv_work_break_time
-        //timeSet = view.etGetTime
-        //btnStart = view.btnOk
-
-
-//
-//        view.btnAdd.setOnClickListener {
-//            setTimeFunction()
-//        }
-
-        view.series_1.setColorFilter(
-            ContextCompat.getColor(
-                requireContext(),
-                R.color.pr1_pomodoro_yellow_on
-            ), PorterDuff.Mode.SRC_ATOP
-        )
-        view?.series_4?.setColorFilter(
-            ContextCompat.getColor(
-                requireContext(),
-                R.color.pr1_pomodoro_yellow_off
-            ), PorterDuff.Mode.SRC_ATOP
-        )
-        view?.series_3?.setColorFilter(
-            ContextCompat.getColor(
-                requireContext(),
-                R.color.pr1_pomodoro_yellow_off
-            ), PorterDuff.Mode.SRC_ATOP
-        )
-        view?.series_2?.setColorFilter(
-            ContextCompat.getColor(
-                requireContext(),
-                R.color.pr1_pomodoro_yellow_off
-            ), PorterDuff.Mode.SRC_ATOP
-        )
-
-        setTimeFunction(4)
-        v--
-
-        view.btnPlayPause.setOnClickListener {
-            startTimerSetup()
-        }
-
-        view.ib_reset.setOnClickListener {
-            resetTimeEnd()
-        }
-
-//        view.tv_addTime.setOnClickListener {
-//            addExtraTime()
-//        }
-
-        val builder = AlertDialog.Builder(requireContext())
-        val dialogView = inflater.inflate(R.layout.dialog_note_pomodoro, null)
-        builder.setView(dialogView)
-        val alertDialog = builder.create()
-
-
-
-
-        view.iv_note.setOnClickListener {
-
-            //var note_tmp = dialogView.et_note.text.toString()
-            var note_tmp: String? = ""
-            var pomodoroNote: Notes? = null
-
-            noteViewModel.findPomodoro.observe(viewLifecycleOwner, Observer { note ->
-                pomodoroNote = note
-            })
-
-            if (pomodoroNote == null) {
-                noteViewModel.addNote(
-                    Notes(
-                        noteTitle = "#pomodoro#",
-                        noteContent = "",
-                        photo = null
-                    )
-                )
-            } else {
-                note_tmp = pomodoroNote?.noteContent
-            }
-
-
-            if (note_tmp != "") {
-                dialogView.et_note.setText(note_tmp + '\n')
-            }
-
-
-            dialogView.et_note.setSelection(dialogView.et_note.length())
-            dialogView.et_note.requestFocus()
-
-
-            val window: Window? = alertDialog.getWindow()
-            window?.clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM)
-            window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE)
-
-
-            alertDialog.show()
-
-            dialogView.btn_ok_note.setOnClickListener {
-
-                pomodoroNote?.noteContent = dialogView.et_note.text.toString()
-                noteViewModel.updateNote(pomodoroNote!!)
-                alertDialog.hide()
-            }
-        }
-
-
-      */
         return view
-
     }
 
     private fun resetTime() {
@@ -182,9 +58,6 @@ class PomodoroFragment : Fragment() {
         }
     }
 
-
-    //    holder.itemView.done.setImageDrawable(ContextCompat.getDrawable(holder.itemView.context, R.drawable.icon_checkbox_filled))
-//    holder.itemView.done.setColorFilter(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_off), PorterDuff.Mode.SRC_ATOP)
     private fun resetTimeEnd() {
         view?.series_4?.setColorFilter(
             ContextCompat.getColor(
@@ -364,7 +237,6 @@ class PomodoroFragment : Fragment() {
         }
     }
 
-
     private fun setTimeFunction(time: Int) {
         resetTime()
         timeLeftTv.text = "$time : 00"
@@ -372,7 +244,6 @@ class PomodoroFragment : Fragment() {
         time_selected = time
         progressBar.max = time_selected
     }
-
 
     override fun onDestroy() {
         super.onDestroy()

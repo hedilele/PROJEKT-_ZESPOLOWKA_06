@@ -2,7 +2,6 @@ package com.example.planer.gui.callBacks
 
 import androidx.recyclerview.widget.DiffUtil
 import com.example.planer.entities.Calendar
-import com.example.planer.entities.Tasks
 
 class CalendarDiffCallback (private val oldCalendar: MutableList<Calendar>, private val newCalendar: MutableList<Calendar>) : DiffUtil.Callback() {
 

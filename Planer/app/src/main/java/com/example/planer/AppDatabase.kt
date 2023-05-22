@@ -38,9 +38,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun calendarDAO() : CalendarDAO
     abstract fun typesDAO() : TypeDAO
 
-    //TESTOWO
-
-    //Singleton dla naszej bazy
+    //Singleton dla bazy
     companion object {
 
         @Volatile

@@ -1,18 +1,9 @@
 package com.example.planer.gui
 
-import android.app.DatePickerDialog
 import android.app.TimePickerDialog
-import android.content.Intent
-import android.graphics.Color
-import android.os.Build
 import android.os.Bundle
-import android.os.PersistableBundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.SparseIntArray
 import android.view.*
-import android.view.View.OnFocusChangeListener
-import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
@@ -36,7 +27,6 @@ class   AddingEventActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var binding: AddEventToCalendarBinding
     private lateinit var calendarViewModel: CalendarViewModel
 
-
     private val primeCalendar = CivilCalendar(TimeZone.getDefault(), Locale("pl", "PL"))
     // zmienne do stworzenia nowego eventu
 
@@ -48,9 +38,6 @@ class   AddingEventActivity : AppCompatActivity(), View.OnClickListener {
     var repeat : Int = 0 // 0 - brak   1 - tydzień  2 - miesiąc         3 - rok
     var noteId: Int = 0
 
-
-
-
     //calendar - pobranie aktualnego czasu
     val calendar = Calendar.getInstance()
     var today_year = calendar.get(Calendar.YEAR)
@@ -58,10 +45,6 @@ class   AddingEventActivity : AppCompatActivity(), View.OnClickListener {
     var today_day = calendar.get(Calendar.DAY_OF_MONTH)
     var today_hour = calendar.get(Calendar.HOUR_OF_DAY)
     var today_minute = calendar.get((Calendar.MINUTE))
-
-
-
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -124,16 +107,9 @@ class   AddingEventActivity : AppCompatActivity(), View.OnClickListener {
         today_month = selectedDateString.substring(5, 7).toInt()
         today_year= selectedDateString.substring(0, 4).toInt()
 
-
-
-
         setInitialDateBlocks(setUpDate(today_day, today_month, today_year))
         setInitialTimeBlocks(setUpTime(today_hour, today_minute))
-
-
     }
-
-
 
     override fun onClick(v: View?) {
         when(v?.id)
@@ -183,7 +159,6 @@ class   AddingEventActivity : AppCompatActivity(), View.OnClickListener {
 
             }
 
-
             R.id.tv_reminder_15min->
             {
                 resetRemind()
@@ -230,10 +205,6 @@ class   AddingEventActivity : AppCompatActivity(), View.OnClickListener {
             }
 
             R.id.btn_create->{
-
-
-                //val tasksDAO = (application as DatabaseApp).db.tasksDAO()
-                //val intent = Intent(this, MainActivity::class.java)
 
                 var dayb: String = binding.tvBeginEventDay.text.toString()
                 if (dayb == "") {
@@ -492,9 +463,6 @@ class   AddingEventActivity : AppCompatActivity(), View.OnClickListener {
                         }
                     }
 
-
-
-                    //startActivity(intent)
                     finish()
                 }
 
@@ -503,20 +471,6 @@ class   AddingEventActivity : AppCompatActivity(), View.OnClickListener {
 
 
             R.id.btn_begin_event -> {
-//                val dpd = DatePickerDialog(
-//                    this,
-//                    DatePickerDialog.OnDateSetListener { view, sel_year, sel_month, sel_day ->
-//
-//                        startDate = setUpDate(sel_day, sel_month+1, sel_year)
-//                        setDateBlocks(startDate)
-//
-//                    }, today_year, today_month-1, today_day
-//                )
-//
-//                dpd.show()
-
-
-
                 val themeFactory = object : LightThemeFactory() {
 
                     override val pickedDayBackgroundShapeType: BackgroundShapeType
@@ -585,19 +539,6 @@ class   AddingEventActivity : AppCompatActivity(), View.OnClickListener {
             }
 
             R.id.btn_end_event -> {
-//                val dpde = DatePickerDialog(
-//                    this,
-//                    DatePickerDialog.OnDateSetListener { view, sel_year, sel_month, sel_day ->
-//
-//                        endDate = setUpDate(sel_day, sel_month+1, sel_year)
-//                        setEndDateBlocks(endDate)
-//
-//                    }, today_year, today_month-1, today_day
-//                )
-//
-//                dpde.show()
-
-
                 val themeFactory = object : LightThemeFactory() {
 
                     override val pickedDayBackgroundShapeType: BackgroundShapeType
@@ -605,7 +546,6 @@ class   AddingEventActivity : AppCompatActivity(), View.OnClickListener {
 
                     override val calendarViewPickedDayBackgroundColor: Int
                         get() = getColor(R.color.brown_important_urgent_on)
-
 
                     override val calendarViewWeekLabelTextColors: SparseIntArray
                         get() = SparseIntArray(7).apply {
@@ -694,7 +634,6 @@ class   AddingEventActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-
     private fun resetRemind() {
         when(reminder)
         {
@@ -726,7 +665,6 @@ class   AddingEventActivity : AppCompatActivity(), View.OnClickListener {
         return "$y-$month-$day"
     }
 
-
     fun setUpTime(h: Int, m: Int): String {
         var hour = h.toString()
         var minutes = m.toString()
@@ -749,9 +687,6 @@ class   AddingEventActivity : AppCompatActivity(), View.OnClickListener {
         binding.tvEndEventMin.setText(table[1])
     }
 
-
-
-
     fun setDateBlocks(date: String) {
         val table = date.split('-')
         binding.tvBeginEventDay.setText(table[2])
@@ -766,9 +701,6 @@ class   AddingEventActivity : AppCompatActivity(), View.OnClickListener {
         binding.tvEndEventMonth.setText(table[1])
         binding.tvEndEventYear.setText(table[0])
     }
-
-
-
 
     fun setInitialDateBlocks(date: String) {
         val table = date.split('-')
@@ -789,7 +721,6 @@ class   AddingEventActivity : AppCompatActivity(), View.OnClickListener {
         binding.tvEndEventMin.setText("59")
     }
 
-
     fun compareDates(date1: String, date2: String): Int {
         val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
         val dateTime1 = dateFormat.parse(date1.replace("e", ""))
@@ -806,6 +737,4 @@ class   AddingEventActivity : AppCompatActivity(), View.OnClickListener {
         calendar.add(Calendar.HOUR_OF_DAY, 1)
         return dateFormat.format(calendar.time)
     }
-
-
 }

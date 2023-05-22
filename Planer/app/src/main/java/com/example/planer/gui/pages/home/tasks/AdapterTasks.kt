@@ -1,7 +1,5 @@
 package com.example.planer.gui.pages.home.tasks
 
-import android.annotation.SuppressLint
-import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.res.ColorStateList
 import android.graphics.Color
@@ -37,7 +35,6 @@ import com.example.planer.gui.callBacks.TypeDiffCallback
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.single_task.view.*
 import kotlinx.android.synthetic.main.single_task.view.task_title
-import kotlinx.coroutines.NonDisposableHandle.parent
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -76,9 +73,6 @@ class AdapterTasks(
 
 
         holder.itemView.task_title.text = item.title
-        // 0123456789012345
-        // yyyy-mm-dd hh:mm
-
 
         fun compareDates(date1: String, date2: String): Int     // d1==d2 -> 0  ; d1>d2 -> 1
         {
@@ -120,17 +114,11 @@ class AdapterTasks(
         holder.itemView.done.setOnClickListener {
 
             var clicked = 0
-
-            //holder.itemView.visibility = View.GONE
-            //holder.itemView.done.setImageDrawable(ContextCompat.getDrawable(holder.itemView.context, R.drawable.icon_checkbox_filled))
-
             //TODO wypisac komunikat z zapytaniem
             val snackbar = Snackbar.make(holder.itemView, "Czy chcesz cofnąc usunięcie?", Snackbar.LENGTH_LONG)
             snackbar.duration = 2000
             snackbar.setAction("cofnij") {
                 clicked = 1
-                //holder.itemView.visibility = View.VISIBLE
-                //holder.itemView.done.setImageDrawable(ContextCompat.getDrawable(holder.itemView.context, R.drawable.icon_checkbox_empty))
             }
 
             snackbar.show()
@@ -148,11 +136,9 @@ class AdapterTasks(
                 holder.itemView.done.setImageDrawable(ContextCompat.getDrawable(holder.itemView.context, R.drawable.icon_checkbox_empty))
                 holder.itemView.done.setColorFilter(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_off), PorterDuff.Mode.SRC_ATOP)
 
-
             }, 2000) // opóźnienie wynosi 5000 milisekund, czyli 5 sekund
 
         }
-
 
         holder.itemView.btn_delete.setOnClickListener {
             deleteListener(item.id, item.noteId!!)
@@ -206,11 +192,6 @@ class AdapterTasks(
             val duration5 = dialogView.findViewById<TextView>(R.id.duration5)
             val duration6 = dialogView.findViewById<TextView>(R.id.duration6)
 
-//            val type1 = dialogView.findViewById<TextView>(R.id.type1)
-//            val type2 = dialogView.findViewById<TextView>(R.id.type2)
-//            val type3 = dialogView.findViewById<TextView>(R.id.type3)
-//            val type4 = dialogView.findViewById<TextView>(R.id.type4)
-
             val type_spinner = dialogView.findViewById<Spinner>(R.id.type_spinner)
 
 
@@ -223,15 +204,12 @@ class AdapterTasks(
             val edit = dialogView.findViewById<Button>(R.id.btn_create)
             edit.setText("Edytuj")
 
-
             //ustawianie wartosci taska
             task_title.setText(item.title)
             task_note.setText(itemsNote?.noteContent)
 
-
             when(item.importance)
             {
-                //view.habits_delete.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.pr1_beige_background2))
                 0 -> { important0.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_on)) }
                 1 -> { important1.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_on)) }
             }
@@ -265,8 +243,6 @@ class AdapterTasks(
                 }
             }
 
-
-
             var listOfTypes = mutableListOf<String>()
             listOfTypes.add("Brak")
             for(types in typesList) {
@@ -276,8 +252,6 @@ class AdapterTasks(
             val adapter = ArrayAdapter(holder.itemView.context, android.R.layout.simple_spinner_dropdown_item, listOfTypes)
             type_spinner.adapter = adapter
             type_spinner.setSelection(0)
-            //typeId = type_spinner.selectedItemPosition
-
 
             when(item.typeId)
             {
@@ -285,19 +259,15 @@ class AdapterTasks(
                     type_spinner.setSelection(0)
                 }
                 1 -> {
-                    //type1.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_on))
                     type_spinner.setSelection(1)
                 }
                 2 -> {
-                    //type2.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_on))
                     type_spinner.setSelection(2)
                 }
                 3 -> {
-                    //type3.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_on))
                     type_spinner.setSelection(3)
                 }
                 4 -> {
-                    //type4.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_on))
                     type_spinner.setSelection(4)
                 }
             }
@@ -313,9 +283,6 @@ class AdapterTasks(
                 specyfic_date = 0
             }
 
-
-
-
             deadline_day = item.deadline.substring(0, 10)
             deadline_time = item.deadline.substring(11)
 
@@ -329,19 +296,14 @@ class AdapterTasks(
             hour.setText(tab_time[0])
             minutes.setText(tab_time[1])
 
-
-
-
             fun uncheckImportance()
             {
                 when(importance)
                 {
                     0 -> {
-                        //important0.setBackgroundColor(android.R.color.transparent)
                         important0.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_off))
                     }
                     1 -> {
-                        //important1.setBackgroundColor(android.R.color.transparent)
                         important1.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_off))
                     }
                 }
@@ -387,7 +349,6 @@ class AdapterTasks(
                 urgency = 1
             }
 
-
             fun setUpDate(d: Int, m: Int, y: Int): String {
                 var month = m.toString()
                 var day = d.toString()
@@ -416,15 +377,12 @@ class AdapterTasks(
                 return "$hour:$minutes"
             }
 
-
             // wpisanie aktualnej godziny do pól w tworzeniu tasków - takie ustalenie domyślej godziny przy tworzeniu
             fun setTimeBlocks(date: String) {
                 val table = date.split(':')
                 hour.setText(table[0])
                 minutes.setText(table[1])
             }
-
-
 
             calendar.setOnClickListener {
 
@@ -435,7 +393,6 @@ class AdapterTasks(
 
                     override val calendarViewPickedDayBackgroundColor: Int
                         get() = getColor(R.color.brown_important_urgent_on)
-
 
                     override val calendarViewWeekLabelTextColors: SparseIntArray
                         get() = SparseIntArray(7).apply {
@@ -461,7 +418,6 @@ class AdapterTasks(
 
                 val primeCalendar = CivilCalendar(TimeZone.getDefault(), Locale("pl", "PL"))
 
-
                 val callback = SingleDayPickCallback { day ->
                     val localDate: LocalDate = day.getTime()
                         .toInstant()
@@ -470,7 +426,6 @@ class AdapterTasks(
                     setDateBlocks(localDate.toString())
                     deadline_day= setUpDate(localDate.dayOfMonth,localDate.monthValue-1,localDate.year)
                 }
-
 
                 val datePicker = PrimeDatePicker.dialogWith(primeCalendar)
                     .pickSingleDay(callback)
@@ -483,7 +438,6 @@ class AdapterTasks(
                 datePicker.show(fragmentManager, "AddingTaskDatePicker")
 
             }
-
 
             clock.setOnClickListener {
 
@@ -505,22 +459,6 @@ class AdapterTasks(
                 tpd.show()
             }
 
-
-
-//            deadline_day =
-//                year.text.toString() + '-' +
-//                month.text.toString() + '-' +
-//                day.text.toString()
-//
-//            deadline_time =
-//                hour.text.toString() + ':' +
-//                minutes.text.toString()
-
-
-            //TODO konkretna data czy deadline
-
-
-
             toThisDay.setOnClickListener{
                 atThisDay.setTextColor(ContextCompat.getColor(holder.itemView.context, R.color.pr1_this_day_off))
                 toThisDay.setTextColor(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_on))
@@ -532,9 +470,6 @@ class AdapterTasks(
                 atThisDay.setTextColor(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_on))
                 specyfic_date = 1
             }
-
-
-
 
             fun uncheckDuration()
             {
@@ -642,84 +577,6 @@ class AdapterTasks(
                 }
             }
 
-//            fun uncheckType()
-//            {
-//                when(typeId)
-//                {
-//                    1 -> {
-//                        type1.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_off))
-//                    }
-//                    2 -> {
-//                        type2.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_off))
-//                    }
-//                    3 -> {
-//                        type3.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_off))
-//                    }
-//                    4 -> {
-//                        type4.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_off))
-//                    }
-//
-//                }
-//
-//            }
-//
-//            type1.setOnClickListener {
-//                uncheckType()
-//                if(typeId == 1)
-//                {
-//                    //type1.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_on))
-//                    typeId = 0
-//                }
-//                else
-//                {
-//                    type1.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_on))
-//                    typeId = 1
-//                }
-//            }
-//
-//            type2.setOnClickListener {
-//                uncheckType()
-//                if(typeId == 2)
-//                {
-//                    //type1.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_on))
-//                    typeId = 0
-//                }
-//                else
-//                {
-//                    type2.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_on))
-//                    typeId = 2
-//                }
-//            }
-//
-//            type3.setOnClickListener {
-//                uncheckType()
-//                if(typeId == 3)
-//                {
-//                    //type1.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_on))
-//                    typeId = 0
-//                }
-//                else
-//                {
-//                    type3.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_on))
-//                    typeId = 3
-//                }
-//            }
-//
-//            type4.setOnClickListener {
-//                uncheckType()
-//                if(typeId == 4)
-//                {
-//                    //type1.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_on))
-//                    typeId = 0
-//                }
-//                else
-//                {
-//                    type4.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_on))
-//                    typeId = 4
-//                }
-//            }
-
-
             val alertDialog = builder.create()
             alertDialog.show()
 
@@ -742,24 +599,15 @@ class AdapterTasks(
                 )
 
                 updateListener(task, Notes(item.noteId!!, task_title.text.toString(), task_note.text.toString(), null))
-
-                //alertDialog.hide()
                 alertDialog.cancel()
 
             }
 
         }
 
-
         // wyswietlanie info o tasku
         holder.itemView.setOnClickListener{
-
-            //Toast.makeText(holder.itemView.context, itemsType?.colour.toString(), Toast.LENGTH_SHORT).show()
-
-
-
             val builder = AlertDialog.Builder(holder.itemView.context) //TODO
-            //builder.setView(R.layout.activity_adding_task)
 
             val inflater = LayoutInflater.from(holder.itemView.context)
             val dialogView = inflater.inflate(R.layout.dialog_task_info, null)
@@ -771,7 +619,6 @@ class AdapterTasks(
             val type_cont = dialogView.findViewById<TextView>(R.id.type_content)
             val note_cont = dialogView.findViewById<TextView>(R.id.note_content)
             val note = dialogView.findViewById<TextView>(R.id.note)
-
 
             builder.setView(dialogView) //Podlaczanie xmla
 
@@ -797,8 +644,6 @@ class AdapterTasks(
                 type_cont.visibility = View.GONE
             }
 
-
-
             if(itemsNote?.noteContent?.replace(" ", "") != "")
             {
                 note.visibility = View.VISIBLE
@@ -811,21 +656,14 @@ class AdapterTasks(
                 note_cont.visibility = View.GONE
             }
 
-
-
             val alertDialog = builder.create()
             alertDialog.show()
 
         }
 
-
-
         holder.itemView.edit_drawer.visibility = View.GONE
 
-
         holder.itemView.more_open.setOnClickListener {
-
-            //holder.itemView.name2.setVisibility(View.VISIBLE)
 
             val transition: Transition = Slide(Gravity.RIGHT)
             transition.setDuration(500)
@@ -837,8 +675,6 @@ class AdapterTasks(
 
         holder.itemView.more_close.setOnClickListener {
 
-            //holder.itemView.name2.setVisibility(View.VISIBLE)
-
             val transition: Transition = Slide(Gravity.RIGHT)
             transition.setDuration(500)
             transition.addTarget(holder.itemView.edit_drawer)
@@ -847,9 +683,7 @@ class AdapterTasks(
             holder.itemView.edit_drawer.setVisibility(View.INVISIBLE)
         }
 
-
     }
-
     fun updateList(newTask: MutableList<Tasks>) {
         val diffResult = DiffUtil.calculateDiff(
             TaskDiffCallback(this.list, newTask)

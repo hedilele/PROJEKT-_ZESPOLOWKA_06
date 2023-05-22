@@ -8,17 +8,9 @@ import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
-import androidx.recyclerview.widget.RecyclerView
-import androidx.viewpager2.widget.MarginPageTransformer
 import androidx.viewpager2.widget.ViewPager2
-import com.example.planer.R
 import com.example.planer.databinding.ActivityGuideBinding
 import com.example.planer.gui.ViewPager2Adapter
-import com.example.planer.gui.pages.CalendarFragment
-import com.example.planer.gui.pages.home.HomeFragment
-
-
 
 class GuideActivity : AppCompatActivity() {
 
@@ -40,9 +32,6 @@ class GuideActivity : AppCompatActivity() {
         binding = ActivityGuideBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
-
-
         val viewPager: ViewPager2 = binding.viewpager
 
         val fragments: ArrayList<Fragment> = arrayListOf(
@@ -58,7 +47,6 @@ class GuideActivity : AppCompatActivity() {
         val adapterViewPager = ViewPager2Adapter(fragments, supportFragmentManager, lifecycle)
         viewPager.adapter = adapterViewPager
 
-
         list.add("Strona główna")       // 0
         list.add("Kalendarz")           // 1
         list.add("Filtrowanie")         // 2
@@ -66,7 +54,6 @@ class GuideActivity : AppCompatActivity() {
         list.add("Ustawienia")          // 4
         list.add("Przegląd")            // 5
         list.add("Notatki")             // 6
-
 
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, list)
         binding.spinner.adapter = adapter
@@ -105,7 +92,6 @@ class GuideActivity : AppCompatActivity() {
             }
         }
 
-
         viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 when(position)
@@ -134,7 +120,6 @@ class GuideActivity : AppCompatActivity() {
                 }
             }
         })
-
 
         binding.btnLeave.setOnClickListener{
             finish()

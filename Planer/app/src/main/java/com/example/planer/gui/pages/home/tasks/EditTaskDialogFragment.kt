@@ -7,7 +7,6 @@ import androidx.fragment.app.DialogFragment
 import com.example.planer.R
 
 class EditTaskDialogFragment: DialogFragment() {
-
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let{
             val alertDialog = AlertDialog.Builder(it)

@@ -1,27 +1,17 @@
 package com.example.planer.gui.pages.home.notes
 
-import android.content.Intent
-import android.net.Uri
 import android.view.*
 import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.cardview.widget.CardView
-import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.planer.R
-import com.example.planer.entities.Habits
 import com.example.planer.entities.Notes
-import com.example.planer.gui.callBacks.HabitDiffCallback
 import com.example.planer.gui.callBacks.NoteDiffCallback
-import kotlinx.android.synthetic.main.dialog_short_note.view.*
 
-import kotlinx.android.synthetic.main.single_habit.view.*
 import kotlinx.android.synthetic.main.single_short_note.view.*
-import java.net.URLEncoder
 
 // klasa odpowiedzialna za umieszczanie pojedynczych habitsow w recyclerView
 class AdapterNotes(
@@ -30,11 +20,8 @@ class AdapterNotes(
     private val updateListener: (Notes) -> Unit,
     private val search: (note: String) -> Unit
 ) : RecyclerView.Adapter<AdapterNotes.ViewHolder>() {
-
-
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     }
-
 
     fun updateList(newNotes: MutableList<Notes>) {
         val diffResult = DiffUtil.calculateDiff(
@@ -57,12 +44,10 @@ class AdapterNotes(
         return list.size
     }
 
-
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = list[position]
 
         holder.itemView.note_title.setText(item.noteContent)
-
 
         holder.itemView.setOnClickListener {
 
@@ -91,8 +76,6 @@ class AdapterNotes(
             search(item.noteContent)
             true
         }
-
-
 
         holder.itemView.btn_delete.setOnClickListener {
             deleteListener(item)

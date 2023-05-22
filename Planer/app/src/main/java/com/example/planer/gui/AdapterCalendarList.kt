@@ -1,7 +1,6 @@
 package com.example.planer.gui
 
 
-import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.util.SparseIntArray
 import android.view.LayoutInflater
@@ -11,7 +10,6 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.cardview.widget.CardView
@@ -36,7 +34,6 @@ import java.time.LocalDate
 import java.time.ZoneId
 import java.util.*
 
-
 class AdapterCalendarList (
     val fragmentManager: FragmentManager,
     var list: MutableList<Calendar>,
@@ -45,7 +42,6 @@ class AdapterCalendarList (
     private val updateListener: (calendar:Calendar,note: Notes) -> Unit,
     private val deleteListener: (id: Long, idNote: Int) -> Unit,
 ) : RecyclerView.Adapter<AdapterCalendarList.ViewHolder>() {
-
 
     class ViewHolder(itemView: CardView) : RecyclerView.ViewHolder(itemView) {
 
@@ -56,7 +52,6 @@ class AdapterCalendarList (
 
     }
 
-
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
         val primeCalendar = CivilCalendar(TimeZone.getDefault(), Locale("pl", "PL"))
@@ -66,14 +61,10 @@ class AdapterCalendarList (
         holder.itemView.date_event.text = item.startDate.toString().substring(10,16)
         val itemsNote = notesList.find { notes -> notes.noteId == item.noteId }
 
-
         holder.itemView.btn_delete_event.setOnClickListener {
             deleteListener(item.id, item.noteId)
 
         }
-
-
-
 
         holder.itemView.btn_edit_event.setOnClickListener{
 
@@ -90,8 +81,6 @@ class AdapterCalendarList (
             var noteId: Int = item.noteId
 
             var locationEdited: String = item.location
-
-
 
             val builder = AlertDialog.Builder(holder.itemView.context)
             val inflater = LayoutInflater.from(holder.itemView.context)
@@ -128,22 +117,16 @@ class AdapterCalendarList (
             val cancelEdit = dialogView.findViewById<Button>(R.id.btn_cancel_edit_event)
             val doneEdit = dialogView.findViewById<Button>(R.id.btn_done_edit_event)
 
-
             titleEvent.setText(item.name)
             noteString.setText(itemsNote?.noteContent)
 
             location.setText(item.location)
-
-
 
             when(item.reminder) {
                 1 -> remind1.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_on))
                 2 -> remind2.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_on))
                 3 -> remind3.getBackground().setTint(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_on))
             }
-
-
-
 
             val alertDialog = builder.create()
             alertDialog.show()
@@ -153,7 +136,6 @@ class AdapterCalendarList (
             }
 
             startdate_year_month_day = item.startDate.substring(0,10)
-
 
             startdate_time = item.startDate.substring(11)
 
@@ -165,7 +147,6 @@ class AdapterCalendarList (
 
             val datetoFormatEnd = enddate_year_month_day.split('-')
             val timetoFormatEnd = enddate_time.split(':')
-
 
             yearBegin.setText(datetoFormat[0])
             monthBegin.setText(datetoFormat[1])
@@ -180,7 +161,6 @@ class AdapterCalendarList (
 
             hourEnd.setText(timetoFormatEnd[0])
             minutesEnd.setText(timetoFormatEnd[1])
-
 
             fun setDateBlocks(date: String) {
                 val table = date.split('-')
@@ -205,7 +185,6 @@ class AdapterCalendarList (
                 return "$y-$month-$day"
             }
 
-
             fun setUpTime(h: Int, m: Int): String {
                 var hour = h.toString()
                 var minutes = m.toString()
@@ -215,7 +194,6 @@ class AdapterCalendarList (
 
                 return "$hour:$minutes"
             }
-
 
             fun setTimeBlocks(date: String) {
                 val table = date.split(':')
@@ -228,8 +206,6 @@ class AdapterCalendarList (
                 hourEnd.setText(table[0])
                 minutesEnd.setText(table[1])
             }
-
-
 
             calendarBegin.setOnClickListener {
 
@@ -342,9 +318,6 @@ class AdapterCalendarList (
                 datePicker.show(fragmentManager, "AddingTaskDatePicker")
             }
 
-
-
-
             clockBegin.setOnClickListener {
 
 
@@ -379,7 +352,6 @@ class AdapterCalendarList (
                 tpd.show()
             }
 
-
             startdate_year_month_day = yearBegin.text.toString() + '-'+
                     monthBegin.text.toString() + '-' +
                     dayBegin.text.toString()
@@ -388,9 +360,6 @@ class AdapterCalendarList (
             startdate_time =
                 hourBegin.text.toString() + ':' +
                         minutesBegin.text.toString()
-
-
-
 
             fun resetRemind() {
                 when(remind)
@@ -412,7 +381,6 @@ class AdapterCalendarList (
                     }
                 }
             }
-
 
             remind1.setOnClickListener {
                 resetRemind()
@@ -534,17 +502,11 @@ class AdapterCalendarList (
                     alertDialog.cancel()
                 }
             }
-
-
-
-
         }
 
         holder.itemView.setOnClickListener{
 
-
             val builder = AlertDialog.Builder(holder.itemView.context) //TODO
-            //builder.setView(R.layout.activity_adding_task)
 
             val inflater = LayoutInflater.from(holder.itemView.context)
             val dialogView = inflater.inflate(R.layout.dialog_event_info, null)
@@ -557,11 +519,9 @@ class AdapterCalendarList (
             val note_cont = dialogView.findViewById<TextView>(R.id.note_content)
             val note = dialogView.findViewById<TextView>(R.id.note)
 
-
             builder.setView(dialogView)
 
             title.setText(item.name)
-         //   title.setTextColor(ContextCompat.getColor(holder.itemView.context, R.color.pr1_green_text))
 
             val dateTmp = item.startDate.substring(8, 10) + '.' +
                     item.startDate.substring(5, 7) + '.' +
@@ -580,8 +540,6 @@ class AdapterCalendarList (
                 location_content.visibility=View.GONE
             }
 
-
-
             if(itemsNote?.noteContent?.replace(" ", "") != "")
             {
                 note.visibility = View.VISIBLE
@@ -594,16 +552,9 @@ class AdapterCalendarList (
                 note_cont.visibility = View.GONE
             }
 
-
-
             val alertDialog = builder.create()
             alertDialog.show()
-
-
         }
-
-
-
     }
 
     override fun getItemCount(): Int {
@@ -639,9 +590,5 @@ class AdapterCalendarList (
         this.notesList = newNote
         diffResult.dispatchUpdatesTo(this)
     }
-
-
-
-
 }
 

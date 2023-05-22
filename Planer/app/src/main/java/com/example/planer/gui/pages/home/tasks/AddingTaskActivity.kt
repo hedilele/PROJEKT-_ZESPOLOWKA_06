@@ -4,7 +4,6 @@ import android.app.TimePickerDialog
 import android.os.Bundle
 import android.util.SparseIntArray
 import android.view.*
-import android.view.View.OnFocusChangeListener
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -13,7 +12,6 @@ import androidx.lifecycle.ViewModelProvider
 import com.aminography.primecalendar.PrimeCalendar
 import com.aminography.primecalendar.civil.CivilCalendar
 import com.aminography.primedatepicker.common.BackgroundShapeType
-import com.aminography.primedatepicker.common.LabelFormatter
 import com.aminography.primedatepicker.picker.PrimeDatePicker
 import com.aminography.primedatepicker.picker.callback.MultipleDaysPickCallback
 import com.aminography.primedatepicker.picker.callback.SingleDayPickCallback
@@ -26,24 +24,18 @@ import com.example.planer.entities.Notes
 
 import com.example.planer.entities.Tasks
 import kotlinx.android.synthetic.main.dialod_when_title_empty.view.*
-import kotlinx.android.synthetic.main.settings_type_color_selection.*
 import java.time.LocalDate
 import java.time.ZoneId
 import java.util.*
-
-
 // naprawic entery
-
 class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var binding: ActivityAddingTaskBinding
     private lateinit var taskViewModel: TaskViewModel
     private lateinit var typeViewModel: TypeViewModel
 
-
     // Lista dat w których task ma być powtarzany
     private var markedDatePickerList: MutableList<PrimeCalendar> = mutableListOf()
-
 
     // zmienne do stworzenia nowego tasku
     var important: Int = 0
@@ -55,7 +47,6 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
     var date: String = ""
     var time: String = ""
     var specyficDate: Int = 0   //0 - deadline, 1 - konkretyny dzien
-
 
     //calendar - pobranie aktualnego czasu
     private val primeCalendar = CivilCalendar(TimeZone.getDefault(), Locale("pl", "PL"))
@@ -70,7 +61,6 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
     var chosenItems = mutableListOf<String>()
     var listOfTypes = mutableListOf<String>()
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         // Set full screen
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -80,7 +70,6 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
         )
 
         window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-
 
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
 
@@ -99,10 +88,8 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
 
         binding.btnPeriodicity.setOnClickListener(this)
 
-
         binding.important0.setOnClickListener(this)
         binding.important1.setOnClickListener(this)
-
 
         binding.urgent0.setOnClickListener(this)
         binding.urgent1.setOnClickListener(this)
@@ -120,11 +107,6 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
         binding.duration4.setOnClickListener(this)
         binding.duration5.setOnClickListener(this)
         binding.duration6.setOnClickListener(this)
-
-//        binding.type1.setOnClickListener(this)
-//        binding.type2.setOnClickListener(this)
-//        binding.type3.setOnClickListener(this)
-//        binding.type4.setOnClickListener(this)
 
         setDateBlocks(setUpDate(today_day, today_month, today_year))
         setTimeBlocks(setUpTime(today_hour, today_minute))
@@ -155,20 +137,14 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
                 }
             }
         }
-
-
         setEverything()
-
     }
-
     override fun onClick(v: View?) {
 
         when (v?.id) {
-
             // zmiana koloru przy wyborze
             R.id.duration1 -> {
                 uncheckDuration()
-                //binding.duration1.setColorFilter(getResources().getColor(R.color.hard_red));
                 binding.duration1.getBackground()
                     .setTint((getResources().getColor(R.color.brown_important_urgent_on)))
 
@@ -179,7 +155,6 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
                 uncheckDuration()
 
                 if (duration == 2) {
-                    //binding.duration2.setColorFilter(getResources().getColor(R.color.hard_red));
                     binding.duration1.getBackground()
                         .setTint((getResources().getColor(R.color.brown_important_urgent_on)))
                     duration = 1
@@ -195,7 +170,6 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
             R.id.duration3 -> {
                 uncheckDuration()
                 if (duration == 6) {
-                    //binding.duration2.setColorFilter(getResources().getColor(R.color.hard_red));
                     binding.duration1.getBackground()
                         .setTint((getResources().getColor(R.color.brown_important_urgent_on)))
                     duration = 1
@@ -211,7 +185,6 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
                 uncheckDuration()
 
                 if (duration == 12) {
-                    //binding.duration2.setColorFilter(getResources().getColor(R.color.hard_red));
                     binding.duration1.getBackground()
                         .setTint((getResources().getColor(R.color.brown_important_urgent_on)))
                     duration = 1
@@ -226,7 +199,6 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
             R.id.duration5 -> {
                 uncheckDuration()
                 if (duration == 24) {
-                    //binding.duration2.setColorFilter(getResources().getColor(R.color.hard_red));
                     binding.duration1.getBackground()
                         .setTint((getResources().getColor(R.color.brown_important_urgent_on)))
                     duration = 1
@@ -240,7 +212,6 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
             R.id.duration6 -> {
                 uncheckDuration()
                 if (duration == 30) {
-                    //binding.duration2.setColorFilter(getResources().getColor(R.color.hard_red));
                     binding.duration1.getBackground()
                         .setTint((getResources().getColor(R.color.brown_important_urgent_on)))
                     duration = 1
@@ -250,36 +221,6 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
                     duration = 30
                 }
             }
-
-//
-//            R.id.type1 -> {
-//                uncheckType()
-//                binding.type1.getBackground()
-//                    .setTint((getResources().getColor(R.color.brown_important_urgent_on)))
-//                type = 1
-//            }
-//
-//            R.id.type2 -> {
-//                uncheckType()
-//                binding.type2.getBackground()
-//                    .setTint((getResources().getColor(R.color.brown_important_urgent_on)))
-//                type = 2
-//            }
-//
-//            R.id.type3 -> {
-//                uncheckType()
-//                binding.type3.getBackground()
-//                    .setTint((getResources().getColor(R.color.brown_important_urgent_on)))
-//                type = 3
-//            }
-//
-//            R.id.type4 -> {
-//                uncheckType()
-//                binding.type4.getBackground()
-//                    .setTint((getResources().getColor(R.color.brown_important_urgent_on)))
-//                type = 4
-//            }
-
 
             R.id.at_this_day -> {
                 binding.toThisDay.setTextColor(getResources().getColor(R.color.deadline_not_chosen))
@@ -294,17 +235,12 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
                 specyficDate = 0
             }
 
-
             // pobieranie danych do stworzenia taska
             R.id.btn_create -> {
-
-                //val tasksDAO = (application as DatabaseApp).db.tasksDAO()
-                //val intent = Intent(this, MainActivity::class.java)
-
                 var day: String = binding.tvDeadlineD.text.toString()
                 if (day == "") {
                     day = today_day.toString()
-                }       //????????????????? komunikat ze puste?
+                }
 
                 var month: String = binding.tvDeadlineM.text.toString()
                 if (month == "") {
@@ -334,7 +270,7 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
                     day.toInt(),
                     month.toInt() - 1,
                     year.toInt()
-                ) // + " " + setUpTime(hour.toInt(), minute.toInt())
+                )
                 chosenItems.add(date_final)
 
                 val chosenItemsTemp = chosenItems.distinct()
@@ -354,7 +290,6 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
                         .toString()
                     dateString
                 } + date_final
-
 
                 if (binding.taskTitle.text.toString().replace(" ", "") == "") {
                     val builder = AlertDialog.Builder(this)
@@ -399,21 +334,14 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
                     Toast.makeText(applicationContext, "record saved", Toast.LENGTH_SHORT).show()
                     finish()
                 }
-
-
             }
 
             R.id.btn_cancel -> {
                 finish()
             }
 
-
             R.id.important0 -> {
                 uncheckImportant()
-
-//                val priority_col_0 = (priority0?.getBackground() as GradientDrawable).mutate()
-//                (priority_col_0 as GradientDrawable).setColor(Color.argb(90,0,0,0))
-
                 binding.important0.setBackgroundColor(getResources().getColor(R.color.brown_important_urgent_on));
                 important = 0
 
@@ -423,7 +351,6 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
                 binding.important1.setBackgroundColor(getResources().getColor(R.color.brown_important_urgent_on));
                 important = 1
             }
-
 
             R.id.urgent0 -> {
                 uncheckUrgent()
@@ -436,7 +363,6 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
                 binding.urgent1.setBackgroundColor(getResources().getColor(R.color.brown_important_urgent_on));
                 urgent = 1
             }
-
 
             R.id.btn_deadline -> {
 
@@ -580,7 +506,6 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
 
         return "$y-$month-$day"
     }
-
     // wpisanie aktualnej daty do pól w tworzeniu tasków - takie ustalenie domyślej daty przy tworzeniu
     fun setDateBlocks(date: String) {
         val table = date.split('-')
@@ -588,7 +513,6 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
         binding.tvDeadlineM.setText(table[1])
         binding.tvDeadlineD.setText(table[2])
     }
-
     // formatowanie godziny
     fun setUpTime(h: Int, m: Int): String {
         var hour = h.toString()
@@ -600,14 +524,12 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
         return "$hour:$minutes"
     }
 
-
     // wpisanie aktualnej godziny do pól w tworzeniu tasków - takie ustalenie domyślej godziny przy tworzeniu
     fun setTimeBlocks(date: String) {
         val table = date.split(':')
         binding.tvDeadlineH.setText(table[0])
         binding.tvDeadlineMin.setText(table[1])
     }
-
 
     fun setEverything()
     {
@@ -618,7 +540,6 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
             .setTint((getResources().getColor(R.color.brown_important_urgent_on)))
 
     }
-
 
     fun uncheckDuration() {
         when (duration) {
@@ -658,9 +579,6 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
     fun uncheckImportant() {
         when (important) {
             0 -> {
-                //val gradientDrawable = (priority0?.getBackground() as GradientDrawable).mutate()
-                //(gradientDrawable as GradientDrawable).setColor(Color.argb(0,0,0,0))
-
                 binding.important0.setBackgroundColor(getResources().getColor(R.color.brown_important_urgent_off))
             }
             1 -> {
@@ -672,9 +590,6 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
     fun uncheckUrgent() {
         when (urgent) {
             0 -> {
-                //val gradientDrawable = (priority0?.getBackground() as GradientDrawable).mutate()
-                //(gradientDrawable as GradientDrawable).setColor(Color.argb(0,0,0,0))
-
                 binding.urgent0.setBackgroundColor(getResources().getColor(R.color.brown_important_urgent_off));
             }
             1 -> {

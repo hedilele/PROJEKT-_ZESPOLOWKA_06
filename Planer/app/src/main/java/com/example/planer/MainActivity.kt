@@ -40,7 +40,6 @@ import kotlinx.android.synthetic.main.dialod_when_title_empty.view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
@@ -48,7 +47,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var calendarViewModel: CalendarViewModel
 
     lateinit var toggle: ActionBarDrawerToggle
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,8 +63,6 @@ class MainActivity : AppCompatActivity() {
 
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
 
-
-
         setContentView(binding.root)
         //DO POWIADOMIEŃ
         calendarViewModel = ViewModelProvider(this)[CalendarViewModel::class.java]
@@ -82,13 +78,10 @@ class MainActivity : AppCompatActivity() {
         val fragments: ArrayList<Fragment> = arrayListOf(
             HomeFragment(),         // 0
             CalendarFragment(),     // 1
-            //FilterFragment()           //2
         )
-
 
         val adapter = ViewPager2Adapter(fragments, supportFragmentManager, lifecycle)
         viewPager.adapter = adapter
-
 
         // nawigacja - po kliknięciu na odpowiednią ikonę przenosi nas do danego fragmentu
         // strona główna (z recyclerView)
@@ -115,7 +108,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        //var pomodoroNote: Notes
         noteViewModel = ViewModelProvider(this).get(NoteViewModel::class.java)
 
         lifecycleScope.launch {
@@ -175,7 +167,6 @@ class MainActivity : AppCompatActivity() {
                     alertDialog.cancel()
                 }
 
-
             }
             true
         }
@@ -199,40 +190,24 @@ class MainActivity : AppCompatActivity() {
 
                         val intent = Intent(applicationContext, FilterFragment::class.java)
                         startActivity(intent)
-                        //pagerView.setCurrentItem(2)
-//                        viewPager.isUserInputEnabled = false // disable swiping
                         binding.drawerLayout.closeDrawer(GravityCompat.START);
 
                     }
-
                     // pomodoro
                     R.id.pomodoro -> {
-
-//                        if (isActivityRunningInForeground(applicationContext, PomodoroActivity::class.java)) {
-//                            val intent = Intent(applicationContext, PomodoroActivity::class.java)
-//                            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
-//                            startActivity(intent)
-//                        }
-//                        else
-//                        {
                         val intent = Intent(applicationContext, PomodoroActivity::class.java)
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(intent)
 
-
-                        //}
-
                         binding.drawerLayout.closeDrawer(GravityCompat.START);
 
                     }
-
 
                     R.id.settings -> {
 
                         val intent = Intent(applicationContext, UserSettingsActivity::class.java)
                         startActivity(intent)
                         binding.drawerLayout.closeDrawer(GravityCompat.START);
-
 
                     }
 
@@ -241,7 +216,6 @@ class MainActivity : AppCompatActivity() {
                         val intent = Intent(applicationContext, ScopeMode::class.java)
                         startActivity(intent)
                         binding.drawerLayout.closeDrawer(GravityCompat.START);
-
 
                     }
 

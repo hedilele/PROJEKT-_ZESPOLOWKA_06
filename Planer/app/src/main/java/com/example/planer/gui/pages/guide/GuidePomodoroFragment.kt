@@ -10,8 +10,6 @@ import android.view.ViewGroup
 import android.widget.TextView
 import com.example.planer.R
 import kotlinx.android.synthetic.main.fragment_guide_pomodoro.view.*
-
-
 class GuidePomodoroFragment : Fragment() {
 
     override fun onCreateView(

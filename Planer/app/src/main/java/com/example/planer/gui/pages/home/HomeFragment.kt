@@ -1,26 +1,18 @@
 package com.example.planer.gui.pages.home
 
 import android.app.AlertDialog
-import android.app.TimePickerDialog
-import android.content.ContentValues.TAG
 import android.content.res.ColorStateList
 import android.graphics.PorterDuff
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
-import androidx.appcompat.widget.AppCompatEditText
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.aminography.primecalendar.civil.CivilCalendar
-import com.aminography.primedatepicker.picker.PrimeDatePicker
 import com.example.planer.R
 import com.example.planer.ViewModel.*
 import com.example.planer.algorithm.BlockListTask
@@ -35,13 +27,8 @@ import com.example.planer.gui.pages.scope.UnscrollableLinearLayoutManager
 import kotlinx.android.synthetic.main.dialod_when_title_empty.view.*
 import kotlinx.android.synthetic.main.dialog_habit.view.*
 import kotlinx.android.synthetic.main.fragment_home.view.*
-import kotlinx.android.synthetic.main.single_task.view.*
-import kotlinx.coroutines.launch
 import java.lang.Math.abs
 import java.time.LocalDate
-import java.time.ZoneId
-import java.util.*
-
 
 class HomeFragment : Fragment() {
 
@@ -53,9 +40,7 @@ class HomeFragment : Fragment() {
     private lateinit var noteViewModel: NoteViewModel
     private lateinit var typeViewModel: TypeViewModel
 
-
     private val settingViewModel: SettingsViewModel by viewModels()
-
 
     // lista tasków do recyclerView
     var list = mutableListOf<Tasks>()
@@ -65,7 +50,6 @@ class HomeFragment : Fragment() {
 
     var delete_clicked = 0
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -74,8 +58,6 @@ class HomeFragment : Fragment() {
         binding = FragmentHomeBinding.inflate(layoutInflater)
         userViewModel = ViewModelProvider(this)[TaskViewModel::class.java]
         noteViewModel = ViewModelProvider(this)[NoteViewModel::class.java]
-
-        //TODO - podlaczanie taskow pod wyswietlanie
         /*
         5 rv i adapterów do wyświetlania list tasków pobranych z bazy
          */
@@ -95,7 +77,6 @@ class HomeFragment : Fragment() {
         )
         rv.adapter = adapter
         rv.layoutManager = UnscrollableLinearLayoutManager(requireContext())
-
 
         val rv2 = view.tomorrow_task_list
         val adapter2 = AdapterTasks(
@@ -162,7 +143,6 @@ class HomeFragment : Fragment() {
         rv5.adapter = adapter5
         rv5.layoutManager = UnscrollableLinearLayoutManager(requireContext())
 
-
         userViewModel = ViewModelProvider(this)[TaskViewModel::class.java]
         userViewModel.readAllData.observe(viewLifecycleOwner) { tasks ->
             settingViewModel.getHours().observe(viewLifecycleOwner) { h ->
@@ -208,7 +188,6 @@ class HomeFragment : Fragment() {
 
         }
 
-
         typeViewModel = ViewModelProvider(this)[TypeViewModel::class.java]
         typeViewModel.readAllData.observe(viewLifecycleOwner) {
             adapter.updateListOfTypes(it.toMutableList())
@@ -224,9 +203,6 @@ class HomeFragment : Fragment() {
             adapter5.notifyDataSetChanged()
 
         }
-
-
-
 
         view.today_title.setOnClickListener {
             if (view.today_task_list.isVisible)
@@ -299,8 +275,6 @@ class HomeFragment : Fragment() {
                 view.rest_list_arrow.setColorFilter(ContextCompat.getColor(requireContext(), R.color.brown_important_urgent_on), PorterDuff.Mode.SRC_ATOP)
             }
         }
-
-
         // HABITS
 
         habitViewModel.lastAccessDate.observe(viewLifecycleOwner) {
@@ -336,11 +310,7 @@ class HomeFragment : Fragment() {
         var activeHabits = mutableListOf<Habits>()
         var show_all_clicked = 0
 
-
-        //habitViewModel = ViewModelProvider(this)[HabitViewModel::class.java]
         habitViewModel.readAllData.observe(viewLifecycleOwner) {
-            //val io = IO()
-            //adapterhh.updateList(io.filterHabits(requireContext(), it.toMutableList()))
 
             allHabits = mutableListOf()
             activeHabits = mutableListOf()
@@ -365,8 +335,6 @@ class HomeFragment : Fragment() {
 
         }
 
-
-
         view.habits_add.setOnClickListener {
             val builder = AlertDialog.Builder(requireContext())
             val dialogView = inflater.inflate(R.layout.dialog_habit, null)
@@ -374,7 +342,6 @@ class HomeFragment : Fragment() {
 
             val alertDialog = builder.create()
             alertDialog.show()
-
 
             dialogView.btn_create.setOnClickListener {
 
@@ -401,7 +368,6 @@ class HomeFragment : Fragment() {
             }
         }
 
-
         view.habits_delete.setOnClickListener {
             if (delete_clicked == 0) {
                 view.habits_delete.backgroundTintList = ColorStateList.valueOf(
@@ -410,7 +376,6 @@ class HomeFragment : Fragment() {
                         R.color.pr1_delete_red
                     )
                 )
-                //view.habits_delete.setBackgroundColor(Color.parseColor("#33832508"))
                 delete_clicked = 1
             } else {
                 view.habits_delete.backgroundTintList = ColorStateList.valueOf(
@@ -419,12 +384,9 @@ class HomeFragment : Fragment() {
                         R.color.pr1_beige_background2
                     )
                 )
-                //view.habits_delete.setBackgroundColor(Color.parseColor("#99F3DEBA"))
                 delete_clicked = 0
             }
         }
-
-
 
         view.habits_show_all.setOnClickListener {
             if (show_all_clicked == 0)
@@ -453,15 +415,9 @@ class HomeFragment : Fragment() {
                 show_all_clicked = 0
             }
 
-
         }
-
-
-
         return view
-
     }
-
 
     private fun hideRestOftasks(view: View?) {
 
@@ -533,47 +489,7 @@ class HomeFragment : Fragment() {
 
     }
 
-
 }
-
-
-// może się przydać, więc nie usuwam
-
-//    private fun setupListOfDataIntoRecyclerView(taskList:ArrayList<Tasks>, tasksDAO: TasksDAO, view: View) {
-//
-//        if(taskList.isNotEmpty()){
-//
-//            var mRecyclerView = view.findViewById<View>(R.id.task_list) as RecyclerView
-//            var mLayoutManager = LinearLayoutManager(this.activity)
-//            mRecyclerView.setLayoutManager(mLayoutManager)
-//
-//            var mAdapter = Adapter(list,
-//                {updateId -> },
-//                {deleteId ->
-//                    lifecycleScope.launch{
-//                        tasksDAO.findTaskById(deleteId).collect{
-//                            if(it != null) {
-//                                deleteRecord(deleteId, tasksDAO, it)
-//                            }
-//                        }
-//                    }})
-//
-//            mRecyclerView.setAdapter(mAdapter)
-//
-//        }
-//        else{
-//            Toast.makeText(this.context, "JU", Toast.LENGTH_SHORT)
-//        }
-//
-//    }
-//
-//    fun deleteRecord(id:Int ,tasksDAO: TasksDAO, tasks: Tasks) {
-//
-//        lifecycleScope.launch {
-//            tasksDAO.delete(tasksDAO.findTaskById(id).first())
-//        }
-//
-//    }
 
 
 

@@ -2,8 +2,6 @@ package com.example.planer.gui.callBacks
 
 import androidx.recyclerview.widget.DiffUtil
 import com.example.planer.entities.Habits
-import com.example.planer.entities.Notes
-import com.example.planer.entities.Tasks
 
 class HabitDiffCallback(private val oldTasks: MutableList<Habits>, private val newTasks: MutableList<Habits>) : DiffUtil.Callback() {
 

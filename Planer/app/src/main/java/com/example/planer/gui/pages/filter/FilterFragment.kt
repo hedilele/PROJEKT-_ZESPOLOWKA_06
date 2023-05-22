@@ -58,17 +58,16 @@ class FilterFragment : AppCompatActivity(){
     private lateinit var noteViewModel: NoteViewModel
     private lateinit var typeViewModel: TypeViewModel
 
-    // lista tasków do recyclerView
+    //lista tasków do recyclerView
     var list = mutableListOf<Tasks>()
     private var listNotes = mutableListOf<Notes>()
     private var listTypes = mutableListOf<Types>()
     var filteredList = mutableListOf<Tasks>() //druga lista do wykorzystania
     private lateinit var binding: FragmentFilterBinding
     var duration: Int = 1
-    var finishIds = mutableListOf<Int>()
+    private var finishIds = mutableListOf<Int>()
 
     private val primeCalendar = CivilCalendar(TimeZone.getDefault(), Locale("pl", "PL"))
-
 
     @SuppressLint("MissingInflatedId", "NotifyDataSetChanged")
     @RequiresApi(Build.VERSION_CODES.O)
@@ -83,7 +82,6 @@ class FilterFragment : AppCompatActivity(){
             WindowManager.LayoutParams.FLAG_FULLSCREEN)
 
         window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-
 
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
 
@@ -134,7 +132,6 @@ class FilterFragment : AppCompatActivity(){
             }
             override fun afterTextChanged(p0: Editable?) {}
         })
-
 
         //Po kliknieciu na lejek ImageView
         searchView.setOnClickListener{
@@ -187,7 +184,6 @@ class FilterFragment : AppCompatActivity(){
                     override val calendarViewPickedDayBackgroundColor: Int
                         get() = getColor(R.color.brown_important_urgent_on)
 
-
                     override val calendarViewWeekLabelTextColors: SparseIntArray
                         get() = SparseIntArray(7).apply {
                             val black = getColor(R.color.black)
@@ -210,14 +206,13 @@ class FilterFragment : AppCompatActivity(){
                         get() = getColor(R.color.brown_important_urgent_off)
                 }
 
-
                 val callback = SingleDayPickCallback { day ->
                     val localDate: LocalDate = day.getTime()
                         .toInstant()
                         .atZone(ZoneId.systemDefault())
                         .toLocalDate()
-                    startDate.setText(setDateBlocks(localDate.toString()))
-                    endDate.setText(setDateBlocks(localDate.plusYears(10).toString()))
+                    startDate.text = setDateBlocks(localDate.toString())
+                    endDate.text = setDateBlocks(localDate.plusYears(10).toString())
                 }
 
                 val datePicker = PrimeDatePicker.dialogWith(primeCalendar)
@@ -241,7 +236,6 @@ class FilterFragment : AppCompatActivity(){
                     override val calendarViewPickedDayBackgroundColor: Int
                         get() = getColor(R.color.brown_important_urgent_on)
 
-
                     override val calendarViewWeekLabelTextColors: SparseIntArray
                         get() = SparseIntArray(7).apply {
                             val black = getColor(R.color.black)
@@ -264,13 +258,12 @@ class FilterFragment : AppCompatActivity(){
                         get() = getColor(R.color.brown_important_urgent_off)
                 }
 
-
                 val callback = SingleDayPickCallback { day ->
                     val localDate: LocalDate = day.getTime()
                         .toInstant()
                         .atZone(ZoneId.systemDefault())
                         .toLocalDate()
-                    endDate.setText(setDateBlocks(localDate.toString()))
+                    endDate.text = setDateBlocks(localDate.toString())
                 }
 
                 val datePicker = PrimeDatePicker.dialogWith(primeCalendar)
@@ -288,43 +281,43 @@ class FilterFragment : AppCompatActivity(){
             fun uncheckDuration(value :Int) {
                 when (value) {
                     1 -> {
-                        duration1.getBackground()
-                            .setTint((getResources().getColor(R.color.brown_important_urgent_off)))
+                        duration1.background
+                            .setTint((resources.getColor(R.color.brown_important_urgent_off)))
 
                         finishIds.removeAll { it == 1 }
                     }
 
                     2 -> {
-                        duration2.getBackground()
-                            .setTint((getResources().getColor(R.color.brown_important_urgent_off)))
+                        duration2.background
+                            .setTint((resources.getColor(R.color.brown_important_urgent_off)))
 
                         finishIds.removeAll { it == 2 }
                     }
 
                     6 -> {
-                        duration3.getBackground()
-                            .setTint((getResources().getColor(R.color.brown_important_urgent_off)))
+                        duration3.background
+                            .setTint((resources.getColor(R.color.brown_important_urgent_off)))
 
                         finishIds.removeAll { it == 6 }
                     }
 
                     12 -> {
-                        duration4.getBackground()
-                            .setTint((getResources().getColor(R.color.brown_important_urgent_off)))
+                        duration4.background
+                            .setTint((resources.getColor(R.color.brown_important_urgent_off)))
 
                         finishIds.removeAll { it == 12}
                     }
 
                     24 -> {
-                        duration5.getBackground()
-                            .setTint((getResources().getColor(R.color.brown_important_urgent_off)))
+                        duration5.background
+                            .setTint((resources.getColor(R.color.brown_important_urgent_off)))
 
                         finishIds.removeAll { it == 24 }
                     }
 
                     30 -> {
-                        duration6.getBackground()
-                            .setTint((getResources().getColor(R.color.brown_important_urgent_off)))
+                        duration6.background
+                            .setTint((resources.getColor(R.color.brown_important_urgent_off)))
 
                         finishIds.removeAll { it == 30 }
                     }
@@ -411,33 +404,32 @@ class FilterFragment : AppCompatActivity(){
 
             }
 
-
             fun uncheckTypes(value :Int) {
                 when (value) {
                     1 -> {
-                        type1.getBackground()
-                            .setTint((getResources().getColor(R.color.brown_important_urgent_off)))
+                        type1.background
+                            .setTint((resources.getColor(R.color.brown_important_urgent_off)))
 
                         typeIds.removeAll { it == 1 }
                     }
 
                     2 -> {
-                        type2.getBackground()
-                            .setTint((getResources().getColor(R.color.brown_important_urgent_off)))
+                        type2.background
+                            .setTint((resources.getColor(R.color.brown_important_urgent_off)))
 
                         typeIds.removeAll { it == 2 }
                     }
 
                     3 -> {
-                        type3.getBackground()
-                            .setTint((getResources().getColor(R.color.brown_important_urgent_off)))
+                        type3.background
+                            .setTint((resources.getColor(R.color.brown_important_urgent_off)))
 
                         typeIds.removeAll { it == 3 }
                     }
 
                     4 -> {
-                        type4.getBackground()
-                            .setTint((getResources().getColor(R.color.brown_important_urgent_off)))
+                        type4.background
+                            .setTint((resources.getColor(R.color.brown_important_urgent_off)))
 
                         typeIds.removeAll { it == 4 }
                     }
@@ -446,10 +438,10 @@ class FilterFragment : AppCompatActivity(){
             }
 
             typeViewModel.readAllData.observe(this) {
-                type1.setText(it[0].name)
-                type2.setText(it[1].name)
-                type3.setText(it[2].name)
-                type4.setText(it[3].name)
+                type1.text = it[0].name
+                type2.text = it[1].name
+                type3.text = it[2].name
+                type4.text = it[3].name
             }
 
             //Ustawianie dla typu koloru, jesli wybrany

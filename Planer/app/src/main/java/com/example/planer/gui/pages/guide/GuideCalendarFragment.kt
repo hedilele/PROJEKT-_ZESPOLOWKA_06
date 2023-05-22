@@ -9,7 +9,6 @@ import com.example.planer.R
 
 class GuideCalendarFragment : Fragment() {
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

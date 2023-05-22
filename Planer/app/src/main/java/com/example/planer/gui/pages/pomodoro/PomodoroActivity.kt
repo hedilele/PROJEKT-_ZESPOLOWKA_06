@@ -28,10 +28,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-
 class PomodoroActivity : AppCompatActivity() {
 
-    //lateinit var binding: FragmentPomodoroBinding
     lateinit var binding: ActivityPomodoroBinding
 
     private var time_selected: Int = 0
@@ -49,12 +47,10 @@ class PomodoroActivity : AppCompatActivity() {
 
     private lateinit var noteViewModel: NoteViewModel
 
-
     var POMODORO_WORK = 25  // 25 minut
     var POMODORO_BREAK = 5  // 5 minut
 
     var v: Int = 8      //4 work_time(%2==0) + 4 break_time(%2==1)
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,7 +69,6 @@ class PomodoroActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         noteViewModel = ViewModelProvider(this).get(NoteViewModel::class.java)
-
 
         progressBar = binding.pbTimer
         startBtn = binding.btnPlayPause
@@ -131,24 +126,14 @@ class PomodoroActivity : AppCompatActivity() {
             resetTimeEnd()
         }
 
-
-//        binding.back.setOnClickListener{
-//            val intent = Intent(this, MainActivity::class.java)
-//            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
-//            startActivity(intent)
-//        }
-
-
         val builder = AlertDialog.Builder(this)
         val inflater = layoutInflater
         val dialogView = inflater.inflate(R.layout.dialog_note_pomodoro, null)
         builder.setView(dialogView)
         val alertDialog = builder.create()
 
-
         var note_tmp: String? = ""
         var pomodoroNote: Notes?
-
 
         lifecycleScope.launch {
             withContext(Dispatchers.IO) {
@@ -171,14 +156,11 @@ class PomodoroActivity : AppCompatActivity() {
             }
         }
 
-
-
         binding.ivBackToMenu.setOnClickListener {
             val intent = Intent(applicationContext, MainActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(intent)
         }
-
 
         binding.ivNote.setOnClickListener {
 
@@ -186,15 +168,12 @@ class PomodoroActivity : AppCompatActivity() {
                 dialogView.et_note.setText(note_tmp + '\n')
             }
 
-
             dialogView.et_note.setSelection(dialogView.et_note.length())
             dialogView.et_note.requestFocus()
-
 
             val window: Window? = alertDialog.getWindow()
             window?.clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM)
             window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE)
-
 
             alertDialog.show()
 
@@ -209,7 +188,6 @@ class PomodoroActivity : AppCompatActivity() {
                 dialogView.et_note.setText("")
             }
         }
-
 
     }
     private fun resetTime() {
@@ -226,9 +204,6 @@ class PomodoroActivity : AppCompatActivity() {
         }
     }
 
-
-    //    holder.itemView.done.setImageDrawable(ContextCompat.getDrawable(holder.itemView.context, R.drawable.icon_checkbox_filled))
-//    holder.itemView.done.setColorFilter(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_off), PorterDuff.Mode.SRC_ATOP)
     private fun resetTimeEnd() {
         binding.series4.setColorFilter(
             ContextCompat.getColor(
@@ -335,7 +310,6 @@ class PomodoroActivity : AppCompatActivity() {
                         } else {
                             v--
                             setTimeFunction(POMODORO_BREAK)
-                            //actual_time =
                         }
 
                     } else if (v % 2 == 0) {
@@ -343,8 +317,6 @@ class PomodoroActivity : AppCompatActivity() {
                         checkSeries()
                         v--
                         setTimeFunction(POMODORO_WORK)
-                        //actual_time = POMODORO_WORK
-                        //enableDoNotDisturbMode()
                     }
                 } else {
                     resetTimeEnd()
@@ -354,7 +326,6 @@ class PomodoroActivity : AppCompatActivity() {
 
         }.start()
     }
-
 
     fun timeFormat(min: Int, sec: Int): String
     {
@@ -425,7 +396,6 @@ class PomodoroActivity : AppCompatActivity() {
         }
     }
 
-
     private fun setTimeFunction(time: Int) {
         resetTime()
         timeLeftTv.text = "$time : 00"
@@ -433,7 +403,6 @@ class PomodoroActivity : AppCompatActivity() {
         //time_selected = time
         progressBar.max = time_selected
     }
-
 
     override fun onDestroy() {
         super.onDestroy()
@@ -443,13 +412,10 @@ class PomodoroActivity : AppCompatActivity() {
         }
     }
 
-
     override fun onBackPressed() {
         // Move the task containing this activity to the back of the activity stack,
         // effectively hiding the activity and allowing the user to return to it later. //// /
         // NavUtils.navigateUpFromSameTask(this)
-
-        //moveTaskToBack(true)
 
         val intent = Intent(applicationContext, MainActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK

@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.*
 import android.widget.Button
-import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.AppCompatEditText
@@ -15,18 +14,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.planer.R
-import com.example.planer.ViewModel.HabitViewModel
 import com.example.planer.ViewModel.NoteViewModel
 import com.example.planer.databinding.ActivityNotesBinding
-import com.example.planer.databinding.FragmentHomeBinding
-import com.example.planer.entities.Habits
 import com.example.planer.entities.Notes
-import com.example.planer.gui.pages.home.habits.AdapterHabits
 import kotlinx.android.synthetic.main.dialod_when_title_empty.view.*
-import kotlinx.android.synthetic.main.dialog_habit.view.*
-import kotlinx.android.synthetic.main.dialog_note_pomodoro.view.*
-import kotlinx.android.synthetic.main.fragment_home.view.*
-import kotlinx.android.synthetic.main.single_short_note.view.*
 import kotlinx.coroutines.launch
 import java.net.URLEncoder
 
@@ -36,7 +27,6 @@ class NotesActivity : AppCompatActivity() {
     private lateinit var binding: ActivityNotesBinding
 
     var list = mutableListOf<Notes>()
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,11 +40,9 @@ class NotesActivity : AppCompatActivity() {
 
         window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
 
-
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
 
         setContentView(binding.root)
-
 
         val rvh = binding.shortNoteList
         val adapter = AdapterNotes(
@@ -80,14 +68,10 @@ class NotesActivity : AppCompatActivity() {
 
         noteViewModel = ViewModelProvider(this)[NoteViewModel::class.java]
 
-        //habitViewModel = ViewModelProvider(this)[HabitViewModel::class.java]
         noteViewModel.readAllShortNotes.observe(this, Observer {
             adapter.updateList(it.toMutableList())
             adapter.notifyDataSetChanged()
         })
-
-
-
 
         binding.btnAddNote.setOnClickListener {
 
@@ -131,8 +115,6 @@ class NotesActivity : AppCompatActivity() {
                     alertDialog.cancel()
                 }
 
-//                val parentView = dialogView.parent as ViewGroup
-//                parentView?.removeView(dialogView)
             }
 
 

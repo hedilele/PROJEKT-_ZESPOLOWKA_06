@@ -8,8 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.planer.R
 import kotlinx.android.synthetic.main.fragment_guide_home_page.view.*
-
-
 class GuideHomePageFragment : Fragment() {
 
     override fun onCreateView(

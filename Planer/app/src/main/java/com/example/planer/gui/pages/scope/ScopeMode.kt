@@ -1,6 +1,5 @@
 package com.example.planer.gui.pages.scope
 
-import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.view.View.INVISIBLE
@@ -8,7 +7,6 @@ import android.view.View.VISIBLE
 import android.view.Window
 import android.view.WindowManager
 import androidx.activity.viewModels
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.recyclerview.widget.RecyclerView
@@ -19,7 +17,6 @@ import com.example.planer.entities.Tasks
 import kotlinx.coroutines.coroutineScope
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-
 
 class ScopeMode : AppCompatActivity(), CardAdapter.OnButtonClickListener {
 

@@ -3,18 +3,15 @@ package com.example.planer.gui.pages
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.provider.ContactsContract.CommonDataKinds.Note
 import android.view.*
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.viewpager2.widget.ViewPager2
 import com.example.planer.R
 import com.example.planer.ViewModel.CalendarViewModel
 import com.example.planer.ViewModel.NoteViewModel
@@ -26,15 +23,12 @@ import com.example.planer.gui.AddingEventActivity
 import com.example.planer.gui.CalendarAdapter
 import kotlinx.android.synthetic.main.activity_calendar.*
 import kotlinx.android.synthetic.main.activity_calendar.view.*
-import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.YearMonth
 import java.time.format.DateTimeFormatter
 import java.util.*
 
-
-//class CalendarFragment : Fragment() {
 class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener, CalendarAdapter.OnLongItemListener {
     private lateinit var binding: ActivityCalendarBinding
     private lateinit var calendarViewModel: CalendarViewModel
@@ -48,12 +42,9 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener, CalendarAda
 
     lateinit var adapter: AdapterCalendarList
 
-
     private var eventsOfMonthList = mutableListOf<Calendar>() //eventy do pokolorowania
 
-
     var notesList = mutableListOf<Notes>()
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -62,10 +53,8 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener, CalendarAda
     ): View? {
         val view = inflater.inflate(R.layout.activity_calendar, container, false)
 
-
         calendarViewModel = ViewModelProvider(this).get(CalendarViewModel::class.java)
         notesViewModel = ViewModelProvider(this).get(NoteViewModel::class.java)
-
 
         view.nextMonth.setOnClickListener{
             selectedDatenew = selectedDatenew!!.plusMonths(1).withDayOfMonth(1)
@@ -80,8 +69,6 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener, CalendarAda
         initWidgets(view)
         selectedDatenew = LocalDate.now()
         setMonthView()
-
-
 
         val rv = view.list_rv
         adapter = AdapterCalendarList(
@@ -101,10 +88,6 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener, CalendarAda
         )
         rv?.adapter = adapter
         rv?.layoutManager = LinearLayoutManager(requireContext())
-
-
-
-
         // observe changes to eventsList and update adapter
         calendarViewModel.getAll.observe(viewLifecycleOwner, Observer {
             eventsListoftheDay = mutableListOf()
@@ -123,7 +106,6 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener, CalendarAda
 
             setMonthView()
         })
-
 
         notesViewModel.readAllData.observe(viewLifecycleOwner, Observer {
             adapter.updateListOfNotes(it.toMutableList())
@@ -191,7 +173,6 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener, CalendarAda
         }
     }
 
-
     private fun initWidgets(view : View) {
         calendarRecyclerView = view.findViewById<RecyclerView>(R.id.calendarRecyclerView)
         monthYearText = view.findViewById<TextView>(R.id.monthYearTV)
@@ -231,8 +212,6 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener, CalendarAda
                 daysInMonthArray.add((i - dayOfWeek).toString())
             }
         }
-
-
 
         return daysInMonthArray
     }
