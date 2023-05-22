@@ -144,7 +144,6 @@ class FilterFragment : AppCompatActivity(){
             builder.setView(dialogView) //Podlaczanie xmla
             //Obsluga po wyjsciu z okna
 
-            //TODO - przyciski i cala obsluga okna
             //TextView do ustawiania czasu trwania
             val duration1 = dialogView.findViewById<TextView>(R.id.duration1)
             val duration2 = dialogView.findViewById<TextView>(R.id.duration2)
@@ -411,6 +410,7 @@ class FilterFragment : AppCompatActivity(){
                 }
 
             }
+
 
             fun uncheckTypes(value :Int) {
                 when (value) {

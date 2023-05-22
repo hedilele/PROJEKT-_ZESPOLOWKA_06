@@ -5,7 +5,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import com.example.planer.AppDatabase
-import com.example.planer.norification.NotificationHelper
+import com.example.planer.notification.NotificationHelper
 import com.example.planer.entities.Notes
 import com.example.planer.repository.TaskRepository
 import com.example.planer.entities.Tasks

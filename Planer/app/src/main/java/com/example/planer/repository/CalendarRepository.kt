@@ -2,10 +2,9 @@ package com.example.planer.repository
 
 import androidx.lifecycle.LiveData
 import com.example.planer.DAOs.CalendarDAO
-import com.example.planer.norification.NotificationHelper
+import com.example.planer.notification.NotificationHelper
 import com.example.planer.entities.Calendar
 import com.example.planer.entities.Notes
-import com.example.planer.entities.Tasks
 
 
 class CalendarRepository(private val calendarDAO: CalendarDAO,private val notificationHelper: NotificationHelper)

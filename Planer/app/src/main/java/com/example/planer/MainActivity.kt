@@ -21,7 +21,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.widget.ViewPager2
 import com.example.planer.ViewModel.CalendarViewModel
 import com.example.planer.ViewModel.NoteViewModel
-import com.example.planer.ViewModel.TaskViewModel
 import com.example.planer.databinding.ActivityMainBinding
 import com.example.planer.entities.Calendar
 import com.example.planer.entities.Notes
@@ -34,8 +33,8 @@ import com.example.planer.gui.pages.home.HomeFragment
 import com.example.planer.gui.pages.home.notes.NotesActivity
 import com.example.planer.gui.pages.pomodoro.PomodoroActivity
 import com.example.planer.gui.pages.settings.UserSettingsActivity
-import com.example.planer.norification.NotificationHelper
-import com.example.planer.norification.NotificationService
+import com.example.planer.notification.NotificationHelper
+import com.example.planer.notification.NotificationService
 import com.example.planer.gui.pages.scope.ScopeMode
 import kotlinx.android.synthetic.main.dialod_when_title_empty.view.*
 import kotlinx.coroutines.Dispatchers

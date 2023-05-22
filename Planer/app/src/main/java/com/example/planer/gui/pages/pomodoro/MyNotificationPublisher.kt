@@ -26,7 +26,7 @@ class MyNotificationPublisher: BroadcastReceiver()
         if (p1?.action == MY_NOTIFICATION_ACTION) {
             createNotificationChannel(context)
             val builder = NotificationCompat.Builder(context, CHANNEL_ID)
-                .setSmallIcon(R.drawable.ic_stat_whatshot)
+                .setSmallIcon(R.drawable.logo3)
                 .setContentTitle("Notification Title")
                 .setContentText("Notification Text")
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)

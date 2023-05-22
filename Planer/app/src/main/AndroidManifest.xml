@@ -40,7 +40,7 @@
             </intent-filter>
         </receiver>
         <receiver
-            android:name=".norification.NotificationReceiver"
+            android:name=".notification.NotificationReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
@@ -48,7 +48,7 @@
             </intent-filter>
         </receiver>
 
-        <service android:name=".norification.NotificationService" />
+        <service android:name=".notification.NotificationService" />
 
         <activity
             android:name=".MainActivity"

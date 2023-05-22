@@ -4,10 +4,9 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import com.example.planer.AppDatabase
-import com.example.planer.norification.NotificationHelper
+import com.example.planer.notification.NotificationHelper
 import com.example.planer.entities.Calendar
 import com.example.planer.entities.Notes
-import com.example.planer.entities.Tasks
 import com.example.planer.repository.CalendarRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

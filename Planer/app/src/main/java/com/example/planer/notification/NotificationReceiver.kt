@@ -1,4 +1,4 @@
-package com.example.planer.norification
+package com.example.planer.notification
 
 import android.app.Notification
 import android.app.NotificationChannel
@@ -53,7 +53,7 @@ class NotificationReceiver: BroadcastReceiver()
 private fun buildNotification(context: Context, name: String, openIntent: PendingIntent): Notification {
     return NotificationCompat.Builder(context, "default_channel_id")
         .setContentTitle(name) // Ustawianie nazwy zadania jako tytułu powiadomienia
-        .setSmallIcon(R.drawable.ic_stat_whatshot)
+        .setSmallIcon(R.drawable.logo3)
         .setSound(Uri.parse("android.resource://" + context.packageName + "/" + R.raw.notification_sound))
         .setVibrate(longArrayOf(0, 1000, 500, 1000))
         .setAutoCancel(true)
