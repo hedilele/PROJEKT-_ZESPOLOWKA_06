@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.top.planer"
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
@@ -14,6 +15,7 @@
 
     <application
         android:allowBackup="true"
+        android:debuggable="false"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
@@ -22,7 +24,8 @@
         android:screenOrientation="portrait"
         android:supportsRtl="true"
         android:theme="@style/Theme.Planer"
-        tools:targetApi="31">
+        tools:targetApi="31"
+        tools:ignore="HardcodedDebugMode">
         <activity
             android:name=".GuideActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
@@ -31,7 +34,7 @@
             android:theme="@style/Theme.Planer.Fullscreen" />
 
         <receiver
-            android:name=".gui.pages.pomodoro.MyNotificationPublisher"
+            android:name="com.top.planer.gui.pages.pomodoro.MyNotificationPublisher"
             android:enabled="true"
             android:exported="true"
             android:permission="android.permission.RECEIVE_BOOT_COMPLETED">
@@ -40,7 +43,7 @@
             </intent-filter>
         </receiver>
         <receiver
-            android:name=".notification.NotificationReceiver"
+            android:name="com.top.planer.notification.NotificationReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
@@ -48,10 +51,10 @@
             </intent-filter>
         </receiver>
 
-        <service android:name=".notification.NotificationService" />
+        <service android:name="com.top.planer.notification.NotificationService" />
 
         <activity
-            android:name=".MainActivity"
+            android:name="com.top.planer.MainActivity"
             android:alwaysRetainTaskState="true"
             android:exported="true"
             android:launchMode="singleTask"
@@ -63,7 +66,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".gui.pages.home.tasks.AddingTaskActivity"
+            android:name="com.top.planer.gui.pages.home.tasks.AddingTaskActivity"
             android:exported="false"
             android:screenOrientation="portrait">
             <meta-data
@@ -71,7 +74,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".gui.AddingEventActivity"
+            android:name="com.top.planer.gui.AddingEventActivity"
             android:exported="false"
             android:screenOrientation="portrait">
             <meta-data
@@ -79,7 +82,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".gui.pages.filter.FilterFragment"
+            android:name="com.top.planer.gui.pages.filter.FilterFragment"
             android:exported="false"
             android:screenOrientation="portrait">
             <meta-data
@@ -87,7 +90,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".gui.pages.settings.UserSettingsActivity"
+            android:name="com.top.planer.gui.pages.settings.UserSettingsActivity"
             android:exported="false"
             android:screenOrientation="portrait">
             <meta-data
@@ -95,7 +98,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".gui.pages.scope.ScopeMode"
+            android:name="com.top.planer.gui.pages.scope.ScopeMode"
             android:exported="false"
             android:screenOrientation="portrait">
             <meta-data
@@ -103,7 +106,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".gui.pages.home.notes.NotesActivity"
+            android:name="com.top.planer.gui.pages.home.notes.NotesActivity"
             android:exported="false"
             android:screenOrientation="portrait">
             <meta-data
@@ -111,19 +114,19 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".gui.pages.pomodoro.PomodoroActivity"
+            android:name="com.top.planer.gui.pages.pomodoro.PomodoroActivity"
             android:alwaysRetainTaskState="true"
             android:exported="false"
             android:launchMode="singleInstance"
-            android:parentActivityName=".MainActivity"
+            android:parentActivityName="com.top.planer.MainActivity"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
+                android:value="com.top.planer.MainActivity" />
         </activity>
 
         <activity
-            android:name=".gui.pages.guide.GuideActivity"
+            android:name="com.top.planer.gui.pages.guide.GuideActivity"
             android:exported="false"
             android:screenOrientation="portrait">
             <meta-data

@@ -70,7 +70,7 @@
 
             </LinearLayout>
 
-            <com.example.planer.gui.pages.home.NestedScrollableHost
+            <com.top.planer.gui.pages.home.NestedScrollableHost
                 android:id="@+id/habits_list_ns"
                 android:layout_width="match_parent"
                 android:layout_below="@id/habits_title"
@@ -84,7 +84,7 @@
                     android:scrollbars="horizontal"
                     tools:listitem="@layout/single_habit" />
 
-            </com.example.planer.gui.pages.home.NestedScrollableHost>
+            </com.top.planer.gui.pages.home.NestedScrollableHost>
 
 
             <LinearLayout
