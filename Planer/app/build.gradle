@@ -15,6 +15,12 @@ android {
         viewBinding true
     }
 
+    packagingOptions {
+        pickFirst 'META-INF/INDEX.LIST'
+        pickFirst 'META-INF/groovy/org.codehaus.groovy.runtime.ExtensionModule'
+        pickFirst 'META-INF/groovy-release-info.properties'
+    }
+
     defaultConfig {
         applicationId "com.top.planer"
         minSdk 26
@@ -131,6 +137,9 @@ dependencies {
 
     // Room backup (MIT) https://github.com/rafi0101/Android-Room-Database-Backup
     implementation 'de.raphaelebner:roomdatabasebackup:1.0.0-beta12'
+
+    // https://www.ical4j.org/ https://github.com/ical4j/ical4j BSD 3-Clause "New" or "Revised" License
+    implementation 'org.mnode.ical4j:ical4j:3.2.11'
 
     // Local Unit Tests
     implementation "androidx.test:core:1.5.0"

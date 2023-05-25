@@ -8,6 +8,7 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.Window
 import android.view.WindowManager
+import android.widget.EditText
 import android.widget.LinearLayout
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
@@ -21,24 +22,36 @@ import com.aminography.primedatepicker.common.BackgroundShapeType
 import com.aminography.primedatepicker.picker.PrimeDatePicker
 import com.aminography.primedatepicker.picker.callback.MultipleDaysPickCallback
 import com.aminography.primedatepicker.picker.theme.LightThemeFactory
-import com.top.planer.R
-import com.top.planer.ViewModel.SettingsViewModel
-import com.top.planer.databinding.ActivityUserSettingsBinding
-import com.top.planer.entities.ExcludedDate
-import com.top.planer.entities.Settings
-import com.top.planer.entities.Types
-import com.top.planer.gui.pages.scope.UnscrollableLinearLayoutManager
 import com.github.dhaval2404.colorpicker.MaterialColorPickerDialog
 import com.github.dhaval2404.colorpicker.model.ColorShape
 import com.google.android.material.slider.LabelFormatter
 import com.google.android.material.slider.Slider
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
+import com.top.planer.R
+import com.top.planer.ViewModel.SettingsViewModel
+import com.top.planer.databinding.ActivityUserSettingsBinding
+import com.top.planer.entities.ExcludedDate
+import com.top.planer.entities.Notes
+import com.top.planer.entities.Settings
+import com.top.planer.entities.Types
+import com.top.planer.gui.pages.scope.UnscrollableLinearLayoutManager
 import de.raphaelebner.roomdatabasebackup.core.RoomBackup
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import net.fortuna.ical4j.data.CalendarBuilder
+import net.fortuna.ical4j.model.property.Description
+import net.fortuna.ical4j.model.property.DtEnd
+import net.fortuna.ical4j.model.property.DtStart
+import net.fortuna.ical4j.model.property.Summary
+import java.io.File
+import java.io.FileInputStream
+import java.io.FileOutputStream
+import java.net.URL
+import java.time.LocalDateTime
 import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 class UserSettingsActivity : AppCompatActivity(), View.OnClickListener,
@@ -63,7 +76,8 @@ class UserSettingsActivity : AppCompatActivity(), View.OnClickListener,
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE)
         window.setFlags(
             WindowManager.LayoutParams.FLAG_FULLSCREEN,
-            WindowManager.LayoutParams.FLAG_FULLSCREEN)
+            WindowManager.LayoutParams.FLAG_FULLSCREEN
+        )
 
         window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
 
@@ -90,7 +104,9 @@ class UserSettingsActivity : AppCompatActivity(), View.OnClickListener,
             }
         }
 
-        binding.slider.setLabelFormatter(LabelFormatter { binding.slider.value.toInt().toString() + " godz" })
+        binding.slider.setLabelFormatter(LabelFormatter {
+            binding.slider.value.toInt().toString() + " godz"
+        })
 
         binding.resetUnavailableDatesButton.setOnClickListener {
             val builder = AlertDialog.Builder(this)
@@ -167,12 +183,19 @@ class UserSettingsActivity : AppCompatActivity(), View.OnClickListener,
             if (settingsViewModel.importDb(backup, this@UserSettingsActivity)) {
                 // w rzeczywisotści restartuję apkę
                 val importNotif =
-                    Snackbar.make(buttns, "Zaimportowano! Restartowanie bazy danych...", Snackbar.LENGTH_SHORT)
+                    Snackbar.make(
+                        buttns,
+                        "Zaimportowano! Restartowanie bazy danych...",
+                        Snackbar.LENGTH_SHORT
+                    )
                 importNotif.anchorView = buttns
                 importNotif.addCallback(object : BaseTransientBottomBar.BaseCallback<Snackbar>() {
                     override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
                         super.onDismissed(transientBottomBar, event)
-                        settingsViewModel.restartApp(backup, this@UserSettingsActivity) // restart po zniknięciu snackbara
+                        settingsViewModel.restartApp(
+                            backup,
+                            this@UserSettingsActivity
+                        ) // restart po zniknięciu snackbara
                     }
                 })
                 importNotif.show()
@@ -183,6 +206,146 @@ class UserSettingsActivity : AppCompatActivity(), View.OnClickListener,
                 importNotif.show()
             }
         }
+    }
+
+    fun onImportCalButtonClicked(view: View) {
+        val builder = AlertDialog.Builder(view.context)
+
+        builder.setTitle("Wklej link z USOS:")
+
+        val linkText = EditText(view.context)
+        builder.setView(linkText)
+
+        builder.setPositiveButton("OK") { dialog, _ ->
+            val buttns = findViewById<LinearLayout>(R.id.button_layout)
+            val importStatus = Snackbar.make(buttns, "", Snackbar.LENGTH_SHORT)
+            importStatus.anchorView = buttns
+
+            val linkTextString = linkText.text.toString()
+            if (isLinkValid(linkTextString)) {
+                CoroutineScope(Dispatchers.IO).launch {
+                    try {
+                        val url = URL(linkTextString.replace("webcal://", "https://"))
+
+                        val connection = url.openConnection()
+                        val inputStream = connection.getInputStream()
+
+                        val calendarBuilder = CalendarBuilder()
+                        val calendar = calendarBuilder.build(inputStream)
+                        val file = File(view.context.filesDir, "USOS.ics")
+                        val fileOutputStream = FileOutputStream(file)
+                        fileOutputStream.write(calendar.toString().toByteArray())
+                        fileOutputStream.close()
+
+                        val events = calendar.components
+                        val fromFormat = DateTimeFormatter.ofPattern("yyyyMMdd'T'HHmmss")
+                        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
+                        val eventsDbFormat: MutableMap<com.top.planer.entities.Calendar, Notes> =
+                            mutableMapOf()
+                        events.forEach {
+                            val cal = com.top.planer.entities.Calendar(
+                                startDate = LocalDateTime.parse(
+                                    it.getProperty<DtStart>("DTSTART").value,
+                                    fromFormat
+                                ).format(formatter).toString(),
+                                endDate = LocalDateTime.parse(
+                                    it.getProperty<DtEnd>("DTEND").value,
+                                    fromFormat
+                                ).format(formatter).toString(),
+                                name = it.getProperty<Summary>("SUMMARY").value,
+                                typeId = 0,
+                                reminder = 0,
+                                noteId = 0,
+                            )
+                            val note = Notes(
+                                noteTitle = it.getProperty<Summary>("SUMMARY").value,
+                                noteContent = it.getProperty<Description>("DESCRIPTION").value,
+                                photo = null
+                            )
+                            eventsDbFormat[cal] = note
+                        }
+
+                        settingsViewModel.saveCal(eventsDbFormat)
+
+                        importStatus.setText("Pomyślnie pobrano i zaimportowano kalendarz")
+                        importStatus.show()
+                    } catch (e: Exception) {
+                        importStatus.setText("Wystąpił błąd")
+                        importStatus.show()
+                        e.printStackTrace()
+                    }
+                }
+            } else {
+                importStatus.setText("Niepoprawny Link")
+                importStatus.show()
+            }
+        }
+        builder.setNegativeButton("Anuluj") { dialog, _ ->
+            dialog.dismiss()
+        }
+
+        builder.show()
+    }
+
+    fun onResetCalButtonClicked(view: View) {
+        val builder = AlertDialog.Builder(view.context)
+        builder.setTitle("Uwaga!")
+        builder.setMessage("Czy chcesz usunąć wszystkie wcześniej zaimportowane wydarzenia?")
+        val buttns = findViewById<LinearLayout>(R.id.button_layout)
+        val resetStatus = Snackbar.make(buttns, "", Snackbar.LENGTH_SHORT)
+        resetStatus.anchorView = buttns
+        builder.setPositiveButton("Tak") { _, _ ->
+            CoroutineScope(Dispatchers.IO).launch {
+                try {
+                    // Znalezienie pliku
+                    val file = File(view.context.filesDir, "USOS.ics")
+                    val fin = FileInputStream(file)
+                    // Budowanie Kalendarza z ical
+                    val calendarBuilder = CalendarBuilder()
+                    val calendar = calendarBuilder.build(fin)
+                    val events = calendar.components
+
+                    val fromFormat = DateTimeFormatter.ofPattern("yyyyMMdd'T'HHmmss")
+                    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
+
+                    val eventsDb: List<com.top.planer.entities.Calendar> = events.map {
+                        com.top.planer.entities.Calendar(
+                            startDate = LocalDateTime.parse(
+                                it.getProperty<DtStart>("DTSTART").value,
+                                fromFormat
+                            ).format(formatter).toString(),
+                            endDate = LocalDateTime.parse(
+                                it.getProperty<DtEnd>("DTEND").value,
+                                fromFormat
+                            ).format(formatter).toString(),
+                            name = it.getProperty<Summary>("SUMMARY").value,
+                            typeId = 0,
+                            reminder = 0,
+                            noteId = 0,
+                        )
+                    }
+                    settingsViewModel.deleteCal(eventsDb)
+                    resetStatus.setText("Pomyślnie usunięto")
+                    resetStatus.show()
+                } catch (e: Exception) {
+                    resetStatus.setText("Brak Poprzednich importów")
+                    resetStatus.show()
+                    e.printStackTrace()
+                }
+            }
+
+        }
+        builder.setNegativeButton("Nie") { dialog, _ ->
+            dialog.dismiss()
+        }
+        builder.show()
+    }
+
+    private fun isLinkValid(input: String): Boolean {
+        val regexPattern =
+            "webcal://usosapps\\.umk\\.pl/services/tt/upcoming_ical\\?lang=[a-z]{2}&user_id=\\d+&key=\\w+"
+        val regex = Regex(regexPattern)
+        return regex.matches(input)
     }
 
     override fun onClick(v: View?) {
@@ -319,7 +482,7 @@ class UserSettingsActivity : AppCompatActivity(), View.OnClickListener,
     }
 
     override suspend fun onTypeNameChange(type: Types, holder: TypeAdapter.ViewHolder) {
-        changedTypes.firstOrNull {it.id == type.id}?.apply { this.name = type.name }
+        changedTypes.firstOrNull { it.id == type.id }?.apply { this.name = type.name }
             ?: changedTypes.add(type)
     }
 }

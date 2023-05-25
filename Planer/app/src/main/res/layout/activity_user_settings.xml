@@ -5,15 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    android:orientation="vertical"
-    android:paddingHorizontal="10dp"
-    android:focusableInTouchMode="true"
     android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical"
     tools:context=".gui.pages.settings.UserSettingsActivity">
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_weight="1">
 
         <LinearLayout
@@ -21,7 +20,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:gravity="top"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingHorizontal="10dp"
+            android:paddingBottom="75dp">
 
 
             <LinearLayout
@@ -42,19 +43,18 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical">
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
 
                     <LinearLayout
                         android:id="@+id/pick_excluded_dates_button"
                         android:layout_width="0dp"
                         android:layout_height="50dp"
-                        android:layout_weight="6"
-                        android:background="@drawable/shape_spinner"
                         android:layout_marginHorizontal="10dp"
                         android:layout_marginVertical="15dp"
-                        android:gravity="center"
-                        >
+                        android:layout_weight="6"
+                        android:background="@drawable/shape_spinner"
+                        android:gravity="center">
 
                         <ImageButton
                             android:id="@+id/btn_periodicity"
@@ -64,8 +64,7 @@
                             android:layout_marginHorizontal="10dp"
                             android:background="@drawable/calendar"
                             android:backgroundTint="@color/pr1_brown_dark"
-                            android:padding="8dp"
-                            />
+                            android:padding="8dp" />
 
 
                         <TextView
@@ -73,10 +72,9 @@
                             android:layout_height="match_parent"
                             android:layout_marginVertical="8dp"
                             android:layout_marginRight="20dp"
-                            android:text="WYBIERZ DATY"
                             android:gravity="center"
-                            android:textSize="18sp"
-                            />
+                            android:text="WYBIERZ DATY"
+                            android:textSize="18sp" />
 
                     </LinearLayout>
 
@@ -85,12 +83,12 @@
                         android:id="@+id/reset_unavailable_dates_button"
                         android:layout_width="48dp"
                         android:layout_height="match_parent"
-                        android:layout_marginVertical="15dp"
                         android:layout_marginHorizontal="10dp"
+                        android:layout_marginVertical="15dp"
                         android:layout_weight="0"
                         android:background="@drawable/shape_spinner"
-                        android:src="@drawable/icon_delete"
                         android:backgroundTint="#F1997E"
+                        android:src="@drawable/icon_delete"
                         app:tint="@color/pr1_brown_dark" />
 
                 </LinearLayout>
@@ -128,7 +126,7 @@
                         android:valueTo="8"
                         app:haloColor="#03000000"
                         app:haloRadius="0dp"
-                        app:labelBehavior="visible"
+                        app:labelBehavior="floating"
                         app:labelStyle="@style/Widget.App.Tooltip"
                         app:thumbColor="@color/pr1_brown_warm"
                         app:tickColorInactive="@color/brown_important_urgent_on"
@@ -158,6 +156,17 @@
                 tools:itemCount="4"
                 tools:listitem="@layout/settings_type_color_selection" />
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="5dp"
+                android:paddingHorizontal="5dp"
+                android:text="Tworzenie lub importowanie kopii zapasowej:"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="#99000000"
+                android:textSize="20sp" />
+
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -168,24 +177,78 @@
                     android:id="@+id/exportButton"
                     android:layout_width="120dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="8dp"
+                    android:layout_marginHorizontal="10dp"
                     android:layout_weight="1"
                     android:backgroundTint="@color/brown_important_urgent_on"
                     android:onClick="onExportButtonClicked"
                     android:text="Backup"
-                    app:icon="@drawable/icon_download"
-                    />
+                    app:icon="@drawable/icon_download" />
 
                 <Button
                     android:id="@+id/importButton"
                     android:layout_width="120dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
+                    android:layout_marginHorizontal="10dp"
                     android:layout_weight="1"
-                    android:onClick="onImportButtonClicked"
                     android:backgroundTint="@color/brown_important_urgent_on"
+                    android:onClick="onImportButtonClicked"
                     android:text="Import"
                     app:icon="@drawable/icon_upload" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="5dp"
+                android:paddingHorizontal="5dp"
+                android:text="Importuj kalendarz z USOS:"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="#99000000"
+                android:textSize="20sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/calImportButton"
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_marginHorizontal="10dp"
+                    android:layout_marginVertical="15dp"
+                    android:layout_weight="6"
+                    android:background="@drawable/shape_spinner"
+                    android:gravity="center"
+                    android:onClick="onImportCalButtonClicked">
+
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginVertical="8dp"
+                        android:layout_marginRight="20dp"
+                        android:gravity="center"
+                        android:text="IMPORTUJ"
+                        android:textSize="18sp" />
+
+                </LinearLayout>
+
+
+                <ImageButton
+                    android:id="@+id/resetCalImportButton"
+                    android:layout_width="48dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginHorizontal="10dp"
+                    android:layout_marginVertical="15dp"
+                    android:layout_weight="0"
+                    android:background="@drawable/shape_spinner"
+                    android:backgroundTint="#F1997E"
+                    android:onClick="onResetCalButtonClicked"
+                    android:src="@drawable/icon_delete"
+                    app:tint="@color/pr1_brown_dark" />
+
             </LinearLayout>
 
         </LinearLayout>
@@ -195,8 +258,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-       >
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/unsavedChangesText"

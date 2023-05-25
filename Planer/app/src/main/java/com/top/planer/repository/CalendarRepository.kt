@@ -74,5 +74,13 @@ class CalendarRepository(private val calendarDAO: CalendarDAO,private val notifi
         return calendarDAO.insertCalendarWithNoteAndGetId(event, note)
     }
 
+    suspend fun insertMapOfEvents(map: Map<Calendar, Notes>) {
+        calendarDAO.insertMapOfCalendarWithNote(map)
+    }
+
+    suspend fun deleteICalEvents(calendarList: List<Calendar>) {
+        calendarDAO.deleteFromICalList(calendarList)
+    }
+
 
 }

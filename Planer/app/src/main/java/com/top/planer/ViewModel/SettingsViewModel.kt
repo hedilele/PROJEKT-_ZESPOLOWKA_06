@@ -6,10 +6,10 @@ import android.content.Intent
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import com.top.planer.AppDatabase
-import com.top.planer.entities.ExcludedDate
-import com.top.planer.entities.Settings
-import com.top.planer.entities.Types
+import com.top.planer.entities.*
 import com.top.planer.gui.pages.settings.UserSettingsActivity
+import com.top.planer.notification.NotificationHelper
+import com.top.planer.repository.CalendarRepository
 import com.top.planer.repository.ExcludedDateRepository
 import com.top.planer.repository.SettingsRepository
 import com.top.planer.repository.TypeRepository
@@ -22,13 +22,16 @@ import java.time.format.DateTimeFormatter
 
 class SettingsViewModel(application: Application) : AndroidViewModel(application) {
 
+    private val notificationHelper: NotificationHelper = NotificationHelper(application)
     private val settingsDAO = AppDatabase.getDatabase((application)).settingsDAO()
     private val typesDAO = AppDatabase.getDatabase((application)).typesDAO()
     private val excludedDateDAO = AppDatabase.getDatabase((application)).excludedDateDAO()
+    private val calendarDAO = AppDatabase.getDatabase((application)).calendarDAO()
 
     private val settingsRepository = SettingsRepository(settingsDAO)
     private val typeRepository = TypeRepository(typesDAO)
     private val excludedDateRepository = ExcludedDateRepository(excludedDateDAO)
+    private val calendarRepository = CalendarRepository(calendarDAO, notificationHelper)
 
     fun readSettingsFromDb(): LiveData<Settings> {
         return settingsRepository.readSettings()
@@ -99,5 +102,13 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
 
     fun restartApp(backup: RoomBackup, context: Context) {
         backup.restartApp(Intent(context, UserSettingsActivity::class.java))
+    }
+
+    suspend fun saveCal(map: Map<Calendar,Notes>) {
+        calendarRepository.insertMapOfEvents(map)
+    }
+
+    suspend fun deleteCal(list: List<Calendar>) {
+        calendarRepository.deleteICalEvents(list)
     }
 }

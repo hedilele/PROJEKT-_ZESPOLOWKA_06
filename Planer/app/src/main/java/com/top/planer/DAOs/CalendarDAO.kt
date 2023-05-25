@@ -32,9 +32,32 @@ interface CalendarDAO
         return insertCalendar(calendar)
     }
 
+    @Transaction
+    suspend fun insertMapOfCalendarWithNote(map: Map<Calendar,Notes>) {
+        map.forEach {
+            // if wykrywający powtórki
+            if (returnExistingByParameters(it.key.startDate, it.key.endDate, it.key.name).isEmpty()) {
+                insertCalendarWithNote(it.key, it.value)
+            }
+        }
+    }
+
+    @Transaction
+    suspend fun deleteFromICalList(list: List<Calendar>) {
+        list.forEach { event ->
+            returnExistingByParameters(event.startDate, event.endDate, event.name).forEach {
+                deleteNoteById(it.noteId)
+            }
+            deleteByParameters(event.startDate, event.endDate, event.name)
+        }
+    }
+
     //Delete po parametrach
     @Delete
     suspend fun delete(calendar: Calendar)
+
+    @Query("DELETE FROM Notes WHERE id=:noteId")
+    suspend fun deleteNoteById(noteId: Int)
 
     //Usuwanie wszystkiego
     @Query("DELETE FROM Calendar")
@@ -43,6 +66,12 @@ interface CalendarDAO
     //Usuwanie po id
     @Query("DELETE FROM Calendar WHERE id=:id")
     suspend fun deleteById(id: Long)
+
+    @Query("DELETE FROM Calendar WHERE start_date=:startDate AND end_date=:endDate AND name=:name")
+    suspend fun deleteByParameters(startDate: String, endDate: String, name: String)
+
+    @Query("SELECT * FROM Calendar WHERE start_date=:startDate AND end_date=:endDate AND name=:name")
+    suspend fun returnExistingByParameters(startDate: String, endDate: String, name: String): List<Calendar>
 
     //Update
     @Update
