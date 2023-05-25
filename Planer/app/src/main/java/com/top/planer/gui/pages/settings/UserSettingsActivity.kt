@@ -212,6 +212,7 @@ class UserSettingsActivity : AppCompatActivity(), View.OnClickListener,
         val builder = AlertDialog.Builder(view.context)
 
         builder.setTitle("Wklej link z USOS:")
+        builder.setMessage("Na stronie 'Mój plan zajęć' kliknij opcję 'eksportuj' i skopiuj link")
 
         val linkText = EditText(view.context)
         builder.setView(linkText)
