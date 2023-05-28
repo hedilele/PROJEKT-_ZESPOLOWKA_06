@@ -3,17 +3,20 @@ package com.top.planer.gui.pages.settings
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.util.SparseIntArray
+import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.Window
 import android.view.WindowManager
+import android.widget.Button
 import android.widget.EditText
 import android.widget.LinearLayout
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.appcompat.widget.AppCompatEditText
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
 import com.aminography.primecalendar.PrimeCalendar
@@ -37,6 +40,9 @@ import com.top.planer.entities.Settings
 import com.top.planer.entities.Types
 import com.top.planer.gui.pages.scope.UnscrollableLinearLayoutManager
 import de.raphaelebner.roomdatabasebackup.core.RoomBackup
+import kotlinx.android.synthetic.main.activity_calendar.*
+import kotlinx.android.synthetic.main.dialog_usos.*
+import kotlinx.android.synthetic.main.dialog_usos_clear.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -109,16 +115,29 @@ class UserSettingsActivity : AppCompatActivity(), View.OnClickListener,
         })
 
         binding.resetUnavailableDatesButton.setOnClickListener {
+//            val builder = AlertDialog.Builder(this)
+//            builder.setTitle("Czy chcesz usunąć wszystkie wybrane dni?")
+
             val builder = AlertDialog.Builder(this)
-            builder.setTitle("Czy chcesz usunąć wszystkie wybrane dni?")
-            builder.setPositiveButton("Tak") { _, _ ->
+            val inflater = LayoutInflater.from(this)
+            val dialogView = inflater.inflate(R.layout.dialog_free_day_clear, null)
+            builder.setView(dialogView) //Podlaczanie xmla
+
+            val alertDialog = builder.create()
+            alertDialog.show()
+
+            alertDialog.btn_yes.setOnClickListener {
                 markedDatePickerList.clear()
                 unsavedSettings.setValue(true)
+
+                alertDialog.cancel()
             }
-            builder.setNegativeButton("Nie") { dialog, _ ->
-                dialog.dismiss()
+
+            alertDialog.btn_no.setOnClickListener {
+
+                alertDialog.cancel()
+
             }
-            builder.show()
         }
 
         val yesterday = CivilCalendar(TimeZone.getDefault(), Locale("pl", "PL"))
@@ -209,20 +228,28 @@ class UserSettingsActivity : AppCompatActivity(), View.OnClickListener,
     }
 
     fun onImportCalButtonClicked(view: View) {
-        val builder = AlertDialog.Builder(view.context)
+//        val builder = AlertDialog.Builder(view.context)
+//        builder.setTitle("Wklej link z USOS:")
+//        builder.setMessage("Na stronie 'Mój plan zajęć' kliknij opcję 'eksportuj' i skopiuj link")
+//        val linkText = EditText(view.context)
+//        builder.setView(linkText)
 
-        builder.setTitle("Wklej link z USOS:")
-        builder.setMessage("Na stronie 'Mój plan zajęć' kliknij opcję 'eksportuj' i skopiuj link")
+        val builder = AlertDialog.Builder(this)
+        val inflater = LayoutInflater.from(this)
+        val dialogView = inflater.inflate(R.layout.dialog_usos, null)
+        builder.setView(dialogView) //Podlaczanie xmla
 
-        val linkText = EditText(view.context)
-        builder.setView(linkText)
 
-        builder.setPositiveButton("OK") { dialog, _ ->
+        val alertDialog = builder.create()
+        alertDialog.show()
+
+
+        alertDialog.btn_ok.setOnClickListener {
             val buttns = findViewById<LinearLayout>(R.id.button_layout)
             val importStatus = Snackbar.make(buttns, "", Snackbar.LENGTH_SHORT)
             importStatus.anchorView = buttns
 
-            val linkTextString = linkText.text.toString()
+            val linkTextString = alertDialog.link_content.text.toString()
             if (isLinkValid(linkTextString)) {
                 CoroutineScope(Dispatchers.IO).launch {
                     try {
@@ -280,22 +307,34 @@ class UserSettingsActivity : AppCompatActivity(), View.OnClickListener,
                 importStatus.setText("Niepoprawny Link")
                 importStatus.show()
             }
+
+            alertDialog.cancel()
         }
         builder.setNegativeButton("Anuluj") { dialog, _ ->
-            dialog.dismiss()
+            alertDialog.cancel()
         }
 
-        builder.show()
     }
 
     fun onResetCalButtonClicked(view: View) {
-        val builder = AlertDialog.Builder(view.context)
-        builder.setTitle("Uwaga!")
-        builder.setMessage("Czy chcesz usunąć ostatnio zaimportowane wydarzenia?")
+//        val builder = AlertDialog.Builder(view.context)
+//        builder.setTitle("Uwaga!")
+//        builder.setMessage("Czy chcesz usunąć ostatnio zaimportowane wydarzenia?")
+
+        val builder = AlertDialog.Builder(this)
+        val inflater = LayoutInflater.from(this)
+        val dialogView = inflater.inflate(R.layout.dialog_usos_clear, null)
+        builder.setView(dialogView) //Podlaczanie xmla
+
+        val alertDialog = builder.create()
+        alertDialog.show()
+
         val buttns = findViewById<LinearLayout>(R.id.button_layout)
         val resetStatus = Snackbar.make(buttns, "", Snackbar.LENGTH_SHORT)
         resetStatus.anchorView = buttns
-        builder.setPositiveButton("Tak") { _, _ ->
+
+
+        alertDialog.btn_yes.setOnClickListener {
             CoroutineScope(Dispatchers.IO).launch {
                 try {
                     val file = File(view.context.filesDir, "USOS.ics")
@@ -335,12 +374,12 @@ class UserSettingsActivity : AppCompatActivity(), View.OnClickListener,
                     e.printStackTrace()
                 }
             }
+            alertDialog.cancel()
 
         }
-        builder.setNegativeButton("Nie") { dialog, _ ->
-            dialog.dismiss()
+        alertDialog.btn_no.setOnClickListener {
+            alertDialog.cancel()
         }
-        builder.show()
     }
 
     private fun isLinkValid(input: String): Boolean {
