@@ -291,17 +291,16 @@ class UserSettingsActivity : AppCompatActivity(), View.OnClickListener,
     fun onResetCalButtonClicked(view: View) {
         val builder = AlertDialog.Builder(view.context)
         builder.setTitle("Uwaga!")
-        builder.setMessage("Czy chcesz usunąć wszystkie wcześniej zaimportowane wydarzenia?")
+        builder.setMessage("Czy chcesz usunąć ostatnio zaimportowane wydarzenia?")
         val buttns = findViewById<LinearLayout>(R.id.button_layout)
         val resetStatus = Snackbar.make(buttns, "", Snackbar.LENGTH_SHORT)
         resetStatus.anchorView = buttns
         builder.setPositiveButton("Tak") { _, _ ->
             CoroutineScope(Dispatchers.IO).launch {
                 try {
-                    // Znalezienie pliku
                     val file = File(view.context.filesDir, "USOS.ics")
                     val fin = FileInputStream(file)
-                    // Budowanie Kalendarza z ical
+
                     val calendarBuilder = CalendarBuilder()
                     val calendar = calendarBuilder.build(fin)
                     val events = calendar.components
@@ -326,10 +325,12 @@ class UserSettingsActivity : AppCompatActivity(), View.OnClickListener,
                         )
                     }
                     settingsViewModel.deleteCal(eventsDb)
+                    file.delete()
+
                     resetStatus.setText("Pomyślnie usunięto")
                     resetStatus.show()
                 } catch (e: Exception) {
-                    resetStatus.setText("Brak Poprzednich importów")
+                    resetStatus.setText("Brak poprzednich importów")
                     resetStatus.show()
                     e.printStackTrace()
                 }
@@ -344,7 +345,7 @@ class UserSettingsActivity : AppCompatActivity(), View.OnClickListener,
 
     private fun isLinkValid(input: String): Boolean {
         val regexPattern =
-            "webcal://usosapps\\.umk\\.pl/services/tt/upcoming_ical\\?lang=[a-z]{2}&user_id=\\d+&key=\\w+"
+            "^webcal://usosapps.*"
         val regex = Regex(regexPattern)
         return regex.matches(input)
     }
