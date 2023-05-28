@@ -58,7 +58,7 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
     val today_hour = 12//calendar.get(Calendar.HOUR_OF_DAY)
     val today_minute = 0//calendar.get((Calendar.MINUTE))
 
-    var chosenItems = mutableListOf<String>()
+    //var chosenItems = mutableListOf<String>()
     var listOfTypes = mutableListOf<String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -111,7 +111,6 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
         setDateBlocks(setUpDate(today_day, today_month, today_year))
         setTimeBlocks(setUpTime(today_hour, today_minute))
 
-        chosenItems.add("kliknij aby usunąć")
 
         typeViewModel = ViewModelProvider(this)[TypeViewModel::class.java]
         typeViewModel.readAllData.observe(this) {
@@ -271,18 +270,12 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
                     month.toInt() - 1,
                     year.toInt()
                 )
-                chosenItems.add(date_final)
+                //chosenItems.add(date_final)
 
-                val chosenItemsTemp = chosenItems.distinct()
 
-                if (chosenItems.size != chosenItemsTemp.size) {
-                    // List contains duplicates
-                    chosenItems.removeLast()
-
-                }
 
                 // Lista dat w stringach razem z datą wybraną powyżej
-                val chosenDates: List<String> = markedDatePickerList.map {
+                var chosenDates: List<String> = markedDatePickerList.map {
                     val dateString = it.getTime()
                         .toInstant()
                         .atZone(ZoneId.systemDefault())
@@ -290,6 +283,18 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
                         .toString()
                     dateString
                 } + date_final
+
+
+                val chosenDatesMutable = chosenDates.toMutableList()
+                val chosenItemsTemp = chosenDates.distinct()
+
+                if (chosenDatesMutable.size != chosenItemsTemp.size) {
+                    // List contains duplicates
+                    chosenDatesMutable.removeLast()
+                }
+
+                chosenDates = chosenDatesMutable
+
 
                 if (binding.taskTitle.text.toString().replace(" ", "") == "") {
                     val builder = AlertDialog.Builder(this)
@@ -331,7 +336,7 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
                         )
                     }
 
-                    Toast.makeText(applicationContext, "record saved", Toast.LENGTH_SHORT).show()
+                    //Toast.makeText(applicationContext, "record saved", Toast.LENGTH_SHORT).show()
                     finish()
                 }
             }
@@ -483,6 +488,7 @@ class AddingTaskActivity : AppCompatActivity(), View.OnClickListener {
             }
         }
     }
+
 
     fun onClearRepeatsButtonClicked(view: View) {
         val builder = AlertDialog.Builder(this)

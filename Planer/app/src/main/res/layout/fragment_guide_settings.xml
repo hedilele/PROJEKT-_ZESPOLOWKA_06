@@ -179,7 +179,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="20dp"
             android:text="Wczytanie zapisanych danych do pliku:" />
 
 
@@ -192,6 +192,26 @@
             app:icon="@drawable/icon_upload" />
 
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:textColor="@color/brown_important_urgent_on"
+
+            android:text="Dodanie planu zajęć do kalendarza" />
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="W tym miejscu możesz załączyć swój uczelniany plan zajęć z systemy USOS do kalendarza w aplikacji."
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="W zakładce 'Mój plan zajęć' na stronie USOS kliknij opcję 'eksportuj', skopiuj link i wkelj go w odpowiednim miejscu."
+            />
 
     </LinearLayout>
 

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/pr1_beige_background"
+    android:padding="6dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Wklej link z USOS:"
+        android:textSize="20dp"
+        android:padding="4dp"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Na stronie 'Mój plan zajęć' kliknij \nopcję 'eksportuj' i skopiuj link"
+        android:padding="4dp"
+        />
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/link_content"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginVertical="5dp"
+        android:hint="Link"
+        android:inputType="textCapSentences"
+        android:padding="5dp"
+        android:singleLine="true"
+        android:textColor="#99000000"
+        android:textSize="25dp" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/btn_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:backgroundTint="@color/pr1_green_button"
+            android:textColor="#E6000000"
+            android:text="anuluj"
+            android:layout_marginRight="10dp"/>
+
+        <Button
+            android:id="@+id/btn_ok"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:backgroundTint="@color/pr1_green_button"
+            android:textColor="#E6000000"
+            android:text="dodaj"
+            android:layout_marginLeft="10dp"/>
+
+    </LinearLayout>
+
+
+
+</LinearLayout>
+

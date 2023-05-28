@@ -71,7 +71,7 @@
 
                     >
 
-                    <EditText
+                    <TextView
                         android:id="@+id/tv_begin_event_day"
                         android:layout_width="0dp"
                         android:layout_height="50dp"
@@ -88,7 +88,7 @@
                         android:text="."
                         android:textSize="18dp" />
 
-                    <EditText
+                    <TextView
                         android:id="@+id/tv_begin_event_month"
                         android:layout_width="0dp"
                         android:layout_height="50dp"
@@ -105,11 +105,11 @@
                         android:text="."
                         android:textSize="18dp" />
 
-                    <EditText
+                    <TextView
                         android:id="@+id/tv_begin_event_year"
                         android:layout_width="0dp"
                         android:layout_height="50dp"
-                        android:layout_weight="1.6"
+                        android:layout_weight="1.5"
                         android:gravity="center"
                         android:inputType="number"
                         android:text="rrrr"
@@ -147,10 +147,11 @@
                     android:layout_margin="5dp"
                     android:layout_weight="5"
                     android:gravity="center"
+                    android:paddingHorizontal="25dp"
 
                     >
 
-                    <EditText
+                    <TextView
                         android:id="@+id/tv_begin_event_hour"
                         android:layout_width="0dp"
                         android:layout_height="50dp"
@@ -167,7 +168,7 @@
                         android:text=":"
                         android:textSize="18dp" />
 
-                    <EditText
+                    <TextView
                         android:id="@+id/tv_begin_event_min"
                         android:layout_width="0dp"
                         android:layout_height="50dp"
@@ -217,7 +218,7 @@
 
                     >
 
-                    <EditText
+                    <TextView
                         android:id="@+id/tv_end_event_day"
                         android:layout_width="0dp"
                         android:layout_height="50dp"
@@ -234,7 +235,7 @@
                         android:text="."
                         android:textSize="18dp" />
 
-                    <EditText
+                    <TextView
                         android:id="@+id/tv_end_event_month"
                         android:layout_width="0dp"
                         android:layout_height="50dp"
@@ -251,11 +252,11 @@
                         android:text="."
                         android:textSize="18dp" />
 
-                    <EditText
+                    <TextView
                         android:id="@+id/tv_end_event_year"
                         android:layout_width="0dp"
                         android:layout_height="50dp"
-                        android:layout_weight="1.6"
+                        android:layout_weight="1.5"
                         android:gravity="center"
                         android:inputType="number"
                         android:text="rrrr"
@@ -293,10 +294,11 @@
                     android:layout_margin="5dp"
                     android:layout_weight="5"
                     android:gravity="center"
+                    android:paddingHorizontal="25dp"
 
                     >
 
-                    <EditText
+                    <TextView
                         android:id="@+id/tv_end_event_hour"
                         android:layout_width="0dp"
                         android:layout_height="50dp"
@@ -313,7 +315,7 @@
                         android:text=":"
                         android:textSize="18dp" />
 
-                    <EditText
+                    <TextView
                         android:id="@+id/tv_end_event_min"
                         android:layout_width="0dp"
                         android:layout_height="50dp"
@@ -324,6 +326,8 @@
                         android:textSize="18dp" />
 
                 </LinearLayout>
+
+
 
 
             </LinearLayout>

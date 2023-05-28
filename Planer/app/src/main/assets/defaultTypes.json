@@ -1,18 +1,18 @@
 [
   {
     "name": "Dom",
-    "color": "#f6e58d"
+    "color": "#B04759"
   },
   {
     "name": "Szkoła",
-    "color": "#ffbe76"
+    "color": "#ED9B00"
   },
   {
     "name": "Rozrywka",
-    "color": "#ff7979"
+    "color": "#519259"
   },
   {
     "name": "Komputer",
-    "color": "#badc58"
+    "color": "#099396"
   }
 ]

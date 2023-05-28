@@ -99,7 +99,9 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener, CalendarAda
                 }
 
             }
-            adapter.updateList(eventsListoftheDay)
+            val sortedList = eventsListoftheDay.sortedWith(compareBy { getTimeInMinutes(it.startDate) })
+            adapter.updateList(sortedList.toMutableList())
+          //  adapter.updateList(eventsListoftheDay)
             adapter.updateList2(it.toMutableList())
             //calview.setEvents(eventswithicons)
             eventsListAll = it.toMutableList()
@@ -127,6 +129,14 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener, CalendarAda
         return view
     }
 
+    fun getTimeInMinutes(dateString: String): Int {
+        val timeString = dateString.substringAfter(" ").trim()
+        val hour = timeString.substringBefore(":").toInt()
+        val minute = timeString.substringAfter(":").toInt()
+
+        return hour * 60 + minute
+    }
+
     private fun monthYearFromDate(date: LocalDate?): String {
         val formatter = DateTimeFormatter.ofPattern("MMMM yyyy")
         return date!!.format(formatter)
@@ -137,12 +147,17 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener, CalendarAda
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onItemClick(position: Int, dayText: String?) {
         if (dayText != "") {
+            val dateFormatter : DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm")
+
             val message = "Selected Date " + dayText + " " + monthYearFromDate(selectedDatenew)
             selectedDatenew = selectedDatenew?.withDayOfMonth(dayText!!.toInt())
             val yearMonth = YearMonth.from(selectedDatenew)
             var isNull = eventsListAll.filter {it.startDate.substring(0,7) ==yearMonth.toString() && it.startDate.substring(8,10).trimStart('0')== dayText}.toMutableList()
             if (!isNull.isNullOrEmpty()) {
-                adapter.updateList(isNull)
+
+                val sortedList = isNull.sortedWith(compareBy { getTimeInMinutes(it.startDate) })
+                adapter.updateList(sortedList.toMutableList())
+
             }
 
             else
@@ -215,6 +230,7 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener, CalendarAda
 
         return daysInMonthArray
     }
+
 
 
 
