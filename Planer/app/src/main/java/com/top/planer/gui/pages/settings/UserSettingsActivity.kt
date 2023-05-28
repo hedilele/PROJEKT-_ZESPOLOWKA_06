@@ -297,6 +297,10 @@ class UserSettingsActivity : AppCompatActivity(), View.OnClickListener,
 
                         importStatus.setText("Pomyślnie pobrano i zaimportowano kalendarz")
                         importStatus.show()
+
+                        alertDialog.cancel()
+
+
                     } catch (e: Exception) {
                         importStatus.setText("Wystąpił błąd")
                         importStatus.show()
@@ -308,9 +312,8 @@ class UserSettingsActivity : AppCompatActivity(), View.OnClickListener,
                 importStatus.show()
             }
 
-            alertDialog.cancel()
         }
-        builder.setNegativeButton("Anuluj") { dialog, _ ->
+        alertDialog.btn_cancel.setOnClickListener {
             alertDialog.cancel()
         }
 
