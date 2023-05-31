@@ -37,9 +37,15 @@ class CalendarRepository(private val calendarDAO: CalendarDAO,private val notifi
     }
 
     //po id
-    suspend fun deleteCalendarDateById(id: Long)
+    suspend fun deleteCalendarDateById(id: Long, type: Int)
     {
-        calendarDAO.deleteById(id)
+        calendarDAO.deleteById(id) // po prostu usuwa wydarzenie
+        //if (type!=0)
+        if (type > 0){ calendarDAO.deleteByType(type)
+            calendarDAO.deleteById(type.toLong())} // usunie pozostałe z serii i parent wydarzenie
+        if (type < 0){ calendarDAO.deleteByType(id.toInt()) } // usunie dzieci wydarzenia parent
+
+
     }
 
     //wszystkie

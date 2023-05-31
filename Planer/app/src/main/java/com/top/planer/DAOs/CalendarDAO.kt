@@ -67,6 +67,10 @@ interface CalendarDAO
     @Query("DELETE FROM Calendar WHERE id=:id")
     suspend fun deleteById(id: Long)
 
+    //usuwanie wszystkich wydarzeń z serii, znajac id parent eventu
+    @Query("DELETE FROM Calendar WHERE type_id=:type_id")
+    suspend fun deleteByType(type_id: Int)
+
     @Query("DELETE FROM Calendar WHERE start_date=:startDate AND end_date=:endDate AND name=:name")
     suspend fun deleteByParameters(startDate: String, endDate: String, name: String)
 

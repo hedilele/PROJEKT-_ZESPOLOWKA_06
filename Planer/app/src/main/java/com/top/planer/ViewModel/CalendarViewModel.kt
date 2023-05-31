@@ -46,13 +46,14 @@ class CalendarViewModel(application: Application): AndroidViewModel(application)
         }
     }
 
-    fun deleteCalendarDateById(id : Long)
+    fun deleteCalendarDateById(id : Long, type: Int)
     {
         viewModelScope.launch(Dispatchers.IO)
         {
-            repository.deleteCalendarDateById(id)
+            repository.deleteCalendarDateById(id, type)
         }
     }
+
 
     fun deleteAll()
     {

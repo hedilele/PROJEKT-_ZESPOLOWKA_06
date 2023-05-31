@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/pr1_beige_background"
+    android:orientation="vertical"
+    android:padding="10dp"
+    >
+
+    <TextView
+        android:textSize="18sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Czy chcesz usunąć tylko to wydarzenie, czy całą serię?"
+       />
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+    <Button
+        android:id="@+id/delete_single"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:textSize="12sp"
+        android:layout_margin="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_gravity="center"
+        android:backgroundTint="@color/pr1_green_button"
+        android:textColor="#E6000000"
+        android:text="pojedyncze" />
+
+    <Button
+        android:id="@+id/delete_series"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_margin="10dp"
+        android:layout_height="wrap_content"
+        android:textSize="12sp"
+        android:layout_marginTop="5dp"
+        android:layout_gravity="center"
+        android:backgroundTint="@color/pr1_green_button"
+        android:textColor="#E6000000"
+        android:text="seria" />
+
+
+</LinearLayout>
+
+
+
+</LinearLayout>
+

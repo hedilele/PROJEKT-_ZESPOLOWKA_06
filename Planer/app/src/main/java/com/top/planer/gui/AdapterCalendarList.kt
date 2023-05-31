@@ -40,7 +40,7 @@ class AdapterCalendarList (
     var list2: MutableList<Calendar>,
     var notesList: MutableList<Notes>,
     private val updateListener: (calendar:Calendar,note: Notes) -> Unit,
-    private val deleteListener: (id: Long, idNote: Int) -> Unit,
+    private val deleteListener: (id: Long, typeDelId: Int, idNote: Int) -> Unit,
 ) : RecyclerView.Adapter<AdapterCalendarList.ViewHolder>() {
 
     class ViewHolder(itemView: CardView) : RecyclerView.ViewHolder(itemView) {
@@ -54,6 +54,14 @@ class AdapterCalendarList (
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
+        val inflater = LayoutInflater.from(holder.itemView.context)
+        val dialogViewDeleteSeries = inflater.inflate(R.layout.dialog_delete_event_series, null)
+        val buttonSingleEventDelete = dialogViewDeleteSeries.findViewById<Button>(R.id.delete_single)
+        val buttonSeriesEventDelete = dialogViewDeleteSeries.findViewById<Button>(R.id.delete_series)
+
+        val builder = AlertDialog.Builder(holder.itemView.context)
+
+
         val primeCalendar = CivilCalendar(TimeZone.getDefault(), Locale("pl", "PL"))
 
         val item = list[position]
@@ -62,9 +70,34 @@ class AdapterCalendarList (
         val itemsNote = notesList.find { notes -> notes.noteId == item.noteId }
 
         holder.itemView.btn_delete_event.setOnClickListener {
-            deleteListener(item.id, item.noteId)
+            if (item.typeId!=0)
+            {
+                builder.setView(dialogViewDeleteSeries)
+                val alertDialog = builder.create()
+                alertDialog.show()
+
+                buttonSeriesEventDelete.setOnClickListener {
+                    deleteListener(item.id, item.typeId, item.noteId)
+                    alertDialog.hide()
+
+                }
+
+
+                buttonSingleEventDelete.setOnClickListener {
+                    deleteListener(item.id, 0, item.noteId)
+                    alertDialog.hide()
+
+                }
+
+
+            }
+            else
+            {
+                deleteListener(item.id, item.typeId, item.noteId)
+            }
 
         }
+
 
         holder.itemView.btn_edit_event.setOnClickListener{
 

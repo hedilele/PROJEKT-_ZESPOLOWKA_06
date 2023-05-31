@@ -26,6 +26,7 @@ import kotlinx.android.synthetic.main.activity_calendar.view.*
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.YearMonth
+import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.*
 
@@ -81,8 +82,8 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener, CalendarAda
                 notesViewModel.updateNote(updateNote)
 
             },
-            { deleteId, noteId ->
-                calendarViewModel.deleteCalendarDateById(deleteId)
+            { deleteId, delTypeId, noteId ->
+                calendarViewModel.deleteCalendarDateById(deleteId, delTypeId)
                 notesViewModel.deleteNoteById(noteId)
             },
         )
@@ -195,13 +196,19 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener, CalendarAda
 
     private fun setMonthView() {
 
+
         val calendar = java.util.Calendar.getInstance()
-        calendar.set(java.util.Calendar.MONTH, selectedDatenew!!.monthValue-1)
+        calendar.time = Date.from(selectedDatenew!!.withDayOfMonth(1).atStartOfDay(ZoneId.systemDefault()).toInstant())
 
         val sdf = SimpleDateFormat("LLLL", Locale("pl"))
         val monthName = sdf.format(calendar.time)
 
+
+
+
+
         monthYearText?.text = monthName + " "+ selectedDatenew!!.year.toString()
+
         val daysInMonth = daysInMonthArray(selectedDatenew)
         val yearMonth = YearMonth.from(selectedDatenew)
 

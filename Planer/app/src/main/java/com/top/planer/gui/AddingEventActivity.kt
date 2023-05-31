@@ -290,6 +290,11 @@ class   AddingEventActivity : AppCompatActivity(), View.OnClickListener {
 
                 }
                 else {
+                    var parentType = 0 // id dla parent eventu - 0 jeżeli nie jest rodzicem i -1 kiedy jest rodzicem
+                    if (repeat!=0)
+                    {
+                        parentType = -1
+                    }
 
 
                     calendarViewModel = ViewModelProvider(this).get(CalendarViewModel::class.java)
@@ -305,7 +310,7 @@ class   AddingEventActivity : AppCompatActivity(), View.OnClickListener {
                             monthe.toInt(),
                             yeare.toInt()
                         ) + " " + setUpTime(houre.toInt(), minutee.toInt()),
-                        typeId = 0,
+                        typeId = parentType,
                         reminder = reminder,
                         location = binding.tvLocation.text.toString(),
                         repeatId = repeat,
