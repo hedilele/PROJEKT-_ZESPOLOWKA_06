@@ -198,7 +198,7 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener, CalendarAda
 
 
         val calendar = java.util.Calendar.getInstance()
-        calendar.time = Date.from(selectedDatenew!!.withDayOfMonth(1).atStartOfDay(ZoneId.systemDefault()).toInstant())
+        calendar.time = Date.from(selectedDatenew!!.atStartOfDay(ZoneId.systemDefault()).toInstant())
 
         val sdf = SimpleDateFormat("LLLL", Locale("pl"))
         val monthName = sdf.format(calendar.time)

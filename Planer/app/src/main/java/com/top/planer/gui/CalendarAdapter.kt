@@ -33,7 +33,7 @@ class CalendarAdapter(
         val todayDate = LocalDate.now().toString()
 
 
-        if (todayDate.substring(1,7) == todayDay.substring(1,7) && todayDate.substring(8,10) == holder.itemView.cellDayText.text.toString()) //koloruje dzisiejszy dzien
+        if (todayDate.substring(1,7) == todayDay.substring(1,7) && todayDate.substring(8,10).trimStart('0') == holder.itemView.cellDayText.text.toString()) //koloruje dzisiejszy dzien
         {
             val color = ColorStateList.valueOf(ContextCompat.getColor(holder.itemView.context, R.color.brown_important_urgent_on))
             holder.itemView.cellDayText.setTextColor(color)
