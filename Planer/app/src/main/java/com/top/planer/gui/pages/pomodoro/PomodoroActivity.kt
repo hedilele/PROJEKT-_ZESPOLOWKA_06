@@ -258,12 +258,12 @@ class PomodoroActivity : AppCompatActivity() {
     private fun startTimerSetup() {
         if (time_selected > time_progress) {
             if (ready_to_start) {
-                startBtn.text = "Pause"
+                startBtn.text = "Zatrzymaj"
                 startTimer(left_time)
                 ready_to_start = false
             } else {
                 ready_to_start = true
-                startBtn.text = "Resume"
+                startBtn.text = "Wznów"
                 timePause()
             }
         }
